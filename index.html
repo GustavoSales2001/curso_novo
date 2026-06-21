@@ -650,6 +650,7 @@
       }
     }
   </style>
+  <link rel="stylesheet" href="assets/css/theme-premium.css" />
 </head>
 <body>
   <header class="nav">
@@ -674,6 +675,32 @@
   </header>
 
   <main>
+
+  <section class="promo-countdown">
+    <div class="promo-countdown__text">
+      <strong>Oferta especial de lançamento: de R$ 69,99 por R$ 39,99</strong>
+      <span>Essa condição fica disponível por tempo limitado para as primeiras alunas.</span>
+    </div>
+
+    <div class="promo-countdown__timer" aria-label="Contador regressivo da oferta">
+      <div class="promo-countdown__box">
+        <strong id="cd-days">00</strong>
+        <span>dias</span>
+      </div>
+      <div class="promo-countdown__box">
+        <strong id="cd-hours">00</strong>
+        <span>horas</span>
+      </div>
+      <div class="promo-countdown__box">
+        <strong id="cd-minutes">00</strong>
+        <span>min</span>
+      </div>
+      <div class="promo-countdown__box">
+        <strong id="cd-seconds">00</strong>
+        <span>seg</span>
+      </div>
+    </div>
+  </section>
     <section class="hero">
       <div class="container hero-grid">
         <div>
@@ -1028,7 +1055,44 @@
       © 2026 Influencer Academy · Todos os direitos reservados.
     </div>
   </footer>
+
+<script>
+(function(){
+  const deadlineKey = "influencerCountdownDeadline";
+  let deadline = localStorage.getItem(deadlineKey);
+
+  if(!deadline){
+    deadline = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString();
+    localStorage.setItem(deadlineKey, deadline);
+  }
+
+  function pad(value){
+    return String(value).padStart(2, "0");
+  }
+
+  function updateCountdown(){
+    const end = new Date(deadline).getTime();
+    const now = Date.now();
+    const diff = Math.max(0, end - now);
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    document.getElementById("cd-days").textContent = pad(days);
+    document.getElementById("cd-hours").textContent = pad(hours);
+    document.getElementById("cd-minutes").textContent = pad(minutes);
+    document.getElementById("cd-seconds").textContent = pad(seconds);
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+})();
+</script>
 </body>
 </html>
+
+
 
 
