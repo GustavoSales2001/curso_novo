@@ -1,5 +1,5 @@
 ﻿document.addEventListener("DOMContentLoaded", async () => {
-  const API_BASE_UR$ 39,99L = "https://cursoslove-production.up.railway.app/api";
+  const API_BASE_UR$ 39,99L = "https://cursonovo-production.up.railway.app/api";
 
   const tabButtons = document.querySelectorAll(".tab-btn");
   const tabContents = document.querySelectorAll(".tab-content");
@@ -735,3 +735,4 @@
   renderLessonDetail();
   updateProgressUI();
 });
+

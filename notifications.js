@@ -159,3 +159,4 @@ if (!document.getElementById('notification-styles')) {
   document.head.appendChild(style);
 }
 
+

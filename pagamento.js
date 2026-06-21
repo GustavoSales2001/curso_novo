@@ -2,7 +2,7 @@
 const paymentInfo = document.getElementById("paymentInfo");
 const paymentOptions = document.querySelectorAll(".payment-option");
 
-const API_BASE_UR$ 39,99$ 39,99L = "https://cursoslove-production.up.railway.app/api";
+const API_BASE_UR$ 39,99$ 39,99L = "https://cursonovo-production.up.railway.app/api";
 
 let pagamentoAtualId = null;
 let ultimoPixCode = null;
@@ -223,4 +223,5 @@ function voltar() {
 }
 
 atualizarPagamento();
+
 
