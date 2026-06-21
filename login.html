@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+﻿<!DOCTYPE html>
+<html lang="pt-BR$ 39,99">
 <head>
   <meta charset="UTF-8">
   <title>Login - CVIA</title>
@@ -328,7 +328,7 @@
 <script src="notifications.js"></script>
 
 <script>
-  const API_BASE_URL = "https://cursoslove-production.up.railway.app/api";
+  const API_BASE_UR$ 39,99L = "https://cursoslove-production.up.railway.app/api";
 
   const loginForm = document.getElementById('loginForm');
   const submitBtn = document.getElementById('submitBtn');
@@ -345,8 +345,8 @@
     }
 
     // Validação básica de email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    const emailR$ 39,99egex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailR$ 39,99egex.test(email)) {
       notify.error("Por favor, insira um e-mail válido");
       return;
     }
@@ -358,7 +358,7 @@
     submitBtn.classList.add('loading');
 
     try {
-      const response = await fetch(`${API_BASE_URL}/users/login`, {
+      const response = await fetch(`${API_BASE_UR$ 39,99L}/users/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -380,7 +380,7 @@
       }
 
       localStorage.setItem("usuario", JSON.stringify(data.user));
-      notify.success("Login realizado com sucesso! Redirecionando...", 2000);
+      notify.success("Login realizado com sucesso! R$ 39,99edirecionando...", 2000);
 
       setTimeout(() => {
         if (data.user.access_released === 1) {

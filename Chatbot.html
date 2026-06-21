@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR$ 39,99">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -186,7 +186,7 @@
   </div>
 
   <script>
-    const API_BASE_URL = "https://SEU-BACKEND.up.railway.app/api";
+    const API_BASE_UR$ 39,99L = "https://SEU-BACKEND.up.railway.app/api";
 
     const chatToggle = document.getElementById("chatToggle");
     const chatBox = document.getElementById("chatBox");
@@ -241,7 +241,7 @@
       // start api request but don't await yet — ensure minimum typing time
       const apiPromise = (async () => {
         try {
-          const response = await fetch(`${API_BASE_URL}/chat/start`, {
+          const response = await fetch(`${API_BASE_UR$ 39,99L}/chat/start`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ nome, email, celular, mensagem })
@@ -265,7 +265,7 @@
       if (!result.ok) {
         addMessage(result.data.error || 'Erro ao falar com o servidor.', 'bot');
       } else {
-        addMessage(result.data.reply || 'Recebi sua mensagem. Como posso te ajudar?', 'bot');
+        addMessage(result.data.reply || 'R$ 39,99ecebi sua mensagem. Como posso te ajudar?', 'bot');
       }
 
       sendBtn.disabled = false;
@@ -274,4 +274,5 @@
   </script>
 </body>
 </html>
+
 

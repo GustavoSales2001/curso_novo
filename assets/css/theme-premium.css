@@ -155,3 +155,16 @@ p,span,small{
     flex:1;
   }
 }
+
+.old-price{
+  display:inline-block;
+  margin-bottom:10px;
+  color:#a9958b !important;
+  font-size:18px;
+  font-weight:700;
+  text-decoration:line-through;
+}
+
+.price strong{
+  color:#c46d63 !important;
+}

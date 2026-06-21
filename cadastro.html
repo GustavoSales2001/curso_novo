@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR$ 39,99">
 <head>
   <meta charset="UTF-8">
   <title>Criar Conta - CVIA</title>
@@ -355,7 +355,7 @@
 <script src="notifications.js"></script>
 
 <script>
-  const API_BASE_URL = "https://cursoslove-production.up.railway.app/api";
+  const API_BASE_UR$ 39,99L = "https://cursoslove-production.up.railway.app/api";
 
   const cadastroForm = document.getElementById('cadastroForm');
   const submitBtn = document.getElementById('submitBtn');
@@ -377,8 +377,8 @@
     }
 
     // Validar email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    const emailR$ 39,99egex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailR$ 39,99egex.test(email)) {
       notify.error("Por favor, insira um e-mail válido");
       return;
     }
@@ -411,7 +411,7 @@
     submitBtn.innerHTML = '<span class="spinner"></span> Criando conta...';
 
     try {
-      const response = await fetch(`${API_BASE_URL}/users/register`, {
+      const response = await fetch(`${API_BASE_UR$ 39,99L}/users/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -444,7 +444,7 @@
         area
       }));
 
-      notify.success("Conta criada com sucesso! Redirecionando para login...", 2000);
+      notify.success("Conta criada com sucesso! R$ 39,99edirecionando para login...", 2000);
       
       setTimeout(() => {
         window.location.href = "login.html";
@@ -461,4 +461,5 @@
 
 </body>
 </html>
+
 
