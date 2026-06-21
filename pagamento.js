@@ -1,8 +1,8 @@
-const radios = document.querySelectorAll('input[name="pagamento"]');
+﻿const radios = document.querySelectorAll('input[name="pagamento"]');
 const paymentInfo = document.getElementById("paymentInfo");
 const paymentOptions = document.querySelectorAll(".payment-option");
 
-const API_BASE_URL = "https://cursoslove-production.up.railway.app/api";
+const API_BASE_UR$ 39,99$ 39,99L = "https://cursoslove-production.up.railway.app/api";
 
 let pagamentoAtualId = null;
 let ultimoPixCode = null;
@@ -101,8 +101,8 @@ async function atualizarPagamento() {
           <div>
             <label for="parcelas">Parcelamento</label>
             <select id="parcelas">
-              <option value="1">1x de R$ 19,99</option>
-              <option value="2">2x de R$ 10,00</option>
+              <option value="1">1x de R$ 39,99$ 39,99$ 19,99</option>
+              <option value="2">2x de R$ 39,99$ 39,99$ 10,00</option>
             </select>
           </div>
         </div>
@@ -117,14 +117,14 @@ async function criarPix() {
   try {
     const usuario = getUsuario();
 
-    const response = await fetch(`${API_BASE_URL}/payments/pix`, {
+    const response = await fetch(`${API_BASE_UR$ 39,99$ 39,99L}/payments/pix`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
         amount: 19.99,
-        description: "Acesso ao curso CVIA",
+        description: "Acesso ao curso Influencer Academy",
         payer: {
           email: usuario.email || "cliente@email.com",
           first_name: getPrimeiroNome(usuario.nome),
@@ -196,7 +196,7 @@ async function consultarStatusPagamento() {
     return;
   }
 
-  const response = await fetch(`${API_BASE_URL}/payments/${pagamentoAtualId}`);
+  const response = await fetch(`${API_BASE_UR$ 39,99$ 39,99L}/payments/${pagamentoAtualId}`);
   const data = await response.json();
 
   if (data.status === "approved") {
@@ -206,7 +206,7 @@ async function consultarStatusPagamento() {
     }
 
     if (typeof notify !== 'undefined') {
-      notify.success("Pagamento aprovado! Redirecionando para área do aluno...", 2000);
+      notify.success("Pagamento aprovado! R$ 39,99$ 39,99edirecionando para área do aluno...", 2000);
     }
     setTimeout(() => {
       window.location.href = "area.html";
@@ -223,3 +223,4 @@ function voltar() {
 }
 
 atualizarPagamento();
+

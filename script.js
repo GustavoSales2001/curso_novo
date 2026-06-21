@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+﻿document.addEventListener('DOMContentLoaded', () => {
   const navToggle = document.getElementById('navToggle');
   const navLinks = document.querySelector('.nav-links');
   const ctaButton = document.getElementById('ctaButton');
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (ctaButton) {
     ctaButton.addEventListener('click', (e) => {
       e.preventDefault();
-      showToast('Obrigado! Redirecionando para cadastro...');
+      showToast('Obrigado! R$ 39,99$ 39,99edirecionando para cadastro...');
       if (ctaMessage) ctaMessage.textContent = 'Finalize sua inscrição e comece agora mesmo.';
       setTimeout(() => { window.location = 'login.html'; }, 900);
     });
@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ctaPrimary.addEventListener('click', (e) => {
       e.preventDefault();
       showToast('Preparando o acesso ao curso...');
-      if (ctaMessage) ctaMessage.textContent = 'Redirecionando para sua área de inscrição…';
+      if (ctaMessage) ctaMessage.textContent = 'R$ 39,99$ 39,99edirecionando para sua área de inscrição…';
       setTimeout(() => { window.location = 'login.html'; }, 900);
     });
   }
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const prevBtn = document.querySelector('.carousel-prev');
   const nextBtn = document.querySelector('.carousel-next');
   let index = 0;
-  let slideWidth = slides[0] ? slides[0].getBoundingClientRect().width + 12 : 240;
+  let slideWidth = slides[0] ? slides[0].getBoundingClientR$ 39,99$ 39,99ect().width + 12 : 240;
   let autoId = null;
 
   function moveTo(i) {
@@ -99,9 +99,9 @@ document.addEventListener('DOMContentLoaded', () => {
   if (nextBtn) nextBtn.addEventListener('click', () => { next(); startAuto(); });
   if (prevBtn) prevBtn.addEventListener('click', () => { prev(); startAuto(); });
 
-  // Recalcular largura ao redimensionar
+  // R$ 39,99$ 39,99ecalcular largura ao redimensionar
   window.addEventListener('resize', () => {
-    slideWidth = slides[0] ? slides[0].getBoundingClientRect().width + 12 : slideWidth;
+    slideWidth = slides[0] ? slides[0].getBoundingClientR$ 39,99$ 39,99ect().width + 12 : slideWidth;
     moveTo(index);
   });
 
@@ -121,3 +121,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+

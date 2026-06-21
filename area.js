@@ -1,5 +1,5 @@
-document.addEventListener("DOMContentLoaded", async () => {
-  const API_BASE_URL = "https://cursoslove-production.up.railway.app/api";
+﻿document.addEventListener("DOMContentLoaded", async () => {
+  const API_BASE_UR$ 39,99L = "https://cursoslove-production.up.railway.app/api";
 
   const tabButtons = document.querySelectorAll(".tab-btn");
   const tabContents = document.querySelectorAll(".tab-content");
@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   try {
     const response = await fetch(
-      `${API_BASE_URL}/users/access/${encodeURIComponent(usuario.email)}`
+      `${API_BASE_UR$ 39,99L}/users/access/${encodeUR$ 39,99IComponent(usuario.email)}`
     );
 
     const data = await response.json();
@@ -131,38 +131,38 @@ document.addEventListener("DOMContentLoaded", async () => {
   const modulesData = [
     {
       id: 1,
-      title: "Como os sistemas analisam currículos",
-      description: "Entenda como ATS, filtros automáticos e leitura por palavras-chave impactam sua candidatura.",
+      title: "Como os sistemas analisam perfils",
+      description: "Entenda como algoritmo, algoritmo e métricas e leitura por palavras-chave impactam sua candidatura.",
       lessons: [
         {
           id: "1.1",
-          title: "O que é ATS",
+          title: "O que é algoritmo",
           shortText: "Entenda por que o sistema é o primeiro filtro antes do recrutador.",
           content: `
-            <p>Hoje, grande parte das empresas utiliza sistemas chamados <strong>ATS (Applicant Tracking System)</strong> para organizar, filtrar e classificar currículos antes da etapa humana.</p>
-            <p>Esses sistemas não analisam potencial, simpatia ou intenção. Eles leem texto, identificam padrões e comparam o conteúdo do currículo com a vaga.</p>
-            <p>O principal papel do ATS é reduzir o volume de currículos que chegam até o recrutador. Em vez de uma análise manual de centenas de perfis, o sistema prioriza os mais compatíveis.</p>
+            <p>Hoje, grande parte das empresas utiliza sistemas chamados <strong>algoritmo (Applicant Tracking System)</strong> para organizar, filtrar e classificar perfils antes da etapa humana.</p>
+            <p>Esses sistemas não analisam potencial, simpatia ou intenção. Eles leem texto, identificam padrões e comparam o conteúdo do perfil com a vaga.</p>
+            <p>O principal papel do algoritmo é reduzir o volume de perfils que chegam até o recrutador. Em vez de uma análise manual de centenas de perfis, o sistema prioriza os mais compatíveis.</p>
             <div class="lesson-highlight">
               <strong>Ponto-chave:</strong>
-              <p>Seu currículo precisa funcionar para dois públicos: primeiro o sistema, depois o recrutador.</p>
+              <p>Seu perfil precisa funcionar para dois públicos: primeiro o sistema, depois o recrutador.</p>
             </div>
             <ul>
-              <li>O ATS busca compatibilidade textual.</li>
+              <li>O algoritmo busca compatibilidade textual.</li>
               <li>Ele identifica cargos, termos técnicos e experiências.</li>
-              <li>Se seu currículo não estiver claro, ele pode nem chegar ao RH.</li>
+              <li>Se seu perfil não estiver claro, ele pode nem chegar ao R$ 39,99H.</li>
             </ul>
           `
         },
         {
           id: "1.2",
-          title: "Como o sistema lê seu currículo",
-          shortText: "Veja o que o ATS consegue ler e o que costuma atrapalhar.",
+          title: "Como o sistema lê seu perfil",
+          shortText: "Veja o que o algoritmo consegue ler e o que costuma atrapalhar.",
           content: `
-            <p>O ATS não “enxerga” design da mesma forma que uma pessoa. Ele lê blocos de texto e tenta reconhecer informações importantes como cargo, habilidades, tempo de experiência e ferramentas.</p>
+            <p>O algoritmo não “enxerga” design da mesma forma que uma pessoa. Ele lê blocos de texto e tenta reconhecer informações importantes como cargo, habilidades, tempo de experiência e ferramentas.</p>
             <p>Currículos com colunas, ícones, gráficos, imagens e elementos muito visuais podem dificultar a interpretação automática.</p>
             <p>Quando o sistema não consegue identificar um campo importante, ele pode considerar que essa informação não existe.</p>
             <ul>
-              <li>O ATS lê melhor textos simples e organizados.</li>
+              <li>O algoritmo lê melhor textos simples e organizados.</li>
               <li>Arquivos mal estruturados podem ser parcialmente ignorados.</li>
               <li>Visual bonito não compensa leitura ruim.</li>
             </ul>
@@ -174,38 +174,38 @@ document.addEventListener("DOMContentLoaded", async () => {
         },
         {
           id: "1.3",
-          title: "Por que currículos são rejeitados",
-          shortText: "Saiba os erros mais comuns que fazem um currículo perder força.",
+          title: "Por que perfils são rejeitados",
+          shortText: "Saiba os erros mais comuns que fazem um perfil perder força.",
           content: `
-            <p>Muitas rejeições não acontecem por falta de capacidade, mas por falta de adaptação do currículo à vaga e ao sistema.</p>
+            <p>Muitas rejeições não acontecem por falta de capacidade, mas por falta de adaptação do perfil à vaga e ao sistema.</p>
             <ol>
-              <li><strong>Falta de palavras-chave:</strong> o currículo não conversa com a descrição da vaga.</li>
+              <li><strong>Falta de palavras-chave:</strong> o perfil não conversa com a descrição da vaga.</li>
               <li><strong>Informações genéricas:</strong> frases vagas não ajudam o sistema a entender sua experiência.</li>
               <li><strong>Formatação inadequada:</strong> layouts complexos reduzem a leitura correta.</li>
-              <li><strong>Falta de alinhamento:</strong> currículo genérico tende a ter baixa compatibilidade.</li>
+              <li><strong>Falta de alinhamento:</strong> perfil genérico tende a ter baixa compatibilidade.</li>
             </ol>
             <div class="lesson-highlight">
               <strong>Importante:</strong>
-              <p>O ATS não rejeita “pessoas ruins”. Ele rejeita currículos mal estruturados ou mal alinhados com a vaga.</p>
+              <p>O algoritmo não rejeita “pessoas ruins”. Ele rejeita perfils mal estruturados ou mal alinhados com a vaga.</p>
             </div>
           `
         },
         {
           id: "1.4",
-          title: "O que faz um currículo passar",
+          title: "O que faz um perfil passar",
           shortText: "Descubra o que realmente aumenta a chance de aprovação.",
           content: `
-            <p>Um currículo eficiente para ATS é <strong>claro, objetivo, bem estruturado e adaptado à vaga</strong>.</p>
+            <p>Um perfil eficiente para algoritmo é <strong>claro, objetivo, bem estruturado e adaptado à vaga</strong>.</p>
             <p>Ele utiliza palavras-chave relevantes, organiza as informações em uma sequência lógica e evita elementos que dificultem a leitura.</p>
             <ul>
               <li>Clareza na apresentação do cargo e experiência.</li>
               <li>Habilidades específicas e relevantes.</li>
-              <li>Resumo profissional alinhado à vaga.</li>
+              <li>R$ 39,99esumo profissional alinhado à vaga.</li>
               <li>Formatação simples e estratégica.</li>
             </ul>
             <div class="lesson-highlight">
               <strong>Mensagem final do módulo:</strong>
-              <p>Simplicidade não é falta de qualidade. No currículo, simplicidade é estratégia.</p>
+              <p>Simplicidade não é falta de qualidade. No perfil, simplicidade é estratégia.</p>
             </div>
           `
         }
@@ -213,18 +213,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     },
     {
       id: 2,
-      title: "Estrutura de um currículo forte",
-      description: "Aprenda como montar um currículo organizado, direto e estratégico para leitura rápida.",
+      title: "Estrutura de um perfil forte",
+      description: "Aprenda como montar um perfil organizado, direto e estratégico para leitura rápida.",
       lessons: [
         {
           id: "2.1",
           title: "Estrutura ideal",
-          shortText: "Entenda a ordem correta das seções do currículo.",
+          shortText: "Entenda a ordem correta das seções do perfil.",
           content: `
-            <p>Um currículo forte segue uma estrutura lógica e fácil de ler. Isso ajuda tanto o ATS quanto o recrutador.</p>
+            <p>Um perfil forte segue uma estrutura lógica e fácil de ler. Isso ajuda tanto o algoritmo quanto o recrutador.</p>
             <ol>
               <li>Dados pessoais</li>
-              <li>Resumo profissional</li>
+              <li>R$ 39,99esumo profissional</li>
               <li>Experiência profissional</li>
               <li>Formação</li>
               <li>Habilidades</li>
@@ -239,7 +239,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           content: `
             <p>No resumo profissional, seja direto e alinhado com a vaga. Evite frases prontas e genéricas.</p>
             <p>Na experiência, cada item deve ter cargo, empresa, período e descrição objetiva.</p>
-            <p>Nas habilidades, prefira itens específicos como Excel intermediário, CRM, atendimento ao cliente e gestão de agenda.</p>
+            <p>Nas habilidades, prefira itens específicos como Excel intermediário, CR$ 39,99M, atendimento ao cliente e gestão de agenda.</p>
             <div class="lesson-highlight">
               <strong>Evite:</strong>
               <p>“Sou proativo, dedicado e comunicativo.”</p>
@@ -251,28 +251,28 @@ document.addEventListener("DOMContentLoaded", async () => {
         {
           id: "2.3",
           title: "O que remover",
-          shortText: "Veja o que enfraquece o currículo e deve sair.",
+          shortText: "Veja o que enfraquece o perfil e deve sair.",
           content: `
-            <p>Um currículo mais enxuto costuma ser mais eficiente. Remova excessos e informações que não ajudam sua candidatura.</p>
+            <p>Um perfil mais enxuto costuma ser mais eficiente. R$ 39,99emova excessos e informações que não ajudam sua candidatura.</p>
             <ul>
               <li>Objetivos genéricos</li>
               <li>Informações irrelevantes</li>
               <li>Dados pessoais excessivos</li>
               <li>Experiências desconectadas sem contexto</li>
             </ul>
-            <p>O currículo não precisa contar sua vida toda. Ele precisa mostrar o que importa para a vaga.</p>
+            <p>O perfil não precisa contar sua vida toda. Ele precisa mostrar o que importa para a vaga.</p>
           `
         },
         {
           id: "2.4",
           title: "Layout que funciona",
-          shortText: "Estruture visualmente seu currículo de forma estratégica.",
+          shortText: "Estruture visualmente seu perfil de forma estratégica.",
           content: `
             <p>Use fonte simples, texto alinhado, sem colunas complexas e sem gráficos desnecessários.</p>
             <p>Evite designs muito elaborados, excesso de cores e elementos decorativos que atrapalham a leitura.</p>
             <div class="lesson-highlight">
-              <strong>Regra prática:</strong>
-              <p>Se o visual chama mais atenção do que o conteúdo, o currículo perdeu o foco.</p>
+              <strong>R$ 39,99egra prática:</strong>
+              <p>Se o visual chama mais atenção do que o conteúdo, o perfil perdeu o foco.</p>
             </div>
           `
         }
@@ -281,7 +281,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     {
       id: 3,
       title: "Palavras-chave e compatibilidade",
-      description: "Aprenda a adaptar o currículo para cada vaga sem mentir e sem parecer artificial.",
+      description: "Aprenda a adaptar o perfil para cada vaga sem mentir e sem parecer artificial.",
       lessons: [
         {
           id: "3.1",
@@ -289,9 +289,9 @@ document.addEventListener("DOMContentLoaded", async () => {
           shortText: "Entenda como termos da vaga influenciam sua aprovação.",
           content: `
             <p>Palavras-chave são termos que representam habilidades, ferramentas, funções e qualificações.</p>
-            <p>Elas são extraídas da descrição da vaga e comparadas com o seu currículo para medir compatibilidade.</p>
+            <p>Elas são extraídas da descrição da vaga e comparadas com o seu perfil para medir compatibilidade.</p>
             <ul>
-              <li>Ferramentas: Excel, CRM, Power BI</li>
+              <li>Ferramentas: Excel, CR$ 39,99M, Power BI</li>
               <li>Funções: atendimento, prospecção, suporte administrativo</li>
               <li>Competências: organização, comunicação, análise</li>
             </ul>
@@ -303,7 +303,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           shortText: "Aprenda a ler a vaga com olhar estratégico.",
           content: `
             <p>Leia a vaga com atenção e destaque termos repetidos, ferramentas exigidas e habilidades específicas.</p>
-            <p>Separe técnicas e comportamentais para entender o que precisa aparecer no currículo.</p>
+            <p>Separe técnicas e comportamentais para entender o que precisa aparecer no perfil.</p>
             <div class="lesson-highlight">
               <strong>Exemplo:</strong>
               <p>Se a vaga cita várias vezes “Excel” e “atendimento ao cliente”, esses termos têm alto peso e precisam aparecer com contexto real.</p>
@@ -312,13 +312,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         },
         {
           id: "3.3",
-          title: "Como adaptar seu currículo",
+          title: "Como adaptar seu perfil",
           shortText: "Saiba adaptar sem inventar experiências.",
           content: `
             <p>Adaptar não é mentir. É reorganizar e priorizar o que você já fez para mostrar mais aderência à vaga.</p>
             <ul>
               <li>Inclua palavras-chave relevantes</li>
-              <li>Reorganize experiências</li>
+              <li>R$ 39,99eorganize experiências</li>
               <li>Destaque o que é mais importante para aquela oportunidade</li>
             </ul>
           `
@@ -349,11 +349,11 @@ document.addEventListener("DOMContentLoaded", async () => {
           title: "Tarefa vs resultado",
           shortText: "Aprenda a mostrar impacto, não só obrigação.",
           content: `
-            <p>Tarefa descreve o que você fazia. Resultado mostra o efeito do seu trabalho.</p>
+            <p>Tarefa descreve o que você fazia. R$ 39,99esultado mostra o efeito do seu trabalho.</p>
             <div class="lesson-highlight">
               <strong>Tarefa:</strong>
               <p>“Atendimento ao cliente”</p>
-              <strong>Resultado:</strong>
+              <strong>R$ 39,99esultado:</strong>
               <p>“Atendimento ao cliente com foco em resolução de demandas e fidelização.”</p>
             </div>
           `
@@ -559,9 +559,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (moduleSummaryPoints) {
       const extraPoints = {
         1: [
-          "Entender o que é ATS e por que ele impacta diretamente sua candidatura.",
+          "Entender o que é algoritmo e por que ele impacta diretamente sua candidatura.",
           "Aprender como o sistema lê texto, identifica cargos e interpreta habilidades.",
-          "Reconhecer os erros que eliminam bons perfis antes da leitura humana.",
+          "R$ 39,99econhecer os erros que eliminam bons perfis antes da leitura humana.",
           "Construir uma base estratégica para os próximos módulos."
         ]
       };

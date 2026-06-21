@@ -1,4 +1,4 @@
-// Sistema de Notificações Profissional
+﻿// Sistema de Notificações Profissional
 class NotificationSystem {
   constructor() {
     this.createContainer();
@@ -158,3 +158,4 @@ if (!document.getElementById('notification-styles')) {
   `;
   document.head.appendChild(style);
 }
+
