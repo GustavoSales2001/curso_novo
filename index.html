@@ -969,12 +969,39 @@
     <section class="section">
       <div class="container pricing">
         <div class="pricing-box">
-          <span class="tag">ACESSO AO CUR$ 39,99SO</span>
+          <span class="tag">ACESSO AO CURSO</span>
           <h3>Comece agora a construir seu crescimento como influenciadora.</h3>
 
-          <div class="price">
-            <strong>R$ 39,99$ 39,99</strong>
-            <span>pagamento único</span>
+          <div class="price-offer">
+            <div class="old-price">De R$ 69,99</div>
+            <div class="new-price">Por R$ 39,99</div>
+            <div class="price-subtitle">pagamento único</div>
+          </div>
+
+          <div class="offer-countdown">
+            <div class="offer-countdown-text">
+              <strong>Oferta especial por tempo limitado</strong>
+              <span>Essa condição encerra em:</span>
+            </div>
+
+            <div class="offer-countdown-timer">
+              <div class="offer-time-box">
+                <strong id="offer-days">00</strong>
+                <span>dias</span>
+              </div>
+              <div class="offer-time-box">
+                <strong id="offer-hours">00</strong>
+                <span>horas</span>
+              </div>
+              <div class="offer-time-box">
+                <strong id="offer-minutes">00</strong>
+                <span>min</span>
+              </div>
+              <div class="offer-time-box">
+                <strong id="offer-seconds">00</strong>
+                <span>seg</span>
+              </div>
+            </div>
           </div>
 
           <div class="price-note">
@@ -1090,8 +1117,49 @@
   setInterval(updateCountdown, 1000);
 })();
 </script>
+
+<script>
+(function(){
+  const deadlineKey = "offerCountdownDeadline";
+  let deadline = localStorage.getItem(deadlineKey);
+
+  if(!deadline){
+    deadline = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString();
+    localStorage.setItem(deadlineKey, deadline);
+  }
+
+  function pad(value){
+    return String(value).padStart(2, "0");
+  }
+
+  function updateOfferCountdown(){
+    const end = new Date(deadline).getTime();
+    const now = Date.now();
+    const diff = Math.max(0, end - now);
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    const d = document.getElementById("offer-days");
+    const h = document.getElementById("offer-hours");
+    const m = document.getElementById("offer-minutes");
+    const s = document.getElementById("offer-seconds");
+
+    if(d) d.textContent = pad(days);
+    if(h) h.textContent = pad(hours);
+    if(m) m.textContent = pad(minutes);
+    if(s) s.textContent = pad(seconds);
+  }
+
+  updateOfferCountdown();
+  setInterval(updateOfferCountdown, 1000);
+})();
+</script>
 </body>
 </html>
+
 
 
 

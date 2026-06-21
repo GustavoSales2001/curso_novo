@@ -168,3 +168,96 @@ p,span,small{
 .price strong{
   color:#c46d63 !important;
 }
+
+.price-offer{
+  margin:24px 0 18px;
+}
+
+.old-price{
+  display:block;
+  color:#a9958b !important;
+  font-size:20px;
+  font-weight:800;
+  text-decoration:line-through;
+  margin-bottom:4px;
+}
+
+.new-price{
+  display:block;
+  color:#c96f65 !important;
+  font-size:58px;
+  line-height:1;
+  font-weight:900;
+  letter-spacing:-2px;
+}
+
+.price-subtitle{
+  margin-top:8px;
+  color:#7b6a60 !important;
+  font-size:16px;
+  font-weight:600;
+}
+
+.offer-countdown{
+  margin:22px 0 22px;
+  padding:18px;
+  border-radius:22px;
+  background:linear-gradient(135deg, #fff4ef 0%, #ffffff 100%);
+  border:1px solid #efd8cf;
+  box-shadow:0 14px 35px rgba(92,63,45,.08);
+}
+
+.offer-countdown-text{
+  margin-bottom:14px;
+}
+
+.offer-countdown-text strong{
+  display:block;
+  color:#433127 !important;
+  font-size:17px;
+}
+
+.offer-countdown-text span{
+  color:#7b6a60 !important;
+  font-size:14px;
+}
+
+.offer-countdown-timer{
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  gap:10px;
+}
+
+.offer-time-box{
+  background:#fffaf6;
+  border:1px solid #eaded4;
+  border-radius:16px;
+  padding:10px;
+  text-align:center;
+}
+
+.offer-time-box strong{
+  display:block;
+  color:#c46d63 !important;
+  font-size:24px;
+  line-height:1;
+}
+
+.offer-time-box span{
+  display:block;
+  margin-top:4px;
+  color:#7b6a60 !important;
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.4px;
+}
+
+@media(max-width:760px){
+  .new-price{
+    font-size:44px;
+  }
+
+  .offer-countdown-timer{
+    grid-template-columns:repeat(2, 1fr);
+  }
+}
