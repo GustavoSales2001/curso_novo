@@ -515,3 +515,217 @@ p,span,small{
     height:130px;
   }
 }
+
+
+/* FLOATING IMAGE GALLERY START */
+
+/* tira bolinhas decorativas antigas */
+.sticker-zone::before,
+.sticker-zone::after{
+  display:none !important;
+}
+
+/* deixa as secoes prontas para receber imagens soltas */
+.sticker-zone{
+  position:relative !important;
+  overflow:visible !important;
+}
+
+/* imagens decorativas */
+.floating-sticker{
+  position:absolute;
+  z-index:4;
+  display:block;
+  background:transparent !important;
+  border:none !important;
+  padding:0 !important;
+  border-radius:22px !important;
+  box-shadow:0 16px 38px rgba(92,63,45,.16);
+  cursor:zoom-in;
+  pointer-events:auto !important;
+  transition:transform .25s ease, box-shadow .25s ease;
+}
+
+.floating-sticker:hover{
+  box-shadow:0 22px 46px rgba(92,63,45,.22);
+}
+
+/* mais soltas e descontraidas */
+.sticker-hero-social{
+  top:-18px !important;
+  left:-6px !important;
+  width:120px !important;
+  height:auto !important;
+  transform:rotate(-9deg) !important;
+}
+
+.sticker-hero-social:hover{
+  transform:rotate(-9deg) translateY(-4px) scale(1.03) !important;
+}
+
+.sticker-hero-metrics{
+  top:22px !important;
+  right:18px !important;
+  width:132px !important;
+  height:auto !important;
+  transform:rotate(7deg) !important;
+}
+
+.sticker-hero-metrics:hover{
+  transform:rotate(7deg) translateY(-4px) scale(1.03) !important;
+}
+
+.sticker-trilha-content{
+  top:40px !important;
+  right:-12px !important;
+  width:124px !important;
+  height:auto !important;
+  transform:rotate(8deg) !important;
+}
+
+.sticker-trilha-content:hover{
+  transform:rotate(8deg) translateY(-4px) scale(1.03) !important;
+}
+
+.sticker-modulos-megafone{
+  top:24px !important;
+  left:-14px !important;
+  width:118px !important;
+  height:auto !important;
+  object-fit:contain !important;
+  transform:rotate(-11deg) !important;
+}
+
+.sticker-modulos-megafone:hover{
+  transform:rotate(-11deg) translateY(-4px) scale(1.03) !important;
+}
+
+/* lightbox */
+.image-lightbox{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:none;
+}
+
+.image-lightbox.is-open{
+  display:block;
+}
+
+.image-lightbox__backdrop{
+  position:absolute;
+  inset:0;
+  background:rgba(38, 25, 20, .72);
+  backdrop-filter:blur(4px);
+}
+
+.image-lightbox__panel{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:28px;
+}
+
+.image-lightbox__stage{
+  max-width:min(92vw, 1100px);
+  max-height:82vh;
+  overflow:auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.image-lightbox__img{
+  max-width:92vw;
+  max-height:82vh;
+  border-radius:22px;
+  box-shadow:0 24px 60px rgba(0,0,0,.28);
+  transform-origin:center center;
+  transition:transform .2s ease;
+  background:#fff;
+}
+
+.image-lightbox__close{
+  position:absolute;
+  top:20px;
+  right:24px;
+  width:46px;
+  height:46px;
+  border:none;
+  border-radius:999px;
+  background:rgba(255,255,255,.92);
+  color:#433127;
+  font-size:30px;
+  line-height:1;
+  cursor:pointer;
+  box-shadow:0 12px 30px rgba(0,0,0,.12);
+}
+
+.image-lightbox__toolbar{
+  position:absolute;
+  bottom:24px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:10px;
+  padding:10px;
+  border-radius:999px;
+  background:rgba(255,255,255,.92);
+  box-shadow:0 12px 30px rgba(0,0,0,.12);
+}
+
+.image-lightbox__btn{
+  min-width:54px;
+  height:42px;
+  padding:0 14px;
+  border:none;
+  border-radius:999px;
+  background:linear-gradient(135deg, #d9877d, #e5a193);
+  color:#fff;
+  font-weight:900;
+  cursor:pointer;
+}
+
+@media(max-width:1000px){
+  .sticker-hero-social{
+    top:-8px !important;
+    left:0 !important;
+    width:90px !important;
+  }
+
+  .sticker-hero-metrics{
+    top:0 !important;
+    right:0 !important;
+    width:100px !important;
+  }
+
+  .sticker-trilha-content,
+  .sticker-modulos-megafone{
+    width:92px !important;
+  }
+}
+
+@media(max-width:760px){
+  .sticker-trilha-content,
+  .sticker-modulos-megafone{
+    display:none !important;
+  }
+
+  .sticker-hero-social,
+  .sticker-hero-metrics{
+    opacity:.35;
+  }
+
+  .image-lightbox__toolbar{
+    bottom:16px;
+  }
+
+  .image-lightbox__btn{
+    min-width:46px;
+    height:38px;
+  }
+}
+
+/* FLOATING IMAGE GALLERY END */

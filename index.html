@@ -1161,8 +1161,105 @@
   setInterval(updateOfferCountdown, 1000);
 })();
 </script>
+<!-- FLOATING-GALLERY-LIGHTBOX START -->
+<script>
+(function () {
+  if (document.getElementById("floatingGalleryLightbox")) return;
+
+  const floatingImages = Array.from(document.querySelectorAll(".floating-sticker"));
+  if (!floatingImages.length) return;
+
+  const overlay = document.createElement("div");
+  overlay.id = "floatingGalleryLightbox";
+  overlay.className = "image-lightbox";
+  overlay.innerHTML = `
+    <div class="image-lightbox__backdrop"></div>
+    <div class="image-lightbox__panel">
+      <button class="image-lightbox__close" aria-label="Fechar">×</button>
+
+      <div class="image-lightbox__toolbar">
+        <button class="image-lightbox__btn" data-action="out">−</button>
+        <button class="image-lightbox__btn" data-action="reset">100%</button>
+        <button class="image-lightbox__btn" data-action="in">+</button>
+      </div>
+
+      <div class="image-lightbox__stage">
+        <img class="image-lightbox__img" alt="">
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+
+  const backdrop = overlay.querySelector(".image-lightbox__backdrop");
+  const closeBtn = overlay.querySelector(".image-lightbox__close");
+  const imgEl = overlay.querySelector(".image-lightbox__img");
+  const controls = overlay.querySelectorAll(".image-lightbox__btn");
+
+  let zoom = 1;
+
+  function setZoom(value) {
+    zoom = Math.max(1, Math.min(3, value));
+    imgEl.style.transform = `scale(${zoom})`;
+  }
+
+  function openLightbox(src, altText) {
+    imgEl.src = src;
+    imgEl.alt = altText || "";
+    setZoom(1);
+    overlay.classList.add("is-open");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeLightbox() {
+    overlay.classList.remove("is-open");
+    document.body.style.overflow = "";
+  }
+
+  floatingImages.forEach((img) => {
+    img.setAttribute("tabindex", "0");
+    img.setAttribute("role", "button");
+    img.setAttribute("aria-label", "Abrir imagem");
+
+    img.addEventListener("click", () => openLightbox(img.src, img.alt));
+    img.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        openLightbox(img.src, img.alt);
+      }
+    });
+  });
+
+  backdrop.addEventListener("click", closeLightbox);
+  closeBtn.addEventListener("click", closeLightbox);
+
+  controls.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const action = btn.getAttribute("data-action");
+      if (action === "in") setZoom(zoom + 0.25);
+      if (action === "out") setZoom(zoom - 0.25);
+      if (action === "reset") setZoom(1);
+    });
+  });
+
+  overlay.addEventListener("wheel", (e) => {
+    if (!overlay.classList.contains("is-open")) return;
+    e.preventDefault();
+    if (e.deltaY < 0) setZoom(zoom + 0.15);
+    else setZoom(zoom - 0.15);
+  }, { passive: false });
+
+  document.addEventListener("keydown", (e) => {
+    if (!overlay.classList.contains("is-open")) return;
+    if (e.key === "Escape") closeLightbox();
+    if (e.key === "+") setZoom(zoom + 0.15);
+    if (e.key === "-") setZoom(zoom - 0.15);
+  });
+})();
+</script>
+<!-- FLOATING-GALLERY-LIGHTBOX END -->
 </body>
 </html>
+
 
 
 
