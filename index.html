@@ -1,462 +1,937 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Criar Conta - CVIA</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Curso Influencer Pro | Saia do 0 e cresça com estratégia</title>
+  <meta name="description" content="Aprenda a crescer do zero aos primeiros 5 mil seguidores com estratégia, posicionamento, conteúdo e consistência." />
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    :root{
+      --bg:#07111f;
+      --bg-2:#0d1b2f;
+      --card:#11233c;
+      --card-2:#162b49;
+      --line:rgba(255,255,255,.08);
+      --text:#eef4ff;
+      --muted:#a9b7cf;
+      --primary:#42c0ff;
+      --primary-2:#7b61ff;
+      --accent:#00e0b8;
+      --danger:#ff7aa2;
+      --shadow:0 20px 60px rgba(0,0,0,.35);
+      --radius:22px;
+      --max:1180px;
     }
 
-    html {
-      scroll-behavior: smooth;
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter,Segoe UI,Arial,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(66,192,255,.18), transparent 28%),
+        radial-gradient(circle at top right, rgba(123,97,255,.18), transparent 25%),
+        linear-gradient(180deg, #081120 0%, #091728 100%);
+      line-height:1.5;
     }
 
-    body {
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #111827 100%);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #f8fafc;
-      padding: 20px;
-      position: relative;
-      overflow-x: hidden;
+    a{text-decoration:none;color:inherit}
+    img{max-width:100%}
+    .container{width:min(var(--max), calc(100% - 40px)); margin:0 auto}
+    .section{padding:88px 0}
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 14px;
+      border:1px solid rgba(66,192,255,.25);
+      border-radius:999px;
+      color:#d9eeff;
+      background:rgba(66,192,255,.08);
+      font-size:14px;
+      font-weight:700;
+      letter-spacing:.2px;
     }
 
-    /* Elementos decorativos de fundo */
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at 20% 50%, rgba(56, 189, 248, 0.1) 0%, transparent 50%),
-                  radial-gradient(circle at 80% 80%, rgba(56, 189, 248, 0.05) 0%, transparent 50%);
-      pointer-events: none;
-      z-index: 0;
+    .nav{
+      position:sticky;
+      top:0;
+      z-index:30;
+      backdrop-filter: blur(14px);
+      background:rgba(8,17,32,.72);
+      border-bottom:1px solid var(--line);
+    }
+    .nav-wrap{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      min-height:76px;
+      gap:20px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-weight:800;
+      font-size:20px;
+      letter-spacing:.2px;
+    }
+    .brand-badge{
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg,var(--primary),var(--primary-2));
+      box-shadow:0 12px 28px rgba(66,192,255,.25);
+      font-weight:900;
+      color:white;
+    }
+    .nav-links{
+      display:flex;
+      gap:24px;
+      color:var(--muted);
+      font-size:15px;
+    }
+    .nav-cta{
+      display:flex;
+      gap:12px;
+      align-items:center;
     }
 
-    .signup-wrapper {
-      width: 100%;
-      max-width: 500px;
-      z-index: 1;
-      position: relative;
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:14px 22px;
+      border-radius:16px;
+      border:1px solid transparent;
+      font-weight:800;
+      transition:.25s ease;
+      cursor:pointer;
+    }
+    .btn:hover{transform:translateY(-2px)}
+    .btn-primary{
+      background:linear-gradient(135deg,var(--primary),var(--primary-2));
+      color:#fff;
+      box-shadow:0 16px 30px rgba(80,120,255,.28);
+    }
+    .btn-secondary{
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+      border-color:var(--line);
     }
 
-    .form-container {
-      width: 100%;
-      background: rgba(255, 255, 255, 0.05);
-      padding: 45px;
-      border-radius: 20px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(56, 189, 248, 0.1);
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
+    .hero{
+      padding:72px 0 40px;
+      overflow:hidden;
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.2fr .9fr;
+      gap:34px;
+      align-items:center;
+    }
+    .hero h1{
+      font-size:clamp(40px, 6vw, 72px);
+      line-height:.96;
+      margin:18px 0 20px;
+      letter-spacing:-1.8px;
+    }
+    .hero h1 span{
+      background:linear-gradient(135deg,#fff, #91d9ff 45%, #9d8fff 90%);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+    .hero p{
+      font-size:18px;
+      color:var(--muted);
+      max-width:690px;
+      margin:0 0 28px;
+    }
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px;
+      margin-bottom:26px;
+    }
+    .hero-bullets{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:14px;
+      margin-top:20px;
+    }
+    .mini-card{
+      padding:16px 18px;
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--line);
+      border-radius:18px;
+      color:#dce8fb;
+      font-size:14px;
     }
 
-    .form-header {
-      text-align: center;
-      margin-bottom: 8px;
+    .phone{
+      position:relative;
+      max-width:460px;
+      margin-left:auto;
+      background:linear-gradient(180deg,#132946,#0a1730);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:34px;
+      padding:18px;
+      box-shadow:var(--shadow);
+    }
+    .phone::before,
+    .phone::after{
+      content:"";
+      position:absolute;
+      border-radius:999px;
+      filter:blur(50px);
+      z-index:-1;
+    }
+    .phone::before{
+      width:160px;height:160px;
+      background:rgba(66,192,255,.22);
+      top:-30px;right:-20px;
+    }
+    .phone::after{
+      width:180px;height:180px;
+      background:rgba(123,97,255,.2);
+      left:-20px;bottom:-30px;
+    }
+    .phone-screen{
+      background:linear-gradient(180deg,#10213a 0%, #0f1c31 100%);
+      border-radius:24px;
+      padding:18px;
+      min-height:640px;
+      border:1px solid rgba(255,255,255,.06);
+    }
+    .screen-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:18px;
+      color:#d8e8ff;
+      font-size:14px;
+      opacity:.95;
+    }
+    .story{
+      display:grid;
+      gap:14px;
+    }
+    .story-card{
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.07);
+      padding:16px;
+      border-radius:18px;
+    }
+    .story-card strong{
+      display:block;
+      font-size:15px;
+      margin-bottom:8px;
+    }
+    .story-growth{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:14px;
+    }
+    .pill{
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:13px;
+      font-weight:700;
+      background:rgba(66,192,255,.12);
+      color:#d9f3ff;
+      border:1px solid rgba(66,192,255,.15);
     }
 
-    .form-header h1 {
-      font-size: 2rem;
-      color: #38bdf8;
-      margin-bottom: 8px;
-      font-weight: 700;
+    .stats{
+      margin-top:32px;
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:18px;
+    }
+    .stat{
+      padding:26px 18px;
+      background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.03));
+      border:1px solid var(--line);
+      border-radius:22px;
+      text-align:center;
+    }
+    .stat h3{
+      margin:0 0 8px;
+      font-size:34px;
+      line-height:1;
+    }
+    .stat p{
+      margin:0;
+      color:var(--muted);
+      font-size:14px;
     }
 
-    .form-header p {
-      color: #94a3b8;
-      font-size: 0.95rem;
+    .heading{
+      max-width:760px;
+      margin:0 auto 42px;
+      text-align:center;
+    }
+    .heading h2{
+      margin:16px 0 10px;
+      font-size:clamp(30px, 4vw, 48px);
+      line-height:1.05;
+      letter-spacing:-1.2px;
+    }
+    .heading p{
+      margin:0;
+      color:var(--muted);
+      font-size:17px;
     }
 
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
+    .grid-3{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:20px;
+    }
+    .card{
+      background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.03));
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:28px;
+      box-shadow:var(--shadow);
+    }
+    .card h3{
+      margin:0 0 10px;
+      font-size:26px;
+    }
+    .card p{
+      margin:0 0 18px;
+      color:var(--muted);
+    }
+    .list{
+      list-style:none;
+      padding:0;
+      margin:0;
+      display:grid;
+      gap:10px;
+    }
+    .list li{
+      position:relative;
+      padding-left:24px;
+      color:#d7e2f6;
+    }
+    .list li::before{
+      content:"✓";
+      position:absolute;
+      left:0;
+      top:0;
+      color:var(--accent);
+      font-weight:900;
     }
 
-    .form-row.full {
-      grid-template-columns: 1fr;
+    .highlight{
+      border:1px solid rgba(66,192,255,.25);
+      background:linear-gradient(180deg, rgba(66,192,255,.09), rgba(123,97,255,.08));
     }
 
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
+    .modules{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:20px;
+    }
+    .module{
+      padding:24px;
+      border-radius:22px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+    }
+    .module-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+      margin-bottom:14px;
+    }
+    .module-number{
+      width:48px;
+      height:48px;
+      border-radius:14px;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg,var(--primary),var(--primary-2));
+      font-weight:900;
+      color:#fff;
+      flex-shrink:0;
+    }
+    .module h3{
+      margin:0;
+      font-size:22px;
+    }
+    .module p{
+      margin:0 0 14px;
+      color:var(--muted);
     }
 
-    .form-group label {
-      color: #cbd5e1;
-      font-size: 0.8rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+    .bonus-wrap{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:20px;
+    }
+    .bonus{
+      padding:28px;
+      border-radius:24px;
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+    }
+    .bonus h3{margin:0 0 10px;font-size:24px}
+    .bonus p{margin:0;color:var(--muted)}
+
+    .testimonials{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:20px;
+    }
+    .quote{
+      padding:26px;
+      border-radius:24px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+    }
+    .quote p{
+      margin:0 0 18px;
+      color:#e6eefc;
+      font-size:16px;
+    }
+    .quote strong{display:block}
+    .quote span{color:var(--muted);font-size:14px}
+
+    .pricing{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:24px;
+      align-items:stretch;
+    }
+    .pricing-box{
+      padding:34px;
+      border-radius:28px;
+      background:linear-gradient(180deg, rgba(66,192,255,.08), rgba(123,97,255,.08));
+      border:1px solid rgba(66,192,255,.18);
+      box-shadow:var(--shadow);
+    }
+    .pricing-box h3{
+      margin:0 0 12px;
+      font-size:34px;
+      line-height:1.02;
+    }
+    .price{
+      display:flex;
+      align-items:flex-end;
+      gap:10px;
+      margin:22px 0 14px;
+    }
+    .price strong{
+      font-size:52px;
+      line-height:1;
+      letter-spacing:-1.8px;
+    }
+    .price span{
+      color:var(--muted);
+      font-size:16px;
+      padding-bottom:8px;
+    }
+    .price-note{
+      color:var(--muted);
+      margin-bottom:24px;
     }
 
-    .form-group input,
-    .form-group select {
-      width: 100%;
-      padding: 14px 16px;
-      border-radius: 10px;
-      border: 1px solid rgba(56, 189, 248, 0.2);
-      background: rgba(15, 23, 42, 0.8);
-      color: #f8fafc;
-      font-size: 0.95rem;
-      transition: all 0.3s ease;
+    .faq{
+      display:grid;
+      gap:16px;
+    }
+    details{
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:18px 20px;
+      background:rgba(255,255,255,.04);
+    }
+    summary{
+      cursor:pointer;
+      font-weight:800;
+      list-style:none;
+    }
+    summary::-webkit-details-marker{display:none}
+    details p{
+      margin:14px 0 0;
+      color:var(--muted);
     }
 
-    .form-group input::placeholder,
-    .form-group select option {
-      color: #64748b;
+    .final-cta{
+      text-align:center;
+      padding:42px 24px;
+      border-radius:32px;
+      background:
+        radial-gradient(circle at top, rgba(66,192,255,.18), transparent 40%),
+        linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:var(--shadow);
+    }
+    .final-cta h2{
+      margin:14px 0 12px;
+      font-size:clamp(30px, 4vw, 46px);
+      line-height:1.05;
+      letter-spacing:-1.2px;
+    }
+    .final-cta p{
+      color:var(--muted);
+      max-width:740px;
+      margin:0 auto 24px;
+      font-size:17px;
     }
 
-    .form-group select option {
-      background: #0f172a;
-      color: #f8fafc;
+    .footer{
+      padding:34px 0 50px;
+      color:var(--muted);
+      font-size:14px;
+      text-align:center;
     }
 
-    .form-group input:focus,
-    .form-group select:focus {
-      outline: none;
-      border-color: #38bdf8;
-      background: rgba(15, 23, 42, 1);
-      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
-    }
-
-    .form-group input:hover,
-    .form-group select:hover {
-      border-color: #38bdf8;
-    }
-
-    .password-info {
-      background: rgba(56, 189, 248, 0.05);
-      border: 1px solid rgba(56, 189, 248, 0.15);
-      border-radius: 8px;
-      padding: 12px;
-      font-size: 0.85rem;
-      color: #cbd5e1;
-      display: flex;
-      gap: 8px;
-      align-items: flex-start;
-    }
-
-    .password-info::before {
-      content: 'ℹ';
-      color: #38bdf8;
-      font-weight: bold;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-
-    .submit-btn {
-      width: 100%;
-      padding: 14px;
-      background: linear-gradient(135deg, #38bdf8, #0ea5e9);
-      border: none;
-      border-radius: 10px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      color: #0f172a;
-      font-size: 1rem;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      box-shadow: 0 5px 20px rgba(56, 189, 248, 0.3);
-    }
-
-    .submit-btn:hover {
-      background: linear-gradient(135deg, #0ea5e9, #38bdf8);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(56, 189, 248, 0.4);
-    }
-
-    .submit-btn:active {
-      transform: translateY(0);
-    }
-
-    .submit-btn:disabled {
-      opacity: 0.7;
-      pointer-events: none;
-    }
-
-    .divider {
-      text-align: center;
-      color: #64748b;
-      font-size: 0.85rem;
-      margin: 8px 0;
-    }
-
-    .login-link {
-      text-align: center;
-      color: #cbd5e1;
-      font-size: 0.95rem;
-    }
-
-    .login-link a {
-      color: #38bdf8;
-      text-decoration: none;
-      font-weight: 700;
-      transition: all 0.3s ease;
-      border-bottom: 1px solid transparent;
-    }
-
-    .login-link a:hover {
-      border-bottom-color: #38bdf8;
-      color: #0ea5e9;
-    }
-
-    .spinner {
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      border: 2px solid rgba(248, 250, 252, 0.3);
-      border-top-color: #f8fafc;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    @media (max-width: 768px) {
-      .form-container {
-        padding: 30px;
+    @media (max-width: 1060px){
+      .hero-grid,
+      .pricing,
+      .bonus-wrap{
+        grid-template-columns:1fr;
       }
-
-      .form-row {
-        grid-template-columns: 1fr;
-        gap: 16px;
+      .phone{
+        margin:0 auto;
       }
-
-      .form-header h1 {
-        font-size: 1.6rem;
+      .stats{
+        grid-template-columns:repeat(2,minmax(0,1fr));
       }
-
-      .signup-wrapper {
-        max-width: 100%;
+      .grid-3,
+      .testimonials{
+        grid-template-columns:1fr;
       }
+      .modules{
+        grid-template-columns:1fr;
+      }
+    }
 
-      body {
-        padding: 16px;
+    @media (max-width: 760px){
+      .nav-wrap{
+        flex-wrap:wrap;
+        justify-content:center;
+        padding:14px 0;
+      }
+      .nav-links{
+        flex-wrap:wrap;
+        justify-content:center;
+      }
+      .hero-bullets{
+        grid-template-columns:1fr;
+      }
+      .stats{
+        grid-template-columns:1fr;
+      }
+      .btn{
+        width:100%;
+      }
+      .hero-actions{
+        flex-direction:column;
       }
     }
   </style>
 </head>
-
 <body>
-  <div class="signup-wrapper">
-    <div class="form-container">
-      <div class="form-header">
-        <h1>Crie sua conta</h1>
-        <p>Junte-se à nossa comunidade e comece a aprender</p>
+  <header class="nav">
+    <div class="container nav-wrap">
+      <div class="brand">
+        <div class="brand-badge">IP</div>
+        <div>Influencer Pro</div>
       </div>
 
-      <form id="cadastroForm" onsubmit="cadastrar(event)">
-        <div class="form-row full">
-          <div class="form-group">
-            <label for="nome">Nome Completo *</label>
-            <input 
-              type="text" 
-              id="nome" 
-              placeholder="Seu nome completo"
-              required
-              autocomplete="name"
-            >
-          </div>
-        </div>
+      <nav class="nav-links">
+        <a href="#trilha">Trilha</a>
+        <a href="#modulos">Módulos</a>
+        <a href="#bonus">Bônus</a>
+        <a href="#faq">FAQ</a>
+      </nav>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label for="email">E-mail *</label>
-            <input 
-              type="email" 
-              id="email" 
-              placeholder="seu.email@exemplo.com"
-              required
-              autocomplete="email"
-            >
-          </div>
-
-          <div class="form-group">
-            <label for="celular">Celular *</label>
-            <input 
-              type="tel" 
-              id="celular" 
-              placeholder="(11) 99999-9999"
-              required
-              autocomplete="tel"
-            >
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label for="nascimento">Data de Nascimento *</label>
-            <input 
-              type="date" 
-              id="nascimento"
-              required
-            >
-          </div>
-
-          <div class="form-group">
-            <label for="area">Área de Interesse</label>
-            <select id="area">
-              <option value="">Escolha uma área</option>
-              <option value="Marketing">Marketing</option>
-              <option value="TI">Tecnologia da Informação</option>
-              <option value="Administrativo">Administrativo</option>
-              <option value="Financeiro">Financeiro</option>
-              <option value="Outro">Outro</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="senha">Crie uma Senha *</label>
-          <input 
-            type="password" 
-            id="senha" 
-            placeholder="Senha forte com números e caracteres especiais"
-            required
-            autocomplete="new-password"
-          >
-          <div class="password-info">
-            Use 8+ caracteres, números e símbolos para uma senha mais segura
-          </div>
-        </div>
-
-        <button type="submit" class="submit-btn" id="submitBtn">
-          Criar minha conta
-        </button>
-      </form>
-
-      <div class="divider">ou</div>
-
-      <div class="login-link">
-        Já tem uma conta? <a href="login.html">Faça seu login aqui</a>
+      <div class="nav-cta">
+        <a class="btn btn-secondary" href="Chatbot.html">Tirar dúvidas</a>
+        <a class="btn btn-primary" href="cadastro.html">Quero começar</a>
       </div>
     </div>
-  </div>
+  </header>
 
-<script src="notifications.js"></script>
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="tag">CURSO PARA CRIADORES E INFLUENCIADORES</span>
+          <h1>Saia do <span>zero</span>, conquiste seus primeiros seguidores e transforme seu perfil em uma marca.</h1>
+          <p>
+            Um passo a passo prático para você crescer com estratégia, criar conteúdo com intenção,
+            construir autoridade e sair da estagnação — dos primeiros 1.000 seguidores até os 5.000 e além.
+          </p>
 
-<script>
-  const API_BASE_URL = "https://cursoslove-production.up.railway.app/api";
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="cadastro.html">Quero entrar no curso</a>
+            <a class="btn btn-secondary" href="#trilha">Ver a trilha de crescimento</a>
+          </div>
 
-  const cadastroForm = document.getElementById('cadastroForm');
-  const submitBtn = document.getElementById('submitBtn');
+          <div class="hero-bullets">
+            <div class="mini-card">Conteúdo para quem está começando do zero e quer crescer com consistência.</div>
+            <div class="mini-card">Método simples para sair do improviso e criar um perfil mais estratégico.</div>
+            <div class="mini-card">Aulas focadas em posicionamento, conteúdo, audiência e monetização.</div>
+          </div>
+        </div>
 
-  async function cadastrar(event) {
-    event.preventDefault();
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="screen-top">
+              <strong>Plano de Crescimento</strong>
+              <span>Influencer Pro</span>
+            </div>
 
-    const nome = document.getElementById("nome").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const celular = document.getElementById("celular").value.trim();
-    const nascimento = document.getElementById("nascimento").value;
-    const area = document.getElementById("area").value;
-    const senha = document.getElementById("senha").value.trim();
+            <div class="story">
+              <div class="story-card">
+                <strong>Fase 1 · 0 a 1.000 seguidores</strong>
+                <p>Defina nicho, identidade, proposta de valor e aprenda a produzir conteúdo com mais clareza e constância.</p>
+                <div class="story-growth">
+                  <span class="pill">Nicho</span>
+                  <span class="pill">Posicionamento</span>
+                  <span class="pill">Bio estratégica</span>
+                </div>
+              </div>
 
-    // Validações
-    if (!nome || !email || !celular || !nascimento || !senha) {
-      notify.warning("Por favor, preencha todos os campos obrigatórios");
-      return;
-    }
+              <div class="story-card">
+                <strong>Fase 2 · 1.000 a 5.000 seguidores</strong>
+                <p>Entenda o que gera alcance, retenção e conexão. Comece a ser reconhecido como referência no seu tema.</p>
+                <div class="story-growth">
+                  <span class="pill">Reels</span>
+                  <span class="pill">Storytelling</span>
+                  <span class="pill">Comunidade</span>
+                </div>
+              </div>
 
-    // Validar email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      notify.error("Por favor, insira um e-mail válido");
-      return;
-    }
+              <div class="story-card">
+                <strong>Fase 3 · 5.000 a 10.000+</strong>
+                <p>Escala, autoridade, presença digital e os primeiros caminhos para parcerias e monetização.</p>
+                <div class="story-growth">
+                  <span class="pill">Marca pessoal</span>
+                  <span class="pill">Autoridade</span>
+                  <span class="pill">Monetização</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-    // Validar senha
-    if (senha.length < 6) {
-      notify.warning("A senha deve ter no mínimo 6 caracteres");
-      return;
-    }
+      <div class="container stats">
+        <div class="stat">
+          <h3>+7</h3>
+          <p>Módulos práticos e aplicáveis</p>
+        </div>
+        <div class="stat">
+          <h3>3</h3>
+          <p>Fases de crescimento estruturadas</p>
+        </div>
+        <div class="stat">
+          <h3>100%</h3>
+          <p>Foco em clareza, constância e posicionamento</p>
+        </div>
+        <div class="stat">
+          <h3>1</h3>
+          <p>Método pensado para sair do zero com estratégia</p>
+        </div>
+      </div>
+    </section>
 
-    // Validar idade (deve ter 18+ anos)
-    const dataNasc = new Date(nascimento);
-    const dataAtual = new Date();
-    let idade = dataAtual.getFullYear() - dataNasc.getFullYear();
-    const mesAtual = dataAtual.getMonth();
-    const mesNasc = dataNasc.getMonth();
-    
-    if (mesAtual < mesNasc || (mesAtual === mesNasc && dataAtual.getDate() < dataNasc.getDate())) {
-      idade--;
-    }
+    <section class="section" id="trilha">
+      <div class="container">
+        <div class="heading">
+          <span class="tag">TRILHA DE CRESCIMENTO</span>
+          <h2>Uma jornada prática para você evoluir em cada fase do seu perfil.</h2>
+          <p>
+            O curso foi organizado para te mostrar o que fazer em cada etapa, evitando confusão e acelerando sua evolução de forma inteligente.
+          </p>
+        </div>
 
-    if (idade < 18) {
-      notify.error("Você deve ter no mínimo 18 anos para se cadastrar");
-      return;
-    }
+        <div class="grid-3">
+          <div class="card">
+            <h3>0 → 1.000</h3>
+            <p>O foco aqui é construir base: clareza, identidade e presença.</p>
+            <ul class="list">
+              <li>Escolha de nicho e subnicho</li>
+              <li>Posicionamento e diferencial</li>
+              <li>Bio, nome e perfil otimizados</li>
+              <li>Primeiros formatos de conteúdo</li>
+              <li>Consistência sem depender de perfeição</li>
+            </ul>
+          </div>
 
-    // Desabilitar botão e mostrar loading
-    submitBtn.disabled = true;
-    const originalText = submitBtn.textContent;
-    submitBtn.innerHTML = '<span class="spinner"></span> Criando conta...';
+          <div class="card highlight">
+            <h3>1.000 → 5.000</h3>
+            <p>Agora é hora de crescer com intenção e entender o que realmente atrai audiência.</p>
+            <ul class="list">
+              <li>Reels com mais retenção</li>
+              <li>Estratégia de temas e quadros</li>
+              <li>Storytelling para engajar</li>
+              <li>Criação de comunidade</li>
+              <li>Conteúdo que gera conexão e compartilhamento</li>
+            </ul>
+          </div>
 
-    try {
-      const response = await fetch(`${API_BASE_URL}/users/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          name: nome,
-          email,
-          password: senha,
-          celular,
-          nascimento,
-          area
-        })
-      });
+          <div class="card">
+            <h3>5.000 → 10.000+</h3>
+            <p>Essa fase prepara você para consolidar autoridade e começar a monetizar melhor.</p>
+            <ul class="list">
+              <li>Autoridade e percepção de valor</li>
+              <li>Conteúdo com mais intenção comercial</li>
+              <li>Organização de rotina e calendário</li>
+              <li>Primeiras parcerias e publis</li>
+              <li>Expansão da marca pessoal</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
 
-      const data = await response.json();
+    <section class="section" id="modulos">
+      <div class="container">
+        <div class="heading">
+          <span class="tag">MÓDULOS DO CURSO</span>
+          <h2>O que você vai aprender na prática.</h2>
+          <p>
+            Cada módulo foi pensado para transformar o seu perfil em uma presença digital mais estratégica, atraente e profissional.
+          </p>
+        </div>
 
-      if (!response.ok) {
-        notify.error(data.error || "Erro ao criar a conta. Tente novamente.");
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalText;
-        return;
-      }
+        <div class="modules">
+          <div class="module">
+            <div class="module-top">
+              <div class="module-number">01</div>
+              <h3>Fundamentos do Influencer</h3>
+            </div>
+            <p>Entenda o que realmente faz um criador crescer e ser lembrado.</p>
+            <ul class="list">
+              <li>Mentalidade e posicionamento</li>
+              <li>Como sair do conteúdo aleatório</li>
+              <li>O que define um perfil forte</li>
+            </ul>
+          </div>
 
-      localStorage.setItem("usuario", JSON.stringify({
-        id: data.user.id,
-        nome,
-        email,
-        celular,
-        nascimento,
-        area
-      }));
+          <div class="module">
+            <div class="module-top">
+              <div class="module-number">02</div>
+              <h3>Nicho, Marca e Identidade</h3>
+            </div>
+            <p>Construa uma comunicação mais clara e coerente com o que você quer transmitir.</p>
+            <ul class="list">
+              <li>Escolha de nicho</li>
+              <li>Diferencial competitivo</li>
+              <li>Imagem e comunicação</li>
+            </ul>
+          </div>
 
-      notify.success("Conta criada com sucesso! Redirecionando para login...", 2000);
-      
-      setTimeout(() => {
-        window.location.href = "login.html";
-      }, 500);
+          <div class="module">
+            <div class="module-top">
+              <div class="module-number">03</div>
+              <h3>Conteúdo que Cresce</h3>
+            </div>
+            <p>Aprenda a pensar conteúdo com mais estratégia e menos achismo.</p>
+            <ul class="list">
+              <li>Ideias de conteúdo</li>
+              <li>Reels, stories e posts</li>
+              <li>Ganchos e retenção</li>
+            </ul>
+          </div>
 
-    } catch (error) {
-      console.error("Erro no cadastro:", error);
-      notify.error("Erro ao conectar com o servidor. Tente novamente mais tarde.");
-      submitBtn.disabled = false;
-      submitBtn.textContent = originalText;
-    }
-  }
-</script>
+          <div class="module">
+            <div class="module-top">
+              <div class="module-number">04</div>
+              <h3>Engajamento e Comunidade</h3>
+            </div>
+            <p>Saiba como criar conexão real e fazer as pessoas voltarem ao seu perfil.</p>
+            <ul class="list">
+              <li>Relacionamento com audiência</li>
+              <li>Interação estratégica</li>
+              <li>Comunidade e fidelização</li>
+            </ul>
+          </div>
 
+          <div class="module">
+            <div class="module-top">
+              <div class="module-number">05</div>
+              <h3>Escala e Consistência</h3>
+            </div>
+            <p>Organize sua rotina para manter frequência sem se perder no processo.</p>
+            <ul class="list">
+              <li>Calendário editorial</li>
+              <li>Produção em lote</li>
+              <li>Aproveitamento de conteúdo</li>
+            </ul>
+          </div>
+
+          <div class="module">
+            <div class="module-top">
+              <div class="module-number">06</div>
+              <h3>Autoridade e Monetização</h3>
+            </div>
+            <p>Comece a preparar o perfil para oportunidades e geração de renda.</p>
+            <ul class="list">
+              <li>Marca pessoal</li>
+              <li>Parcerias</li>
+              <li>Produtos e publis</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="bonus">
+      <div class="container">
+        <div class="heading">
+          <span class="tag">BÔNUS ESPECIAIS</span>
+          <h2>Materiais extras para acelerar sua evolução.</h2>
+          <p>
+            Além das aulas, você ainda recebe materiais de apoio para colocar tudo em prática com mais clareza.
+          </p>
+        </div>
+
+        <div class="bonus-wrap">
+          <div class="bonus">
+            <h3>Checklist de perfil estratégico</h3>
+            <p>Uma lista prática para revisar bio, foto, destaques, posicionamento e primeiros ajustes no perfil.</p>
+          </div>
+          <div class="bonus">
+            <h3>Mapa de conteúdo para 30 dias</h3>
+            <p>Um guia para organizar temas, quadros e ideias de conteúdo sem travar na hora de postar.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="heading">
+          <span class="tag">RESULTADOS E TRANSFORMAÇÃO</span>
+          <h2>Mais clareza, mais constância, mais crescimento.</h2>
+          <p>
+            O objetivo não é só ganhar seguidores, mas construir um perfil que represente você e cresça com intenção.
+          </p>
+        </div>
+
+        <div class="testimonials">
+          <div class="quote">
+            <p>“Antes eu postava sem direção. Depois que comecei a estruturar meu conteúdo, meu perfil ficou muito mais coerente e as pessoas passaram a interagir de verdade.”</p>
+            <strong>Ana Beatriz</strong>
+            <span>Criadora iniciante</span>
+          </div>
+          <div class="quote">
+            <p>“Eu não sabia o que fazer para crescer. O que mais me ajudou foi entender posicionamento e narrativa. Parei de postar por impulso.”</p>
+            <strong>Juliana Martins</strong>
+            <span>Influencer de lifestyle</span>
+          </div>
+          <div class="quote">
+            <p>“O curso me ajudou a enxergar meu perfil como marca. Hoje consigo pensar conteúdo com mais estratégia e muito mais confiança.”</p>
+            <strong>Larissa Souza</strong>
+            <span>Criadora de conteúdo</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container pricing">
+        <div class="pricing-box">
+          <span class="tag">ACESSO AO CURSO</span>
+          <h3>Comece agora a construir o seu crescimento como influenciador.</h3>
+
+          <div class="price">
+            <strong>R$ 97</strong>
+            <span>pagamento único</span>
+          </div>
+
+          <div class="price-note">
+            Acesso ao curso + bônus + materiais de apoio para aplicar no seu perfil.
+          </div>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="cadastro.html">Quero garantir minha vaga</a>
+            <a class="btn btn-secondary" href="Chatbot.html">Ainda tenho dúvidas</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Esse curso é para você que:</h3>
+          <ul class="list">
+            <li>Quer começar do zero com mais estratégia</li>
+            <li>Já posta, mas sente que está estagnado</li>
+            <li>Quer sair do conteúdo aleatório</li>
+            <li>Quer crescer sem perder autenticidade</li>
+            <li>Deseja transformar o perfil em marca pessoal</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="container">
+        <div class="heading">
+          <span class="tag">FAQ</span>
+          <h2>Dúvidas frequentes</h2>
+          <p>Respostas rápidas para te ajudar a decidir com mais segurança.</p>
+        </div>
+
+        <div class="faq">
+          <details open>
+            <summary>Esse curso é só para quem já tem seguidores?</summary>
+            <p>Não. Ele foi pensado principalmente para quem está começando do zero ou ainda não conseguiu crescer com consistência.</p>
+          </details>
+
+          <details>
+            <summary>Eu preciso aparecer muito para fazer o curso valer a pena?</summary>
+            <p>Não necessariamente. O curso também ajuda a pensar posicionamento, narrativa e formatos que façam sentido para o seu estilo.</p>
+          </details>
+
+          <details>
+            <summary>Vou aprender a crescer só no Instagram?</summary>
+            <p>O foco principal pode ser aplicado ao Instagram, mas muitos conceitos de posicionamento, conteúdo e autoridade servem para outras plataformas também.</p>
+          </details>
+
+          <details>
+            <summary>O acesso é imediato?</summary>
+            <p>Depois do cadastro e confirmação, você segue para o restante do fluxo do projeto para acessar o conteúdo.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="final-cta">
+          <span class="tag">ÚLTIMA CHAMADA</span>
+          <h2>Seu crescimento não precisa continuar no improviso.</h2>
+          <p>
+            Comece hoje a construir um perfil mais estratégico, mais forte e com muito mais potencial de crescimento. 
+            O primeiro passo é sair do zero com clareza.
+          </p>
+          <div class="hero-actions" style="justify-content:center; margin-bottom:0;">
+            <a class="btn btn-primary" href="cadastro.html">Quero entrar no Influencer Pro</a>
+            <a class="btn btn-secondary" href="Chatbot.html">Falar com o suporte</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      © 2026 Influencer Pro · Todos os direitos reservados.
+    </div>
+  </footer>
 </body>
 </html>
