@@ -261,3 +261,19 @@ p,span,small{
     grid-template-columns:repeat(2, 1fr);
   }
 }
+
+/* Ajuste do título principal da home */
+.hero h1{
+  font-size: clamp(34px, 4.2vw, 54px) !important;
+  line-height: 1.08 !important;
+  letter-spacing: -1.2px !important;
+  max-width: 760px !important;
+}
+
+/* Ajuste para telas menores */
+@media(max-width:760px){
+  .hero h1{
+    font-size: 34px !important;
+    line-height: 1.12 !important;
+  }
+}
