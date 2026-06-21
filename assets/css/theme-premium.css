@@ -729,3 +729,32 @@ p,span,small{
 }
 
 /* FLOATING IMAGE GALLERY END */
+
+/* ajuste fino das imagens soltas */
+.sticker-hero-metrics{
+  display:none !important;
+}
+
+/* figurinha da esquerda do topo */
+.sticker-hero-social{
+  left:28px !important;
+  top:18px !important;
+  width:108px !important;
+  transform:rotate(-8deg) !important;
+}
+
+/* figurinha da trilha */
+.sticker-trilha-content{
+  right:34px !important;
+  top:56px !important;
+  width:118px !important;
+  transform:rotate(6deg) !important;
+}
+
+/* figurinha do megafone */
+.sticker-modulos-megafone{
+  left:26px !important;
+  top:46px !important;
+  width:108px !important;
+  transform:rotate(-8deg) !important;
+}
