@@ -255,6 +255,103 @@
   </style>
   <link rel="stylesheet" href="assets/css/theme-premium.css" />
   <link rel="stylesheet" href="assets/css/pages-premium.css" />
+<!-- IA SIGNUP PREMIUM PATCH START -->
+<style>
+  body{
+    background:
+      radial-gradient(circle at top left, rgba(217,135,125,.14), transparent 28%),
+      radial-gradient(circle at bottom right, rgba(217,135,125,.10), transparent 32%),
+      linear-gradient(180deg, #fbf6f1 0%, #f6eee8 100%) !important;
+  }
+
+  form{
+    width:100%;
+  }
+
+  form label{
+    color:#4d372f !important;
+    font-weight:800 !important;
+    letter-spacing:.02em;
+  }
+
+  form input,
+  form select{
+    border:1px solid #e7d3c8 !important;
+    background:#fffaf7 !important;
+    border-radius:16px !important;
+    color:#5b4338 !important;
+    transition:.2s ease !important;
+  }
+
+  form input:focus,
+  form select:focus{
+    border-color:#d98c7d !important;
+    box-shadow:0 0 0 4px rgba(217,140,125,.14) !important;
+    background:#fff !important;
+    outline:none !important;
+  }
+
+  form input::placeholder{
+    color:#b29a8f !important;
+  }
+
+  .ia-hidden-area-field{
+    display:none !important;
+  }
+
+  .ia-date-full{
+    grid-column:1 / -1 !important;
+    width:100% !important;
+  }
+
+  .ia-date-full input{
+    width:100% !important;
+  }
+
+  .ia-signup-badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:8px 16px;
+    margin:0 auto 16px;
+    border-radius:999px;
+    background:#fff5ef;
+    border:1px solid #ecd7cd;
+    color:#c97969;
+    font-size:13px;
+    font-weight:800;
+    letter-spacing:.02em;
+  }
+
+  h1{
+    color:#4d372f !important;
+    letter-spacing:-.03em;
+  }
+
+  button[type="submit"],
+  .btn-primary,
+  .btn-full{
+    background:linear-gradient(135deg,#d98c7d,#e6a196) !important;
+    color:#fff !important;
+    border:none !important;
+    box-shadow:0 16px 34px rgba(217,140,125,.25) !important;
+    transition:.2s ease !important;
+  }
+
+  button[type="submit"]:hover,
+  .btn-primary:hover,
+  .btn-full:hover{
+    transform:translateY(-1px);
+    box-shadow:0 20px 38px rgba(217,140,125,.30) !important;
+  }
+
+  @media(max-width:768px){
+    .ia-date-full{
+      grid-column:1 / -1 !important;
+    }
+  }
+</style>
+<!-- IA SIGNUP PREMIUM PATCH END -->
 </head>
 
 <body>
@@ -460,8 +557,81 @@
   }
 </script>
 
+<!-- IA SIGNUP PREMIUM SCRIPT START -->
+<script>
+(function(){
+  function normalize(text){
+    return String(text || "")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g,"")
+      .trim();
+  }
+
+  // Coloca um selo bonito acima do título
+  const title = Array.from(document.querySelectorAll("h1,h2"))
+    .find(el => normalize(el.textContent).includes("crie sua conta"));
+
+  if(title && !document.querySelector(".ia-signup-badge")){
+    const badge = document.createElement("div");
+    badge.className = "ia-signup-badge";
+    badge.textContent = "Seu acesso começa aqui";
+    title.parentElement.insertBefore(badge, title);
+  }
+
+  // Oculta a área de interesse, mas mantém o valor no formulário para não quebrar o cadastro
+  const labels = Array.from(document.querySelectorAll("label"));
+
+  labels.forEach(label => {
+    const text = normalize(label.textContent);
+
+    if(text.includes("area de interesse")){
+      const group =
+        label.closest(".form-group") ||
+        label.closest(".input-group") ||
+        label.closest(".field") ||
+        label.parentElement;
+
+      if(group){
+        const select = group.querySelector("select");
+
+        if(select){
+          let option = Array.from(select.options)
+            .find(opt => normalize(opt.textContent).includes("influencer"));
+
+          if(!option){
+            option = new Option("Influencer Academy", "Influencer Academy", true, true);
+            select.add(option);
+          }
+
+          select.value = option.value;
+        }
+
+        group.classList.add("ia-hidden-area-field");
+      }
+    }
+  });
+
+  // Deixa data de nascimento em largura total
+  const dateInput = document.querySelector('input[type="date"]');
+
+  if(dateInput){
+    const dateGroup =
+      dateInput.closest(".form-group") ||
+      dateInput.closest(".input-group") ||
+      dateInput.closest(".field") ||
+      dateInput.parentElement;
+
+    if(dateGroup){
+      dateGroup.classList.add("ia-date-full");
+    }
+  }
+})();
+</script>
+<!-- IA SIGNUP PREMIUM SCRIPT END -->
 </body>
 </html>
+
 
 
 
