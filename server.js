@@ -13,7 +13,7 @@ function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-const port = Number(process.env.POR$ 39,99T || 3000);
+const port = Number(process.env.PORT || 3000);
 
 app.disable("x-powered-by");
 app.use(express.json());
@@ -26,7 +26,7 @@ function cleanEnv(value = "") {
     .trim();
 }
 
-const allowedOrigins = cleanEnv(process.env.FR$ 39,99ONTEND_UR$ 39,99L)
+const allowedOrigins = cleanEnv(process.env.FRONTEND_URL)
   .split(",")
   .map((v) => cleanEnv(v))
   .filter(Boolean);
@@ -45,20 +45,20 @@ if (!origin || origin === "null") return callback(null, true);
         return callback(null, true);
       }
 
-      console.log("COR$ 39,99S bloqueado:", origin);
-      return callback(new Error("Origem não permitida pelo COR$ 39,99S."));
+      console.log("CORS bloqueado:", origin);
+      return callback(new Error("Origem não permitida pelo CORS."));
     },
     methods: ["GET", "POST", "OPTIONS"],
     allowedHeaders: ["Content-Type"]
   })
 );
 
-if (!cleanEnv(process.env.MER$ 39,99CADO_PAGO_ACCESS_TOKEN)) {
-  throw new Error("Defina MER$ 39,99CADO_PAGO_ACCESS_TOKEN no .env");
+if (!cleanEnv(process.env.MERCADO_PAGO_ACCESS_TOKEN)) {
+  throw new Error("Defina MERCADO_PAGO_ACCESS_TOKEN no .env");
 }
 
 const client = new MercadoPagoConfig({
-  accessToken: cleanEnv(process.env.MER$ 39,99CADO_PAGO_ACCESS_TOKEN),
+  accessToken: cleanEnv(process.env.MERCADO_PAGO_ACCESS_TOKEN),
   options: { timeout: 5000 }
 });
 
@@ -70,18 +70,18 @@ const COURSE_PRICE = 39.99;
 const COURSE_FRONTEND_URL = "https://gustavosales2001.github.io/curso_novo/";
 
 let pool;
-let whatsappJobR$ 39,99unning = false;
+let whatsappJobRunning = false;
 
 /* TESTE: envia apenas para um usuário específico */
-//const TEST_ONLY_USER$ 39,99_IDS = [7, 125];
+//const TEST_ONLY_USER_IDS = [7, 125];
 
 function getWhatsAppConfig() {
-  const token = cleanEnv(process.env.WHalgoritmoAPP_TOKEN);
-  const phoneNumberId = cleanEnv(process.env.WHalgoritmoAPP_PHONE_NUMBER$ 39,99_ID);
-  const templateName = cleanEnv(process.env.WHalgoritmoAPP_TEMPLATE_NAME) || "hello_world";
-  const verifyToken = cleanEnv(process.env.WHalgoritmoAPP_VER$ 39,99IFY_TOKEN);
-  const apiVersion = cleanEnv(process.env.WHalgoritmoAPP_API_VER$ 39,99SION) || "v25.0";
-  const templateLanguage = cleanEnv(process.env.WHalgoritmoAPP_TEMPLATE_LANGUAGE) || "en_US";
+  const token = cleanEnv(process.env.WHATSAPP_TOKEN);
+  const phoneNumberId = cleanEnv(process.env.WHATSAPP_PHONE_NUMBER_ID);
+  const templateName = cleanEnv(process.env.WHATSAPP_TEMPLATE_NAME) || "hello_world";
+  const verifyToken = cleanEnv(process.env.WHATSAPP_VERIFY_TOKEN);
+  const apiVersion = cleanEnv(process.env.WHATSAPP_API_VERSION) || "v25.0";
+  const templateLanguage = cleanEnv(process.env.WHATSAPP_TEMPLATE_LANGUAGE) || "en_US";
 
   return {
     token,
@@ -97,7 +97,7 @@ function getWhatsAppMessagesUrl() {
   const { phoneNumberId, apiVersion } = getWhatsAppConfig();
 
   if (!phoneNumberId) {
-    throw new Error("WHalgoritmoAPP_PHONE_NUMBER$ 39,99_ID não configurado.");
+    throw new Error("WHATSAPP_PHONE_NUMBER_ID não configurado.");
   }
 
   return `https://graph.facebook.com/${apiVersion}/${phoneNumberId}/messages`;
@@ -106,9 +106,9 @@ function getWhatsAppMessagesUrl() {
 async function initDB() {
   pool = mysql.createPool({
     host: cleanEnv(process.env.MYSQLHOST),
-    port: Number(cleanEnv(process.env.MYSQLPOR$ 39,99T) || 3306),
-    user: cleanEnv(process.env.MYSQLUSER$ 39,99),
-    password: cleanEnv(process.env.MYSQLPASSWOR$ 39,99D),
+    port: Number(cleanEnv(process.env.MYSQLPORT) || 3306),
+    user: cleanEnv(process.env.MYSQLUSER),
+    password: cleanEnv(process.env.MYSQLPASSWORD),
     database: cleanEnv(process.env.MYSQL_DATABASE),
     waitForConnections: true,
     connectionLimit: 10,
@@ -116,8 +116,8 @@ async function initDB() {
   });
 
   console.log("MYSQLHOST:", cleanEnv(process.env.MYSQLHOST));
-  console.log("MYSQLPOR$ 39,99T:", cleanEnv(process.env.MYSQLPOR$ 39,99T));
-  console.log("MYSQLUSER$ 39,99:", cleanEnv(process.env.MYSQLUSER$ 39,99));
+  console.log("MYSQLPORT:", cleanEnv(process.env.MYSQLPORT));
+  console.log("MYSQLUSER:", cleanEnv(process.env.MYSQLUSER));
   console.log("MYSQL_DATABASE:", cleanEnv(process.env.MYSQL_DATABASE));
 
   await pool.query("SELECT 1");
@@ -132,7 +132,7 @@ function generateAccessToken() {
   return crypto.randomBytes(24).toString("hex");
 }
 
-function normalizePhoneBR$ 39,99(phone = "") {
+function normalizePhoneBR(phone = "") {
   let digits = String(phone).replace(/\D/g, "");
 
   if (!digits) return "";
@@ -149,7 +149,7 @@ function normalizePhoneBR$ 39,99(phone = "") {
 }
 
 function getFinalTestPhone(user) {
-  return normalizePhoneBR$ 39,99(user.celular);
+  return normalizePhoneBR(user.celular);
 }
 
 function getEnvStatus() {
@@ -158,18 +158,18 @@ function getEnvStatus() {
   return {
     node_env: cleanEnv(process.env.NODE_ENV) || null,
     port: port || null,
-    frontend_url_configured: Boolean(cleanEnv(process.env.FR$ 39,99ONTEND_UR$ 39,99L)),
+    frontend_url_configured: Boolean(cleanEnv(process.env.FRONTEND_URL)),
     mysql: {
       host: cleanEnv(process.env.MYSQLHOST) || null,
-      port: cleanEnv(process.env.MYSQLPOR$ 39,99T) || null,
-      user: cleanEnv(process.env.MYSQLUSER$ 39,99) || null,
+      port: cleanEnv(process.env.MYSQLPORT) || null,
+      user: cleanEnv(process.env.MYSQLUSER) || null,
       database: cleanEnv(process.env.MYSQL_DATABASE) || null,
-      password_configured: Boolean(cleanEnv(process.env.MYSQLPASSWOR$ 39,99D))
+      password_configured: Boolean(cleanEnv(process.env.MYSQLPASSWORD))
     },
     mercado_pago: {
-      access_token_configured: Boolean(cleanEnv(process.env.MER$ 39,99CADO_PAGO_ACCESS_TOKEN)),
-      public_key_configured: Boolean(cleanEnv(process.env.MER$ 39,99CADO_PAGO_PUBLIC_KEY)),
-      webhook_base_url: cleanEnv(process.env.WEBHOOK_BASE_UR$ 39,99L) || null
+      access_token_configured: Boolean(cleanEnv(process.env.MERCADO_PAGO_ACCESS_TOKEN)),
+      public_key_configured: Boolean(cleanEnv(process.env.MERCADO_PAGO_PUBLIC_KEY)),
+      webhook_base_url: cleanEnv(process.env.WEBHOOK_BASE_URL) || null
     },
     whatsapp: {
       token_configured: Boolean(wa.token),
@@ -189,145 +189,162 @@ function getEnvStatus() {
 
 async function ensureTables() {
   await pool.query(`
-    CR$ 39,99EATE TABLE IF NOT EXISTS users (
-      id INT NOT NULL AUTO_INCR$ 39,99EMENT PR$ 39,99IMAR$ 39,99Y KEY,
-      name VAR$ 39,99CHAR$ 39,99(150) NULL,
-      email VAR$ 39,99CHAR$ 39,99(191) NOT NULL UNIQUE,
-      password_hash VAR$ 39,99CHAR$ 39,99(255) NULL,
-      celular VAR$ 39,99CHAR$ 39,99(30) NULL,
-      nascimento VAR$ 39,99CHAR$ 39,99(30) NULL,
-      area VAR$ 39,99CHAR$ 39,99(100) NULL,
+    CREATE TABLE IF NOT EXISTS users (
+      id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+      name VARCHAR(150) NULL,
+      email VARCHAR(191) NOT NULL UNIQUE,
+      password_hash VARCHAR(255) NULL,
+      celular VARCHAR(30) NULL,
+      nascimento VARCHAR(30) NULL,
+      area VARCHAR(100) NULL,
       access_released TINYINT(1) NOT NULL DEFAULT 0,
-      created_at TIMESTAMP DEFAULT CUR$ 39,99R$ 39,99ENT_TIMESTAMP,
-      updated_at TIMESTAMP DEFAULT CUR$ 39,99R$ 39,99ENT_TIMESTAMP ON UPDATE CUR$ 39,99R$ 39,99ENT_TIMESTAMP
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     )
   `);
 
-  const [columns] = await pool.query("SHOW COLUMNS FR$ 39,99OM users");
+  const [columns] = await pool.query("SHOW COLUMNS FROM users");
   const columnNames = columns.map(col => col.Field);
 
   if (!columnNames.includes("celular")) {
-    await pool.query("ALTER$ 39,99 TABLE users ADD COLUMN celular VAR$ 39,99CHAR$ 39,99(30) NULL");
+    await pool.query("ALTER TABLE users ADD COLUMN celular VARCHAR(30) NULL");
   }
 
   if (!columnNames.includes("nascimento")) {
-    await pool.query("ALTER$ 39,99 TABLE users ADD COLUMN nascimento VAR$ 39,99CHAR$ 39,99(30) NULL");
+    await pool.query("ALTER TABLE users ADD COLUMN nascimento VARCHAR(30) NULL");
   }
 
   if (!columnNames.includes("area")) {
-    await pool.query("ALTER$ 39,99 TABLE users ADD COLUMN area VAR$ 39,99CHAR$ 39,99(100) NULL");
+    await pool.query("ALTER TABLE users ADD COLUMN area VARCHAR(100) NULL");
   }
 
   if (!columnNames.includes("whatsapp_sent")) {
     await pool.query(`
-      ALTER$ 39,99 TABLE users
+      ALTER TABLE users
       ADD COLUMN whatsapp_sent TINYINT(1) NOT NULL DEFAULT 0
     `);
   }
 
   if (!columnNames.includes("whatsapp_sent_at")) {
     await pool.query(`
-      ALTER$ 39,99 TABLE users
+      ALTER TABLE users
       ADD COLUMN whatsapp_sent_at TIMESTAMP NULL DEFAULT NULL
     `);
   }
 
   if (!columnNames.includes("last_whatsapp_message_at")) {
     await pool.query(`
-      ALTER$ 39,99 TABLE users
+      ALTER TABLE users
       ADD COLUMN last_whatsapp_message_at TIMESTAMP NULL DEFAULT NULL
     `);
   }
 
   if (!columnNames.includes("whatsapp_opt_in")) {
     await pool.query(`
-      ALTER$ 39,99 TABLE users
+      ALTER TABLE users
       ADD COLUMN whatsapp_opt_in TINYINT(1) NOT NULL DEFAULT 1
     `);
   }
 
   if (!columnNames.includes("whatsapp_followup_count")) {
     await pool.query(`
-      ALTER$ 39,99 TABLE users
+      ALTER TABLE users
       ADD COLUMN whatsapp_followup_count TINYINT(1) NOT NULL DEFAULT 0
     `);
   }
 
   if (!columnNames.includes("whatsapp_followup_finished")) {
     await pool.query(`
-      ALTER$ 39,99 TABLE users
+      ALTER TABLE users
       ADD COLUMN whatsapp_followup_finished TINYINT(1) NOT NULL DEFAULT 0
     `);
   }
 
   if (!columnNames.includes("last_customer_message_at")) {
     await pool.query(`
-      ALTER$ 39,99 TABLE users
+      ALTER TABLE users
       ADD COLUMN last_customer_message_at TIMESTAMP NULL DEFAULT NULL
     `);
   }
 
   if (!columnNames.includes("last_bot_message_at")) {
     await pool.query(`
-      ALTER$ 39,99 TABLE users
+      ALTER TABLE users
       ADD COLUMN last_bot_message_at TIMESTAMP NULL DEFAULT NULL
     `);
   }
 
   if (!columnNames.includes("bot_paused")) {
     await pool.query(`
-      ALTER$ 39,99 TABLE users
+      ALTER TABLE users
       ADD COLUMN bot_paused TINYINT(1) NOT NULL DEFAULT 0
     `);
   }
 
   await pool.query(`
-    CR$ 39,99EATE TABLE IF NOT EXISTS payments (
-      id INT NOT NULL AUTO_INCR$ 39,99EMENT PR$ 39,99IMAR$ 39,99Y KEY,
+    CREATE TABLE IF NOT EXISTS payments (
+      id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
       user_id INT NULL,
-      payment_id VAR$ 39,99CHAR$ 39,99(100) NOT NULL UNIQUE,
-      payment_type VAR$ 39,99CHAR$ 39,99(30) NOT NULL,
-      status VAR$ 39,99CHAR$ 39,99(50) NOT NULL,
-      status_detail VAR$ 39,99CHAR$ 39,99(100) NULL,
+      payment_id VARCHAR(100) NOT NULL UNIQUE,
+      payment_type VARCHAR(30) NOT NULL,
+      status VARCHAR(50) NOT NULL,
+      status_detail VARCHAR(100) NULL,
       transaction_amount DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-      description VAR$ 39,99CHAR$ 39,99(255) NULL,
-      payer_email VAR$ 39,99CHAR$ 39,99(191) NOT NULL,
-      external_reference VAR$ 39,99CHAR$ 39,99(100) NULL,
-      access_token VAR$ 39,99CHAR$ 39,99(100) NULL,
+      description VARCHAR(255) NULL,
+      payer_email VARCHAR(191) NOT NULL,
+      external_reference VARCHAR(100) NULL,
+      access_token VARCHAR(100) NULL,
       raw_response JSON NULL,
-      created_at TIMESTAMP DEFAULT CUR$ 39,99R$ 39,99ENT_TIMESTAMP,
-      updated_at TIMESTAMP DEFAULT CUR$ 39,99R$ 39,99ENT_TIMESTAMP ON UPDATE CUR$ 39,99R$ 39,99ENT_TIMESTAMP,
-      CONSTR$ 39,99AINT fk_payments_user
-        FOR$ 39,99EIGN KEY (user_id) R$ 39,99EFER$ 39,99ENCES users(id)
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      CONSTRAINT fk_payments_user
+        FOREIGN KEY (user_id) REFERENCES users(id)
         ON DELETE SET NULL
     )
   `);
 
   await pool.query(`
-    CR$ 39,99EATE TABLE IF NOT EXISTS payment_events (
-      id INT NOT NULL AUTO_INCR$ 39,99EMENT PR$ 39,99IMAR$ 39,99Y KEY,
-      payment_id VAR$ 39,99CHAR$ 39,99(100) NULL,
-      event_type VAR$ 39,99CHAR$ 39,99(100) NULL,
-      action_name VAR$ 39,99CHAR$ 39,99(100) NULL,
+    CREATE TABLE IF NOT EXISTS payment_events (
+      id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+      payment_id VARCHAR(100) NULL,
+      event_type VARCHAR(100) NULL,
+      action_name VARCHAR(100) NULL,
       raw_payload JSON NOT NULL,
-      created_at TIMESTAMP DEFAULT CUR$ 39,99R$ 39,99ENT_TIMESTAMP
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
   `);
 
   await pool.query(`
-    CR$ 39,99EATE TABLE IF NOT EXISTS whatsapp_messages (
-      id INT NOT NULL AUTO_INCR$ 39,99EMENT PR$ 39,99IMAR$ 39,99Y KEY,
+    CREATE TABLE IF NOT EXISTS whatsapp_messages (
+      id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
       user_id INT NULL,
-      celular VAR$ 39,99CHAR$ 39,99(30) NOT NULL,
+      celular VARCHAR(30) NOT NULL,
       direction ENUM('in','out') NOT NULL,
       message_text TEXT NULL,
-      wa_message_id VAR$ 39,99CHAR$ 39,99(120) NULL,
+      wa_message_id VARCHAR(120) NULL,
       raw_payload JSON NULL,
-      created_at TIMESTAMP DEFAULT CUR$ 39,99R$ 39,99ENT_TIMESTAMP,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       INDEX idx_celular (celular),
-      CONSTR$ 39,99AINT fk_whatsapp_user
-        FOR$ 39,99EIGN KEY (user_id) R$ 39,99EFER$ 39,99ENCES users(id)
+      CONSTRAINT fk_whatsapp_user
+        FOREIGN KEY (user_id) REFERENCES users(id)
         ON DELETE SET NULL
+    )
+  `);
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS app_logs (
+      id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+      level VARCHAR(20) NOT NULL DEFAULT 'info',
+      source VARCHAR(80) NULL,
+      event_name VARCHAR(120) NULL,
+      message TEXT NULL,
+      user_id INT NULL,
+      celular VARCHAR(30) NULL,
+      email VARCHAR(191) NULL,
+      metadata JSON NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      INDEX idx_app_logs_level (level),
+      INDEX idx_app_logs_event_name (event_name),
+      INDEX idx_app_logs_created_at (created_at)
     )
   `);
 }
@@ -335,8 +352,8 @@ async function ensureTables() {
 async function findOrCreateUser({ name, email }) {
   const [rows] = await pool.query(
     `SELECT id, email, name, celular, nascimento, area, access_released
-     FR$ 39,99OM users
-     WHER$ 39,99E email = ?
+     FROM users
+     WHERE email = ?
      LIMIT 1`,
     [email]
   );
@@ -346,7 +363,7 @@ async function findOrCreateUser({ name, email }) {
   }
 
   const [result] = await pool.query(
-    `INSER$ 39,99T INTO users (name, email)
+    `INSERT INTO users (name, email)
      VALUES (?, ?)`,
     [name || null, email]
   );
@@ -371,14 +388,14 @@ async function savePayment({
   amount,
   description,
   payerEmail,
-  externalR$ 39,99eference,
-  rawR$ 39,99esponse
+  externalReference,
+  rawResponse
 }) {
   const accessToken = generateAccessToken();
 
   await pool.query(
     `
-    INSER$ 39,99T INTO payments (
+    INSERT INTO payments (
       user_id,
       payment_id,
       payment_type,
@@ -399,7 +416,7 @@ async function savePayment({
       payer_email = VALUES(payer_email),
       external_reference = VALUES(external_reference),
       raw_response = VALUES(raw_response),
-      updated_at = CUR$ 39,99R$ 39,99ENT_TIMESTAMP
+      updated_at = CURRENT_TIMESTAMP
     `,
     [
       userId || null,
@@ -410,21 +427,21 @@ async function savePayment({
       Number(amount || 0),
       description || null,
       payerEmail,
-      externalR$ 39,99eference || null,
+      externalReference || null,
       accessToken,
-      JSON.stringify(rawR$ 39,99esponse || {})
+      JSON.stringify(rawResponse || {})
     ]
   );
 
   return accessToken;
 }
 
-async function markAccessR$ 39,99eleased(paymentId, email) {
+async function markAccessReleased(paymentId, email) {
   await pool.query(
     `
     UPDATE payments
-    SET status = 'approved', updated_at = CUR$ 39,99R$ 39,99ENT_TIMESTAMP
-    WHER$ 39,99E payment_id = ?
+    SET status = 'approved', updated_at = CURRENT_TIMESTAMP
+    WHERE payment_id = ?
     `,
     [String(paymentId)]
   );
@@ -433,8 +450,8 @@ async function markAccessR$ 39,99eleased(paymentId, email) {
     await pool.query(
       `
       UPDATE users
-      SET access_released = 1, updated_at = CUR$ 39,99R$ 39,99ENT_TIMESTAMP
-      WHER$ 39,99E email = ?
+      SET access_released = 1, updated_at = CURRENT_TIMESTAMP
+      WHERE email = ?
       `,
       [email]
     );
@@ -451,7 +468,7 @@ async function saveWhatsappMessage({
 }) {
   await pool.query(
     `
-    INSER$ 39,99T INTO whatsapp_messages (
+    INSERT INTO whatsapp_messages (
       user_id, celular, direction, message_text, wa_message_id, raw_payload
     ) VALUES (?, ?, ?, ?, ?, ?)
     `,
@@ -464,6 +481,42 @@ async function saveWhatsappMessage({
       JSON.stringify(rawPayload || {})
     ]
   );
+}
+
+
+async function saveAppLog({
+  level = "info",
+  source = null,
+  eventName = null,
+  message = "",
+  userId = null,
+  celular = null,
+  email = null,
+  metadata = {}
+} = {}) {
+  try {
+    if (!pool) return;
+
+    await pool.query(
+      `
+      INSERT INTO app_logs (
+        level, source, event_name, message, user_id, celular, email, metadata
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      `,
+      [
+        level,
+        source,
+        eventName,
+        message,
+        userId,
+        celular,
+        email,
+        JSON.stringify(metadata || {})
+      ]
+    );
+  } catch (error) {
+    console.error("Erro ao salvar app_logs:", error.message);
+  }
 }
 
 async function sendWhatsAppText(to, text) {
@@ -526,16 +579,16 @@ async function sendWhatsAppTemplate(to, templateName = "hello_world") {
 }
 
 async function getUserByPhone(celular) {
-  const normalized = normalizePhoneBR$ 39,99(celular);
+  const normalized = normalizePhoneBR(celular);
 
   const [rows] = await pool.query(
     `
     SELECT id, name, email, celular, access_released, whatsapp_sent, bot_paused
-    FR$ 39,99OM users
-    WHER$ 39,99E 
-  R$ 39,99EPLACE(R$ 39,99EPLACE(R$ 39,99EPLACE(R$ 39,99EPLACE(R$ 39,99EPLACE(celular, ' ', ''), '-', ''), '(', ''), ')', ''), '+', '') LIKE ?
-  OR$ 39,99 R$ 39,99EPLACE(R$ 39,99EPLACE(R$ 39,99EPLACE(R$ 39,99EPLACE(R$ 39,99EPLACE(celular, ' ', ''), '-', ''), '(', ''), ')', ''), '+', '') LIKE ?
-  OR$ 39,99 R$ 39,99EPLACE(R$ 39,99EPLACE(R$ 39,99EPLACE(R$ 39,99EPLACE(R$ 39,99EPLACE(celular, ' ', ''), '-', ''), '(', ''), ')', ''), '+', '') LIKE ?
+    FROM users
+    WHERE 
+  REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(celular, ' ', ''), '-', ''), '(', ''), ')', ''), '+', '') LIKE ?
+  OR REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(celular, ' ', ''), '-', ''), '(', ''), ')', ''), '+', '') LIKE ?
+  OR REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(celular, ' ', ''), '-', ''), '(', ''), ')', ''), '+', '') LIKE ?
     LIMIT 1
     `,
     [
@@ -552,15 +605,15 @@ async function getPendingWhatsappUsers() {
   const [rows] = await pool.query(
     `
     SELECT id, name, celular
-      FR$ 39,99OM users
-      WHER$ 39,99E id >= 100
+      FROM users
+      WHERE id >= 100
       AND access_released = 0
       AND whatsapp_sent = 0
       AND whatsapp_opt_in = 1
       AND bot_paused = 0
       AND celular IS NOT NULL
       AND celular <> ''
-      AND created_at <= NOW() - INTER$ 39,99VAL 20 MINUTE
+      AND created_at <= NOW() - INTERVAL 20 MINUTE
     `
   );
 
@@ -577,14 +630,14 @@ async function markWhatsappSent(userId) {
         last_bot_message_at = NOW(),
         whatsapp_followup_count = 0,
         whatsapp_followup_finished = 0,
-        updated_at = CUR$ 39,99R$ 39,99ENT_TIMESTAMP
-    WHER$ 39,99E id = ?
+        updated_at = CURRENT_TIMESTAMP
+    WHERE id = ?
     `,
     [userId]
   );
 }
 
-// R$ 39,99astreador de contexto de conversa por usuário
+// Rastreador de contexto de conversa por usuário
 const conversationContext = new Map();
 
 function getConversationStage(userId) {
@@ -606,7 +659,7 @@ function updateConversationStage(userId, theme, stage) {
   });
 }
 
-function buildCustomerR$ 39,99eply(text = "", user = null) {
+function buildCustomerReply(text = "", user = null) {
   const rawMsg = String(text || "");
   const msg = normalizeText(rawMsg);
   const userId = user?.id || "anonymous";
@@ -646,7 +699,7 @@ function buildCustomerR$ 39,99eply(text = "", user = null) {
 
     const responses = {
       // Fluxo: Não recebe retorno
-      noR$ 39,99etorno: [
+      noRetorno: [
         `${saudacao}Entendo. Isso é uma das situações mais comuns que vejo.
 
 Muitas pessoas têm experiência, mas o perfil não passa bem pelos algoritmo e métricas que as empresas usam.`,
@@ -778,10 +831,10 @@ Deixa eu direcionar para a pessoa certa resolver isso mais rápido.`,
   }
 
   // =====================================================
-  // FLUXO PR$ 39,99OGR$ 39,99ESSIVO PR$ 39,99INCIPAL
+  // FLUXO PROGRESSIVO PRINCIPAL
   // =====================================================
   if (hasAny(msg, ["nao chamam", "não chamam", "nao tenho retorno", "não tenho retorno", "ninguem chama"])) {
-    const response = handleThemeProgression("noR$ 39,99etorno", ["nao chamam", "não chamam", "nao tenho retorno", "não tenho retorno"]);
+    const response = handleThemeProgression("noRetorno", ["nao chamam", "não chamam", "nao tenho retorno", "não tenho retorno"]);
     if (response) return response;
   }
 
@@ -811,7 +864,7 @@ Deixa eu direcionar para a pessoa certa resolver isso mais rápido.`,
   }
 
   // =====================================================
-  // 1. SAUDAÇÃO / INÍCIO DE CONVER$ 39,99SA
+  // 1. SAUDAÇÃO / INÍCIO DE CONVERSA
   // =====================================================
   if (hasAny(msg, ["oi", "ola", "olá", "bom dia", "boa tarde", "boa noite", "eai", "e aí", "opa"])) {
     return `${saudacao}Oi! Tudo bem?
@@ -820,7 +873,7 @@ Antes de falar sobre o curso, me conta: você está com dúvida sobre perfil, va
   }
 
   // =====================================================
-  // 2. TUDO BEM / QUEBR$ 39,99A DE GELO
+  // 2. TUDO BEM / QUEBRA DE GELO
   // =====================================================
   if (hasAny(msg, ["tudo bem", "td bem", "como vai", "como voce esta", "como você está"])) {
     return `Tudo certo por aqui.
@@ -829,14 +882,14 @@ E você, como posso ajudar hoje?`;
   }
 
   // =====================================================
-  // 3. DÚVIDA GER$ 39,99AL
+  // 3. DÚVIDA GERAL
   // =====================================================
   if (hasAny(msg, ["tenho duvida", "tenho dúvida", "duvida", "dúvida", "nao entendi", "não entendi", "pode explicar", "explica melhor"])) {
     return `${saudacao}Claro. Me conta sua dúvida específica sobre perfil, vaga ou crescimento digital e eu respondo direto.`;
   }
 
   // =====================================================
-  // 4. SOBR$ 39,99E O CUR$ 39,99SO / COMO FUNCIONA
+  // 4. SOBRE O CURSO / COMO FUNCIONA
   // =====================================================
   if (hasAny(msg, ["como funciona", "funciona", "me explica", "saber mais", "mais informacoes", "mais informações", "sobre o curso", "curso"])) {
     return `O curso é voltado para quem precisa melhorar sua presença digital para passar melhor por algoritmo e métricas e chegar nas oportunidades.
@@ -845,7 +898,7 @@ Antes de eu te mandar mais detalhes, me diz: qual parte você quer entender melh
   }
 
   // =====================================================
-  // 5. IA / algoritmo / GUPY / R$ 39,99OBÔ
+  // 5. IA / algoritmo / GUPY / ROBÔ
   // =====================================================
   if (hasAny(msg, ["ia", "ats", "gupy", "robo", "robô", "filtro", "sistema automatico", "sistema automático", "triagem automatica", "triagem automática"])) {
     return `Boa pergunta.
@@ -867,21 +920,21 @@ O curso te ensina a ajustar isso de forma prática, sem inventar informação e 
   }
 
   // =====================================================
-  // 6. PR$ 39,99EÇO / VALOR$ 39,99 / CUSTO
+  // 6. PREÇO / VALOR / CUSTO
   // =====================================================
   if (hasAny(msg, ["preco", "preço", "valor", "quanto custa", "custa", "custo", "investimento"])) {
     return `Para falar de preço, primeiro me conta: qual o seu maior desafio hoje? É o perfil, a falta de retorno ou o entendimento de como as vagas filtram os candidatos?`;
   }
 
   // =====================================================
-  // 7. LINK / ACESSAR$ 39,99 / COMPR$ 39,99AR$ 39,99
+  // 7. LINK / ACESSAR / COMPRAR
   // =====================================================
   if (hasAny(msg, ["link", "acessar", "comprar", "quero comprar", "onde compro", "onde acesso", "pagina", "página"])) {
     return `Entendi. Antes de enviar o link, me conta qual a sua maior dúvida: perfil, crescimento digital ou conteúdo do curso? Assim eu posso te responder melhor.`;
   }
 
   // =====================================================
-  // 8. DESCONTO / PR$ 39,99OMOÇÃO / CUPOM
+  // 8. DESCONTO / PROMOÇÃO / CUPOM
   // =====================================================
   if (hasAny(msg, ["desconto", "promocao", "promoção", "cupom", "oferta", "condicao especial", "condição especial"])) {
     return `Tem sim uma condição especial para quem está conversando por aqui.
@@ -895,14 +948,14 @@ Assim posso te orientar melhor e te mostrar o caminho certo para aproveitar o de
   }
 
   // =====================================================
-  // 9. PAGAMENTO / PIX / CAR$ 39,99TÃO / BOLETO
+  // 9. PAGAMENTO / PIX / CARTÃO / BOLETO
   // =====================================================
   if (hasAny(msg, ["pagamento", "pagar", "pix", "cartao", "cartão", "boleto", "mercado pago", "credito", "crédito", "debito", "débito"])) {
     return `O pagamento é feito na página do curso. Se precisar, posso te orientar sobre como chegar lá ou indicar quem pode te ajudar se aparecer algum erro.`;
   }
 
   // =====================================================
-  // 10. ER$ 39,99R$ 39,99O / BUG / PR$ 39,99OBLEMA TÉCNICO
+  // 10. ERRO / BUG / PROBLEMA TÉCNICO
   // =====================================================
   if (hasAny(msg, ["erro", "bug", "travou", "nao abre", "não abre", "pagina nao abre", "página não abre", "deu problema", "problema tecnico", "problema técnico", "falha", "carregando", "tela branca", "nao carrega", "não carrega"])) {
     return `Parece ser um problema técnico. O Gustavo pode verificar o site, login, acesso ou pagamento.
@@ -911,7 +964,7 @@ Se puder, mande um print da tela e explique em qual parte travou.`;
   }
 
   // =====================================================
-  // 11. LOGIN / SENHA / ACESSO / CADASTR$ 39,99O
+  // 11. LOGIN / SENHA / ACESSO / CADASTRO
   // =====================================================
   if (hasAny(msg, ["login", "senha", "cadastro", "entrar", "acesso", "area do aluno", "área do aluno", "nao consigo acessar", "não consigo acessar", "liberar acesso"])) {
     return `Para acessar, entre no site do curso e use o seu login. Se ainda não tem conta, cadastre-se normalmente.
@@ -934,7 +987,7 @@ O objetivo é não só deixar o perfil mais bonito, mas mais eficiente.`;
   }
 
   // =====================================================
-  // 13. PR$ 39,99IMEIR$ 39,99O EMPR$ 39,99EGO / SEM EXPER$ 39,99IÊNCIA
+  // 13. PRIMEIRO EMPREGO / SEM EXPERIÊNCIA
   // =====================================================
   if (hasAny(msg, ["primeiro emprego", "sem experiencia", "sem experiência", "nunca trabalhei", "nao tenho experiencia", "não tenho experiência", "sem registro", "sem carteira assinada"])) {
     return `Mesmo sem experiência formal, dá para montar um perfil com mais força.
@@ -945,7 +998,7 @@ Se quiser, posso te dizer o que vale mais destaque no seu caso.`;
   }
 
   // =====================================================
-  // 14. ESTÁGIO / JOVEM APR$ 39,99ENDIZ / FACULDADE
+  // 14. ESTÁGIO / JOVEM APRENDIZ / FACULDADE
   // =====================================================
   if (hasAny(msg, ["estagio", "estágio", "jovem aprendiz", "aprendiz", "faculdade", "universidade", "estudante"])) {
     return `Serve muito para estágio e jovem aprendiz.
@@ -966,7 +1019,7 @@ O curso te ajuda a transformar isso em um perfil mais apresentável e mais alinh
   }
 
   // =====================================================
-  // 15. JÁ TENHO CUR$ 39,99R$ 39,99ÍCULO PR$ 39,99ONTO
+  // 15. JÁ TENHO CURRÍCULO PRONTO
   // =====================================================
   if (hasAny(msg, ["ja tenho perfil", "já tenho perfil", "perfil pronto", "perfil pronto", "meu perfil", "meu perfil", "ja fiz perfil", "já fiz perfil"])) {
     return `Se já tem perfil, o próximo passo é revisar com cuidado.
@@ -975,7 +1028,7 @@ Posso te dizer quais pontos costumam atrapalhar mais: palavras-chave, descriçã
   }
 
   // =====================================================
-  // 16. NÃO R$ 39,99ECEBE R$ 39,99ETOR$ 39,99NO / NÃO CHAMAM
+  // 16. NÃO RECEBE RETORNO / NÃO CHAMAM
   // =====================================================
   if (hasAny(msg, ["nao chamam", "não chamam", "nao tenho retorno", "não tenho retorno", "mando perfil", "mando perfil", "envio perfil", "envio perfil", "ninguem chama", "ninguém chama", "nunca me chamam"])) {
     return `Isso é comum e não significa que você não tem valor.
@@ -986,7 +1039,7 @@ Me conta: como você tem enviado o perfil?`;
   }
 
   // =====================================================
-  // 17. MUDANÇA DE ÁR$ 39,99EA / TR$ 39,99ANSIÇÃO
+  // 17. MUDANÇA DE ÁREA / TRANSIÇÃO
   // =====================================================
   if (hasAny(msg, ["mudar de area", "mudar de área", "transicao", "transição", "trocar de area", "trocar de área", "nova area", "nova área", "migrar de area", "migrar de área"])) {
     return `Serve muito para transição de área.
@@ -1006,7 +1059,7 @@ Se o perfil ficar focado só na área antiga, o recrutador pode não entender su
   }
 
   // =====================================================
-  // 18. TEMPO / DUR$ 39,99AÇÃO
+  // 18. TEMPO / DURAÇÃO
   // =====================================================
   if (hasAny(msg, ["quanto tempo", "duracao", "duração", "demora", "rapido", "rápido", "tempo de curso", "em quanto tempo"])) {
     return `O curso foi pensado para ser direto, prático e aplicável.
@@ -1017,7 +1070,7 @@ Você pode assistir no seu ritmo e já começar a melhorar seu perfil conforme a
   }
 
   // =====================================================
-  // 19. CELULAR$ 39,99 / COMPUTADOR$ 39,99
+  // 19. CELULAR / COMPUTADOR
   // =====================================================
   if (hasAny(msg, ["celular", "computador", "notebook", "pc", "tablet", "assistir pelo celular", "da pra ver no celular", "dá pra ver no celular"])) {
     return `Você pode acessar pelo celular ou computador.
@@ -1028,7 +1081,7 @@ Mas para editar o perfil com mais conforto, geralmente computador ou notebook fa
   }
 
   // =====================================================
-  // 20. CER$ 39,99TIFICADO
+  // 20. CERTIFICADO
   // =====================================================
   if (hasAny(msg, ["certificado", "certificacao", "certificação", "tem certificado", "recebo certificado"])) {
     return `A pergunta faz sentido.
@@ -1039,7 +1092,7 @@ Se quiser, posso te dizer como confirmar as informações sobre certificado com 
   }
 
   // =====================================================
-  // 21. CONFIANÇA / SEGUR$ 39,99ANÇA / GOLPE
+  // 21. CONFIANÇA / SEGURANÇA / GOLPE
   // =====================================================
   if (hasAny(msg, ["confiavel", "confiável", "golpe", "seguro", "seguranca", "segurança", "e seguro", "é seguro", "posso confiar"])) {
     return `Entendo sua preocupação.
@@ -1050,7 +1103,7 @@ Se quiser, posso te explicar como identificar a página oficial e o que conferir
   }
 
   // =====================================================
-  // 22. CAR$ 39,99O / SEM DINHEIR$ 39,99O / OBJEÇÃO FINANCEIR$ 39,99A
+  // 22. CARO / SEM DINHEIRO / OBJEÇÃO FINANCEIRA
   // =====================================================
   if (hasAny(msg, ["caro", "sem dinheiro", "nao tenho dinheiro", "não tenho dinheiro", "to sem", "tô sem", "depois eu pago", "agora nao posso", "agora não posso"])) {
     return `Eu entendo de verdade.
@@ -1065,7 +1118,7 @@ Se quiser, eu posso te explicar melhor o que o curso entrega antes de você deci
   }
 
   // =====================================================
-  // 23. VOU PENSAR$ 39,99 / DEPOIS
+  // 23. VOU PENSAR / DEPOIS
   // =====================================================
   if (hasAny(msg, ["vou pensar", "depois", "mais tarde", "outro dia", "ver depois", "qualquer coisa", "vou ver", "preciso pensar"])) {
     return `Claro, sem problema 😊
@@ -1091,7 +1144,7 @@ Se hoje você envia perfil e não recebe retorno, ajustar a estrutura, as palavr
   }
 
   // =====================================================
-  // 25. QUER$ 39,99 QUE FAÇA O CUR$ 39,99R$ 39,99ÍCULO
+  // 25. QUER QUE FAÇA O CURRÍCULO
   // =====================================================
   if (hasAny(msg, ["faz meu perfil", "faz meu perfil", "monta pra mim", "voce monta", "você monta", "fazer pra mim", "quero que faca", "quero que faça"])) {
     return `Entendi 😊
@@ -1121,7 +1174,7 @@ O ideal é os dois estarem alinhados:
   }
 
   // =====================================================
-  // 27. CANVA / WOR$ 39,99D / PDF
+  // 27. CANVA / WORD / PDF
   // =====================================================
   if (hasAny(msg, ["canva", "word", "pdf", "modelo", "template", "perfil bonito", "perfil bonito"])) {
     return `Um perfil bonito ajuda, mas não é o mais importante.
@@ -1134,7 +1187,7 @@ O curso te mostra como pensar na estrutura antes da aparência.`;
   }
 
   // =====================================================
-  // 28. CUR$ 39,99R$ 39,99ÍCULO EM PDF OU WOR$ 39,99D
+  // 28. CURRÍCULO EM PDF OU WORD
   // =====================================================
   if (hasAny(msg, ["pdf ou word", "word ou pdf", "formato", "qual formato", "enviar em pdf", "enviar em word"])) {
     return `Na maioria dos casos, PDF é uma boa opção porque preserva o formato.
@@ -1145,7 +1198,7 @@ Evite excesso de imagens, tabelas confusas, colunas muito complexas ou elementos
   }
 
   // =====================================================
-  // 29. PALAVR$ 39,99AS-CHAVE
+  // 29. PALAVRAS-CHAVE
   // =====================================================
   if (hasAny(msg, ["palavra chave", "palavras chave", "keywords", "termos da vaga"])) {
     return `Palavras-chave são uma parte muito importante do perfil.
@@ -1158,7 +1211,7 @@ O curso ensina como usar palavras-chave sem parecer forçado e sem inventar expe
   }
 
   // =====================================================
-  // 30. OBJETIVO PR$ 39,99OFISSIONAL
+  // 30. OBJETIVO PROFISSIONAL
   // =====================================================
   if (hasAny(msg, ["objetivo profissional", "objetivo no perfil", "objetivo no perfil", "o que colocar no objetivo"])) {
     return `O objetivo profissional precisa ser claro e alinhado com a vaga.
@@ -1174,7 +1227,7 @@ O curso ajuda a ajustar esse tipo de detalhe.`;
   }
 
   // =====================================================
-  // 31. EXPER$ 39,99IÊNCIAS
+  // 31. EXPERIÊNCIAS
   // =====================================================
   if (hasAny(msg, ["experiencia profissional", "experiência profissional", "como colocar experiencia", "como colocar experiência", "minhas experiencias", "minhas experiências"])) {
     return `A experiência precisa mostrar mais do que apenas o cargo.
@@ -1218,7 +1271,7 @@ O curso te ajuda a escolher e posicionar melhor essas informações.`;
   }
 
   // =====================================================
-  // 33. R$ 39,99ECOLOCAÇÃO PR$ 39,99OFISSIONAL
+  // 33. RECOLOCAÇÃO PROFISSIONAL
   // =====================================================
   if (hasAny(msg, ["recolocacao", "recolocação", "desempregado", "desempregada", "procurando emprego", "buscando emprego"])) {
     return `Entendo.
@@ -1237,7 +1290,7 @@ Se o perfil estiver muito genérico, pode acabar passando despercebido.`;
   }
 
   // =====================================================
-  // 34. MUITA EXPER$ 39,99IÊNCIA / CUR$ 39,99R$ 39,99ÍCULO LONGO
+  // 34. MUITA EXPERIÊNCIA / CURRÍCULO LONGO
   // =====================================================
   if (hasAny(msg, ["muita experiencia", "muita experiência", "perfil longo", "perfil longo", "muitas empresas", "muitos empregos"])) {
     return `Quando a pessoa tem muita experiência, o desafio é organizar sem deixar o perfil pesado.
@@ -1252,7 +1305,7 @@ O curso te ajuda a escolher o que valorizar e o que simplificar.`;
   }
 
   // =====================================================
-  // 35. POUCA EXPER$ 39,99IÊNCIA
+  // 35. POUCA EXPERIÊNCIA
   // =====================================================
   if (hasAny(msg, ["pouca experiencia", "pouca experiência", "tenho pouca experiencia", "tenho pouca experiência"])) {
     return `Com pouca experiência, o perfil precisa valorizar melhor o que você já tem.
@@ -1271,7 +1324,7 @@ O segredo é não deixar o perfil vazio nem exagerar.`;
   }
 
   // =====================================================
-  // 36. CUR$ 39,99R$ 39,99ÍCULO PAR$ 39,99A VAGA ESPECÍFICA
+  // 36. CURRÍCULO PARA VAGA ESPECÍFICA
   // =====================================================
   if (hasAny(msg, ["vaga especifica", "vaga específica", "adaptar perfil", "adaptar perfil", "perfil para vaga", "perfil para vaga"])) {
     return `Esse é um ponto muito importante.
@@ -1292,7 +1345,7 @@ O curso ensina exatamente essa lógica.`;
   }
 
   // =====================================================
-  // 37. ÁR$ 39,99EA ADMINISTR$ 39,99ATIVA
+  // 37. ÁREA ADMINISTRATIVA
   // =====================================================
   if (hasAny(msg, ["administrativo", "administrativa", "auxiliar administrativo", "assistente administrativo"])) {
     return `Para área administrativa, o perfil precisa destacar organização, atenção a detalhes e domínio de rotinas.
@@ -1312,7 +1365,7 @@ O curso ajuda a transformar essas experiências em descrições mais fortes e cl
   }
 
   // =====================================================
-  // 38. ÁR$ 39,99EA DE VENDAS
+  // 38. ÁREA DE VENDAS
   // =====================================================
   if (hasAny(msg, ["vendas", "vendedor", "vendedora", "comercial", "atendimento comercial"])) {
     return `Para vendas, o perfil precisa mostrar comunicação, atendimento e resultado.
@@ -1372,7 +1425,7 @@ Também é importante adaptar o perfil para cada vaga, porque TI tem muitas áre
   }
 
   // =====================================================
-  // 41. CUR$ 39,99R$ 39,99ÍCULO INTER$ 39,99NACIONAL / INGLÊS
+  // 41. CURRÍCULO INTERNACIONAL / INGLÊS
   // =====================================================
   if (hasAny(msg, ["ingles", "inglês", "perfil em ingles", "perfil em inglês", "vaga internacional", "exterior"])) {
     return `Currículo em inglês ou para vaga internacional precisa de cuidado.
@@ -1390,7 +1443,7 @@ Também é bom deixar claro:
   }
 
   // =====================================================
-  // 42. IDADE / MAIS VELHO / R$ 39,99ECOMEÇO
+  // 42. IDADE / MAIS VELHO / RECOMEÇO
   // =====================================================
   if (hasAny(msg, ["tenho idade", "mais velho", "mais velha", "idade", "recomecar", "recomeçar", "voltar ao mercado"])) {
     return `Dá para montar um perfil estratégico em qualquer fase.
@@ -1410,7 +1463,7 @@ O ideal é apresentar suas experiências, habilidades e formação com clareza, 
   }
 
   // =====================================================
-  // 44. NÃO SEI POR$ 39,99 ONDE COMEÇAR$ 39,99
+  // 44. NÃO SEI POR ONDE COMEÇAR
   // =====================================================
   if (hasAny(msg, ["nao sei por onde comecar", "não sei por onde começar", "estou perdido", "estou perdida", "to perdido", "tô perdido", "nao sei fazer perfil", "não sei fazer perfil"])) {
     return `Tudo bem, isso é mais comum do que parece 😊
@@ -1431,7 +1484,7 @@ O curso te guia nesse processo.`;
   }
 
   // =====================================================
-  // 45. CUR$ 39,99R$ 39,99ÍCULO GENÉR$ 39,99ICO
+  // 45. CURRÍCULO GENÉRICO
   // =====================================================
   if (hasAny(msg, ["perfil generico", "perfil genérico", "muito generico", "muito genérico", "igual para todas as vagas"])) {
     return `Esse é um dos principais problemas.
@@ -1452,7 +1505,7 @@ O curso ensina como fazer isso sem precisar criar um perfil totalmente novo toda
   }
 
   // =====================================================
-  // 46. R$ 39,99ESUMO PR$ 39,99OFISSIONAL
+  // 46. RESUMO PROFISSIONAL
   // =====================================================
   if (hasAny(msg, ["resumo profissional", "perfil profissional", "sobre mim no perfil", "sobre mim no perfil"])) {
     return `O resumo profissional é uma das partes mais importantes do perfil.
@@ -1473,7 +1526,7 @@ O curso ajuda a montar um resumo mais estratégico.`;
   }
 
   // =====================================================
-  // 47. FOTO NO CUR$ 39,99R$ 39,99ÍCULO
+  // 47. FOTO NO CURRÍCULO
   // =====================================================
   if (hasAny(msg, ["foto no perfil", "foto no perfil", "colocar foto", "precisa de foto"])) {
     return `Na maioria dos casos, não precisa colocar foto no perfil, a menos que a vaga peça.
@@ -1486,12 +1539,12 @@ Foto pode ocupar espaço e nem sempre ajuda na análise.
   }
 
   // =====================================================
-  // 48. ENDER$ 39,99EÇO / DADOS PESSOAIS
+  // 48. ENDEREÇO / DADOS PESSOAIS
   // =====================================================
   if (hasAny(msg, ["endereco", "endereço", "dados pessoais", "cpf", "rg", "estado civil"])) {
     return `Cuidado com excesso de dados pessoais no perfil.
 
-Geralmente não precisa colocar CPF, R$ 39,99G, nome dos pais ou informações muito pessoais.
+Geralmente não precisa colocar CPF, RG, nome dos pais ou informações muito pessoais.
 
 O básico costuma ser:
 
@@ -1505,7 +1558,7 @@ O perfil precisa ser profissional e objetivo.`;
   }
 
   // =====================================================
-  // 49. CUR$ 39,99SOS NO CUR$ 39,99R$ 39,99ÍCULO
+  // 49. CURSOS NO CURRÍCULO
   // =====================================================
   if (hasAny(msg, ["cursos no perfil", "cursos no perfil", "curso complementar", "cursos complementares", "onde colocar curso"])) {
     return `Cursos podem fortalecer bastante o perfil, principalmente para quem tem pouca experiência ou está mudando de área.
@@ -1523,7 +1576,7 @@ O curso te ajuda a organizar isso sem deixar o perfil poluído.`;
   }
 
   // =====================================================
-  // 50. EMAIL PR$ 39,99OFISSIONAL
+  // 50. EMAIL PROFISSIONAL
   // =====================================================
   if (hasAny(msg, ["email", "e-mail", "email profissional", "e-mail profissional"])) {
     return `Um detalhe simples, mas importante: use um e-mail profissional.
@@ -1538,7 +1591,7 @@ Pequenos detalhes também passam profissionalismo.`;
   }
 
   // =====================================================
-  // 51. CUR$ 39,99R$ 39,99ÍCULO COM UMA PÁGINA
+  // 51. CURRÍCULO COM UMA PÁGINA
   // =====================================================
   if (hasAny(msg, ["uma pagina", "uma página", "duas paginas", "duas páginas", "quantas paginas", "quantas páginas"])) {
     return `Depende da sua experiência.
@@ -1553,7 +1606,7 @@ O perfil precisa ser claro, objetivo e estratégico.`;
   }
 
   // =====================================================
-  // 52. ENTR$ 39,99EVISTA
+  // 52. ENTREVISTA
   // =====================================================
   if (hasAny(msg, ["entrevista", "chamado para entrevista", "chamada para entrevista", "me chamaram"])) {
     return `Que bom 😊
@@ -1562,7 +1615,7 @@ Se você foi chamado para entrevista, o perfil já cumpriu uma parte importante.
 
 Agora é essencial você saber explicar suas experiências com clareza.
 
-R$ 39,99evise:
+Revise:
 
 ✔ o que colocou no perfil  
 ✔ suas principais experiências  
@@ -1574,7 +1627,7 @@ Um perfil bem feito também ajuda você a se preparar melhor para a entrevista.`
   }
 
   // =====================================================
-  // 53. MEDO / INSEGUR$ 39,99ANÇA
+  // 53. MEDO / INSEGURANÇA
   // =====================================================
   if (hasAny(msg, ["tenho medo", "inseguro", "insegura", "vergonha", "nao sei se consigo", "não sei se consigo"])) {
     return `Eu entendo 😊
@@ -1605,7 +1658,7 @@ O curso te ajuda a entender essa lógica para não depender só da sorte.`;
   }
 
   // =====================================================
-  // 55. ER$ 39,99R$ 39,99OS DE POR$ 39,99TUGUÊS
+  // 55. ERROS DE PORTUGUÊS
   // =====================================================
   if (hasAny(msg, ["erro de portugues", "erro de português", "portugues", "português", "revisao", "revisão"])) {
     return `Erros de português podem prejudicar bastante a primeira impressão.
@@ -1625,7 +1678,7 @@ O curso também ajuda com organização e clareza na escrita.`;
   }
 
   // =====================================================
-  // 56. NÃO TENHO CUR$ 39,99SO
+  // 56. NÃO TENHO CURSO
   // =====================================================
   if (hasAny(msg, ["nao tenho curso", "não tenho curso", "sem curso", "nunca fiz curso"])) {
     return `Mesmo sem muitos cursos, ainda dá para montar um perfil melhor.
@@ -1669,7 +1722,7 @@ O importante é apresentar de forma honesta e organizada, sem parecer informaç�
   }
 
   // =====================================================
-  // 59. MUITOS CUR$ 39,99SOS
+  // 59. MUITOS CURSOS
   // =====================================================
   if (hasAny(msg, ["muitos cursos", "tenho varios cursos", "tenho vários cursos", "qual curso colocar"])) {
     return `Quando você tem muitos cursos, o ideal é selecionar os mais relevantes.
@@ -1687,7 +1740,7 @@ Currículo bom não é o que tem mais informação. É o que tem informação ma
   }
 
   // =====================================================
-  // 60. TR$ 39,99ABALHO INFOR$ 39,99MAL
+  // 60. TRABALHO INFORMAL
   // =====================================================
   if (hasAny(msg, ["trabalho informal", "bico", "freelancer", "freela", "sem registro", "trabalhei sem carteira"])) {
     return `Experiência informal também pode ser valorizada, dependendo de como você apresenta.
@@ -1709,7 +1762,7 @@ O curso ajuda bastante nesse tipo de organização.`;
   }
 
   // =====================================================
-  // 61. DONA DE CASA / PAUSA NA CAR$ 39,99R$ 39,99EIR$ 39,99A
+  // 61. DONA DE CASA / PAUSA NA CARREIRA
   // =====================================================
   if (hasAny(msg, ["dona de casa", "pausei carreira", "fiquei parada", "fiquei parado", "voltar a trabalhar", "voltar pro mercado"])) {
     return `Dá para voltar ao mercado com um perfil bem organizado.
@@ -1720,7 +1773,7 @@ Também dá para destacar competências como organização, responsabilidade, ro
   }
 
   // =====================================================
-  // 62. POR$ 39,99TFÓLIO
+  // 62. PORTFÓLIO
   // =====================================================
   if (hasAny(msg, ["portfolio", "portfólio", "github", "behance", "projetos"])) {
     return `Portfólio pode fortalecer muito o perfil, principalmente em áreas como tecnologia, design, marketing, redação, social media e áreas criativas.
@@ -1738,7 +1791,7 @@ Currículo e portfólio precisam se complementar.`;
   }
 
   // =====================================================
-  // 63. R$ 39,99EDES SOCIAIS
+  // 63. REDES SOCIAIS
   // =====================================================
   if (hasAny(msg, ["instagram", "redes sociais", "colocar instagram", "colocar rede social"])) {
     return `Só coloque redes sociais no perfil se elas forem profissionais ou relevantes para a vaga.
@@ -1755,7 +1808,7 @@ Evite colocar redes pessoais que não ajudam na sua imagem profissional.`;
   }
 
   // =====================================================
-  // 64. ÁR$ 39,99EA DA SAÚDE
+  // 64. ÁREA DA SAÚDE
   // =====================================================
   if (hasAny(msg, ["saude", "saúde", "enfermagem", "cuidador", "cuidadora", "tecnico de enfermagem", "técnico de enfermagem"])) {
     return `Para área da saúde, o perfil precisa transmitir responsabilidade, cuidado e preparo técnico.
@@ -1791,7 +1844,7 @@ O curso ajuda a transformar essas atividades em descrições mais profissionais.
   }
 
   // =====================================================
-  // 66. LIMPEZA / SER$ 39,99VIÇOS GER$ 39,99AIS
+  // 66. LIMPEZA / SERVIÇOS GERAIS
   // =====================================================
   if (hasAny(msg, ["limpeza", "servicos gerais", "serviços gerais", "auxiliar de limpeza", "diarista"])) {
     return `Para limpeza e serviços gerais, também dá para montar um perfil profissional.
@@ -1811,7 +1864,7 @@ Toda experiência pode ser valorizada quando é bem escrita.`;
   }
 
   // =====================================================
-  // 67. PR$ 39,99ODUÇÃO / INDÚSTR$ 39,99IA
+  // 67. PRODUÇÃO / INDÚSTRIA
   // =====================================================
   if (hasAny(msg, ["producao", "produção", "industria", "indústria", "operador de producao", "operador de produção", "fabrica", "fábrica"])) {
     return `Para produção e indústria, o perfil precisa mostrar rotina, responsabilidade e conhecimento operacional.
@@ -1831,7 +1884,7 @@ Se você já atuou na área, dá para deixar essa experiência mais forte no per
   }
 
   // =====================================================
-  // 68. MOTOR$ 39,99ISTA / ENTR$ 39,99EGADOR$ 39,99
+  // 68. MOTORISTA / ENTREGADOR
   // =====================================================
   if (hasAny(msg, ["motorista", "entregador", "entregas", "cnh", "habilitacao", "habilitação"])) {
     return `Para motorista ou entregador, o perfil pode destacar:
@@ -1849,7 +1902,7 @@ Essas informações ajudam o recrutador a entender melhor sua experiência.`;
   }
 
   // =====================================================
-  // 69. ENTENDI / OK / CER$ 39,99TO
+  // 69. ENTENDI / OK / CERTO
   // =====================================================
   if (hasAny(msg, ["entendi", "ok", "certo", "ta bom", "tá bom", "beleza", "blz"])) {
     return `Perfeito.
@@ -1860,7 +1913,7 @@ Você quer:`;
   }
 
   // =====================================================
-  // 70. SIM / QUER$ 39,99O / TENHO INTER$ 39,99ESSE
+  // 70. SIM / QUERO / TENHO INTERESSE
   // =====================================================
   if (hasAny(msg, ["sim", "quero", "tenho interesse", "pode mandar", "manda", "me envie", "envia", "quero sim"])) {
     return `Ótimo.
@@ -1871,7 +1924,7 @@ Assim eu respondo de forma mais clara antes de falar de acesso.`;
   }
 
   // =====================================================
-  // 71. NÃO / NÃO QUER$ 39,99O
+  // 71. NÃO / NÃO QUERO
   // =====================================================
   if (hasAny(msg, ["nao quero", "não quero", "nao tenho interesse", "não tenho interesse"])) {
     return `Tudo bem.
@@ -1880,7 +1933,7 @@ Se sua dúvida for sobre perfil, vaga ou crescimento digital, posso tentar te or
   }
 
   // =====================================================
-  // 72. HUMANO / ATENDENTE / SUPOR$ 39,99TE
+  // 72. HUMANO / ATENDENTE / SUPORTE
   // =====================================================
   if (hasAny(msg, ["humano", "atendente", "falar com alguem", "falar com alguém", "pessoa", "suporte", "ajuda humana"])) {
     return `Claro 😊
@@ -1897,7 +1950,7 @@ Assim você fala com a pessoa certa e resolve mais rápido.`;
   }
 
   // =====================================================
-  // 73. OBR$ 39,99IGADO
+  // 73. OBRIGADO
   // =====================================================
   if (hasAny(msg, ["obrigado", "obrigada", "valeu", "vlw", "agradeco", "agradeço"])) {
     return `Por nada.
@@ -1906,7 +1959,7 @@ Se tiver qualquer dúvida sobre perfil, vaga, curso ou acesso, pode chamar.`;
   }
 
   // =====================================================
-  // 74. CLIENTE CONFUSO / MENSAGEM CUR$ 39,99TA
+  // 74. CLIENTE CONFUSO / MENSAGEM CURTA
   // =====================================================
   if (rawMsg.trim().length <= 3) {
     return `${saudacao}me fala um pouco melhor o que você precisa.
@@ -1915,7 +1968,7 @@ Você quer ajuda com perfil, acesso ao curso ou está com algum problema técnic
   }
 
   // =====================================================
-  // 75. R$ 39,99ESPOSTA PADR$ 39,99ÃO INTELIGENTE
+  // 75. RESPOSTA PADRÃO INTELIGENTE
   // =====================================================
   return `${saudacao}entendi.
 
@@ -1934,9 +1987,9 @@ async function getConversationHistory(userId, limit = 10) {
     const [rows] = await pool.query(
       `
       SELECT direction, message_text, created_at
-      FR$ 39,99OM whatsapp_messages
-      WHER$ 39,99E user_id = ?
-      OR$ 39,99DER$ 39,99 BY created_at DESC
+      FROM whatsapp_messages
+      WHERE user_id = ?
+      ORDER BY created_at DESC
       LIMIT ?
       `,
       [userId, limit]
@@ -2127,7 +2180,7 @@ function detectConversationStage(history, conversationPath) {
   return "objection";
 }
 
-// R$ 39,99espostas para mover para próximo estágio
+// Respostas para mover para próximo estágio
 function getStageProgression(stage, conversationPath, mentionsCount) {
   const responses = {
     awareness: {
@@ -2248,31 +2301,31 @@ function shouldOfferSpecialist(history, conversationPath) {
 function detectQuestionType(messageText) {
   const text = messageText.toLowerCase();
 
-  // PER$ 39,99GUNTAS SOBR$ 39,99E PR$ 39,99EÇO
+  // PERGUNTAS SOBRE PREÇO
   const priceKeywords = ["preço", "valor", "quanto", "custa", "caro", "desconto", "promoção", "pagar", "pagamento", "investimento", "grana", "boleto", "cartão"];
   if (priceKeywords.some(kw => text.includes(kw))) {
     return "price";
   }
 
-  // PER$ 39,99GUNTAS SOBR$ 39,99E CONTEÚDO
+  // PERGUNTAS SOBRE CONTEÚDO
   const contentKeywords = ["o que aprend", "qual conteúdo", "qual aula", "qual módulo", "ensina", "tópico", "matéria", "programa", "perfil", "estrutura", "como funciona o curso"];
   if (contentKeywords.some(kw => text.includes(kw))) {
     return "content";
   }
 
-  // PER$ 39,99GUNTAS SOBR$ 39,99E ACESSO/LOGIN
+  // PERGUNTAS SOBRE ACESSO/LOGIN
   const accessKeywords = ["como acessar", "como entrar", "login", "senha", "usuário", "cadastr", "plataforma", "entrar no site"];
   if (accessKeywords.some(kw => text.includes(kw))) {
     return "access";
   }
 
-  // PER$ 39,99GUNTAS TÉCNICAS
+  // PERGUNTAS TÉCNICAS
   const technicalKeywords = ["erro", "bug", "não funciona", "quebrou", "travou", "não consigo", "problema", "falha", "tela branca"];
   if (technicalKeywords.some(kw => text.includes(kw))) {
     return "technical";
   }
 
-  // PER$ 39,99GUNTAS SOBR$ 39,99E VIABILIDADE
+  // PERGUNTAS SOBRE VIABILIDADE
   const viabilityKeywords = ["vale a pena", "serve pra", "funciona pra", "vai me ajud", "vai mudar", "resultado", "funciona mesmo", "é bom", "é legal"];
   if (viabilityKeywords.some(kw => text.includes(kw))) {
     return "viability";
@@ -2281,7 +2334,7 @@ function detectQuestionType(messageText) {
   return "general";
 }
 
-// R$ 39,99espostas direcionadas por tipo de pergunta
+// Respostas direcionadas por tipo de pergunta
 function getDirectAnswer(questionType, user) {
   const linkCurso = COURSE_FRONTEND_URL;
   
@@ -2343,7 +2396,7 @@ Me ajuda com essas informações:
       response: `Funciona demais! 🎯
 
 A maioria dos alunos que passa pelo curso:
-✅ R$ 39,99ecebe mais convites para entrevista
+✅ Recebe mais convites para entrevista
 ✅ Aprende a ser notado pelos recrutadores
 ✅ Sabe mostrar as melhores experiências no perfil
 
@@ -2373,7 +2426,7 @@ O curso entrega um método prático, então funciona para várias áreas.`,
 }
 
 // Contar turnos de conversa do cliente (quantas vezes ele mandou mensagem)
-async function maybeGetClaudeR$ 39,99eply(messageText, user) {
+async function maybeGetClaudeReply(messageText, user) {
   const claudeKey = cleanEnv(process.env.CLAUDE_API_KEY);
   const specialistPhone = "5511933128628";
 
@@ -2382,7 +2435,7 @@ async function maybeGetClaudeR$ 39,99eply(messageText, user) {
   }
 
   try {
-    // R$ 39,99ecuperar histórico da conversa
+    // Recuperar histórico da conversa
     const history = user?.id ? await getConversationHistory(user.id) : [];
     
     // PASSO 1: Detectar que tipo de pergunta o cliente fez
@@ -2412,10 +2465,10 @@ Ele tá disponível pra conversar e tirar todas as suas dúvidas! 🚀`;
     
     // PASSO 5: Se for confirmação, evoluir a conversa
     if (isConfirmationMsg && history.length > 0) {
-      const progressionR$ 39,99esponse = getStageProgression(stage, conversationPath, topicMentions);
+      const progressionResponse = getStageProgression(stage, conversationPath, topicMentions);
       
-      if (progressionR$ 39,99esponse) {
-        return progressionR$ 39,99esponse;
+      if (progressionResponse) {
+        return progressionResponse;
       }
     }
     
@@ -2441,7 +2494,7 @@ ${directAnswer.followUp}`;
       content: "O cliente está interessado no CONTEÚDO do curso (o que aprende, estrutura, matéria).",
       payment: "O cliente tem dúvidas sobre PAGAMENTO, preço, desconto ou formas de pagar.",
       access: "O cliente tem problemas de ACESSO à plataforma (login, conta, entrar no site).",
-      technical: "O cliente enfrenta PR$ 39,99OBLEMAS TÉCNICOS (erro, bug, não funciona, travou).",
+      technical: "O cliente enfrenta PROBLEMAS TÉCNICOS (erro, bug, não funciona, travou).",
       general: "O cliente está começando a conversa ou tem interesse geral."
     };
 
@@ -2463,7 +2516,7 @@ Tipo de pergunta: ${questionType}
 Estágio da conversa: ${stage}
 Total de mensagens: ${history.length}
 
-PER$ 39,99SONALIDADE:
+PERSONALIDADE:
 - Seja natural, casual e genuíno - fale como um amigo
 - Use emojis moderadamente (1-2 por mensagem)
 - Seja breve mas completo (máximo 3-4 frases curtas)
@@ -2474,13 +2527,13 @@ O CLIENTE:
 ${user?.name ? `Nome: ${user.name}` : "Novo cliente"}
 Status: Ainda não tem acesso ao curso
 
-${isConfirmationMsg ? `IMPOR$ 39,99TANTE: O cliente CONFIR$ 39,99MOU algo! Avance para próximo passo:
+${isConfirmationMsg ? `IMPORTANTE: O cliente CONFIRMOU algo! Avance para próximo passo:
 - Se é awareness → mostre valor real
 - Se é interest → prepare para decisão
 - Se é decision → prepare para ação/pagamento` : ""}
 
-R$ 39,99EGR$ 39,99A MAIS IMPOR$ 39,99TANTE - R$ 39,99ESPONDER$ 39,99 E CONTINUAR$ 39,99:
-1️⃣ R$ 39,99ESPONDA a pergunta específica do cliente de forma clara
+REGRA MAIS IMPORTANTE - RESPONDER E CONTINUAR:
+1️⃣ RESPONDA a pergunta específica do cliente de forma clara
 2️⃣ DEPOIS termine com uma pergunta que continua a conversa
 3️⃣ A pergunta deve ser: "${followUpQuestion}"
 
@@ -2491,7 +2544,7 @@ EXEMPLOS:
 NUNCA:
 ❌ Ignore a pergunta do cliente
 ❌ Faça apenas perguntas genéricas
-❌ R$ 39,99epita padrões de respostas anteriores`,
+❌ Repita padrões de respostas anteriores`,
         messages: messages
       })
     });
@@ -2511,15 +2564,15 @@ NUNCA:
 }
 
 async function processPendingWhatsappMessages() {
-  if (whatsappJobR$ 39,99unning) return;
-  whatsappJobR$ 39,99unning = true;
+  if (whatsappJobRunning) return;
+  whatsappJobRunning = true;
 
   try {
     const users = await getPendingWhatsappUsers();
 
     for (const user of users) {
       try {
-        const celularBanco = normalizePhoneBR$ 39,99(user.celular);
+        const celularBanco = normalizePhoneBR(user.celular);
         const celular = getFinalTestPhone(user);
 
         console.log(`user_id ${user.id} | numero vindo do banco: ${user.celular}`);
@@ -2549,15 +2602,15 @@ Vi seu interesse aqui no curso. Posso te ajudar a liberar o acesso rapidinho?`
 
         await delay(randomDelay);
 
-        const textR$ 39,99esponse = await sendWhatsAppText(celular, mensagemInicial);
+        const textResponse = await sendWhatsAppText(celular, mensagemInicial);
 
         await saveWhatsappMessage({
           userId: user.id,
           celular,
           direction: "out",
           messageText: mensagemInicial,
-          waMessageId: textR$ 39,99esponse?.messages?.[0]?.id || null,
-          rawPayload: textR$ 39,99esponse
+          waMessageId: textResponse?.messages?.[0]?.id || null,
+          rawPayload: textResponse
         });
 
         await markWhatsappSent(user.id);
@@ -2570,7 +2623,7 @@ Vi seu interesse aqui no curso. Posso te ajudar a liberar o acesso rapidinho?`
   } catch (error) {
     console.error("Erro na rotina de WhatsApp:", error.message);
   } finally {
-    whatsappJobR$ 39,99unning = false;
+    whatsappJobRunning = false;
   }
 }
 
@@ -2589,22 +2642,22 @@ app.get("/api/inbox/conversations", async (_req, res) => {
         u.bot_paused,
         (
           SELECT message_text 
-          FR$ 39,99OM whatsapp_messages wm 
-          WHER$ 39,99E wm.user_id = u.id 
-          OR$ 39,99DER$ 39,99 BY wm.created_at DESC 
+          FROM whatsapp_messages wm 
+          WHERE wm.user_id = u.id 
+          ORDER BY wm.created_at DESC 
           LIMIT 1
         ) AS last_message,
         (
           SELECT created_at 
-          FR$ 39,99OM whatsapp_messages wm 
-          WHER$ 39,99E wm.user_id = u.id 
-          OR$ 39,99DER$ 39,99 BY wm.created_at DESC 
+          FROM whatsapp_messages wm 
+          WHERE wm.user_id = u.id 
+          ORDER BY wm.created_at DESC 
           LIMIT 1
         ) AS last_message_at
-      FR$ 39,99OM users u
-      WHER$ 39,99E u.celular IS NOT NULL
+      FROM users u
+      WHERE u.celular IS NOT NULL
         AND u.celular <> ''
-      OR$ 39,99DER$ 39,99 BY last_message_at DESC
+      ORDER BY last_message_at DESC
 
     `);
 
@@ -2621,9 +2674,9 @@ app.get("/api/inbox/messages/:userId", async (req, res) => {
     const [messages] = await pool.query(
       `
       SELECT id, user_id, celular, direction, message_text, created_at
-      FR$ 39,99OM whatsapp_messages
-      WHER$ 39,99E user_id = ?
-      OR$ 39,99DER$ 39,99 BY created_at ASC
+      FROM whatsapp_messages
+      WHERE user_id = ?
+      ORDER BY created_at ASC
       `,
       [userId]
     );
@@ -2646,8 +2699,8 @@ app.post("/api/inbox/bot-status", async (req, res) => {
       `
       UPDATE users
       SET bot_paused = ?,
-          updated_at = CUR$ 39,99R$ 39,99ENT_TIMESTAMP
-      WHER$ 39,99E id = ?
+          updated_at = CURRENT_TIMESTAMP
+      WHERE id = ?
       `,
       [paused ? 1 : 0, userId]
     );
@@ -2676,8 +2729,8 @@ app.post("/api/inbox/send", async (req, res) => {
     const [rows] = await pool.query(
       `
       SELECT id, name, celular
-      FR$ 39,99OM users
-      WHER$ 39,99E id = ?
+      FROM users
+      WHERE id = ?
       LIMIT 1
       `,
       [userId]
@@ -2688,7 +2741,7 @@ app.post("/api/inbox/send", async (req, res) => {
     }
 
     const user = rows[0];
-    const celular = normalizePhoneBR$ 39,99(user.celular);
+    const celular = normalizePhoneBR(user.celular);
 
     const response = await sendWhatsAppText(celular, message);
 
@@ -2705,8 +2758,8 @@ app.post("/api/inbox/send", async (req, res) => {
       `
       UPDATE users
       SET last_bot_message_at = NOW(),
-          updated_at = CUR$ 39,99R$ 39,99ENT_TIMESTAMP
-      WHER$ 39,99E id = ?
+          updated_at = CURRENT_TIMESTAMP
+      WHERE id = ?
       `,
       [user.id]
     );
@@ -2753,7 +2806,7 @@ app.get("/api/health/details", async (_req, res) => {
 
 app.get("/api/config", (_req, res) => {
   res.json({
-    publicKey: cleanEnv(process.env.MER$ 39,99CADO_PAGO_PUBLIC_KEY) || ""
+    publicKey: cleanEnv(process.env.MERCADO_PAGO_PUBLIC_KEY) || ""
   });
 });
 
@@ -2771,8 +2824,8 @@ app.post("/api/chat/start", async (req, res) => {
       const [rows] = await pool.query(
         `
         SELECT id, name, email, celular, access_released
-        FR$ 39,99OM users
-        WHER$ 39,99E email = ?
+        FROM users
+        WHERE email = ?
         LIMIT 1
         `,
         [email]
@@ -2784,7 +2837,7 @@ app.post("/api/chat/start", async (req, res) => {
 
     let resposta = reply;
     if (intent === "FALLBACK") {
-      const respostaClaude = await maybeGetClaudeR$ 39,99eply(mensagem, user);
+      const respostaClaude = await maybeGetClaudeReply(mensagem, user);
       resposta = respostaClaude || reply;
     }
 
@@ -2813,7 +2866,7 @@ app.post("/api/users/register", async (req, res) => {
     }
 
     const [existing] = await pool.query(
-      `SELECT id FR$ 39,99OM users WHER$ 39,99E email = ? LIMIT 1`,
+      `SELECT id FROM users WHERE email = ? LIMIT 1`,
       [email]
     );
 
@@ -2824,7 +2877,7 @@ app.post("/api/users/register", async (req, res) => {
     }
 
     const [result] = await pool.query(
-      `INSER$ 39,99T INTO users (name, email, password_hash, celular, nascimento, area)
+      `INSERT INTO users (name, email, password_hash, celular, nascimento, area)
        VALUES (?, ?, ?, ?, ?, ?)`,
       [
         name,
@@ -2869,8 +2922,8 @@ app.post("/api/users/login", async (req, res) => {
 
     const [rows] = await pool.query(
       `SELECT id, name, email, password_hash, celular, nascimento, area, access_released
-       FR$ 39,99OM users
-       WHER$ 39,99E email = ?
+       FROM users
+       WHERE email = ?
        LIMIT 1`,
       [email]
     );
@@ -2912,12 +2965,12 @@ app.post("/api/users/login", async (req, res) => {
 
 app.get("/api/users/access/:email", async (req, res) => {
   try {
-    const email = decodeUR$ 39,99IComponent(req.params.email);
+    const email = decodeURIComponent(req.params.email);
 
     const [rows] = await pool.query(
       `SELECT id, name, email, celular, nascimento, area, access_released
-       FR$ 39,99OM users
-       WHER$ 39,99E email = ?
+       FROM users
+       WHERE email = ?
        LIMIT 1`,
       [email]
     );
@@ -2966,18 +3019,18 @@ app.post("/api/payments/pix", async (req, res) => {
       email: payer.email
     });
 
-    const webhookBaseUrl = cleanEnv(process.env.WEBHOOK_BASE_UR$ 39,99L);
+    const webhookBaseUrl = cleanEnv(process.env.WEBHOOK_BASE_URL);
     const notificationUrl = webhookBaseUrl
       ? `${webhookBaseUrl}/api/webhooks/mercadopago`
       : undefined;
 
-    const externalR$ 39,99eference = `user_${user.id}`;
+    const externalReference = `user_${user.id}`;
 
     const body = {
       transaction_amount: Number(amount),
       description,
       payment_method_id: "pix",
-      external_reference: externalR$ 39,99eference,
+      external_reference: externalReference,
       payer: {
         email: payer.email,
         first_name: payer.first_name || "",
@@ -3004,8 +3057,8 @@ app.post("/api/payments/pix", async (req, res) => {
       amount: result.transaction_amount,
       description,
       payerEmail: payer.email,
-      externalR$ 39,99eference,
-      rawR$ 39,99esponse: result
+      externalReference,
+      rawResponse: result
     });
 
     return res.status(201).json({
@@ -3057,12 +3110,12 @@ app.post("/api/payments/card", async (req, res) => {
       email: payer.email
     });
 
-    const webhookBaseUrl = cleanEnv(process.env.WEBHOOK_BASE_UR$ 39,99L);
+    const webhookBaseUrl = cleanEnv(process.env.WEBHOOK_BASE_URL);
     const notificationUrl = webhookBaseUrl
       ? `${webhookBaseUrl}/api/webhooks/mercadopago`
       : undefined;
 
-    const externalR$ 39,99eference = `user_${user.id}`;
+    const externalReference = `user_${user.id}`;
 
     const body = {
       transaction_amount: Number(amount),
@@ -3071,7 +3124,7 @@ app.post("/api/payments/card", async (req, res) => {
       installments: Number(installments),
       payment_method_id,
       issuer_id: issuer_id || undefined,
-      external_reference: externalR$ 39,99eference,
+      external_reference: externalReference,
       payer: {
         email: payer.email,
         identification: payer.identification?.number
@@ -3095,12 +3148,12 @@ app.post("/api/payments/card", async (req, res) => {
       amount: result.transaction_amount,
       description,
       payerEmail: payer.email,
-      externalR$ 39,99eference,
-      rawR$ 39,99esponse: result
+      externalReference,
+      rawResponse: result
     });
 
     if (result.status === "approved") {
-      await markAccessR$ 39,99eleased(result.id, payer.email);
+      await markAccessReleased(result.id, payer.email);
     }
 
     return res.status(201).json({
@@ -3132,8 +3185,8 @@ app.get("/api/payments/:id", async (req, res) => {
         status_detail = ?,
         transaction_amount = ?,
         raw_response = ?,
-        updated_at = CUR$ 39,99R$ 39,99ENT_TIMESTAMP
-      WHER$ 39,99E payment_id = ?
+        updated_at = CURRENT_TIMESTAMP
+      WHERE payment_id = ?
       `,
       [
         result.status,
@@ -3147,17 +3200,17 @@ app.get("/api/payments/:id", async (req, res) => {
     if (result.status === "approved") {
       const payerEmail = result?.payer?.email || null;
 
-      const externalR$ 39,99eference = result?.external_reference || null;
-      const userId = externalR$ 39,99eference?.startsWith("user_")
-        ? Number(externalR$ 39,99eference.split("_")[1])
+      const externalReference = result?.external_reference || null;
+      const userId = externalReference?.startsWith("user_")
+        ? Number(externalReference.split("_")[1])
         : null;
 
       if (userId) {
         await pool.query(
           `
           UPDATE users
-          SET access_released = 1, updated_at = CUR$ 39,99R$ 39,99ENT_TIMESTAMP
-          WHER$ 39,99E id = ?
+          SET access_released = 1, updated_at = CURRENT_TIMESTAMP
+          WHERE id = ?
           `,
           [userId]
         );
@@ -3165,13 +3218,13 @@ app.get("/api/payments/:id", async (req, res) => {
         await pool.query(
           `
           UPDATE payments
-          SET user_id = COALESCE(user_id, ?), updated_at = CUR$ 39,99R$ 39,99ENT_TIMESTAMP
-          WHER$ 39,99E payment_id = ?
+          SET user_id = COALESCE(user_id, ?), updated_at = CURRENT_TIMESTAMP
+          WHERE payment_id = ?
           `,
           [userId, String(result.id)]
         );
       } else if (payerEmail) {
-        await markAccessR$ 39,99eleased(result.id, payerEmail);
+        await markAccessReleased(result.id, payerEmail);
       }
     }
 
@@ -3201,7 +3254,7 @@ app.post("/api/webhooks/mercadopago", async (req, res) => {
 
     await pool.query(
       `
-      INSER$ 39,99T INTO payment_events (payment_id, event_type, action_name, raw_payload)
+      INSERT INTO payment_events (payment_id, event_type, action_name, raw_payload)
       VALUES (?, ?, ?, ?)
       `,
       [
@@ -3215,29 +3268,29 @@ app.post("/api/webhooks/mercadopago", async (req, res) => {
     if (dataId) {
       const payment = await paymentClient.get({ id: String(dataId) });
 
-      const [existingR$ 39,99ows] = await pool.query(
+      const [existingRows] = await pool.query(
         `
         SELECT user_id, payer_email, access_token
-        FR$ 39,99OM payments
-        WHER$ 39,99E payment_id = ?
+        FROM payments
+        WHERE payment_id = ?
         LIMIT 1
         `,
         [String(payment.id)]
       );
 
-      const existingPayment = existingR$ 39,99ows[0] || null;
+      const existingPayment = existingRows[0] || null;
 
       const payerEmail =
         payment?.payer?.email ||
         existingPayment?.payer_email ||
         null;
 
-      const externalR$ 39,99eference = payment?.external_reference || null;
-      const userIdFromR$ 39,99eference = externalR$ 39,99eference?.startsWith("user_")
-        ? Number(externalR$ 39,99eference.split("_")[1])
+      const externalReference = payment?.external_reference || null;
+      const userIdFromReference = externalReference?.startsWith("user_")
+        ? Number(externalReference.split("_")[1])
         : null;
 
-      const userId = userIdFromR$ 39,99eference || existingPayment?.user_id || null;
+      const userId = userIdFromReference || existingPayment?.user_id || null;
 
       if (!payerEmail) {
         console.log(
@@ -3254,7 +3307,7 @@ app.post("/api/webhooks/mercadopago", async (req, res) => {
 
       await pool.query(
         `
-        INSER$ 39,99T INTO payments (
+        INSERT INTO payments (
           user_id,
           payment_id,
           payment_type,
@@ -3275,7 +3328,7 @@ app.post("/api/webhooks/mercadopago", async (req, res) => {
           payer_email = VALUES(payer_email),
           external_reference = VALUES(external_reference),
           raw_response = VALUES(raw_response),
-          updated_at = CUR$ 39,99R$ 39,99ENT_TIMESTAMP
+          updated_at = CURRENT_TIMESTAMP
         `,
         [
           userId,
@@ -3286,7 +3339,7 @@ app.post("/api/webhooks/mercadopago", async (req, res) => {
           Number(payment.transaction_amount || 0),
           payment.description || null,
           payerEmail || "sem-email@temporario.local",
-          externalR$ 39,99eference || null,
+          externalReference || null,
           JSON.stringify(payment)
         ]
       );
@@ -3296,8 +3349,8 @@ app.post("/api/webhooks/mercadopago", async (req, res) => {
           await pool.query(
             `
             UPDATE users
-            SET access_released = 1, updated_at = CUR$ 39,99R$ 39,99ENT_TIMESTAMP
-            WHER$ 39,99E id = ?
+            SET access_released = 1, updated_at = CURRENT_TIMESTAMP
+            WHERE id = ?
             `,
             [userId]
           );
@@ -3305,15 +3358,15 @@ app.post("/api/webhooks/mercadopago", async (req, res) => {
           await pool.query(
             `
             UPDATE payments
-            SET status = 'approved', user_id = ?, updated_at = CUR$ 39,99R$ 39,99ENT_TIMESTAMP
-            WHER$ 39,99E payment_id = ?
+            SET status = 'approved', user_id = ?, updated_at = CURRENT_TIMESTAMP
+            WHERE payment_id = ?
             `,
             [userId, String(payment.id)]
           );
 
           console.log(`Acesso liberado para user_id ${userId}`);
         } else if (payerEmail) {
-          await markAccessR$ 39,99eleased(payment.id, payerEmail);
+          await markAccessReleased(payment.id, payerEmail);
           console.log(`Acesso liberado para email ${payerEmail}`);
         }
       }
@@ -3335,7 +3388,7 @@ app.get("/api/webhooks/whatsapp", (req, res) => {
 
     console.log("Verificação webhook WhatsApp recebida:", {
       mode,
-      tokenR$ 39,99ecebido: token || null,
+      tokenRecebido: token || null,
       tokenEsperadoConfigurado: Boolean(wa.verifyToken)
     });
 
@@ -3364,7 +3417,7 @@ app.post("/api/webhooks/whatsapp", async (req, res) => {
       return res.sendStatus(200);
     }
 
-    const from = normalizePhoneBR$ 39,99(message.from || "");
+    const from = normalizePhoneBR(message.from || "");
     const text = message?.text?.body || "";
 
     const user = await getUserByPhone(from);
@@ -3384,8 +3437,8 @@ app.post("/api/webhooks/whatsapp", async (req, res) => {
       UPDATE users
       SET last_whatsapp_message_at = NOW(),
           last_customer_message_at = NOW(),
-          updated_at = CUR$ 39,99R$ 39,99ENT_TIMESTAMP
-      WHER$ 39,99E id = ?
+          updated_at = CURRENT_TIMESTAMP
+      WHERE id = ?
     `, [user.id]);
   }
 
@@ -3400,8 +3453,8 @@ app.post("/api/webhooks/whatsapp", async (req, res) => {
         SET last_whatsapp_message_at = NOW(),
             last_customer_message_at = NOW(),
             whatsapp_followup_finished = 1,
-            updated_at = CUR$ 39,99R$ 39,99ENT_TIMESTAMP
-        WHER$ 39,99E id = ?
+            updated_at = CURRENT_TIMESTAMP
+        WHERE id = ?
         `,
         [user.id]
       );
@@ -3409,21 +3462,21 @@ app.post("/api/webhooks/whatsapp", async (req, res) => {
 
     const { intent, reply } = handleIncomingMessage(text, user);
 
-    let finalR$ 39,99eply = reply;
+    let finalReply = reply;
     if (intent === "FALLBACK") {
-      const claudeR$ 39,99eply = await maybeGetClaudeR$ 39,99eply(text, user);
-      finalR$ 39,99eply = claudeR$ 39,99eply || reply || "Posso te ajudar com pagamento, acesso ou dúvidas do curso 😊";
+      const claudeReply = await maybeGetClaudeReply(text, user);
+      finalReply = claudeReply || reply || "Posso te ajudar com pagamento, acesso ou dúvidas do curso 😊";
     }
 
-    const sendR$ 39,99esponse = await sendWhatsAppText(from, finalR$ 39,99eply);
+    const sendResponse = await sendWhatsAppText(from, finalReply);
 
     await saveWhatsappMessage({
       userId: user?.id || null,
       celular: from,
       direction: "out",
       messageText: reply,
-      waMessageId: sendR$ 39,99esponse?.messages?.[0]?.id || null,
-      rawPayload: sendR$ 39,99esponse
+      waMessageId: sendResponse?.messages?.[0]?.id || null,
+      rawPayload: sendResponse
     });
 
     return res.sendStatus(200);
@@ -3433,8 +3486,8 @@ app.post("/api/webhooks/whatsapp", async (req, res) => {
   }
 });
 
-const FOLLOWUP_INTER$ 39,99VALS = [30, 90, 180];
-const MAX_FOLLOWUPS = FOLLOWUP_INTER$ 39,99VALS.length;
+const FOLLOWUP_INTERVALS = [30, 90, 180];
+const MAX_FOLLOWUPS = FOLLOWUP_INTERVALS.length;
 
 function getFollowupMessage(followupCount) {
   const linkCurso = COURSE_FRONTEND_URL;
@@ -3459,8 +3512,8 @@ async function getUsersForWhatsappFollowUp() {
   const [rows] = await pool.query(
     `
     SELECT id, name, celular, whatsapp_followup_count
-    FR$ 39,99OM users
-      WHER$ 39,99E id >= 100
+    FROM users
+      WHERE id >= 100
       AND access_released = 0
       AND whatsapp_sent = 1
       AND whatsapp_opt_in = 1
@@ -3470,19 +3523,19 @@ async function getUsersForWhatsappFollowUp() {
       AND celular IS NOT NULL
       AND celular <> ''
       AND (
-        (whatsapp_followup_count = 0 AND last_bot_message_at <= NOW() - INTER$ 39,99VAL ? MINUTE)
-        OR$ 39,99 (whatsapp_followup_count = 1 AND last_bot_message_at <= NOW() - INTER$ 39,99VAL ? MINUTE)
-        OR$ 39,99 (whatsapp_followup_count = 2 AND last_bot_message_at <= NOW() - INTER$ 39,99VAL ? MINUTE)
+        (whatsapp_followup_count = 0 AND last_bot_message_at <= NOW() - INTERVAL ? MINUTE)
+        OR (whatsapp_followup_count = 1 AND last_bot_message_at <= NOW() - INTERVAL ? MINUTE)
+        OR (whatsapp_followup_count = 2 AND last_bot_message_at <= NOW() - INTERVAL ? MINUTE)
       )
       AND NOT EXISTS (
         SELECT 1
-        FR$ 39,99OM whatsapp_messages wm
-        WHER$ 39,99E wm.user_id = users.id
+        FROM whatsapp_messages wm
+        WHERE wm.user_id = users.id
           AND wm.direction = 'in'
           AND wm.created_at >= users.whatsapp_sent_at
       )
     `,
-    [MAX_FOLLOWUPS, FOLLOWUP_INTER$ 39,99VALS[0], FOLLOWUP_INTER$ 39,99VALS[1], FOLLOWUP_INTER$ 39,99VALS[2]]
+    [MAX_FOLLOWUPS, FOLLOWUP_INTERVALS[0], FOLLOWUP_INTERVALS[1], FOLLOWUP_INTERVALS[2]]
   );
 
   return rows;
@@ -3502,15 +3555,15 @@ async function processWhatsappFollowUps() {
 
         if (!message) continue;
 
-        const sendR$ 39,99esponse = await sendWhatsAppText(celular, message);
+        const sendResponse = await sendWhatsAppText(celular, message);
 
         await saveWhatsappMessage({
           userId: user.id,
           celular,
           direction: "out",
           messageText: message,
-          waMessageId: sendR$ 39,99esponse?.messages?.[0]?.id || null,
-          rawPayload: sendR$ 39,99esponse
+          waMessageId: sendResponse?.messages?.[0]?.id || null,
+          rawPayload: sendResponse
         });
 
         const nextCount = followupCount + 1;
@@ -3522,8 +3575,8 @@ async function processWhatsappFollowUps() {
               whatsapp_followup_finished = ?,
               last_bot_message_at = NOW(),
               last_whatsapp_message_at = NOW(),
-              updated_at = CUR$ 39,99R$ 39,99ENT_TIMESTAMP
-          WHER$ 39,99E id = ?
+              updated_at = CURRENT_TIMESTAMP
+          WHERE id = ?
           `,
           [
             nextCount,
@@ -3568,6 +3621,7 @@ async function start() {
 }
 
 start();
+
 
 
 
