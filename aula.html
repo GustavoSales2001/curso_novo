@@ -476,6 +476,27 @@
     const moduleIndex = Number(params.get("m") || 0);
     const lessonIndex = Number(params.get("l") || 0);
 
+// PRINTS POR AULA PATCH START
+    function pad2(value){
+      return String(value + 1).padStart(2, "0");
+    }
+
+    printFiles.length = 0;
+
+    const lessonPrintBase = `assets/aulas/modulo-${pad2(moduleIndex)}/aula-${pad2(lessonIndex)}`;
+
+    printFiles.push(
+      ["Instagram - aplicação prática", `${lessonPrintBase}/print-01-instagram.png`],
+      ["Canva - modelo visual", `${lessonPrintBase}/print-02-canva.png`],
+      ["CapCut - vídeo passo a passo", `${lessonPrintBase}/print-03-capcut.png`],
+      ["IA - prompt da aula", `${lessonPrintBase}/print-04-ia.png`]
+    );
+
+    modules.forEach(module => {
+      module.prints = [0, 1, 2, 3];
+    });
+// PRINTS POR AULA PATCH END
+
     function key(m,l){
       return `m${m}-l${l}`;
     }
@@ -689,8 +710,8 @@ Métrica observada: retenção, respostas, salvamentos e novos seguidores.</code
 
             ${buildTeachingContent(module, lesson)}
 
-            <h2>Prints explicativos desta aula</h2>
-            <p>Use as imagens abaixo como referência visual. Clique para ampliar e estudar melhor cada estrutura.</p>
+            <h2>4 prints passo a passo desta aula</h2>
+            <p>Cada imagem abaixo representa um app diferente aplicado nesta aula: Instagram, Canva, CapCut e IA. Clique para ampliar e estudar o passo a passo.</p>
 
             <div class="print-grid">
               ${module.prints.map(idx => `
@@ -748,4 +769,5 @@ Métrica observada: retenção, respostas, salvamentos e novos seguidores.</code
   </script>
 </body>
 </html>
+
 
