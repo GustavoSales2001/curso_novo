@@ -615,13 +615,13 @@ Métrica observada: retenção, respostas, salvamentos e novos seguidores.</code
         </ul>
 
         <div class="task-box">
-          <h3>Tarefa prática para liberar a próxima aula</h3>
+          <h3>Tarefa de casa</h3>
           <p>
             Faça uma aplicação real desta aula hoje. Pode ser ajustar um trecho da bio, criar um roteiro,
             organizar um template, editar um vídeo, revisar métricas ou montar uma sequência de stories.
           </p>
           <p>
-            Depois de concluir, clique no botão abaixo. A próxima aula será liberada automaticamente.
+            Use esta atividade como exercício de fixação. Quando terminar, marque a aula como concluída para acompanhar seu progresso.
           </p>
         </div>
       `;
@@ -631,7 +631,7 @@ Métrica observada: retenção, respostas, salvamentos e novos seguidores.</code
       document.getElementById("app").innerHTML = `
         <div class="blocked">
           <span class="eyebrow">Aula bloqueada</span>
-          <h1>Conclua a aula anterior para liberar esta etapa.</h1>
+          <h1>Complete a etapa anterior para manter a sequência da trilha.</h1>
           <p style="color:#8a7166;line-height:1.7;font-size:18px;max-width:680px;margin:18px auto">
             A trilha foi organizada em sequência para você evoluir com clareza. 
             Volte para os módulos e continue pela próxima aula liberada.
@@ -683,7 +683,7 @@ Métrica observada: retenção, respostas, salvamentos e novos seguidores.</code
           <article class="panel">
             ${justCompleted ? `
               <div class="teaching-card" style="background:#eefaf1;border-color:#bce8cb;color:#2e8b4d">
-                <strong>Parabéns!</strong> Aula marcada como concluída. A próxima etapa já foi liberada.
+                <strong>Parabéns!</strong> Aula marcada como concluída. Você já pode continuar sua jornada.
               </div>
             ` : ""}
 
@@ -731,7 +731,7 @@ Métrica observada: retenção, respostas, salvamentos e novos seguidores.</code
 
             <div class="side-card">
               <h3>Próximo passo</h3>
-              <p>${done ? "A próxima aula já está liberada." : "Concluir esta aula para liberar a próxima etapa."}</p>
+              <p>${done ? "A próxima aula já está liberada." : "Quando terminar, avance para o próximo conteúdo da trilha."}</p>
             </div>
           </aside>
         </section>
@@ -748,3 +748,4 @@ Métrica observada: retenção, respostas, salvamentos e novos seguidores.</code
   </script>
 </body>
 </html>
+
