@@ -573,6 +573,9 @@
 
   <script>
     const API_URL = "https://cursonovo-production.up.railway.app/api/site-chat";
+    const CHAT_SESSION_KEY = "influencer_academy_site_session";
+    const CHAT_SESSION_ID = localStorage.getItem(CHAT_SESSION_KEY) || crypto.randomUUID();
+    localStorage.setItem(CHAT_SESSION_KEY, CHAT_SESSION_ID);
     const messages = document.getElementById("messages");
     const input = document.getElementById("chatInput");
     const sendBtn = document.getElementById("sendBtn");
@@ -651,7 +654,8 @@
           body:JSON.stringify({
             message:text || "Enviei um anexo.",
             attachments:fileNames,
-            source:"site-chat"
+            source:"site-chat",
+            sessionId: CHAT_SESSION_ID
           })
         });
 
@@ -713,3 +717,4 @@ Me manda sua dúvida ou escolha uma opção abaixo.`);
   </script>
 </body>
 </html>
+

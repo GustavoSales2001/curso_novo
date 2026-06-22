@@ -21,10 +21,7 @@ function getFirstName(user) {
 }
 
 function setStage(userKey, stage) {
-  conversationState.set(userKey, {
-    stage,
-    updatedAt: Date.now()
-  });
+  conversationState.set(userKey, { stage, updatedAt: Date.now() });
 }
 
 function getStage(userKey) {
@@ -33,11 +30,11 @@ function getStage(userKey) {
 
 function isOption(msg, number) {
   const options = {
-    1: ["1", "opcao 1", "opção 1", "primeira", "primeiro", "quero a primeira", "prossiga com a primeira"],
-    2: ["2", "opcao 2", "opção 2", "segunda", "segundo", "quero a segunda", "prossiga com a segunda"],
-    3: ["3", "opcao 3", "opção 3", "terceira", "terceiro", "quero a terceira", "prossiga com a terceira"],
-    4: ["4", "opcao 4", "opção 4", "quarta", "quarto", "quero a quarta", "prossiga com a quarta"],
-    5: ["5", "opcao 5", "opção 5", "quinta", "quinto", "quero a quinta", "prossiga com a quinta"]
+    1: ["1", "opcao 1", "opção 1", "primeira", "quero a primeira"],
+    2: ["2", "opcao 2", "opção 2", "segunda", "quero a segunda"],
+    3: ["3", "opcao 3", "opção 3", "terceira", "quero a terceira"],
+    4: ["4", "opcao 4", "opção 4", "quarta", "quero a quarta"],
+    5: ["5", "opcao 5", "opção 5", "quinta", "quero a quinta"]
   };
 
   return options[number].some(option => msg === normalizeText(option) || msg.includes(normalizeText(option)));
@@ -52,9 +49,7 @@ Para eu te ajudar melhor, escolha uma opção:
 2. Quero crescer do 0 aos primeiros seguidores
 3. Quero aprender a gravar melhor com celular
 4. Quero saber valor e pagamento
-5. Estou com problema no acesso ou cadastro
-
-Pode responder com o número, tipo: 1, 2, 3, 4 ou 5.`;
+5. Estou com problema no acesso ou cadastro`;
 }
 
 function courseMenu(saudacao = "") {
@@ -69,9 +64,8 @@ Você aprende sobre:
 - estética do perfil
 - métricas e engajamento
 - rotina de gravação
-- como sair do improviso
 
-Escolha uma opção:
+Escolha:
 
 1. Quero ver o que aprendo
 2. Quero saber se serve para mim
@@ -155,102 +149,37 @@ export function handleIncomingMessage(text = "", user = null) {
   const saudacao = nome ? `${nome}, ` : "";
   const currentStage = getStage(userKey);
 
-  if (
-    msg.includes("menu") ||
-    msg.includes("voltar") ||
-    msg.includes("inicio") ||
-    msg.includes("começar de novo") ||
-    msg.includes("comecar de novo")
-  ) {
+  if (msg.includes("menu") || msg.includes("voltar") || msg.includes("inicio")) {
     setStage(userKey, "inicio");
     return { intent: "menu", reply: mainMenu(saudacao) };
   }
 
-  if (
-    msg.includes("oi") ||
-    msg.includes("ola") ||
-    msg.includes("olá") ||
-    msg.includes("opa") ||
-    msg.includes("bom dia") ||
-    msg.includes("boa tarde") ||
-    msg.includes("boa noite")
-  ) {
+  if (msg.includes("oi") || msg.includes("ola") || msg.includes("olá") || msg.includes("opa") || msg.includes("bom dia") || msg.includes("boa tarde") || msg.includes("boa noite")) {
     setStage(userKey, "inicio");
-    return {
-      intent: "saudacao",
-      reply: `${saudacao}oi! Tudo bem? 💕\n\n${mainMenu("")}`
-    };
+    return { intent: "saudacao", reply: `${saudacao}oi! Tudo bem? 💕\n\n${mainMenu("")}` };
   }
 
-  if (
-    msg.includes("curso") ||
-    msg.includes("como funciona") ||
-    msg.includes("saber mais") ||
-    msg.includes("influencer") ||
-    msg.includes("influenciadora")
-  ) {
+  if (msg.includes("curso") || msg.includes("funciona") || msg.includes("saber mais") || msg.includes("influencer") || msg.includes("influenciadora")) {
     setStage(userKey, "curso");
     return { intent: "curso", reply: courseMenu(saudacao) };
   }
 
-  if (
-    msg.includes("seguidor") ||
-    msg.includes("seguidores") ||
-    msg.includes("crescer") ||
-    msg.includes("engajamento") ||
-    msg.includes("alcance") ||
-    msg.includes("views") ||
-    msg.includes("visualizacao") ||
-    msg.includes("visualização")
-  ) {
+  if (msg.includes("seguidor") || msg.includes("seguidores") || msg.includes("crescer") || msg.includes("engajamento") || msg.includes("alcance") || msg.includes("views") || msg.includes("visualizacao") || msg.includes("visualização")) {
     setStage(userKey, "crescimento");
     return { intent: "crescimento", reply: growthMenu(saudacao) };
   }
 
-  if (
-    msg.includes("gravar") ||
-    msg.includes("reels") ||
-    msg.includes("story") ||
-    msg.includes("stories") ||
-    msg.includes("conteudo") ||
-    msg.includes("conteúdo") ||
-    msg.includes("celular") ||
-    msg.includes("setup") ||
-    msg.includes("microfone") ||
-    msg.includes("camera") ||
-    msg.includes("câmera")
-  ) {
+  if (msg.includes("gravar") || msg.includes("reels") || msg.includes("story") || msg.includes("stories") || msg.includes("conteudo") || msg.includes("conteúdo") || msg.includes("celular") || msg.includes("setup") || msg.includes("microfone")) {
     setStage(userKey, "conteudo");
     return { intent: "conteudo", reply: contentMenu(saudacao) };
   }
 
-  if (
-    msg.includes("valor") ||
-    msg.includes("preco") ||
-    msg.includes("preço") ||
-    msg.includes("quanto custa") ||
-    msg.includes("pagamento") ||
-    msg.includes("pix") ||
-    msg.includes("cartao") ||
-    msg.includes("cartão") ||
-    msg.includes("boleto") ||
-    msg.includes("desconto")
-  ) {
+  if (msg.includes("valor") || msg.includes("preco") || msg.includes("preço") || msg.includes("quanto custa") || msg.includes("pagamento") || msg.includes("pix") || msg.includes("cartao") || msg.includes("cartão") || msg.includes("boleto")) {
     setStage(userKey, "pagamento");
     return { intent: "pagamento", reply: paymentMenu(saudacao) };
   }
 
-  if (
-    msg.includes("erro") ||
-    msg.includes("bug") ||
-    msg.includes("travou") ||
-    msg.includes("nao abre") ||
-    msg.includes("não abre") ||
-    msg.includes("login") ||
-    msg.includes("senha") ||
-    msg.includes("cadastro") ||
-    msg.includes("acesso")
-  ) {
+  if (msg.includes("erro") || msg.includes("bug") || msg.includes("travou") || msg.includes("nao abre") || msg.includes("não abre") || msg.includes("login") || msg.includes("senha") || msg.includes("cadastro") || msg.includes("acesso")) {
     setStage(userKey, "suporte");
     return { intent: "suporte", reply: supportMenu(saudacao) };
   }
@@ -276,17 +205,9 @@ export function handleIncomingMessage(text = "", user = null) {
     }
   }
 
-  else if (currentStage === "curso") {
+  if (currentStage === "curso") {
     if (isOption(msg, 1)) {
-      reply = `${saudacao}no curso você aprende:
-
-- como organizar seu perfil
-- como escolher temas de conteúdo
-- como criar Reels com mais intenção
-- como usar estética e posicionamento
-- como entender métricas
-- como montar uma rotina de postagem
-- como parar de postar no improviso
+      reply = `${saudacao}no curso você aprende a organizar seu perfil, criar conteúdos com mais intenção, melhorar Reels, stories, estética, métricas e rotina de postagem.
 
 Escolha:
 
@@ -295,14 +216,7 @@ Escolha:
 3. Quero acessar a página`;
       setStage(userKey, "curso_detalhe");
     } else if (isOption(msg, 2)) {
-      reply = `${saudacao}serve principalmente se você:
-
-- quer começar como influenciadora
-- posta, mas sente que não cresce
-- quer melhorar estética e presença
-- quer aprender a gravar melhor
-- quer entender métricas
-- quer transformar conteúdo em oportunidade
+      reply = `${saudacao}serve se você quer começar como influenciadora, posta mas sente que não cresce, quer gravar melhor e transformar conteúdo em oportunidade.
 
 Escolha:
 
@@ -313,13 +227,7 @@ Escolha:
     } else if (isOption(msg, 3)) {
       reply = `${saudacao}claro. A página do curso é essa:
 
-${COURSE_LINK}
-
-Escolha:
-
-1. Quero acessar agora
-2. Quero saber o valor
-3. Tive problema no acesso`;
+${COURSE_LINK}`;
       setStage(userKey, "link_enviado");
     } else if (isOption(msg, 4)) {
       setStage(userKey, "pagamento");
@@ -327,17 +235,9 @@ Escolha:
     }
   }
 
-  else if (currentStage === "crescimento") {
+  if (currentStage === "crescimento") {
     if (isOption(msg, 1)) {
-      reply = `${saudacao}para sair do 0 aos primeiros 1.000 seguidores, o foco é base:
-
-- perfil claro
-- bio bem construída
-- nicho definido
-- conteúdos simples e constantes
-- Reels com gancho
-- stories para conexão
-- identidade visual mínima
+      reply = `${saudacao}para sair do 0 aos primeiros 1.000 seguidores, o foco é base: perfil claro, bio bem construída, nicho definido, Reels com gancho e stories para conexão.
 
 Escolha:
 
@@ -346,15 +246,7 @@ Escolha:
 3. Quero o link`;
       setStage(userKey, "crescimento_detalhe");
     } else if (isOption(msg, 2)) {
-      reply = `${saudacao}de 1.000 para 5.000 seguidores, o foco muda.
-
-Você precisa entender:
-- quais conteúdos performam melhor
-- como repetir formatos vencedores
-- como aumentar retenção
-- como gerar compartilhamento
-- como criar autoridade
-- como transformar seguidores em comunidade
+      reply = `${saudacao}de 1.000 para 5.000 seguidores, você precisa entender o que performa, repetir formatos vencedores, aumentar retenção e criar comunidade.
 
 Escolha:
 
@@ -363,17 +255,7 @@ Escolha:
 3. Quero acessar`;
       setStage(userKey, "crescimento_detalhe");
     } else if (isOption(msg, 3)) {
-      reply = `${saudacao}métricas mostram o que está funcionando.
-
-Você aprende a olhar:
-- visualizações
-- alcance
-- curtidas
-- comentários
-- salvamentos
-- compartilhamentos
-- seguidores novos
-- retenção
+      reply = `${saudacao}métricas mostram o que está funcionando: visualizações, alcance, curtidas, salvamentos, compartilhamentos e seguidores novos.
 
 Escolha:
 
@@ -381,20 +263,12 @@ Escolha:
 2. Quero o link
 3. Quero tirar dúvida`;
       setStage(userKey, "crescimento_detalhe");
-    } else if (isOption(msg, 4)) {
-      setStage(userKey, "curso");
-      reply = courseMenu(saudacao);
     }
   }
 
-  else if (currentStage === "conteudo") {
+  if (currentStage === "conteudo") {
     if (isOption(msg, 1)) {
-      reply = `${saudacao}para gravar Reels melhores, você precisa de 4 pontos:
-
-1. gancho inicial
-2. imagem limpa
-3. roteiro simples
-4. final com intenção
+      reply = `${saudacao}para gravar Reels melhores, você precisa de gancho inicial, imagem limpa, roteiro simples e final com intenção.
 
 Escolha:
 
@@ -403,14 +277,7 @@ Escolha:
 3. Quero o link`;
       setStage(userKey, "conteudo_detalhe");
     } else if (isOption(msg, 2)) {
-      reply = `${saudacao}um setup simples já ajuda muito:
-
-- celular bem posicionado
-- luz natural ou ring light
-- fundo limpo
-- áudio claro
-- apoio/tripé
-- cenário com identidade
+      reply = `${saudacao}um setup simples já ajuda muito: celular bem posicionado, luz natural, fundo limpo, áudio claro, apoio/tripé e cenário com identidade.
 
 Escolha:
 
@@ -419,16 +286,7 @@ Escolha:
 3. Quero saber o valor`;
       setStage(userKey, "conteudo_detalhe");
     } else if (isOption(msg, 3)) {
-      reply = `${saudacao}ideias de conteúdo para começar:
-
-- bastidores
-- rotina
-- antes e depois
-- erros comuns
-- dicas rápidas
-- tendências adaptadas ao seu nicho
-- prova social
-- opinião sobre temas do seu mercado
+      reply = `${saudacao}ideias para começar: bastidores, rotina, antes e depois, erros comuns, dicas rápidas, tendências adaptadas, prova social e opinião.
 
 Escolha:
 
@@ -436,15 +294,10 @@ Escolha:
 2. Quero o link
 3. Quero tirar dúvida`;
       setStage(userKey, "conteudo_detalhe");
-    } else if (isOption(msg, 4)) {
-      reply = `${saudacao}aqui está o link:
-
-${COURSE_LINK}`;
-      setStage(userKey, "link_enviado");
     }
   }
 
-  else if (currentStage === "pagamento") {
+  if (currentStage === "pagamento") {
     if (isOption(msg, 1)) {
       reply = `${saudacao}perfeito. Você pode acessar por aqui:
 
@@ -453,24 +306,9 @@ ${COURSE_LINK}
 A condição atual está de ${OLD_PRICE} por ${COURSE_PRICE}.`;
       setStage(userKey, "link_enviado");
     } else if (isOption(msg, 2)) {
-      reply = `${saudacao}o acesso inclui:
+      reply = `${saudacao}o acesso inclui aulas sobre crescimento, posicionamento, criação de conteúdo, Reels, stories, estética, métricas, engajamento e materiais de apoio.
 
-- aulas sobre crescimento
-- posicionamento
-- criação de conteúdo
-- Reels e stories
-- estética do perfil
-- métricas e engajamento
-- organização de rotina
-- materiais de apoio
-
-E hoje está de ${OLD_PRICE} por ${COURSE_PRICE}.
-
-Escolha:
-
-1. Quero acessar
-2. Tenho uma dúvida
-3. Tive problema no pagamento`;
+Hoje está de ${OLD_PRICE} por ${COURSE_PRICE}.`;
       setStage(userKey, "pagamento_detalhe");
     } else if (isOption(msg, 3)) {
       reply = `${saudacao}claro. Pode me mandar sua dúvida sobre o curso, pagamento ou acesso.`;
@@ -481,41 +319,13 @@ Escolha:
     }
   }
 
-  else if (currentStage === "suporte") {
-    if (isOption(msg, 1) || isOption(msg, 2) || isOption(msg, 3) || isOption(msg, 4)) {
-      reply = `${saudacao}entendi. Para verificar melhor, me envie:
+  if (currentStage === "suporte") {
+    reply = `${saudacao}entendi. Para verificar melhor, me envie:
 
 - print da tela
 - e-mail usado no cadastro
-- em qual parte travou
-
-Assim fica mais fácil identificar se foi cadastro, login, pagamento ou área do aluno.`;
-      setStage(userKey, "aguardando_suporte");
-    } else if (isOption(msg, 5)) {
-      reply = `${saudacao}claro. Me envie seu nome, e-mail cadastrado e um print do problema para o suporte verificar.`;
-      setStage(userKey, "suporte_humano");
-    }
-  }
-
-  else if (
-    currentStage === "curso_detalhe" ||
-    currentStage === "curso_caso" ||
-    currentStage === "crescimento_detalhe" ||
-    currentStage === "conteudo_detalhe" ||
-    currentStage === "pagamento_detalhe"
-  ) {
-    if (isOption(msg, 1)) {
-      setStage(userKey, "curso");
-      reply = courseMenu(saudacao);
-    } else if (isOption(msg, 2)) {
-      setStage(userKey, "pagamento");
-      reply = paymentMenu(saudacao);
-    } else if (isOption(msg, 3)) {
-      reply = `${saudacao}aqui está o link:
-
-${COURSE_LINK}`;
-      setStage(userKey, "link_enviado");
-    }
+- em qual parte travou`;
+    setStage(userKey, "aguardando_suporte");
   }
 
   if (!reply) {
@@ -523,10 +333,7 @@ ${COURSE_LINK}`;
     setStage(userKey, "inicio");
   }
 
-  return {
-    intent: currentStage,
-    reply
-  };
+  return { intent: currentStage, reply };
 }
 
 export default handleIncomingMessage;
