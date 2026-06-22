@@ -1,607 +1,1469 @@
 ﻿<!DOCTYPE html>
-<html lang="pt-BR$ 39,99">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Área do Aluno - Influencer Academy</title>
-  <link rel="stylesheet" href="area.css">
+
   <style>
-    .hero-info::before {
-      content: '';
-      position: absolute;
-      top: -30px;
-      left: 0;
-      right: 0;
-      height: 60px;
-      background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.1), transparent);
-      border-radius: 50%;
-      filter: blur(20px);
+    :root{
+      --bg:#f7f1eb;
+      --paper:#fffaf7;
+      --white:#ffffff;
+      --text:#3f2d26;
+      --muted:#8a7166;
+      --line:#ead7ce;
+      --rose:#d98f82;
+      --rose-dark:#c87465;
+      --rose-soft:#f8dfd8;
+      --brown:#563b31;
+      --dark:#18151f;
+      --shadow:0 24px 70px rgba(83,54,42,.11);
+      --radius:30px;
     }
 
-    .welcome-section {
-      margin-bottom: 32px;
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:"Segoe UI", Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 0% 0%, rgba(217,143,130,.18), transparent 28%),
+        radial-gradient(circle at 100% 100%, rgba(217,143,130,.14), transparent 28%),
+        linear-gradient(180deg,#fbf7f3 0%,#f6efe9 100%);
     }
 
-    .section-divider {
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.2), transparent);
-      margin: 32px 0;
+    button,a{font:inherit}
+    a{text-decoration:none;color:inherit}
+
+    .app{
+      max-width:1540px;
+      margin:0 auto;
+      padding:24px;
+      display:grid;
+      grid-template-columns:320px 1fr;
+      gap:24px;
+      min-height:100vh;
     }
 
-    .info-card::before {
-      content: '💡';
-      display: block;
-      font-size: 1.8rem;
-      margin-bottom: 12px;
+    .sidebar{
+      position:sticky;
+      top:24px;
+      height:calc(100vh - 48px);
+      overflow:auto;
+      padding:24px;
+      background:rgba(255,255,255,.72);
+      border:1px solid var(--line);
+      border-radius:34px;
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(14px);
     }
 
-    .info-card:nth-child(2)::before {
-      content: '🎯';
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      margin-bottom:24px;
     }
 
-    .info-card:nth-child(3)::before {
-      content: '📍';
+    .logo{
+      width:56px;
+      height:56px;
+      border-radius:20px;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg,var(--rose),#e8aa9d);
+      color:white;
+      font-weight:950;
+      font-size:20px;
+      box-shadow:0 16px 34px rgba(217,143,130,.25);
+      flex-shrink:0;
+    }
+
+    .brand h1{
+      margin:0;
+      font-size:26px;
+      line-height:1.05;
+      letter-spacing:-.04em;
+    }
+
+    .brand p{
+      margin:5px 0 0;
+      color:var(--muted);
+      font-size:13px;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:.05em;
+    }
+
+    .language-box{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:8px;
+      padding:8px;
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:18px;
+      margin-bottom:18px;
+    }
+
+    .lang-btn{
+      border:none;
+      border-radius:13px;
+      padding:10px 8px;
+      cursor:pointer;
+      background:transparent;
+      color:var(--muted);
+      font-weight:900;
+    }
+
+    .lang-btn.active{
+      background:var(--rose-soft);
+      color:var(--rose-dark);
+    }
+
+    .nav{
+      display:grid;
+      gap:12px;
+      margin-top:18px;
+    }
+
+    .nav button{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:20px;
+      padding:15px 16px;
+      display:flex;
+      align-items:center;
+      gap:13px;
+      color:var(--brown);
+      cursor:pointer;
+      font-weight:850;
+      transition:.2s ease;
+      text-align:left;
+    }
+
+    .nav button:hover,
+    .nav button.active{
+      transform:translateY(-2px);
+      border-color:#e4afa3;
+      background:linear-gradient(135deg,#fff,#fff4ef);
+      box-shadow:0 14px 34px rgba(83,54,42,.08);
+    }
+
+    .nav-icon{
+      width:40px;
+      height:40px;
+      display:grid;
+      place-items:center;
+      border-radius:14px;
+      background:var(--rose-soft);
+      color:var(--rose-dark);
+      font-size:18px;
+      flex-shrink:0;
+    }
+
+    .sidebar-note{
+      margin-top:22px;
+      padding:18px;
+      border-radius:24px;
+      background:linear-gradient(180deg,#fff8f5,#fff);
+      border:1px solid var(--line);
+    }
+
+    .sidebar-note strong{
+      display:inline-flex;
+      padding:8px 12px;
+      border-radius:999px;
+      background:var(--rose-soft);
+      color:var(--rose-dark);
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.05em;
+      margin-bottom:12px;
+    }
+
+    .sidebar-note p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.6;
+      font-size:14px;
+    }
+
+    .user-card{
+      margin-top:22px;
+      padding:18px;
+      border-radius:24px;
+      background:#fff;
+      border:1px solid var(--line);
+    }
+
+    .user-head{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-bottom:14px;
+    }
+
+    .avatar{
+      width:50px;
+      height:50px;
+      border-radius:18px;
+      background:linear-gradient(135deg,var(--rose),#e8aa9d);
+      color:#fff;
+      display:grid;
+      place-items:center;
+      font-weight:950;
+    }
+
+    .user-head strong{
+      display:block;
+      font-size:16px;
+    }
+
+    .user-head span{
+      display:block;
+      margin-top:4px;
+      color:var(--muted);
+      font-size:12px;
+      word-break:break-word;
+    }
+
+    .access{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:8px 12px;
+      border-radius:999px;
+      background:#eefaf1;
+      color:#2e8b4d;
+      font-weight:850;
+      font-size:12px;
+    }
+
+    .logout{
+      width:100%;
+      border:none;
+      margin-top:14px;
+      padding:13px;
+      border-radius:16px;
+      background:linear-gradient(135deg,var(--rose),var(--rose-dark));
+      color:#fff;
+      cursor:pointer;
+      font-weight:950;
+    }
+
+    .main{
+      min-width:0;
+    }
+
+    .view{
+      display:none;
+      animation:fade .25s ease both;
+    }
+
+    .view.active{
+      display:block;
+    }
+
+    @keyframes fade{
+      from{opacity:0;transform:translateY(8px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+
+    .hero{
+      padding:34px;
+      border-radius:38px;
+      border:1px solid var(--line);
+      background:
+        radial-gradient(circle at 95% 5%, rgba(217,143,130,.20), transparent 26%),
+        linear-gradient(135deg,rgba(255,255,255,.92),rgba(255,248,244,.92));
+      box-shadow:var(--shadow);
+      margin-bottom:24px;
+      overflow:hidden;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      padding:10px 14px;
+      border-radius:999px;
+      background:var(--rose-soft);
+      color:var(--rose-dark);
+      font-weight:950;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+    }
+
+    .hero h2{
+      margin:18px 0 14px;
+      max-width:980px;
+      font-size:52px;
+      line-height:1.03;
+      letter-spacing:-.055em;
+    }
+
+    .hero h2 span{
+      color:var(--rose-dark);
+    }
+
+    .hero p{
+      margin:0;
+      max-width:880px;
+      color:var(--muted);
+      line-height:1.75;
+      font-size:18px;
+    }
+
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:26px;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:9px;
+      min-height:52px;
+      padding:0 22px;
+      border-radius:17px;
+      border:1px solid transparent;
+      font-weight:950;
+      transition:.2s ease;
+      cursor:pointer;
+    }
+
+    .btn.primary{
+      background:linear-gradient(135deg,var(--rose),var(--rose-dark));
+      color:#fff;
+      box-shadow:0 15px 30px rgba(217,143,130,.26);
+    }
+
+    .btn.light{
+      background:#fff;
+      color:var(--brown);
+      border-color:var(--line);
+    }
+
+    .btn:hover{transform:translateY(-2px)}
+
+    .cards-4{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:18px;
+      margin-bottom:24px;
+    }
+
+    .metric{
+      padding:22px;
+      border-radius:28px;
+      border:1px solid var(--line);
+      background:#fff;
+      box-shadow:var(--shadow);
+    }
+
+    .metric small{
+      display:block;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.05em;
+      font-size:12px;
+      font-weight:900;
+      margin-bottom:10px;
+    }
+
+    .metric strong{
+      display:block;
+      font-size:34px;
+      color:var(--brown);
+      letter-spacing:-.04em;
+      margin-bottom:7px;
+    }
+
+    .metric p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.55;
+      font-size:14px;
+    }
+
+    .panel{
+      padding:28px;
+      border-radius:34px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.88);
+      box-shadow:var(--shadow);
+      margin-bottom:24px;
+    }
+
+    .section-head{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:18px;
+      margin-bottom:22px;
+    }
+
+    .section-head h3{
+      margin:0 0 8px;
+      font-size:34px;
+      line-height:1.1;
+      letter-spacing:-.04em;
+    }
+
+    .section-head p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.65;
+    }
+
+    .pill{
+      display:inline-flex;
+      padding:9px 12px;
+      border-radius:999px;
+      background:#fff;
+      border:1px solid var(--line);
+      color:var(--rose-dark);
+      font-weight:850;
+      font-size:12px;
+      white-space:nowrap;
+    }
+
+    .split{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:22px;
+    }
+
+    .roadmap{
+      display:grid;
+      gap:14px;
+    }
+
+    .roadmap-item{
+      display:grid;
+      grid-template-columns:58px 1fr;
+      gap:16px;
+      padding:18px;
+      border-radius:24px;
+      border:1px solid var(--line);
+      background:#fff;
+    }
+
+    .roadmap-number{
+      width:58px;
+      height:58px;
+      border-radius:18px;
+      display:grid;
+      place-items:center;
+      background:var(--rose-soft);
+      color:var(--rose-dark);
+      font-weight:950;
+      font-size:18px;
+    }
+
+    .roadmap-item h4{
+      margin:0 0 7px;
+      font-size:21px;
+    }
+
+    .roadmap-item p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.6;
+    }
+
+    .mock-screen{
+      border:1px solid var(--line);
+      border-radius:28px;
+      background:#fff;
+      overflow:hidden;
+      box-shadow:0 18px 40px rgba(83,54,42,.08);
+    }
+
+    .mock-top{
+      height:48px;
+      background:#f7ede8;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:0 16px;
+      border-bottom:1px solid var(--line);
+    }
+
+    .dot{width:11px;height:11px;border-radius:50%;background:#d98f82}
+    .dot:nth-child(2){background:#e8c1b8}
+    .dot:nth-child(3){background:#b98f84}
+
+    .mock-body{
+      padding:18px;
+      display:grid;
+      gap:14px;
+    }
+
+    .mock-row{
+      display:grid;
+      grid-template-columns:50px 1fr auto;
+      gap:12px;
+      align-items:center;
+      padding:12px;
+      border-radius:18px;
+      background:#fbf5f1;
+    }
+
+    .mock-avatar{
+      width:50px;
+      height:50px;
+      border-radius:16px;
+      background:linear-gradient(135deg,#d98f82,#7b61ff);
+    }
+
+    .mock-line{
+      height:12px;
+      border-radius:999px;
+      background:#e9d9d1;
+      margin-bottom:8px;
+    }
+
+    .mock-line.short{width:55%}
+    .mock-line.long{width:90%}
+
+    .mock-tag{
+      padding:7px 10px;
+      border-radius:999px;
+      background:var(--rose-soft);
+      color:var(--rose-dark);
+      font-weight:850;
+      font-size:12px;
+    }
+
+    .module-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:18px;
+    }
+
+    .module-card{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:28px;
+      overflow:hidden;
+      transition:.2s ease;
+    }
+
+    .module-card:hover{
+      transform:translateY(-4px);
+      box-shadow:0 18px 40px rgba(83,54,42,.08);
+      border-color:#dfafa3;
+    }
+
+    .module-cover{
+      min-height:150px;
+      padding:20px;
+      color:#fff;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      background:linear-gradient(135deg,#d98f82,#7b61ff);
+    }
+
+    .module-card:nth-child(2n) .module-cover{background:linear-gradient(135deg,#00c4cc,#7b61ff)}
+    .module-card:nth-child(3n) .module-cover{background:linear-gradient(135deg,#111827,#3f4655)}
+    .module-card:nth-child(4n) .module-cover{background:linear-gradient(135deg,#ff7d61,#f24f7c)}
+
+    .module-cover span{
+      display:inline-flex;
+      align-self:flex-start;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.18);
+      font-weight:950;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.05em;
+    }
+
+    .module-cover strong{
+      display:block;
+      font-size:30px;
+      line-height:1.05;
+      letter-spacing:-.04em;
+      max-width:420px;
+    }
+
+    .module-body{
+      padding:22px;
+    }
+
+    .module-body h4{
+      margin:0 0 10px;
+      font-size:25px;
+      letter-spacing:-.03em;
+    }
+
+    .module-body p{
+      margin:0 0 16px;
+      color:var(--muted);
+      line-height:1.65;
+    }
+
+    .lesson-list{
+      display:grid;
+      gap:10px;
+    }
+
+    .mini-lesson{
+      padding:13px 14px;
+      border-radius:17px;
+      background:#fff7f3;
+      border:1px solid var(--line);
+      display:grid;
+      grid-template-columns:auto 1fr;
+      gap:10px;
+      align-items:start;
+    }
+
+    .mini-lesson b{
+      color:var(--rose-dark);
+    }
+
+    .mini-lesson span{
+      color:var(--muted);
+      line-height:1.5;
+      font-size:14px;
+    }
+
+    .tool-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
+    }
+
+    .tool-card{
+      border:1px solid var(--line);
+      border-radius:30px;
+      overflow:hidden;
+      background:#fff;
+      box-shadow:0 16px 36px rgba(83,54,42,.06);
+    }
+
+    .tool-visual{
+      min-height:210px;
+      padding:20px;
+      color:white;
+      background:linear-gradient(135deg,#d98f82,#7b61ff);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .tool-card:nth-child(2) .tool-visual{background:linear-gradient(135deg,#00c4cc,#7b61ff)}
+    .tool-card:nth-child(3) .tool-visual{background:linear-gradient(135deg,#111827,#454b59)}
+    .tool-card:nth-child(4) .tool-visual{background:linear-gradient(135deg,#f24f7c,#ff8c6b)}
+    .tool-card:nth-child(5) .tool-visual{background:linear-gradient(135deg,#6c5ce7,#00cec9)}
+    .tool-card:nth-child(6) .tool-visual{background:linear-gradient(135deg,#2d3436,#fd79a8)}
+
+    .tool-visual::after{
+      content:"";
+      position:absolute;
+      width:170px;
+      height:170px;
+      border-radius:50%;
+      background:rgba(255,255,255,.16);
+      right:-55px;
+      bottom:-65px;
+    }
+
+    .tool-visual small{
+      display:inline-flex;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.17);
+      backdrop-filter:blur(6px);
+      font-weight:950;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+    }
+
+    .tool-visual strong{
+      display:block;
+      position:relative;
+      z-index:1;
+      margin-top:18px;
+      font-size:29px;
+      line-height:1.1;
+      letter-spacing:-.04em;
+    }
+
+    .fake-phone{
+      position:absolute;
+      right:22px;
+      bottom:18px;
+      width:94px;
+      height:150px;
+      border-radius:24px;
+      border:8px solid rgba(255,255,255,.32);
+      background:rgba(0,0,0,.18);
+      z-index:1;
+      padding:12px;
+      display:grid;
+      gap:8px;
+    }
+
+    .fake-phone i{
+      display:block;
+      border-radius:10px;
+      background:rgba(255,255,255,.32);
+    }
+
+    .tool-body{
+      padding:20px;
+    }
+
+    .tool-body h4{
+      margin:0 0 12px;
+      font-size:24px;
+    }
+
+    .tool-body ol{
+      margin:0;
+      padding-left:20px;
+      color:var(--muted);
+      line-height:1.8;
+    }
+
+    .lesson-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
+    }
+
+    .lesson-card{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:28px;
+      overflow:hidden;
+    }
+
+    .lesson-thumb{
+      min-height:150px;
+      display:flex;
+      align-items:flex-end;
+      padding:18px;
+      color:white;
+      font-size:28px;
+      font-weight:950;
+      line-height:1.05;
+      letter-spacing:-.04em;
+    }
+
+    .lesson-card:nth-child(1) .lesson-thumb{background:linear-gradient(135deg,#d98f82,#e8aa9d)}
+    .lesson-card:nth-child(2) .lesson-thumb{background:linear-gradient(135deg,#00c4cc,#7b61ff)}
+    .lesson-card:nth-child(3) .lesson-thumb{background:linear-gradient(135deg,#111827,#454b59)}
+    .lesson-card:nth-child(4) .lesson-thumb{background:linear-gradient(135deg,#f24f7c,#ff8c6b)}
+    .lesson-card:nth-child(5) .lesson-thumb{background:linear-gradient(135deg,#6c5ce7,#00cec9)}
+    .lesson-card:nth-child(6) .lesson-thumb{background:linear-gradient(135deg,#2d3436,#fd79a8)}
+
+    .lesson-info{
+      padding:20px;
+    }
+
+    .lesson-info h4{
+      margin:0 0 10px;
+      font-size:23px;
+      letter-spacing:-.03em;
+    }
+
+    .lesson-info p{
+      margin:0 0 16px;
+      color:var(--muted);
+      line-height:1.65;
+    }
+
+    .lesson-meta{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      color:var(--muted);
+      font-size:13px;
+      font-weight:850;
+    }
+
+    .material-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:16px;
+    }
+
+    .material{
+      display:flex;
+      gap:15px;
+      padding:18px;
+      border-radius:24px;
+      border:1px solid var(--line);
+      background:#fff;
+    }
+
+    .material-icon{
+      width:52px;
+      height:52px;
+      border-radius:18px;
+      background:var(--rose-soft);
+      color:var(--rose-dark);
+      display:grid;
+      place-items:center;
+      font-size:22px;
+      flex-shrink:0;
+    }
+
+    .material h4{
+      margin:0 0 8px;
+      font-size:21px;
+    }
+
+    .material p{
+      margin:0 0 10px;
+      color:var(--muted);
+      line-height:1.6;
+    }
+
+    .material span{
+      color:var(--rose-dark);
+      font-weight:950;
+      font-size:13px;
+      text-transform:uppercase;
+      letter-spacing:.05em;
+    }
+
+    .profile-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+    }
+
+    .info-box{
+      padding:22px;
+      border-radius:26px;
+      border:1px solid var(--line);
+      background:#fff;
+    }
+
+    .info-box h4{
+      margin:0 0 16px;
+      font-size:24px;
+    }
+
+    .info-line{
+      display:flex;
+      justify-content:space-between;
+      gap:14px;
+      padding:12px 0;
+      border-bottom:1px dashed #eadfd8;
+      color:var(--muted);
+    }
+
+    .info-line:last-child{border-bottom:none}
+    .info-line strong{color:var(--brown);text-align:right}
+
+    @media(max-width:1200px){
+      .app{grid-template-columns:1fr}
+      .sidebar{position:relative;height:auto;top:0}
+      .cards-4{grid-template-columns:repeat(2,1fr)}
+      .split{grid-template-columns:1fr}
+      .module-grid{grid-template-columns:1fr}
+      .tool-grid{grid-template-columns:repeat(2,1fr)}
+      .lesson-grid{grid-template-columns:repeat(2,1fr)}
+    }
+
+    @media(max-width:760px){
+      .app{padding:14px}
+      .hero{padding:24px}
+      .hero h2{font-size:36px}
+      .panel{padding:20px}
+      .cards-4,.tool-grid,.lesson-grid,.material-grid,.profile-grid{grid-template-columns:1fr}
+      .section-head{align-items:flex-start;flex-direction:column}
     }
   </style>
-  <link rel="stylesheet" href="assets/css/theme-premium.css" />
-  <link rel="stylesheet" href="assets/css/pages-premium.css" />
 </head>
+
 <body>
-  <div class="dashboard">
+  <div class="app">
     <aside class="sidebar">
       <div class="brand">
-        <h2>Influencer Academy</h2>
-        <p>Influencer Academy</p>
+        <div class="logo">IA</div>
+        <div>
+          <h1>Influencer Academy</h1>
+          <p data-i18n="sidebar_subtitle">Área internacional</p>
+        </div>
       </div>
 
-      <nav class="menu">
-        <button class="tab-btn active" data-tab="inicio">
-          <span>📚</span> Início
-        </button>
-        <button class="tab-btn" data-tab="modulos">
-          <span>📖</span> Módulos
-        </button>
-        <button class="tab-btn" data-tab="aulas">
-          <span>▶️</span> Aulas
-        </button>
-        <button class="tab-btn" data-tab="materiais">
-          <span>📄</span> Materiais
-        </button>
-        <button class="tab-btn" data-tab="perfil">
-          <span>👤</span> Perfil
-        </button>
+      <div class="language-box">
+        <button class="lang-btn active" data-lang="pt">PT</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="es">ES</button>
+      </div>
+
+      <nav class="nav">
+        <button class="nav-btn active" data-view="home"><span class="nav-icon">🏠</span><span data-i18n="nav_home">Início</span></button>
+        <button class="nav-btn" data-view="modules"><span class="nav-icon">📚</span><span data-i18n="nav_modules">Módulos</span></button>
+        <button class="nav-btn" data-view="tools"><span class="nav-icon">🛠️</span><span data-i18n="nav_tools">Ferramentas</span></button>
+        <button class="nav-btn" data-view="lessons"><span class="nav-icon">🎬</span><span data-i18n="nav_lessons">Aulas</span></button>
+        <button class="nav-btn" data-view="materials"><span class="nav-icon">🧾</span><span data-i18n="nav_materials">Materiais</span></button>
+        <button class="nav-btn" data-view="profile"><span class="nav-icon">👩</span><span data-i18n="nav_profile">Perfil</span></button>
       </nav>
 
-      <div class="sidebar-footer">
-        <button id="logoutBtn" class="logout-btn">Sair</button>
+      <div class="sidebar-note">
+        <strong data-i18n="focus_today">Foco de hoje</strong>
+        <p data-i18n="focus_text">Transforme ideias soltas em conteúdo com método: gancho, roteiro, gravação, edição e publicação.</p>
+      </div>
+
+      <div class="user-card">
+        <div class="user-head">
+          <div class="avatar" id="avatarInitials">IA</div>
+          <div>
+            <strong id="sidebarName">Aluna Premium</strong>
+            <span id="sidebarEmail">email@exemplo.com</span>
+          </div>
+        </div>
+        <div class="access" data-i18n="access_ok">● acesso liberado</div>
+        <button class="logout" id="logoutBtn" data-i18n="logout">Sair</button>
       </div>
     </aside>
 
-    <main class="content">
-      <header class="topbar">
-        <div>
-          <h1>Bem-vindo à sua Área</h1>
-          <p id="welcomeText">Carregando seus dados...</p>
-        </div>
-      </header>
+    <main class="main">
+      <section class="view active" id="view-home">
+        <div class="hero">
+          <span class="eyebrow" data-i18n="home_eyebrow">Welcome to your creator studio</span>
+          <h2 data-i18n="home_title">Sua jornada para se tornar uma <span>influencer estratégica</span> começa aqui.</h2>
+          <p data-i18n="home_text">Aprenda a criar conteúdo com clareza, gravar com qualidade, editar com estética, entender métricas e usar ferramentas como Instagram, Canva, CapCut e IA para acelerar sua produção.</p>
 
-      <section id="inicio" class="tab-content active">
-        <div class="hero-box">
-          <div class="hero-info">
-            <span class="badge">Curso em andamento</span>
-            <h2>Influencer Academy</h2>
-            <p>
-              Aprenda a montar um perfil mais estratégico, mais forte e mais preparado
-              para os algoritmo e métricas usados pelas empresas.
-            </p>
-            <button class="main-btn" onclick="abrirTab('aulas')">Começar agora</button>
-          </div>
-          <div class="progress-card">
-            <h3>Seu progresso</h3>
-            <div class="progress-bar">
-              <div class="progress-fill" id="progressFill"></div>
-            </div>
-            <p id="progressText">20% concluído</p>
+          <div class="hero-actions">
+            <button class="btn primary go-view" data-view="modules" data-i18n="home_cta_1">Começar pelos módulos</button>
+            <button class="btn light go-view" data-view="tools" data-i18n="home_cta_2">Ver prints e ferramentas</button>
           </div>
         </div>
 
-        <div class="grid-cards">
-          <div class="info-card">
-            <h3>Objetivo do curso</h3>
-            <p>
-              Mostrar como estruturar um perfil mais competitivo, alinhado com vagas
-              e com maior chance de passar pelos sistemas de triagem.
-            </p>
+        <div class="cards-4">
+          <div class="metric">
+            <small data-i18n="metric_1_label">módulos</small>
+            <strong>10</strong>
+            <p data-i18n="metric_1_text">Cada módulo possui 8 conteúdos práticos para aplicar no perfil.</p>
           </div>
-
-          <div class="info-card">
-            <h3>Dica rápida</h3>
-            <p>
-              Um bom perfil não é só bonito. Ele precisa ser claro, estratégico
-              e conter informações que façam sentido para a vaga desejada.
-            </p>
+          <div class="metric">
+            <small data-i18n="metric_2_label">aulas guiadas</small>
+            <strong>06</strong>
+            <p data-i18n="metric_2_text">Aulas principais para acompanhar a evolução da sua presença digital.</p>
           </div>
-
-          <div class="info-card">
-            <h3>Próximo passo</h3>
-            <p>
-              Vá até a aba de aulas e faça o conteúdo inicial para entender
-              como a IA analisa perfils no crescimento digital.
-            </p>
+          <div class="metric">
+            <small data-i18n="metric_3_label">ferramentas</small>
+            <strong>06</strong>
+            <p data-i18n="metric_3_text">Instagram, Canva, CapCut, IA de vídeo, métricas e rotina de produção.</p>
+          </div>
+          <div class="metric">
+            <small data-i18n="metric_4_label">idiomas</small>
+            <strong>03</strong>
+            <p data-i18n="metric_4_text">Conteúdo organizado em português, inglês e espanhol.</p>
           </div>
         </div>
 
-        <div class="module-summary-wrap" style="margin-top: 24px;">
-          <div class="module-summary-card">
-            <h3>O que você vai aprender</h3>
-            <p>
-              Este curso foi estruturado para te ajudar a entender como os sistemas de triagem funcionam,
-              como adaptar seu perfil para vagas reais, como destacar experiências com mais força
-              e como construir uma candidatura mais estratégica.
-            </p>
-            <ul>
-              <li>Como o algoritmo filtra perfils antes do recrutador</li>
-              <li>Como melhorar a estrutura do perfil</li>
-              <li>Como usar palavras-chave sem parecer artificial</li>
-              <li>Como transformar tarefas em percepção de valor</li>
-              <li>Como deixar o perfil mais competitivo para vagas reais</li>
-              <li>Como revisar erros que prejudicam sua candidatura</li>
-            </ul>
-          </div>
-
-          <div class="module-status-card">
-            <h3>Como avançar no curso</h3>
-            <p>
-              Os módulos seguem uma ordem lógica. Para liberar o próximo módulo,
-              você precisa clicar em <strong>“Marcar como concluído”</strong> em todas as aulas do módulo atual.
-            </p>
-            <p>
-              Isso garante uma progressão mais organizada e ajuda você a absorver o conteúdo na sequência certa.
-            </p>
-            <p>
-              Ao longo do curso, você também encontrará materiais extras em PDF para aprofundar o conteúdo,
-              revisar os pontos mais importantes e aplicar cada aprendizado no seu próprio perfil.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section id="modulos" class="tab-content">
-        <h2 class="section-title">Módulos do curso</h2>
-
-        <div class="module-summary-wrap">
-          <div class="module-summary-card">
-            <h3 id="moduleSummaryTitle">Módulo 1 — Como os sistemas analisam perfils</h3>
-            <p id="moduleSummaryDescription">
-              Entenda como algoritmo, algoritmo e métricas e leitura por palavras-chave impactam sua candidatura.
-            </p>
-            <ul id="moduleSummaryPoints">
-              <li>Entender o que é algoritmo.</li>
-              <li>Ver como o sistema lê seu perfil.</li>
-              <li>Compreender por que perfils são rejeitados.</li>
-              <li>Descobrir o que faz um perfil passar.</li>
-              <li>Identificar erros simples que reduzem suas chances.</li>
-              <li>Aprender a apresentar informações de forma mais estratégica.</li>
-            </ul>
-          </div>
-
-          <div class="module-status-card" id="moduleStatusBox">
-            <h3>Status do módulo</h3>
-            <p>Progresso do módulo carregando...</p>
-          </div>
-        </div>
-
-        <div class="modules-grid" id="modulesCardsContainer">
-          <div class="module-card">
-            <span class="module-tag">Módulo 1</span>
-            <h3>Como a IA lê seu perfil</h3>
-            <p>
-              Entenda o funcionamento dos algoritmo e métricas e como evitar erros básicos.
-              Neste módulo, você vai compreender o que é algoritmo, como esses sistemas organizam,
-              leem e classificam informações do perfil e por que um documento aparentemente
-              bom pode ser descartado antes mesmo de chegar ao recrutador. Você também vai aprender
-              como tornar suas informações mais claras, objetivas e compatíveis com processos seletivos modernos.
-            </p>
-            <img src="./exemplo_modulo_1_perfil.png" alt="Exemplo de perfil do módulo 1" class="module-example-image" style="width:100%; max-width:420px; border-radius:14px; margin-top:16px; display:block; object-fit:cover;">
-            <p style="margin-top:12px;">
-              <strong>Exemplo visual:</strong> neste modelo, o foco está em mostrar um perfil limpo,
-              com títulos claros, seções fáceis de identificar e palavras legíveis para sistemas de triagem.
-            </p>
-          </div>
-
-          <div class="module-card">
-            <span class="module-tag">Módulo 2</span>
-            <h3>Estrutura que chama atenção</h3>
-            <p>
-              Aprenda a organizar suas informações de forma limpa, objetiva e profissional.
-              Aqui você vai ver como montar um perfil visualmente equilibrado, fácil de ler
-              e estrategicamente distribuído. Vamos trabalhar ordem das seções, hierarquia das informações,
-              títulos, resumo profissional, experiências, formação e habilidades, para que o documento fique
-              claro tanto para o sistema quanto para o recrutador humano.
-            </p>
-            <img src="./exemplo_modulo_2_perfil.png" alt="Exemplo de perfil do módulo 2" class="module-example-image" style="width:100%; max-width:420px; border-radius:14px; margin-top:16px; display:block; object-fit:cover;">
-            <p style="margin-top:12px;">
-              <strong>Exemplo visual:</strong> aqui o destaque está na distribuição correta dos blocos,
-              em uma leitura fluida e em uma apresentação mais profissional e organizada.
-            </p>
-          </div>
-
-          <div class="module-card">
-            <span class="module-tag">Módulo 3</span>
-            <h3>Palavras-chave certas</h3>
-            <p>
-              Saiba como adaptar seu perfil para diferentes vagas sem parecer artificial.
-              Neste módulo, você vai aprender a identificar palavras-chave importantes na descrição da vaga,
-              entender como inseri-las no perfil de forma natural e fortalecer a compatibilidade do seu perfil
-              com a oportunidade desejada. A ideia não é copiar e colar termos, mas traduzir sua experiência
-              em uma linguagem mais alinhada ao mercado.
-            </p>
-            <img src="./exemplo_modulo_3_perfil.png" alt="Exemplo de perfil do módulo 3" class="module-example-image" style="width:100%; max-width:420px; border-radius:14px; margin-top:16px; display:block; object-fit:cover;">
-            <p style="margin-top:12px;">
-              <strong>Exemplo visual:</strong> este exemplo mostra um perfil adaptado por vaga,
-              com termos estratégicos distribuídos nas experiências, resumo e competências.
-            </p>
-          </div>
-
-          <div class="module-card locked">
-            <span class="module-tag">Módulo 4</span>
-            <h3>Currículo final estratégico</h3>
-            <p>
-              Monte uma versão mais forte do seu perfil com foco em resultado.
-              Este módulo reúne tudo o que foi visto anteriormente para que você finalize
-              um perfil mais competitivo, revisado e pronto para candidatura. Você vai entender
-              como revisar seu documento, ajustar detalhes finais, fortalecer seu posicionamento profissional
-              e evitar erros que passam despercebidos, mas comprometem sua imagem.
-            </p>
-            <img src="./exemplo_modulo_4_perfil.png" alt="Exemplo de perfil do módulo 4" class="module-example-image" style="width:100%; max-width:420px; border-radius:14px; margin-top:16px; display:block; object-fit:cover;">
-            <p style="margin-top:12px;">
-              <strong>Exemplo visual:</strong> neste modelo final, o perfil já aparece revisado,
-              com melhor posicionamento, foco em resultado e uma leitura mais forte para o recrutador.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section id="aulas" class="tab-content">
-        <h2 class="section-title">Aula em destaque</h2>
-
-        <div class="lesson-detail-grid" id="lessonDetailGrid">
-          <div class="lesson-detail-card" id="lessonTopAnchor">
-            <span class="badge" id="currentModuleLabel">Conteúdo do módulo 1</span>
-            <h3 id="lessonTitle">Aula 1.1: O que é algoritmo</h3>
-            <p id="lessonShortText">
-              Antes de pensar em design, o mais importante é entender como o seu perfil
-              está sendo lido.
-            </p>
-
-            <div class="lesson-actions">
-              <button class="main-btn" id="markLessonBtn">Marcar como concluído</button>
+        <div class="panel">
+          <div class="section-head">
+            <div>
+              <h3 data-i18n="roadmap_title">Roadmap internacional da criadora</h3>
+              <p data-i18n="roadmap_text">Um processo profissional para transformar presença em influência.</p>
             </div>
-
-            <p id="lessonStatusText" style="margin-top: 16px;">Status: conteúdo disponível para conclusão</p>
+            <span class="pill">Creator Growth System</span>
           </div>
 
-          <div class="lesson-content-card" id="lessonContentAnchor">
-            <h3>Conteúdo da aula</h3>
-            <div id="lessonContent">
-              <p>
-                Antes de pensar em design, o mais importante é entender como o seu perfil
-                está sendo lido. Muitas vezes, o problema não está na sua experiência, mas
-                na forma como ela é apresentada.
-              </p>
-              <p>
-                algoritmo é a sigla para Applicant Tracking System, ou seja, um sistema utilizado por muitas empresas
-                para organizar, filtrar e selecionar perfils durante os processos seletivos. Esses sistemas
-                procuram informações específicas, analisam compatibilidade com a vaga e ajudam a priorizar candidatos.
-              </p>
-              <p>
-                Isso significa que um perfil bonito visualmente nem sempre será eficiente. Se ele estiver mal organizado,
-                com excesso de elementos, informações vagas, palavras pouco estratégicas ou experiência mal descrita,
-                ele pode perder força logo na primeira triagem.
-              </p>
-              <p>
-                Nesta aula, você vai entender os erros mais comuns que fazem um perfil perder força no crescimento digital,
-                além de enxergar como pequenos ajustes podem melhorar muito sua apresentação profissional.
-              </p>
-              <p>
-                Você também vai perceber que passar pelo algoritmo não depende de "enganar o sistema", e sim de estruturar
-                seu perfil com clareza, coerência e alinhamento com a vaga desejada. Quando suas informações fazem sentido,
-                a leitura fica mais fácil e a sua candidatura ganha mais chances de avançar.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <details class="trilha-aulas-accordion" style="margin-top: 24px;">
-          <summary class="module-summary-card" style="cursor:pointer;">
-            <h3>Trilha de aulas — Módulo 1</h3>
-            <p>Clique para abrir ou fechar o conteúdo deste módulo.</p>
-          </summary>
-          <div style="margin-top: 14px;">
-            <div class="module-summary-card" style="margin-bottom: 14px;">
-              <p>
-                Este primeiro módulo prepara a base do curso. A ideia é fazer você entender o ambiente em que o perfil será analisado,
-                quais critérios costumam ser usados pelos sistemas de triagem e por que um perfil confuso perde força mesmo quando o candidato é bom.
-              </p>
-              <ul>
-                <li><strong>Aula 1.1:</strong> O que é algoritmo e como ele participa do crescimento digital.</li>
-                <li><strong>Aula 1.2:</strong> Como o sistema identifica cargos, datas, palavras-chave e compatibilidade.</li>
-                <li><strong>Aula 1.3:</strong> Erros que atrapalham leitura automática, como excesso de design, elementos soltos e textos genéricos.</li>
-                <li><strong>Aula 1.4:</strong> O que deixa um perfil mais legível, mais forte e mais estratégico para triagem.</li>
-              </ul>
-            </div>
-
-            <div class="module-status-card">
-              <h3>Aplicação prática</h3>
-              <p>
-                Ao terminar este módulo, o aluno já deve conseguir olhar para o próprio perfil e identificar o que pode estar atrapalhando a leitura,
-                a organização das informações e a compatibilidade com vagas.
-              </p>
-            </div>
-          </div>
-        </details>
-
-        <details class="trilha-aulas-accordion" style="margin-top: 24px;">
-          <summary class="module-summary-card" style="cursor:pointer;">
-            <h3>Trilha de aulas — Módulo 2</h3>
-            <p>Clique para abrir ou fechar o conteúdo deste módulo.</p>
-          </summary>
-          <div style="margin-top: 14px;">
-            <div class="module-summary-card" style="margin-bottom: 14px;">
-              <p>
-                No segundo módulo, o foco é organizar o perfil como um documento profissional. Aqui o aluno entende onde cada informação deve ficar,
-                como estruturar os blocos principais e como tornar a leitura mais fluida para recrutadores e sistemas.
-              </p>
-              <ul>
-                <li><strong>Aula 2.1:</strong> Ordem ideal das seções e o que deve aparecer primeiro.</li>
-                <li><strong>Aula 2.2:</strong> Como escrever um resumo profissional objetivo e convincente.</li>
-                <li><strong>Aula 2.3:</strong> Como descrever experiências sem parecer genérico.</li>
-                <li><strong>Aula 2.4:</strong> Como posicionar formação, cursos, habilidades e dados complementares.</li>
-              </ul>
-            </div>
-
-            <div class="module-status-card">
-              <h3>R$ 39,99esultado esperado</h3>
-              <p>
-                Ao fim deste módulo, o aluno já terá uma estrutura-base mais limpa, mais clara e pronta para ser refinada com foco em vaga.
-              </p>
-            </div>
-          </div>
-        </details>
-
-        <details class="trilha-aulas-accordion" style="margin-top: 24px;">
-          <summary class="module-summary-card" style="cursor:pointer;">
-            <h3>Trilha de aulas — Módulo 3</h3>
-            <p>Clique para abrir ou fechar o conteúdo deste módulo.</p>
-          </summary>
-          <div style="margin-top: 14px;">
-            <div class="module-summary-card" style="margin-bottom: 14px;">
-              <p>
-                Neste módulo, o conteúdo aprofunda a adaptação estratégica do perfil. O aluno aprende a ler a vaga com atenção,
-                identificar palavras importantes e transformar a experiência já vivida em uma comunicação mais compatível com o mercado.
-              </p>
-              <ul>
-                <li><strong>Aula 3.1:</strong> Como analisar uma descrição de vaga com olhar estratégico.</li>
-                <li><strong>Aula 3.2:</strong> Como identificar palavras-chave importantes sem exagero.</li>
-                <li><strong>Aula 3.3:</strong> Como adaptar resumo, experiências e habilidades para cada oportunidade.</li>
-                <li><strong>Aula 3.4:</strong> Como evitar exagero, repetição e linguagem artificial.</li>
-              </ul>
-            </div>
-
-            <div class="module-status-card">
-              <h3>R$ 39,99esultado esperado</h3>
-              <p>
-                Ao concluir esta etapa, o aluno conseguirá personalizar o perfil para diferentes vagas com mais inteligência e naturalidade.
-              </p>
-            </div>
-          </div>
-        </details>
-
-        <details class="trilha-aulas-accordion" style="margin-top: 24px;">
-          <summary class="module-summary-card" style="cursor:pointer;">
-            <h3>Trilha de aulas — Módulo 4</h3>
-            <p>Clique para abrir ou fechar o conteúdo deste módulo.</p>
-          </summary>
-          <div style="margin-top: 14px;">
-            <div class="module-summary-card" style="margin-bottom: 14px;">
-              <p>
-                O quarto módulo fecha o curso com revisão estratégica. É o momento de consolidar todo o aprendizado, revisar o perfil com olhar crítico,
-                fortalecer a apresentação final e preparar o documento para candidatura real.
-              </p>
-              <ul>
-                <li><strong>Aula 4.1:</strong> R$ 39,99evisão completa do perfil antes do envio.</li>
-                <li><strong>Aula 4.2:</strong> Ajustes finais de clareza, objetividade e posicionamento profissional.</li>
-                <li><strong>Aula 4.3:</strong> Como transformar atividades em valor percebido.</li>
-                <li><strong>Aula 4.4:</strong> Checklist final para envio com mais segurança.</li>
-              </ul>
-            </div>
-
-            <div class="module-status-card">
-              <h3>R$ 39,99esultado esperado</h3>
-              <p>
-                Ao final do curso, o aluno terá um perfil mais forte, melhor estruturado, mais compatível com vagas reais e com maior potencial de avançar.
-              </p>
-            </div>
-          </div>
-        </details>
-
-        <div class="lesson-list" id="lessonListContainer">
-          <div class="lesson-item">
-            <h4>Aula 1</h4>
-            <p>O que faz um perfil ser ignorado e quais erros mais afastam sua candidatura da próxima etapa.</p>
-          </div>
-          <div class="lesson-item">
-            <h4>Aula 2</h4>
-            <p>Como estruturar seu perfil com clareza, lógica e ordem para facilitar a leitura do sistema e do recrutador.</p>
-          </div>
-          <div class="lesson-item">
-            <h4>Aula 3</h4>
-            <p>Como usar palavras-chave a seu favor sem deixar o texto artificial, repetitivo ou forçado.</p>
-          </div>
-          <div class="lesson-item">
-            <h4>Aula 4</h4>
-            <p>Como destacar experiências, resultados e competências de forma mais estratégica e valorizada pelo mercado.</p>
-          </div>
-          <div class="lesson-item">
-            <h4>Aula 5</h4>
-            <p>R$ 39,99evisão prática do perfil: o que manter, o que cortar e o que ajustar antes de começar a enviar.</p>
-          </div>
-        </div>
-      </section>
-
-      <section id="materiais" class="tab-content">
-        <h2 class="section-title">Materiais de apoio</h2>
-
-        <div class="materials-grid">
-          <div class="material-card">
-            <h3>Checklist</h3>
-            <p>Uma lista prática para revisar seu perfil antes de enviar.</p>
-            <a class="secondary-btn" href="./checklist_perfil_cvia.pdf" target="_blank">Baixar</a>
-          </div>
-
-          <div class="material-card">
-            <h3>Modelo base</h3>
-            <p>Estrutura inicial para você adaptar ao seu objetivo profissional.</p>
-            <a class="secondary-btn" href="./modelo_base_perfil_cvia.pdf" target="_blank">Baixar</a>
-          </div>
-
-          <div class="material-card">
-            <h3>Guia rápido</h3>
-            <p>R$ 39,99esumo com pontos essenciais para fortalecer sua candidatura.</p>
-            <a class="secondary-btn" href="./guia_rapido_perfil_cvia.pdf" target="_blank">Baixar</a>
-          </div>
-
-          <div class="material-card">
-            <h3>PDF do Módulo 1</h3>
-            <p>Material complementar com explicação detalhada sobre algoritmo, triagem automática e leitura estratégica do perfil.</p>
-            <a class="secondary-btn" href="./modulo_1_como_a_ia_le_perfil.pdf" target="_blank">Baixar</a>
-          </div>
-
-          <div class="material-card">
-            <h3>PDF do Módulo 2</h3>
-            <p>Guia de organização do perfil com foco em clareza, hierarquia de informações e apresentação profissional.</p>
-            <a class="secondary-btn" href="./modulo_2_estrutura_que_chama_atencao.pdf" target="_blank">Baixar</a>
-          </div>
-
-          <div class="material-card">
-            <h3>PDF do Módulo 3</h3>
-            <p>Explicação prática sobre uso de palavras-chave, adaptação por vaga e fortalecimento da compatibilidade do perfil.</p>
-            <a class="secondary-btn" href="./modulo_3_palavras_chave_certas.pdf" target="_blank">Baixar</a>
-          </div>
-
-          <div class="material-card">
-            <h3>PDF do Módulo 4</h3>
-            <p>Material final para revisão estratégica, ajustes de posicionamento e finalização do perfil.</p>
-            <a class="secondary-btn" href="./modulo_4_perfil_final_estrategico.pdf" target="_blank">Baixar</a>
-          </div>
-        </div>
-
-        <div class="module-summary-wrap" style="margin-top: 24px;">
-          <div class="module-summary-card">
-            <h3>Como usar os materiais</h3>
-            <p>
-              Os materiais desta área foram pensados para complementar as aulas e facilitar sua aplicação prática.
-              Você pode usar os PDFs para revisar conceitos, organizar o perfil por etapas e consultar sempre que surgir dúvida.
-            </p>
-            <ul>
-              <li>Use o checklist antes de enviar seu perfil.</li>
-              <li>Use o modelo base como referência estrutural.</li>
-              <li>Use os PDFs dos módulos para aprofundar o conteúdo de cada etapa.</li>
-              <li>R$ 39,99evise os materiais sempre que adaptar o perfil para uma nova vaga.</li>
-            </ul>
-          </div>
-
-          <div class="module-status-card">
-            <h3>Dica de aplicação</h3>
-            <p>
-              Não tente fazer tudo de uma vez. O ideal é revisar módulo por módulo, aplicar os ajustes no perfil
-              e só depois avançar para a próxima etapa. Assim, o seu documento evolui com mais consistência.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section id="perfil" class="tab-content">
-        <h2 class="section-title">Seu perfil</h2>
-
-        <div class="profile-card">
-          <p><strong>Nome:</strong> <span id="perfilNome">-</span></p>
-          <p><strong>E-mail:</strong> <span id="perfilEmail">-</span></p>
-          <p><strong>Celular:</strong> <span id="perfilCelular">-</span></p>
-          <p><strong>Data de nascimento:</strong> <span id="perfilNascimento">-</span></p>
-          <p><strong>Área de interesse:</strong> <span id="perfilArea">-</span></p>
-        </div>
-      </section>
-
-      <!-- Modal de Conclusão do Curso -->
-      <div id="completionModal" class="completion-modal" style="display: none;">
-        <div class="completion-overlay"></div>
-        <div class="completion-card">
-          <div class="completion-header">
-            <div class="completion-icon">🎉</div>
-            <h2>Parabéns!</h2>
-            <p class="completion-subtitle">Você completou o curso com sucesso!</p>
-          </div>
-
-          <div class="completion-content">
-            <div class="completion-message">
-              <h3>Você finalizou todos os módulos do curso</h3>
-              <p>
-                Você completou a jornada de aprendizado e agora possui todo o conhecimento necessário 
-                para estruturar um perfil estratégico e competitivo. Excelente trabalho!
-              </p>
-            </div>
-
-            <div class="completion-features">
-              <div class="feature-item">
-                <span class="feature-icon">📚</span>
+          <div class="split">
+            <div class="roadmap">
+              <div class="roadmap-item">
+                <div class="roadmap-number">01</div>
                 <div>
-                  <h4>Acesso ao conteúdo</h4>
-                  <p>Todo o conteúdo do curso permanece disponível para consulta sempre que precisar.</p>
+                  <h4 data-i18n="road_1_title">Clareza de marca</h4>
+                  <p data-i18n="road_1_text">Defina nicho, público, promessa, linguagem e posicionamento visual.</p>
                 </div>
               </div>
-
-              <div class="feature-item">
-                <span class="feature-icon">📄</span>
+              <div class="roadmap-item">
+                <div class="roadmap-number">02</div>
                 <div>
-                  <h4>Materiais de apoio</h4>
-                  <p>Acesse checklists, modelos e guias práticos na seção de Materiais.</p>
+                  <h4 data-i18n="road_2_title">Produção com método</h4>
+                  <p data-i18n="road_2_text">Transforme ideias em roteiros, gravações, edições e posts com intenção.</p>
                 </div>
               </div>
-
-              <div class="feature-item">
-                <span class="feature-icon">🚀</span>
+              <div class="roadmap-item">
+                <div class="roadmap-number">03</div>
                 <div>
-                  <h4>Em breve</h4>
-                  <p>Estamos preparando novos conteúdos e módulos avançados para você.</p>
+                  <h4 data-i18n="road_3_title">Crescimento e leitura de dados</h4>
+                  <p data-i18n="road_3_text">Use insights para identificar o que funciona e repetir formatos vencedores.</p>
+                </div>
+              </div>
+              <div class="roadmap-item">
+                <div class="roadmap-number">04</div>
+                <div>
+                  <h4 data-i18n="road_4_title">Autoridade e monetização</h4>
+                  <p data-i18n="road_4_text">Organize sua imagem para atrair parcerias, oportunidades e comunidade.</p>
                 </div>
               </div>
             </div>
 
-            <div class="completion-actions">
-              <button class="completion-btn primary" onclick="goToMaterials()">
-                Explorar Materiais
-              </button>
-              <button class="completion-btn secondary" onclick="closeCompletionModal()">
-                Voltar ao Início
-              </button>
+            <div class="mock-screen">
+              <div class="mock-top"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+              <div class="mock-body">
+                <div class="mock-row">
+                  <div class="mock-avatar"></div>
+                  <div>
+                    <div class="mock-line long"></div>
+                    <div class="mock-line short"></div>
+                  </div>
+                  <span class="mock-tag">BIO</span>
+                </div>
+                <div class="mock-row">
+                  <div class="mock-avatar"></div>
+                  <div>
+                    <div class="mock-line long"></div>
+                    <div class="mock-line short"></div>
+                  </div>
+                  <span class="mock-tag">REELS</span>
+                </div>
+                <div class="mock-row">
+                  <div class="mock-avatar"></div>
+                  <div>
+                    <div class="mock-line long"></div>
+                    <div class="mock-line short"></div>
+                  </div>
+                  <span class="mock-tag">INSIGHTS</span>
+                </div>
+                <div class="mock-row">
+                  <div class="mock-avatar"></div>
+                  <div>
+                    <div class="mock-line long"></div>
+                    <div class="mock-line short"></div>
+                  </div>
+                  <span class="mock-tag">GROWTH</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="view" id="view-modules">
+        <div class="hero">
+          <span class="eyebrow" data-i18n="modules_eyebrow">Professional creator curriculum</span>
+          <h2 data-i18n="modules_title">10 módulos completos com 8 conteúdos em cada etapa.</h2>
+          <p data-i18n="modules_text">A trilha foi desenhada para uma evolução profissional: identidade, conteúdo, gravação, edição, métricas, IA, rotina, autoridade e monetização.</p>
+        </div>
+
+        <div class="panel">
+          <div class="section-head">
+            <div>
+              <h3 data-i18n="modules_list_title">Trilha de módulos</h3>
+              <p data-i18n="modules_list_text">80 conteúdos práticos para estudar, aplicar e revisar.</p>
+            </div>
+            <span class="pill">10 x 8 lessons</span>
+          </div>
+
+          <div class="module-grid" id="modulesGrid"></div>
+        </div>
+      </section>
+
+      <section class="view" id="view-tools">
+        <div class="hero">
+          <span class="eyebrow" data-i18n="tools_eyebrow">Toolstack for creators</span>
+          <h2 data-i18n="tools_title">Prints explicativos e ferramentas para produzir como profissional.</h2>
+          <p data-i18n="tools_text">Aqui você encontra guias visuais simulando telas de Instagram, Canva, CapCut, IA para vídeo, métricas e organização de conteúdo.</p>
+        </div>
+
+        <div class="panel">
+          <div class="section-head">
+            <div>
+              <h3 data-i18n="tools_list_title">Guias de ferramentas</h3>
+              <p data-i18n="tools_list_text">Passo a passo visual para aplicar no seu dia a dia.</p>
+            </div>
+            <span class="pill">visual playbooks</span>
+          </div>
+
+          <div class="tool-grid" id="toolsGrid"></div>
+        </div>
+      </section>
+
+      <section class="view" id="view-lessons">
+        <div class="hero">
+          <span class="eyebrow" data-i18n="lessons_eyebrow">Weekly masterclasses</span>
+          <h2 data-i18n="lessons_title">6 aulas principais para acelerar sua evolução.</h2>
+          <p data-i18n="lessons_text">Cada aula foi pensada para resolver um ponto importante da jornada de uma criadora: estratégia, vídeo, edição, estética, métricas e monetização.</p>
+        </div>
+
+        <div class="panel">
+          <div class="section-head">
+            <div>
+              <h3 data-i18n="lessons_list_title">Aulas disponíveis</h3>
+              <p data-i18n="lessons_list_text">Conteúdo organizado para estudar em sequência.</p>
+            </div>
+            <span class="pill">6 classes</span>
+          </div>
+
+          <div class="lesson-grid" id="lessonsGrid"></div>
+        </div>
+      </section>
+
+      <section class="view" id="view-materials">
+        <div class="hero">
+          <span class="eyebrow" data-i18n="materials_eyebrow">Downloads and templates</span>
+          <h2 data-i18n="materials_title">Materiais premium para aplicar o conteúdo.</h2>
+          <p data-i18n="materials_text">Checklists, roteiros, planners, mapas e modelos para tirar o aprendizado do papel e levar para seu perfil.</p>
+        </div>
+
+        <div class="panel">
+          <div class="section-head">
+            <div>
+              <h3 data-i18n="materials_list_title">Biblioteca de materiais</h3>
+              <p data-i18n="materials_list_text">Guias de apoio para execução prática.</p>
+            </div>
+            <span class="pill">resources library</span>
+          </div>
+
+          <div class="material-grid" id="materialsGrid"></div>
+        </div>
+      </section>
+
+      <section class="view" id="view-profile">
+        <div class="hero">
+          <span class="eyebrow" data-i18n="profile_eyebrow">Student profile</span>
+          <h2 data-i18n="profile_title">Seu perfil dentro da Influencer Academy.</h2>
+          <p data-i18n="profile_text">Acompanhe seus dados, status de acesso e meta sugerida para continuar evoluindo como criadora.</p>
+        </div>
+
+        <div class="panel">
+          <div class="section-head">
+            <div>
+              <h3 data-i18n="profile_data_title">Dados da aluna</h3>
+              <p data-i18n="profile_data_text">Informações principais do seu acesso.</p>
             </div>
           </div>
 
-          <div class="completion-footer">
-            <p>Obrigado por confiar em nosso curso! Continue desenvolvendo seu potencial! 💪</p>
+          <div class="profile-grid">
+            <div class="info-box">
+              <h4 data-i18n="profile_box_1">Conta</h4>
+              <div class="info-line"><span data-i18n="name_label">Nome</span><strong id="profileName">Aluna Premium</strong></div>
+              <div class="info-line"><span data-i18n="email_label">E-mail</span><strong id="profileEmail">email@exemplo.com</strong></div>
+              <div class="info-line"><span data-i18n="course_label">Curso</span><strong>Influencer Academy</strong></div>
+              <div class="info-line"><span data-i18n="access_label">Acesso</span><strong data-i18n="approved_label">Liberado</strong></div>
+            </div>
+
+            <div class="info-box">
+              <h4 data-i18n="profile_box_2">Plano sugerido</h4>
+              <div class="info-line"><span data-i18n="phase_label">Fase atual</span><strong data-i18n="phase_value">Construção de base</strong></div>
+              <div class="info-line"><span data-i18n="goal_label">Meta</span><strong data-i18n="goal_value">Primeiros 5 mil seguidores</strong></div>
+              <div class="info-line"><span data-i18n="tool_label">Ferramenta-chave</span><strong>Canva + CapCut</strong></div>
+              <div class="info-line"><span data-i18n="habit_label">Hábito</span><strong data-i18n="habit_value">1 conteúdo por dia</strong></div>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
     </main>
   </div>
 
-  <script src="notifications.js"></script>
-  <script src="area.js"></script>
+  <script>
+    const translations = {
+      pt:{
+        sidebar_subtitle:"Área internacional",
+        nav_home:"Início", nav_modules:"Módulos", nav_tools:"Ferramentas", nav_lessons:"Aulas", nav_materials:"Materiais", nav_profile:"Perfil",
+        focus_today:"Foco de hoje", focus_text:"Transforme ideias soltas em conteúdo com método: gancho, roteiro, gravação, edição e publicação.",
+        access_ok:"● acesso liberado", logout:"Sair",
+        home_eyebrow:"Welcome to your creator studio",
+        home_title:"Sua jornada para se tornar uma <span>influencer estratégica</span> começa aqui.",
+        home_text:"Aprenda a criar conteúdo com clareza, gravar com qualidade, editar com estética, entender métricas e usar ferramentas como Instagram, Canva, CapCut e IA para acelerar sua produção.",
+        home_cta_1:"Começar pelos módulos", home_cta_2:"Ver prints e ferramentas",
+        metric_1_label:"módulos", metric_1_text:"Cada módulo possui 8 conteúdos práticos para aplicar no perfil.",
+        metric_2_label:"aulas guiadas", metric_2_text:"Aulas principais para acompanhar a evolução da sua presença digital.",
+        metric_3_label:"ferramentas", metric_3_text:"Instagram, Canva, CapCut, IA de vídeo, métricas e rotina de produção.",
+        metric_4_label:"idiomas", metric_4_text:"Conteúdo organizado em português, inglês e espanhol.",
+        roadmap_title:"Roadmap internacional da criadora", roadmap_text:"Um processo profissional para transformar presença em influência.",
+        road_1_title:"Clareza de marca", road_1_text:"Defina nicho, público, promessa, linguagem e posicionamento visual.",
+        road_2_title:"Produção com método", road_2_text:"Transforme ideias em roteiros, gravações, edições e posts com intenção.",
+        road_3_title:"Crescimento e leitura de dados", road_3_text:"Use insights para identificar o que funciona e repetir formatos vencedores.",
+        road_4_title:"Autoridade e monetização", road_4_text:"Organize sua imagem para atrair parcerias, oportunidades e comunidade.",
+        modules_eyebrow:"Professional creator curriculum", modules_title:"10 módulos completos com 8 conteúdos em cada etapa.", modules_text:"A trilha foi desenhada para uma evolução profissional: identidade, conteúdo, gravação, edição, métricas, IA, rotina, autoridade e monetização.",
+        modules_list_title:"Trilha de módulos", modules_list_text:"80 conteúdos práticos para estudar, aplicar e revisar.",
+        tools_eyebrow:"Toolstack for creators", tools_title:"Prints explicativos e ferramentas para produzir como profissional.", tools_text:"Aqui você encontra guias visuais simulando telas de Instagram, Canva, CapCut, IA para vídeo, métricas e organização de conteúdo.",
+        tools_list_title:"Guias de ferramentas", tools_list_text:"Passo a passo visual para aplicar no seu dia a dia.",
+        lessons_eyebrow:"Weekly masterclasses", lessons_title:"6 aulas principais para acelerar sua evolução.", lessons_text:"Cada aula foi pensada para resolver um ponto importante da jornada de uma criadora: estratégia, vídeo, edição, estética, métricas e monetização.",
+        lessons_list_title:"Aulas disponíveis", lessons_list_text:"Conteúdo organizado para estudar em sequência.",
+        materials_eyebrow:"Downloads and templates", materials_title:"Materiais premium para aplicar o conteúdo.", materials_text:"Checklists, roteiros, planners, mapas e modelos para tirar o aprendizado do papel e levar para seu perfil.",
+        materials_list_title:"Biblioteca de materiais", materials_list_text:"Guias de apoio para execução prática.",
+        profile_eyebrow:"Student profile", profile_title:"Seu perfil dentro da Influencer Academy.", profile_text:"Acompanhe seus dados, status de acesso e meta sugerida para continuar evoluindo como criadora.",
+        profile_data_title:"Dados da aluna", profile_data_text:"Informações principais do seu acesso.",
+        profile_box_1:"Conta", profile_box_2:"Plano sugerido", name_label:"Nome", email_label:"E-mail", course_label:"Curso", access_label:"Acesso", approved_label:"Liberado",
+        phase_label:"Fase atual", phase_value:"Construção de base", goal_label:"Meta", goal_value:"Primeiros 5 mil seguidores", tool_label:"Ferramenta-chave", habit_label:"Hábito", habit_value:"1 conteúdo por dia"
+      },
+      en:{
+        sidebar_subtitle:"International area",
+        nav_home:"Home", nav_modules:"Modules", nav_tools:"Tools", nav_lessons:"Lessons", nav_materials:"Resources", nav_profile:"Profile",
+        focus_today:"Today’s focus", focus_text:"Turn loose ideas into content with a method: hook, script, recording, editing and publishing.",
+        access_ok:"● access granted", logout:"Log out",
+        home_eyebrow:"Welcome to your creator studio",
+        home_title:"Your journey to becoming a <span>strategic influencer</span> starts here.",
+        home_text:"Learn to create with clarity, record with quality, edit with aesthetics, read metrics and use tools like Instagram, Canva, CapCut and AI to speed up your production.",
+        home_cta_1:"Start with modules", home_cta_2:"View tools and mockups",
+        metric_1_label:"modules", metric_1_text:"Each module includes 8 practical lessons to apply to your profile.",
+        metric_2_label:"guided classes", metric_2_text:"Main classes to support your digital presence evolution.",
+        metric_3_label:"tools", metric_3_text:"Instagram, Canva, CapCut, AI video, metrics and production workflow.",
+        metric_4_label:"languages", metric_4_text:"Content organized in Portuguese, English and Spanish.",
+        roadmap_title:"International creator roadmap", roadmap_text:"A professional process to transform presence into influence.",
+        road_1_title:"Brand clarity", road_1_text:"Define niche, audience, promise, language and visual positioning.",
+        road_2_title:"Method-based production", road_2_text:"Turn ideas into scripts, recordings, edits and intentional posts.",
+        road_3_title:"Growth and data reading", road_3_text:"Use insights to identify what works and repeat winning formats.",
+        road_4_title:"Authority and monetization", road_4_text:"Organize your image to attract partnerships, opportunities and community.",
+        modules_eyebrow:"Professional creator curriculum", modules_title:"10 complete modules with 8 lessons in each stage.", modules_text:"The path was designed for professional evolution: identity, content, recording, editing, metrics, AI, routine, authority and monetization.",
+        modules_list_title:"Module path", modules_list_text:"80 practical lessons to study, apply and review.",
+        tools_eyebrow:"Toolstack for creators", tools_title:"Visual mockups and tools to produce like a professional.", tools_text:"Here you’ll find visual guides simulating Instagram, Canva, CapCut, video AI, metrics and content organization screens.",
+        tools_list_title:"Tool guides", tools_list_text:"Visual step-by-step guides to apply in your daily workflow.",
+        lessons_eyebrow:"Weekly masterclasses", lessons_title:"6 main classes to accelerate your evolution.", lessons_text:"Each class solves an important part of a creator’s journey: strategy, video, editing, aesthetics, metrics and monetization.",
+        lessons_list_title:"Available classes", lessons_list_text:"Content organized to study in sequence.",
+        materials_eyebrow:"Downloads and templates", materials_title:"Premium resources to apply the content.", materials_text:"Checklists, scripts, planners, maps and templates to turn learning into action.",
+        materials_list_title:"Resource library", materials_list_text:"Support guides for practical execution.",
+        profile_eyebrow:"Student profile", profile_title:"Your profile inside Influencer Academy.", profile_text:"Track your data, access status and suggested goal to keep evolving as a creator.",
+        profile_data_title:"Student data", profile_data_text:"Main information about your access.",
+        profile_box_1:"Account", profile_box_2:"Suggested plan", name_label:"Name", email_label:"Email", course_label:"Course", access_label:"Access", approved_label:"Granted",
+        phase_label:"Current phase", phase_value:"Base building", goal_label:"Goal", goal_value:"First 5K followers", tool_label:"Key tool", habit_label:"Habit", habit_value:"1 content per day"
+      },
+      es:{
+        sidebar_subtitle:"Área internacional",
+        nav_home:"Inicio", nav_modules:"Módulos", nav_tools:"Herramientas", nav_lessons:"Clases", nav_materials:"Materiales", nav_profile:"Perfil",
+        focus_today:"Foco de hoy", focus_text:"Convierte ideas sueltas en contenido con método: gancho, guion, grabación, edición y publicación.",
+        access_ok:"● acceso liberado", logout:"Salir",
+        home_eyebrow:"Welcome to your creator studio",
+        home_title:"Tu camino para convertirte en una <span>influencer estratégica</span> empieza aquí.",
+        home_text:"Aprende a crear contenido con claridad, grabar con calidad, editar con estética, leer métricas y usar herramientas como Instagram, Canva, CapCut e IA para acelerar tu producción.",
+        home_cta_1:"Empezar por módulos", home_cta_2:"Ver herramientas y ejemplos",
+        metric_1_label:"módulos", metric_1_text:"Cada módulo tiene 8 contenidos prácticos para aplicar en tu perfil.",
+        metric_2_label:"clases guiadas", metric_2_text:"Clases principales para acompañar la evolución de tu presencia digital.",
+        metric_3_label:"herramientas", metric_3_text:"Instagram, Canva, CapCut, IA de video, métricas y rutina de producción.",
+        metric_4_label:"idiomas", metric_4_text:"Contenido organizado en portugués, inglés y español.",
+        roadmap_title:"Roadmap internacional de creadora", roadmap_text:"Un proceso profesional para transformar presencia en influencia.",
+        road_1_title:"Claridad de marca", road_1_text:"Define nicho, público, promesa, lenguaje y posicionamiento visual.",
+        road_2_title:"Producción con método", road_2_text:"Convierte ideas en guiones, grabaciones, ediciones y publicaciones con intención.",
+        road_3_title:"Crecimiento y datos", road_3_text:"Usa insights para identificar qué funciona y repetir formatos ganadores.",
+        road_4_title:"Autoridad y monetización", road_4_text:"Organiza tu imagen para atraer alianzas, oportunidades y comunidad.",
+        modules_eyebrow:"Professional creator curriculum", modules_title:"10 módulos completos con 8 contenidos en cada etapa.", modules_text:"La ruta fue diseñada para una evolución profesional: identidad, contenido, grabación, edición, métricas, IA, rutina, autoridad y monetización.",
+        modules_list_title:"Ruta de módulos", modules_list_text:"80 contenidos prácticos para estudiar, aplicar y revisar.",
+        tools_eyebrow:"Toolstack for creators", tools_title:"Ejemplos visuales y herramientas para producir como profesional.", tools_text:"Aquí encontrarás guías visuales simulando pantallas de Instagram, Canva, CapCut, IA para video, métricas y organización de contenido.",
+        tools_list_title:"Guías de herramientas", tools_list_text:"Paso a paso visual para aplicar en tu rutina.",
+        lessons_eyebrow:"Weekly masterclasses", lessons_title:"6 clases principales para acelerar tu evolución.", lessons_text:"Cada clase resuelve una parte importante del camino de una creadora: estrategia, video, edición, estética, métricas y monetización.",
+        lessons_list_title:"Clases disponibles", lessons_list_text:"Contenido organizado para estudiar en secuencia.",
+        materials_eyebrow:"Downloads and templates", materials_title:"Materiales premium para aplicar el contenido.", materials_text:"Checklists, guiones, planners, mapas y modelos para llevar el aprendizaje a la práctica.",
+        materials_list_title:"Biblioteca de materiales", materials_list_text:"Guías de apoyo para ejecución práctica.",
+        profile_eyebrow:"Student profile", profile_title:"Tu perfil dentro de Influencer Academy.", profile_text:"Acompaña tus datos, estado de acceso y meta sugerida para seguir evolucionando como creadora.",
+        profile_data_title:"Datos de la alumna", profile_data_text:"Información principal de tu acceso.",
+        profile_box_1:"Cuenta", profile_box_2:"Plan sugerido", name_label:"Nombre", email_label:"E-mail", course_label:"Curso", access_label:"Acceso", approved_label:"Liberado",
+        phase_label:"Fase actual", phase_value:"Construcción de base", goal_label:"Meta", goal_value:"Primeros 5 mil seguidores", tool_label:"Herramienta clave", habit_label:"Hábito", habit_value:"1 contenido por día"
+      }
+    };
+
+    const modules = [
+      ["01","Posicionamento e nicho","Defina com clareza o espaço que você quer ocupar e para quem deseja comunicar.","Brand Positioning"],
+      ["02","Bio, estética e primeira impressão","Transforme seu perfil em uma vitrine clara, bonita e confiável.","Profile Design"],
+      ["03","Ideias e pilares de conteúdo","Organize temas para nunca mais depender apenas de inspiração.","Content Pillars"],
+      ["04","Reels com gancho e retenção","Aprenda a prender atenção nos primeiros segundos e manter a audiência.","Reels System"],
+      ["05","Stories para conexão","Use stories para criar relacionamento, desejo e confiança.","Stories Flow"],
+      ["06","Canva para identidade visual","Crie posts, capas, stories e carrosséis com cara profissional.","Canva Studio"],
+      ["07","CapCut para edição dinâmica","Edite vídeos com cortes, ritmo, legendas e acabamento visual.","CapCut Editing"],
+      ["08","IA para roteiro e vídeo","Use IA para ideias, roteiros, cenas, prompts e otimização de produção.","AI Workflow"],
+      ["09","Métricas e crescimento","Leia dados e transforme insights em decisões de conteúdo.","Analytics"],
+      ["10","Monetização e parcerias","Organize sua imagem para atrair marcas, collabs e oportunidades.","Business"]
+    ];
+
+    const lessonTitles = [
+      "Diagnóstico inicial e objetivo da etapa",
+      "Mapa prático do que ajustar primeiro",
+      "Erros comuns que travam o crescimento",
+      "Checklist de aplicação no perfil",
+      "Exemplo visual de antes e depois",
+      "Rotina prática para publicar melhor",
+      "Como medir se funcionou",
+      "Tarefa final do módulo"
+    ];
+
+    const tools = [
+      ["Instagram","Como transformar seu perfil em uma vitrine estratégica",["Ajuste bio, foto, nome e destaques.","Defina seus pilares de conteúdo.","Publique Reels com gancho e CTA.","Leia insights e repita formatos vencedores."]],
+      ["Canva","Crie uma identidade visual premium sem parecer genérica",["Escolha uma paleta e duas fontes.","Monte capas de Reels e posts 4:5.","Crie stories com CTA e intenção.","Salve templates para manter consistência."]],
+      ["CapCut","Edite vídeos mais dinâmicos com acabamento profissional",["Corte pausas e erros.","Adicione zooms e movimentos sutis.","Use legenda automática com destaque.","Exporte na qualidade ideal para Reels."]],
+      ["IA de vídeo","Use IA para destravar ideias, roteiros e cenas",["Gere ideias com base no seu nicho.","Transforme a ideia em roteiro curto.","Crie prompts para cenas e referências.","Use IA como apoio, sem perder identidade."]],
+      ["Métricas","Transforme números em decisão de conteúdo",["Analise alcance e retenção.","Observe salvamentos e compartilhamentos.","Separe formatos vencedores.","Monte o próximo calendário com base em dados."]],
+      ["Workflow","Organize produção para postar com consistência",["Planeje o tema da semana.","Grave em lote.","Edite com modelos salvos.","Agende e revise resultados."]]
+    ];
+
+    const classes = [
+      ["Do zero aos primeiros 1.000","Como construir uma base sólida sem se perder em tendências vazias.","42 min","iniciante"],
+      ["Reels que seguram atenção","Estrutura de gancho, promessa, desenvolvimento e CTA para vídeos curtos.","38 min","conteúdo"],
+      ["Canva visual premium","Como criar capas, stories e carrosséis com estética de marca.","31 min","design"],
+      ["CapCut profissional no celular","Cortes, ritmo, legenda, zoom e exportação para redes sociais.","36 min","edição"],
+      ["IA para acelerar produção","Prompts para ideias, roteiros, cenas, legendas e planejamento.","29 min","ia"],
+      ["Mídia kit e parcerias","Como começar a se apresentar para marcas com organização e valor.","44 min","monetização"]
+    ];
+
+    const materials = [
+      ["📌","Checklist de perfil estratégico","Bio, nome, foto, destaques, promessa e ajustes de credibilidade.","PDF"],
+      ["🎬","Roteiro de Reels com retenção","Modelo de gancho, desenvolvimento, virada e chamada para ação.","Template"],
+      ["🗓️","Planner de 30 dias de conteúdo","Calendário para organizar temas, formatos e rotina de publicação.","Planner"],
+      ["🎨","Guia visual Canva","Paleta, fonte, capa de Reels, stories e carrosséis 4:5.","Design"],
+      ["✂️","Checklist CapCut","Cortes, legenda, ritmo, zoom, áudio e exportação ideal.","Edição"],
+      ["🤖","Prompts de IA para criadoras","Ideias, roteiros, cenas, legendas e análise de perfil com IA.","Prompts"],
+      ["📈","Mapa de métricas","O que olhar nos insights e como transformar dados em decisão.","Analytics"],
+      ["💼","Mini mídia kit inicial","Estrutura simples para apresentar seu perfil a marcas e negócios.","Business"]
+    ];
+
+    function renderModules(){
+      const grid = document.getElementById("modulesGrid");
+      grid.innerHTML = modules.map((m, index) => `
+        <article class="module-card">
+          <div class="module-cover">
+            <span>${m[3]}</span>
+            <strong>${m[0]} · ${m[1]}</strong>
+          </div>
+          <div class="module-body">
+            <h4>${m[1]}</h4>
+            <p>${m[2]}</p>
+            <div class="lesson-list">
+              ${lessonTitles.map((title, i) => `
+                <div class="mini-lesson">
+                  <b>${i+1}</b>
+                  <span><strong>${title}:</strong> aplicação prática para ${m[1].toLowerCase()} com exemplos, exercícios e revisão de execução.</span>
+                </div>
+              `).join("")}
+            </div>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function renderTools(){
+      const grid = document.getElementById("toolsGrid");
+      grid.innerHTML = tools.map((t) => `
+        <article class="tool-card">
+          <div class="tool-visual">
+            <small>${t[0]}</small>
+            <strong>${t[1]}</strong>
+            <div class="fake-phone"><i></i><i></i><i></i><i></i></div>
+          </div>
+          <div class="tool-body">
+            <h4>${t[0]}</h4>
+            <ol>${t[2].map(step => `<li>${step}</li>`).join("")}</ol>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function renderLessons(){
+      const grid = document.getElementById("lessonsGrid");
+      grid.innerHTML = classes.map((c) => `
+        <article class="lesson-card">
+          <div class="lesson-thumb">${c[0]}</div>
+          <div class="lesson-info">
+            <h4>${c[0]}</h4>
+            <p>${c[1]}</p>
+            <div class="lesson-meta"><span>${c[2]}</span><span>${c[3]}</span></div>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function renderMaterials(){
+      const grid = document.getElementById("materialsGrid");
+      grid.innerHTML = materials.map((m) => `
+        <article class="material">
+          <div class="material-icon">${m[0]}</div>
+          <div>
+            <h4>${m[1]}</h4>
+            <p>${m[2]}</p>
+            <span>${m[3]}</span>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function setLanguage(lang){
+      document.querySelectorAll(".lang-btn").forEach(btn => btn.classList.toggle("active", btn.dataset.lang === lang));
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.dataset.i18n;
+        if(translations[lang] && translations[lang][key]){
+          el.innerHTML = translations[lang][key];
+        }
+      });
+      localStorage.setItem("ia_lang", lang);
+    }
+
+    function setView(view){
+      document.querySelectorAll(".view").forEach(el => el.classList.remove("active"));
+      document.getElementById("view-" + view).classList.add("active");
+
+      document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.toggle("active", btn.dataset.view === view));
+      window.location.hash = view;
+      window.scrollTo({top:0, behavior:"smooth"});
+    }
+
+    function getStoredUser(){
+      const keys = ["ia_user","usuario","currentUser","loggedUser","userData","user"];
+      for(const key of keys){
+        const raw = localStorage.getItem(key);
+        if(!raw) continue;
+        try{
+          const data = JSON.parse(raw);
+          if(data && typeof data === "object") return data;
+        }catch(e){}
+      }
+      return {};
+    }
+
+    function firstName(name){
+      if(!name) return "criadora";
+      return String(name).trim().split(" ")[0];
+    }
+
+    function initials(name){
+      if(!name) return "IA";
+      return String(name).trim().split(" ").filter(Boolean).slice(0,2).map(p => p[0].toUpperCase()).join("");
+    }
+
+    renderModules();
+    renderTools();
+    renderLessons();
+    renderMaterials();
+
+    document.querySelectorAll(".nav-btn,.go-view").forEach(btn => {
+      btn.addEventListener("click", () => setView(btn.dataset.view));
+    });
+
+    document.querySelectorAll(".lang-btn").forEach(btn => {
+      btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
+    });
+
+    const user = getStoredUser();
+    const userName = user.name || user.nome || "Aluna Premium";
+    const userEmail = user.email || "email@exemplo.com";
+
+    document.getElementById("sidebarName").textContent = userName;
+    document.getElementById("sidebarEmail").textContent = userEmail;
+    document.getElementById("profileName").textContent = userName;
+    document.getElementById("profileEmail").textContent = userEmail;
+    document.getElementById("avatarInitials").textContent = initials(userName);
+
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      ["ia_user","usuario","currentUser","loggedUser","userData","user"].forEach(k => localStorage.removeItem(k));
+      window.location.href = "login.html";
+    });
+
+    setLanguage(localStorage.getItem("ia_lang") || "pt");
+
+    const initialView = location.hash ? location.hash.replace("#","") : "home";
+    if(document.getElementById("view-" + initialView)){
+      setView(initialView);
+    }
+  </script>
 </body>
 </html>
-
-
-
-
-
