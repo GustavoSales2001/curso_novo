@@ -681,5 +681,185 @@
     const initial = location.hash ? location.hash.replace("#","") : "home";
     if(document.getElementById("view-" + initial)) setView(initial);
   </script>
+<!-- IA LESSON LOCK PATCH START -->
+<style>
+  .lesson-btn.locked {
+    opacity: .48 !important;
+    cursor: not-allowed !important;
+    background: #f4eee9 !important;
+    filter: grayscale(.25);
+  }
+
+  .lesson-btn.unlocked {
+    cursor: pointer !important;
+  }
+
+  .lesson-btn.done {
+    background: #eefaf1 !important;
+    border-color: #bce8cb !important;
+  }
+
+  .lesson-btn .lesson-status {
+    display: inline-flex;
+    margin-top: 8px;
+    padding: 7px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 900;
+    background: #fff;
+    color: #c87465;
+    border: 1px solid #ead7ce;
+  }
+
+  .lesson-btn.locked .lesson-status {
+    color: #8a7166;
+  }
+
+  .lesson-btn.done .lesson-status {
+    color: #2e8b4d;
+    border-color: #bce8cb;
+  }
+
+  .module-alert {
+    margin-top: 18px;
+    padding: 16px 18px;
+    border-radius: 20px;
+    background: #fff7f3;
+    border: 1px solid #ead7ce;
+    color: #8a7166;
+    line-height: 1.6;
+    font-weight: 600;
+  }
+
+  .module-alert strong {
+    color: #3f2d26;
+  }
+</style>
+
+<script>
+(function(){
+  function key(m,l){
+    return `m${m}-l${l}`;
+  }
+
+  function getCompletedLessons(){
+    try {
+      return JSON.parse(localStorage.getItem("ia_completed_lessons") || "[]");
+    } catch(e) {
+      return [];
+    }
+  }
+
+  function linearIndex(m,l){
+    return (m * 8) + l;
+  }
+
+  function isLessonUnlocked(m,l){
+    if (m === 0 && l === 0) return true;
+
+    const completed = getCompletedLessons();
+    const current = linearIndex(m,l);
+    const previous = current - 1;
+
+    const previousModule = Math.floor(previous / 8);
+    const previousLesson = previous % 8;
+
+    return completed.includes(key(previousModule, previousLesson));
+  }
+
+  function isLessonDone(m,l){
+    return getCompletedLessons().includes(key(m,l));
+  }
+
+  window.openLesson = function(i){
+    selectedLesson = i;
+
+    if (!isLessonUnlocked(selectedModule, selectedLesson)) {
+      alert("Essa aula ainda está bloqueada. Conclua a aula anterior para liberar.");
+      return;
+    }
+
+    window.location.href = `aula.html?m=${selectedModule}&l=${selectedLesson}`;
+  };
+
+  window.renderModuleContent = function(){
+    const m = modules[selectedModule];
+
+    document.getElementById("moduleContent").innerHTML = `
+      <span class="eyebrow">Módulo ${m.tag}</span>
+      <h3>${m.title}</h3>
+      <p>${m.desc}</p>
+
+      <div class="module-alert">
+        <strong>Como funciona:</strong> as aulas seguem uma sequência. 
+        Você só libera a próxima depois de concluir a anterior. 
+        Clique em uma aula liberada para abrir uma página completa com explicação, passo a passo, exemplos e tarefa prática.
+      </div>
+
+      <div class="lesson-grid">
+        ${m.lessons.map((lesson, i) => {
+          const unlocked = isLessonUnlocked(selectedModule, i);
+          const done = isLessonDone(selectedModule, i);
+
+          let status = "🔒 Bloqueada";
+          let statusClass = "locked";
+
+          if (done) {
+            status = "✅ Concluída";
+            statusClass = "done";
+          } else if (unlocked) {
+            status = "▶️ Liberada";
+            statusClass = "unlocked";
+          }
+
+          return `
+            <button class="lesson-btn ${statusClass}" onclick="openLesson(${i})">
+              <b>${i + 1}. ${lesson}</b>
+              <span>${unlocked ? "Clique para abrir a aula completa" : "Conclua a aula anterior para liberar"}</span>
+              <em class="lesson-status">${status}</em>
+            </button>
+          `;
+        }).join("")}
+      </div>
+    `;
+  };
+
+  window.renderModules = function(){
+    const list = document.getElementById("moduleList");
+
+    list.innerHTML = modules.map((m,i)=>{
+      const moduleStartUnlocked = isLessonUnlocked(i,0);
+      const moduleDoneCount = m.lessons.filter((_,lessonIndex)=>isLessonDone(i,lessonIndex)).length;
+
+      return `
+        <button class="module-btn ${i===selectedModule ? "active" : ""}" onclick="openModule(${i})">
+          <small>Módulo ${m.tag} · ${moduleDoneCount}/8 concluídas</small>
+          <strong>${m.title}</strong>
+          ${moduleStartUnlocked ? "" : "<span style='display:block;margin-top:6px;color:#8a7166;font-size:12px;font-weight:800'>🔒 bloqueado até concluir o módulo anterior</span>"}
+        </button>
+      `;
+    }).join("");
+
+    renderModuleContent();
+  };
+
+  window.openModule = function(i){
+    selectedModule = i;
+    selectedLesson = 0;
+    renderModules();
+  };
+
+  function refreshProgressPatch(){
+    if (typeof updateProgress === "function") {
+      updateProgress();
+    }
+  }
+
+  renderModules();
+  refreshProgressPatch();
+})();
+</script>
+<!-- IA LESSON LOCK PATCH END -->
 </body>
 </html>
+
