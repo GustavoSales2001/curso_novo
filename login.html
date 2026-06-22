@@ -1,408 +1,312 @@
 ﻿<!DOCTYPE html>
-<html lang="pt-BR$ 39,99">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Login - Influencer Academy - Influencer Academy</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Influencer Academy</title>
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    *{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif}
+    body{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+      background:
+        radial-gradient(circle at top left, rgba(217,135,125,.16), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(217,135,125,.10), transparent 32%),
+        linear-gradient(180deg,#fbf6f1 0%,#f6eee8 100%);
+      color:#4d372f;
     }
-
-    html {
-      scroll-behavior: smooth;
+    .login-wrapper{
+      width:100%;
+      max-width:980px;
+      display:grid;
+      grid-template-columns:1fr 470px;
+      gap:36px;
+      align-items:center;
     }
-
-    body {
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #111827 100%);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #f8fafc;
-      padding: 20px;
-      position: relative;
-      overflow-x: hidden;
+    .info h2{
+      font-size:42px;
+      line-height:1.08;
+      color:#4d372f;
+      letter-spacing:-.04em;
+      margin-bottom:18px;
     }
-
-    /* Elementos decorativos de fundo */
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at 20% 50%, rgba(56, 189, 248, 0.1) 0%, transparent 50%),
-                  radial-gradient(circle at 80% 80%, rgba(56, 189, 248, 0.05) 0%, transparent 50%);
-      pointer-events: none;
-      z-index: 0;
+    .info p{
+      color:#7b665d;
+      line-height:1.7;
+      font-size:17px;
+      max-width:470px;
     }
-
-    .login-wrapper {
-      width: 100%;
-      max-width: 900px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 40px;
-      align-items: center;
-      z-index: 1;
-      position: relative;
+    .benefits{
+      margin-top:26px;
+      display:grid;
+      gap:14px;
+      color:#5c463c;
+      font-weight:700;
     }
-
-    .login-info {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-      color: #e2e8f0;
+    .benefits div::before{
+      content:"✓";
+      color:#d98c7d;
+      font-weight:900;
+      margin-right:10px;
     }
-
-    .login-info h2 {
-      font-size: 2.2rem;
-      color: #38bdf8;
-      line-height: 1.3;
-      font-weight: 700;
+    .auth-card{
+      background:rgba(255,255,255,.84);
+      border:1px solid #ead8cf;
+      border-radius:32px;
+      padding:42px;
+      box-shadow:0 24px 60px rgba(98,72,59,.12);
+      backdrop-filter:blur(10px);
     }
-
-    .login-info p {
-      font-size: 1rem;
-      color: #cbd5e1;
-      line-height: 1.6;
+    .badge{
+      width:max-content;
+      margin:0 auto 16px;
+      padding:8px 16px;
+      border-radius:999px;
+      background:#fff5ef;
+      border:1px solid #ecd7cd;
+      color:#c97969;
+      font-size:13px;
+      font-weight:800;
     }
-
-    .benefits-list {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      margin-top: 16px;
+    h1{
+      text-align:center;
+      font-size:34px;
+      color:#4d372f;
+      letter-spacing:-.03em;
+      margin-bottom:10px;
     }
-
-    .benefit-item {
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
+    .subtitle{
+      text-align:center;
+      color:#8f786d;
+      font-size:16px;
+      margin-bottom:28px;
     }
-
-    .benefit-item::before {
-      content: '✓';
-      color: #38bdf8;
-      font-size: 1.3rem;
-      font-weight: bold;
-      flex-shrink: 0;
-      margin-top: -2px;
+    .form-group{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      margin-bottom:16px;
     }
-
-    .benefit-item span {
-      color: #cbd5e1;
-      font-size: 0.95rem;
+    label{
+      font-size:13px;
+      font-weight:900;
+      color:#4d372f;
+      text-transform:uppercase;
+      letter-spacing:.02em;
     }
-
-    .login-container {
-      width: 100%;
-      background: rgba(255, 255, 255, 0.05);
-      padding: 40px;
-      border-radius: 20px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(56, 189, 248, 0.1);
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
+    input{
+      width:100%;
+      height:54px;
+      border:1px solid #e7d3c8;
+      background:#fffaf7;
+      border-radius:16px;
+      padding:0 16px;
+      font-size:16px;
+      color:#5b4338;
+      outline:none;
+      transition:.2s ease;
     }
-
-    .login-header {
-      text-align: center;
-      margin-bottom: 8px;
+    input:focus{
+      border-color:#d98c7d;
+      box-shadow:0 0 0 4px rgba(217,140,125,.14);
+      background:#fff;
     }
-
-    .login-header h1 {
-      font-size: 1.8rem;
-      color: #38bdf8;
-      margin-bottom: 8px;
-      font-weight: 700;
+    button{
+      width:100%;
+      height:56px;
+      border:none;
+      border-radius:18px;
+      background:linear-gradient(135deg,#d98c7d,#e6a196);
+      color:#fff;
+      font-size:16px;
+      font-weight:900;
+      cursor:pointer;
+      box-shadow:0 16px 34px rgba(217,140,125,.25);
+      transition:.2s ease;
+      margin-top:4px;
     }
-
-    .login-header p {
-      color: #94a3b8;
-      font-size: 0.95rem;
+    button:hover{transform:translateY(-1px)}
+    button:disabled{opacity:.7;cursor:not-allowed;transform:none}
+    .divider{
+      text-align:center;
+      margin:22px 0 12px;
+      color:#a88e82;
+      font-weight:700;
     }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
+    .link{
+      text-align:center;
+      color:#8c766b;
+      font-size:15px;
     }
-
-    .form-group label {
-      color: #cbd5e1;
-      font-size: 0.85rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+    .link a{
+      color:#c97969;
+      font-weight:900;
+      text-decoration:none;
     }
-
-    .form-group input {
-      width: 100%;
-      padding: 14px 16px;
-      border-radius: 10px;
-      border: 1px solid rgba(56, 189, 248, 0.2);
-      background: rgba(15, 23, 42, 0.8);
-      color: #f8fafc;
-      font-size: 1rem;
-      transition: all 0.3s ease;
+    .message{
+      display:none;
+      margin-top:14px;
+      padding:12px 14px;
+      border-radius:14px;
+      font-size:14px;
+      font-weight:800;
+      line-height:1.4;
     }
-
-    .form-group input::placeholder {
-      color: #64748b;
+    .message.ok{
+      display:block;
+      background:#f0fff6;
+      border:1px solid #bce8cb;
+      color:#2f7a4f;
     }
-
-    .form-group input:focus {
-      outline: none;
-      border-color: #38bdf8;
-      background: rgba(15, 23, 42, 1);
-      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
+    .message.error{
+      display:block;
+      background:#fff1f1;
+      border:1px solid #f1c0c0;
+      color:#a04444;
     }
-
-    .form-group input:hover {
-      border-color: #38bdf8;
-    }
-
-    .submit-btn {
-      width: 100%;
-      padding: 14px;
-      background: linear-gradient(135deg, #38bdf8, #0ea5e9);
-      border: none;
-      border-radius: 10px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      color: #0f172a;
-      font-size: 1rem;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      box-shadow: 0 5px 20px rgba(56, 189, 248, 0.3);
-    }
-
-    .submit-btn:hover {
-      background: linear-gradient(135deg, #0ea5e9, #38bdf8);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(56, 189, 248, 0.4);
-    }
-
-    .submit-btn:active {
-      transform: translateY(0);
-    }
-
-    .divider {
-      text-align: center;
-      color: #64748b;
-      font-size: 0.85rem;
-      margin: 8px 0;
-    }
-
-    .signup-link {
-      text-align: center;
-      color: #cbd5e1;
-      font-size: 0.95rem;
-    }
-
-    .signup-link a {
-      color: #38bdf8;
-      text-decoration: none;
-      font-weight: 700;
-      transition: all 0.3s ease;
-      border-bottom: 1px solid transparent;
-    }
-
-    .signup-link a:hover {
-      border-bottom-color: #38bdf8;
-      color: #0ea5e9;
-    }
-
-    .loading {
-      opacity: 0.7;
-      pointer-events: none;
-    }
-
-    .spinner {
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      border: 2px solid rgba(248, 250, 252, 0.3);
-      border-top-color: #f8fafc;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    @media (max-width: 768px) {
-      .login-wrapper {
-        grid-template-columns: 1fr;
-        gap: 32px;
-      }
-
-      .login-info {
-        display: none;
-      }
-
-      .login-container {
-        padding: 30px;
-      }
-
-      .login-info h2 {
-        font-size: 1.8rem;
-      }
-
-      body {
-        padding: 16px;
-      }
+    @media(max-width:850px){
+      .login-wrapper{grid-template-columns:1fr;max-width:520px}
+      .info{display:none}
+      .auth-card{padding:30px 22px;border-radius:24px}
     }
   </style>
-  <link rel="stylesheet" href="assets/css/pages-premium.css" />
 </head>
-
 <body>
-  <div class="login-wrapper">
-    <div class="login-info">
-      <div>
-        <h2>Bem-vinda à Influencer Academy</h2>
-        <p>Acesse sua área e continue sua jornada para crescer como influenciadora, criar conteúdo com estratégia e fortalecer sua presença digital.</p>
-      </div>
+  <main class="login-wrapper">
+    <section class="info">
+      <h2>Bem-vinda à Influencer Academy</h2>
+      <p>Acesse sua área e continue sua jornada para crescer como influenciadora, criar conteúdo com estratégia e fortalecer sua presença digital.</p>
 
-      <div class="benefits-list">
-        <div class="benefit-item"><span>Construa um perfil mais bonito e estratégico</span></div>
-        <div class="benefit-item"><span>Aprenda a criar conteúdo com mais intenção</span></div>
-        <div class="benefit-item"><span>Fortaleça sua imagem pessoal e sua autoridade</span></div>
-        <div class="benefit-item"><span>Cresça com mais clareza, estética e consistência</span></div>
+      <div class="benefits">
+        <div>Construa um perfil mais bonito e estratégico</div>
+        <div>Aprenda a criar conteúdo com mais intenção</div>
+        <div>Fortaleça sua imagem pessoal e sua autoridade</div>
+        <div>Cresça com mais clareza, estética e consistência</div>
       </div>
-    </div>
+    </section>
 
-    <div class="login-container">
-      <div class="login-header">
-        <h1>Acessar minha conta</h1>
-        <p>Entre para acessar seus cursos</p>
-      </div>
+    <section class="auth-card">
+      <div class="badge">Área da aluna</div>
 
-      <form id="loginForm" onsubmit="entrar(event)">
+      <h1>Acessar minha conta</h1>
+      <p class="subtitle">Entre para acessar seus cursos.</p>
+
+      <form id="loginForm">
         <div class="form-group">
           <label for="email">E-mail</label>
-          <input 
-            type="email" 
-            id="email" 
-            placeholder="seu.email@exemplo.com"
-            required
-            autocomplete="email"
-          >
+          <input id="email" type="email" placeholder="seu.email@exemplo.com" autocomplete="email" required />
         </div>
 
         <div class="form-group">
           <label for="senha">Senha</label>
-          <input 
-            type="password" 
-            id="senha" 
-            placeholder="Sua senha segura"
-            required
-            autocomplete="current-password"
-          >
+          <input id="senha" type="password" placeholder="Sua senha segura" autocomplete="current-password" required />
         </div>
 
-        <button type="submit" class="submit-btn" id="submitBtn">
-          Entrar na minha conta
-        </button>
+        <button id="submitBtn" type="submit">Entrar na minha conta</button>
+
+        <div id="formMessage" class="message"></div>
       </form>
 
       <div class="divider">ou</div>
 
-      <div class="signup-link">
-        Não tem conta? <a href="cadastro.html">Criar conta agora</a>
-      </div>
-    </div>
-  </div>
+      <p class="link">
+        Não tem conta?
+        <a href="cadastro.html">Criar conta agora</a>
+      </p>
+    </section>
+  </main>
 
-<script src="notifications.js"></script>
+  <script>
+    const API_BASE_URL = "https://cursonovo-production.up.railway.app/api";
 
-<script>
-  const API_BASE_UR$ 39,99L = "https://cursonovo-production.up.railway.app/api";
+    const form = document.getElementById("loginForm");
+    const submitBtn = document.getElementById("submitBtn");
+    const messageBox = document.getElementById("formMessage");
 
-  const loginForm = document.getElementById('loginForm');
-  const submitBtn = document.getElementById('submitBtn');
-
-  async function entrar(event) {
-    event.preventDefault();
-    
-    const email = document.getElementById("email").value.trim();
-    const senha = document.getElementById("senha").value.trim();
-
-    if (!email || !senha) {
-      notify.warning("Por favor, preencha todos os campos");
-      return;
+    function showMessage(text, type = "ok") {
+      messageBox.textContent = text;
+      messageBox.className = "message " + type;
     }
 
-    // Validação básica de email
-    const emailR$ 39,99egex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailR$ 39,99egex.test(email)) {
-      notify.error("Por favor, insira um e-mail válido");
-      return;
+    async function postWithFallback(paths, payload) {
+      let lastError = "Não foi possível conectar ao servidor.";
+
+      for (const path of paths) {
+        try {
+          const response = await fetch(API_BASE_URL + path, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+
+          let data = {};
+          try { data = await response.json(); } catch (_) {}
+
+          if (response.status === 404) {
+            lastError = "Rota não encontrada: " + path;
+            continue;
+          }
+
+          if (!response.ok || data.ok === false) {
+            throw new Error(data.error || data.message || "Erro ao fazer login.");
+          }
+
+          return data;
+        } catch (error) {
+          lastError = error.message;
+        }
+      }
+
+      throw new Error(lastError);
     }
 
-    // Desabilitar botão e mostrar loading
-    submitBtn.disabled = true;
-    const originalText = submitBtn.textContent;
-    submitBtn.innerHTML = '<span class="spinner"></span> Carregando...';
-    submitBtn.classList.add('loading');
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
 
-    try {
-      const response = await fetch(`${API_BASE_UR$ 39,99L}/users/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          email,
-          password: senha
-        })
-      });
+      const payload = {
+        email: document.getElementById("email").value.trim().toLowerCase(),
+        password: document.getElementById("senha").value.trim(),
+        senha: document.getElementById("senha").value.trim()
+      };
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        notify.error(data.error || "Erro ao fazer login. Verifique seus dados.");
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalText;
-        submitBtn.classList.remove('loading');
+      if (!payload.email || !payload.password) {
+        showMessage("Informe e-mail e senha.", "error");
         return;
       }
 
-      localStorage.setItem("usuario", JSON.stringify(data.user));
-      notify.success("Login - Influencer Academy realizado com sucesso! R$ 39,99edirecionando...", 2000);
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Entrando...";
 
-      setTimeout(() => {
-        if (data.user.access_released === 1) {
-          window.location.href = "area.html";
-        } else {
-          window.location.href = "pagamento.html";
-        }
-      }, 500);
+      try {
+        const data = await postWithFallback(
+          ["/login", "/users/login"],
+          payload
+        );
 
-    } catch (error) {
-      console.error("Erro no login:", error);
-      notify.error("Erro ao conectar com o servidor. Tente novamente.");
-      submitBtn.disabled = false;
-      submitBtn.textContent = originalText;
-      submitBtn.classList.remove('loading');
-    }
-  }
-</script>
+        const user = data.user || {};
+        localStorage.setItem("ia_user", JSON.stringify(user));
+        localStorage.setItem("usuario", JSON.stringify(user));
+        localStorage.setItem("ia_user_email", payload.email);
 
+        showMessage("Login realizado com sucesso!", "ok");
+
+        setTimeout(() => {
+          if (Number(user.access_released || 0) === 1) {
+            window.location.href = "area.html";
+          } else {
+            window.location.href = "pagamento.html";
+          }
+        }, 700);
+      } catch (error) {
+        showMessage(error.message || "Erro ao fazer login.", "error");
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Entrar na minha conta";
+      }
+    });
+  </script>
 </body>
 </html>
-
-
-

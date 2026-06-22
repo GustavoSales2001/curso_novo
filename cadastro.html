@@ -1,639 +1,319 @@
 ﻿<!DOCTYPE html>
-<html lang="pt-BR$ 39,99">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Criar Conta - Influencer Academy</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    *{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif}
+    body{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+      background:
+        radial-gradient(circle at top left, rgba(217,135,125,.16), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(217,135,125,.10), transparent 32%),
+        linear-gradient(180deg,#fbf6f1 0%,#f6eee8 100%);
+      color:#4d372f;
     }
-
-    html {
-      scroll-behavior: smooth;
+    .auth-card{
+      width:100%;
+      max-width:520px;
+      background:rgba(255,255,255,.82);
+      border:1px solid #ead8cf;
+      border-radius:32px;
+      padding:42px 44px;
+      box-shadow:0 24px 60px rgba(98,72,59,.12);
+      backdrop-filter:blur(10px);
     }
-
-    body {
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #111827 100%);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #f8fafc;
-      padding: 20px;
-      position: relative;
-      overflow-x: hidden;
+    .badge{
+      width:max-content;
+      margin:0 auto 16px;
+      padding:8px 16px;
+      border-radius:999px;
+      background:#fff5ef;
+      border:1px solid #ecd7cd;
+      color:#c97969;
+      font-size:13px;
+      font-weight:800;
     }
-
-    /* Elementos decorativos de fundo */
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at 20% 50%, rgba(56, 189, 248, 0.1) 0%, transparent 50%),
-                  radial-gradient(circle at 80% 80%, rgba(56, 189, 248, 0.05) 0%, transparent 50%);
-      pointer-events: none;
-      z-index: 0;
+    h1{
+      text-align:center;
+      font-size:38px;
+      line-height:1.05;
+      color:#4d372f;
+      letter-spacing:-.03em;
+      margin-bottom:12px;
     }
-
-    .signup-wrapper {
-      width: 100%;
-      max-width: 500px;
-      z-index: 1;
-      position: relative;
+    .subtitle{
+      text-align:center;
+      color:#8f786d;
+      font-size:16px;
+      line-height:1.55;
+      margin-bottom:28px;
     }
-
-    .form-container {
-      width: 100%;
-      background: rgba(255, 255, 255, 0.05);
-      padding: 45px;
-      border-radius: 20px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(56, 189, 248, 0.1);
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
+    .form-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
     }
-
-    .form-header {
-      text-align: center;
-      margin-bottom: 8px;
+    .form-group{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      margin-bottom:14px;
     }
-
-    .form-header h1 {
-      font-size: 2rem;
-      color: #38bdf8;
-      margin-bottom: 8px;
-      font-weight: 700;
+    .full{grid-column:1/-1}
+    label{
+      font-size:13px;
+      font-weight:900;
+      color:#4d372f;
+      text-transform:uppercase;
+      letter-spacing:.02em;
     }
-
-    .form-header p {
-      color: #94a3b8;
-      font-size: 0.95rem;
+    input{
+      width:100%;
+      height:54px;
+      border:1px solid #e7d3c8;
+      background:#fffaf7;
+      border-radius:16px;
+      padding:0 16px;
+      font-size:16px;
+      color:#5b4338;
+      outline:none;
+      transition:.2s ease;
     }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
+    input:focus{
+      border-color:#d98c7d;
+      box-shadow:0 0 0 4px rgba(217,140,125,.14);
+      background:#fff;
     }
-
-    .form-row.full {
-      grid-template-columns: 1fr;
+    input::placeholder{color:#b29a8f}
+    .security{
+      padding:14px 16px;
+      border-radius:16px;
+      border:1px solid #d9e9f6;
+      background:#f3fbff;
+      color:#6c7c8b;
+      font-size:14px;
+      line-height:1.45;
+      margin-bottom:16px;
     }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
+    button{
+      width:100%;
+      height:56px;
+      border:none;
+      border-radius:18px;
+      background:linear-gradient(135deg,#d98c7d,#e6a196);
+      color:#fff;
+      font-size:16px;
+      font-weight:900;
+      cursor:pointer;
+      box-shadow:0 16px 34px rgba(217,140,125,.25);
+      transition:.2s ease;
     }
-
-    .form-group label {
-      color: #cbd5e1;
-      font-size: 0.8rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+    button:hover{transform:translateY(-1px)}
+    button:disabled{opacity:.7;cursor:not-allowed;transform:none}
+    .divider{
+      text-align:center;
+      margin:22px 0 12px;
+      color:#a88e82;
+      font-weight:700;
     }
-
-    .form-group input,
-    .form-group select {
-      width: 100%;
-      padding: 14px 16px;
-      border-radius: 10px;
-      border: 1px solid rgba(56, 189, 248, 0.2);
-      background: rgba(15, 23, 42, 0.8);
-      color: #f8fafc;
-      font-size: 0.95rem;
-      transition: all 0.3s ease;
+    .link{
+      text-align:center;
+      color:#8c766b;
+      font-size:15px;
     }
-
-    .form-group input::placeholder,
-    .form-group select option {
-      color: #64748b;
+    .link a{
+      color:#c97969;
+      font-weight:900;
+      text-decoration:none;
     }
-
-    .form-group select option {
-      background: #0f172a;
-      color: #f8fafc;
+    .message{
+      display:none;
+      margin-top:14px;
+      padding:12px 14px;
+      border-radius:14px;
+      font-size:14px;
+      font-weight:800;
+      line-height:1.4;
     }
-
-    .form-group input:focus,
-    .form-group select:focus {
-      outline: none;
-      border-color: #38bdf8;
-      background: rgba(15, 23, 42, 1);
-      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
+    .message.ok{
+      display:block;
+      background:#f0fff6;
+      border:1px solid #bce8cb;
+      color:#2f7a4f;
     }
-
-    .form-group input:hover,
-    .form-group select:hover {
-      border-color: #38bdf8;
+    .message.error{
+      display:block;
+      background:#fff1f1;
+      border:1px solid #f1c0c0;
+      color:#a04444;
     }
-
-    .password-info {
-      background: rgba(56, 189, 248, 0.05);
-      border: 1px solid rgba(56, 189, 248, 0.15);
-      border-radius: 8px;
-      padding: 12px;
-      font-size: 0.85rem;
-      color: #cbd5e1;
-      display: flex;
-      gap: 8px;
-      align-items: flex-start;
-    }
-
-    .password-info::before {
-      content: 'ℹ';
-      color: #38bdf8;
-      font-weight: bold;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-
-    .submit-btn {
-      width: 100%;
-      padding: 14px;
-      background: linear-gradient(135deg, #38bdf8, #0ea5e9);
-      border: none;
-      border-radius: 10px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      color: #0f172a;
-      font-size: 1rem;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      box-shadow: 0 5px 20px rgba(56, 189, 248, 0.3);
-    }
-
-    .submit-btn:hover {
-      background: linear-gradient(135deg, #0ea5e9, #38bdf8);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(56, 189, 248, 0.4);
-    }
-
-    .submit-btn:active {
-      transform: translateY(0);
-    }
-
-    .submit-btn:disabled {
-      opacity: 0.7;
-      pointer-events: none;
-    }
-
-    .divider {
-      text-align: center;
-      color: #64748b;
-      font-size: 0.85rem;
-      margin: 8px 0;
-    }
-
-    .login-link {
-      text-align: center;
-      color: #cbd5e1;
-      font-size: 0.95rem;
-    }
-
-    .login-link a {
-      color: #38bdf8;
-      text-decoration: none;
-      font-weight: 700;
-      transition: all 0.3s ease;
-      border-bottom: 1px solid transparent;
-    }
-
-    .login-link a:hover {
-      border-bottom-color: #38bdf8;
-      color: #0ea5e9;
-    }
-
-    .spinner {
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      border: 2px solid rgba(248, 250, 252, 0.3);
-      border-top-color: #f8fafc;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    @media (max-width: 768px) {
-      .form-container {
-        padding: 30px;
-      }
-
-      .form-row {
-        grid-template-columns: 1fr;
-        gap: 16px;
-      }
-
-      .form-header h1 {
-        font-size: 1.6rem;
-      }
-
-      .signup-wrapper {
-        max-width: 100%;
-      }
-
-      body {
-        padding: 16px;
-      }
+    @media(max-width:700px){
+      .auth-card{padding:30px 22px;border-radius:24px}
+      .form-grid{grid-template-columns:1fr}
+      .full{grid-column:auto}
+      h1{font-size:32px}
     }
   </style>
-  <link rel="stylesheet" href="assets/css/theme-premium.css" />
-  <link rel="stylesheet" href="assets/css/pages-premium.css" />
-<!-- IA SIGNUP PREMIUM PATCH START -->
-<style>
-  body{
-    background:
-      radial-gradient(circle at top left, rgba(217,135,125,.14), transparent 28%),
-      radial-gradient(circle at bottom right, rgba(217,135,125,.10), transparent 32%),
-      linear-gradient(180deg, #fbf6f1 0%, #f6eee8 100%) !important;
-  }
-
-  form{
-    width:100%;
-  }
-
-  form label{
-    color:#4d372f !important;
-    font-weight:800 !important;
-    letter-spacing:.02em;
-  }
-
-  form input,
-  form select{
-    border:1px solid #e7d3c8 !important;
-    background:#fffaf7 !important;
-    border-radius:16px !important;
-    color:#5b4338 !important;
-    transition:.2s ease !important;
-  }
-
-  form input:focus,
-  form select:focus{
-    border-color:#d98c7d !important;
-    box-shadow:0 0 0 4px rgba(217,140,125,.14) !important;
-    background:#fff !important;
-    outline:none !important;
-  }
-
-  form input::placeholder{
-    color:#b29a8f !important;
-  }
-
-  .ia-hidden-area-field{
-    display:none !important;
-  }
-
-  .ia-date-full{
-    grid-column:1 / -1 !important;
-    width:100% !important;
-  }
-
-  .ia-date-full input{
-    width:100% !important;
-  }
-
-  .ia-signup-badge{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    padding:8px 16px;
-    margin:0 auto 16px;
-    border-radius:999px;
-    background:#fff5ef;
-    border:1px solid #ecd7cd;
-    color:#c97969;
-    font-size:13px;
-    font-weight:800;
-    letter-spacing:.02em;
-  }
-
-  h1{
-    color:#4d372f !important;
-    letter-spacing:-.03em;
-  }
-
-  button[type="submit"],
-  .btn-primary,
-  .btn-full{
-    background:linear-gradient(135deg,#d98c7d,#e6a196) !important;
-    color:#fff !important;
-    border:none !important;
-    box-shadow:0 16px 34px rgba(217,140,125,.25) !important;
-    transition:.2s ease !important;
-  }
-
-  button[type="submit"]:hover,
-  .btn-primary:hover,
-  .btn-full:hover{
-    transform:translateY(-1px);
-    box-shadow:0 20px 38px rgba(217,140,125,.30) !important;
-  }
-
-  @media(max-width:768px){
-    .ia-date-full{
-      grid-column:1 / -1 !important;
-    }
-  }
-</style>
-<!-- IA SIGNUP PREMIUM PATCH END -->
 </head>
-
 <body>
-  <div class="signup-wrapper">
-    <div class="form-container">
-      <div class="form-header">
-        <h1>Crie sua conta</h1>
-        <p>Junte-se à nossa comunidade e comece a aprender</p>
+  <main class="auth-card">
+    <div class="badge">Seu acesso começa aqui</div>
+
+    <h1>Crie sua conta</h1>
+    <p class="subtitle">Junte-se à nossa comunidade e comece a aprender com mais estratégia.</p>
+
+    <form id="cadastroForm">
+      <div class="form-group full">
+        <label for="nome">Nome completo *</label>
+        <input id="nome" type="text" placeholder="Seu nome completo" autocomplete="name" required />
       </div>
 
-      <form id="cadastroForm" onsubmit="cadastrar(event)">
-        <div class="form-row full">
-          <div class="form-group">
-            <label for="nome">Nome Completo *</label>
-            <input 
-              type="text" 
-              id="nome" 
-              placeholder="Seu nome completo"
-              required
-              autocomplete="name"
-            >
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label for="email">E-mail *</label>
-            <input 
-              type="email" 
-              id="email" 
-              placeholder="seu.email@exemplo.com"
-              required
-              autocomplete="email"
-            >
-          </div>
-
-          <div class="form-group">
-            <label for="celular">Celular *</label>
-            <input 
-              type="tel" 
-              id="celular" 
-              placeholder="(11) 99999-9999"
-              required
-              autocomplete="tel"
-            >
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label for="nascimento">Data de Nascimento *</label>
-            <input 
-              type="date" 
-              id="nascimento"
-              required
-            >
-          </div>
-
-          <div class="form-group">
-            <label for="area">Área de Interesse</label>
-            <select id="area">
-              <option value="">Escolha uma área</option>
-              <option value="Marketing">Marketing</option>
-              <option value="TI">Tecnologia da Informação</option>
-              <option value="Administrativo">Administrativo</option>
-              <option value="Financeiro">Financeiro</option>
-              <option value="Outro">Outro</option>
-            </select>
-          </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="email">E-mail *</label>
+          <input id="email" type="email" placeholder="seu.email@exemplo.com" autocomplete="email" required />
         </div>
 
         <div class="form-group">
-          <label for="senha">Crie uma Senha *</label>
-          <input 
-            type="password" 
-            id="senha" 
-            placeholder="Senha forte com números e caracteres especiais"
-            required
-            autocomplete="new-password"
-          >
-          <div class="password-info">
-            Use 8+ caracteres, números e símbolos para uma senha mais segura
-          </div>
+          <label for="celular">Celular *</label>
+          <input id="celular" type="tel" placeholder="(11) 99999-9999" autocomplete="tel" required />
         </div>
-
-        <button type="submit" class="submit-btn" id="submitBtn">
-          Criar minha conta
-        </button>
-      </form>
-
-      <div class="divider">ou</div>
-
-      <div class="login-link">
-        Já tem uma conta? <a href="login.html">Faça seu login aqui</a>
       </div>
-    </div>
-  </div>
 
-<script src="notifications.js"></script>
+      <div class="form-group full">
+        <label for="nascimento">Data de nascimento *</label>
+        <input id="nascimento" type="date" required />
+      </div>
 
-<script>
-  const API_BASE_UR$ 39,99L = "https://cursonovo-production.up.railway.app/api";
+      <div class="form-group full">
+        <label for="senha">Crie uma senha *</label>
+        <input id="senha" type="password" placeholder="Senha forte com números e caracteres especiais" autocomplete="new-password" required />
+      </div>
 
-  const cadastroForm = document.getElementById('cadastroForm');
-  const submitBtn = document.getElementById('submitBtn');
+      <div class="security">
+        Use 8+ caracteres, números e símbolos para uma senha mais segura.
+      </div>
 
-  async function cadastrar(event) {
-    event.preventDefault();
+      <button id="submitBtn" type="submit">Criar minha conta</button>
 
-    const nome = document.getElementById("nome").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const celular = document.getElementById("celular").value.trim();
-    const nascimento = document.getElementById("nascimento").value;
-    const area = document.getElementById("area").value;
-    const senha = document.getElementById("senha").value.trim();
+      <div id="formMessage" class="message"></div>
+    </form>
 
-    // Validações
-    if (!nome || !email || !celular || !nascimento || !senha) {
-      notify.warning("Por favor, preencha todos os campos obrigatórios");
-      return;
+    <div class="divider">ou</div>
+
+    <p class="link">
+      Já tem uma conta?
+      <a href="login.html">Faça seu login aqui</a>
+    </p>
+  </main>
+
+  <script>
+    const API_BASE_URL = "https://cursonovo-production.up.railway.app/api";
+
+    const form = document.getElementById("cadastroForm");
+    const submitBtn = document.getElementById("submitBtn");
+    const messageBox = document.getElementById("formMessage");
+
+    function showMessage(text, type = "ok") {
+      messageBox.textContent = text;
+      messageBox.className = "message " + type;
     }
 
-    // Validar email
-    const emailR$ 39,99egex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailR$ 39,99egex.test(email)) {
-      notify.error("Por favor, insira um e-mail válido");
-      return;
+    async function postWithFallback(paths, payload) {
+      let lastError = "Não foi possível conectar ao servidor.";
+
+      for (const path of paths) {
+        try {
+          const response = await fetch(API_BASE_URL + path, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+
+          let data = {};
+          try { data = await response.json(); } catch (_) {}
+
+          if (response.status === 404) {
+            lastError = "Rota não encontrada: " + path;
+            continue;
+          }
+
+          if (!response.ok || data.ok === false) {
+            throw new Error(data.error || data.message || "Erro ao processar cadastro.");
+          }
+
+          return data;
+        } catch (error) {
+          lastError = error.message;
+        }
+      }
+
+      throw new Error(lastError);
     }
 
-    // Validar senha
-    if (senha.length < 6) {
-      notify.warning("A senha deve ter no mínimo 6 caracteres");
-      return;
-    }
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
 
-    // Validar idade (deve ter 18+ anos)
-    const dataNasc = new Date(nascimento);
-    const dataAtual = new Date();
-    let idade = dataAtual.getFullYear() - dataNasc.getFullYear();
-    const mesAtual = dataAtual.getMonth();
-    const mesNasc = dataNasc.getMonth();
-    
-    if (mesAtual < mesNasc || (mesAtual === mesNasc && dataAtual.getDate() < dataNasc.getDate())) {
-      idade--;
-    }
+      const payload = {
+        name: document.getElementById("nome").value.trim(),
+        nome: document.getElementById("nome").value.trim(),
+        email: document.getElementById("email").value.trim().toLowerCase(),
+        celular: document.getElementById("celular").value.trim(),
+        nascimento: document.getElementById("nascimento").value,
+        birthDate: document.getElementById("nascimento").value,
+        password: document.getElementById("senha").value.trim(),
+        senha: document.getElementById("senha").value.trim(),
+        area: "Influencer Academy"
+      };
 
-    if (idade < 18) {
-      notify.error("Você deve ter no mínimo 18 anos para se cadastrar");
-      return;
-    }
-
-    // Desabilitar botão e mostrar loading
-    submitBtn.disabled = true;
-    const originalText = submitBtn.textContent;
-    submitBtn.innerHTML = '<span class="spinner"></span> Criando conta...';
-
-    try {
-      const response = await fetch(`${API_BASE_UR$ 39,99L}/users/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          name: nome,
-          email,
-          password: senha,
-          celular,
-          nascimento,
-          area
-        })
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        notify.error(data.error || "Erro ao criar a conta. Tente novamente.");
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalText;
+      if (!payload.name || !payload.email || !payload.celular || !payload.password) {
+        showMessage("Preencha nome, e-mail, celular e senha.", "error");
         return;
       }
 
-      localStorage.setItem("usuario", JSON.stringify({
-        id: data.user.id,
-        nome,
-        email,
-        celular,
-        nascimento,
-        area
-      }));
-
-      notify.success("Conta criada com sucesso! R$ 39,99edirecionando para login...", 2000);
-      
-      setTimeout(() => {
-        window.location.href = "login.html";
-      }, 500);
-
-    } catch (error) {
-      console.error("Erro no cadastro:", error);
-      notify.error("Erro ao conectar com o servidor. Tente novamente mais tarde.");
-      submitBtn.disabled = false;
-      submitBtn.textContent = originalText;
-    }
-  }
-</script>
-
-<!-- IA SIGNUP PREMIUM SCRIPT START -->
-<script>
-(function(){
-  function normalize(text){
-    return String(text || "")
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g,"")
-      .trim();
-  }
-
-  // Coloca um selo bonito acima do título
-  const title = Array.from(document.querySelectorAll("h1,h2"))
-    .find(el => normalize(el.textContent).includes("crie sua conta"));
-
-  if(title && !document.querySelector(".ia-signup-badge")){
-    const badge = document.createElement("div");
-    badge.className = "ia-signup-badge";
-    badge.textContent = "Seu acesso começa aqui";
-    title.parentElement.insertBefore(badge, title);
-  }
-
-  // Oculta a área de interesse, mas mantém o valor no formulário para não quebrar o cadastro
-  const labels = Array.from(document.querySelectorAll("label"));
-
-  labels.forEach(label => {
-    const text = normalize(label.textContent);
-
-    if(text.includes("area de interesse")){
-      const group =
-        label.closest(".form-group") ||
-        label.closest(".input-group") ||
-        label.closest(".field") ||
-        label.parentElement;
-
-      if(group){
-        const select = group.querySelector("select");
-
-        if(select){
-          let option = Array.from(select.options)
-            .find(opt => normalize(opt.textContent).includes("influencer"));
-
-          if(!option){
-            option = new Option("Influencer Academy", "Influencer Academy", true, true);
-            select.add(option);
-          }
-
-          select.value = option.value;
-        }
-
-        group.classList.add("ia-hidden-area-field");
+      if (payload.password.length < 6) {
+        showMessage("A senha precisa ter pelo menos 6 caracteres.", "error");
+        return;
       }
-    }
-  });
 
-  // Deixa data de nascimento em largura total
-  const dateInput = document.querySelector('input[type="date"]');
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Criando conta...";
 
-  if(dateInput){
-    const dateGroup =
-      dateInput.closest(".form-group") ||
-      dateInput.closest(".input-group") ||
-      dateInput.closest(".field") ||
-      dateInput.parentElement;
+      try {
+        const data = await postWithFallback(
+          ["/register", "/users/register", "/cadastro"],
+          payload
+        );
 
-    if(dateGroup){
-      dateGroup.classList.add("ia-date-full");
-    }
-  }
-})();
-</script>
-<!-- IA SIGNUP PREMIUM SCRIPT END -->
+        const user = data.user || {
+          name: payload.name,
+          email: payload.email,
+          celular: payload.celular,
+          area: "Influencer Academy"
+        };
+
+        localStorage.setItem("ia_user", JSON.stringify(user));
+        localStorage.setItem("usuario", JSON.stringify(user));
+        localStorage.setItem("ia_user_email", payload.email);
+
+        showMessage("Conta criada com sucesso! Redirecionando para pagamento...", "ok");
+
+        setTimeout(() => {
+          window.location.href = "pagamento.html";
+        }, 900);
+      } catch (error) {
+        showMessage(error.message || "Erro ao criar cadastro.", "error");
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Criar minha conta";
+      }
+    });
+  </script>
 </body>
 </html>
-
-
-
-
-
-
