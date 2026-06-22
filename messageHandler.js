@@ -1,5 +1,9 @@
 ﻿const conversationState = new Map();
 
+const COURSE_LINK = "https://gustavosales2001.github.io/curso_novo/";
+const COURSE_PRICE = "R$ 39,99";
+const OLD_PRICE = "R$ 69,99";
+
 function normalizeText(value = "") {
   return String(value || "")
     .toLowerCase()
@@ -29,19 +33,15 @@ function getStage(userKey) {
 
 function isOption(msg, number) {
   const options = {
-    1: ["1", "opcao 1", "primeira", "primeiro", "a primeira", "quero a primeira", "prossiga com a primeira"],
-    2: ["2", "opcao 2", "segunda", "segundo", "a segunda", "quero a segunda", "prossiga com a segunda"],
-    3: ["3", "opcao 3", "terceira", "terceiro", "a terceira", "quero a terceira", "prossiga com a terceira"],
-    4: ["4", "opcao 4", "quarta", "quarto", "a quarta", "quero a quarta", "prossiga com a quarta"],
-    5: ["5", "opcao 5", "quinta", "quinto", "a quinta", "quero a quinta", "prossiga com a quinta"]
+    1: ["1", "opcao 1", "opção 1", "primeira", "primeiro", "quero a primeira", "prossiga com a primeira"],
+    2: ["2", "opcao 2", "opção 2", "segunda", "segundo", "quero a segunda", "prossiga com a segunda"],
+    3: ["3", "opcao 3", "opção 3", "terceira", "terceiro", "quero a terceira", "prossiga com a terceira"],
+    4: ["4", "opcao 4", "opção 4", "quarta", "quarto", "quero a quarta", "prossiga com a quarta"],
+    5: ["5", "opcao 5", "opção 5", "quinta", "quinto", "quero a quinta", "prossiga com a quinta"]
   };
 
-  return options[number].some(option => msg === option || msg.includes(option));
+  return options[number].some(option => msg === normalizeText(option) || msg.includes(normalizeText(option)));
 }
-
-const COUR$ 39,99SE_LINK = "https://gustavosales2001.github.io/curso_novo/";
-const COUR$ 39,99SE_PR$ 39,99ICE = "R$ 39,99";
-const OLD_PR$ 39,99ICE = "R$ 39,99$ 69,99";
 
 function mainMenu(saudacao = "") {
   return `${saudacao}entendi 😊
@@ -51,26 +51,27 @@ Para eu te ajudar melhor, escolha uma opção:
 1. Quero saber mais sobre o curso
 2. Quero crescer do 0 aos primeiros seguidores
 3. Quero aprender a gravar melhor com celular
-4. Quero saber o valor e pagamento
+4. Quero saber valor e pagamento
 5. Estou com problema no acesso ou cadastro
 
-Pode responder com o número ou escrever: "opção 1", "segunda opção" ou "quero a terceira".`;
+Pode responder com o número, tipo: 1, 2, 3, 4 ou 5.`;
 }
 
 function courseMenu(saudacao = "") {
   return `${saudacao}o Influencer Academy é um curso para mulheres que querem crescer na internet com mais estratégia, estética e consistência.
 
-Ele te ajuda a entender:
+Você aprende sobre:
 
-- como sair do zero
-- como criar conteúdo com intenção
-- como melhorar sua presença digital
-- como gravar melhor com o celular
-- como analisar métricas
-- como organizar ideias de posts, reels e stories
-- como deixar o perfil mais profissional
+- crescimento no Instagram
+- criação de conteúdo
+- Reels e stories
+- posicionamento
+- estética do perfil
+- métricas e engajamento
+- rotina de gravação
+- como sair do improviso
 
-Escolha o próximo passo:
+Escolha uma opção:
 
 1. Quero ver o que aprendo
 2. Quero saber se serve para mim
@@ -81,16 +82,17 @@ Escolha o próximo passo:
 function growthMenu(saudacao = "") {
   return `${saudacao}crescer do zero não é só postar todos os dias.
 
-O começo precisa de clareza:
+Você precisa de clareza, consistência e estratégia:
 
-- escolher um nicho ou tema principal
-- entender quem você quer atrair
-- criar conteúdos que prendem atenção
-- organizar uma rotina possível
-- melhorar estética, bio e posicionamento
-- aprender a olhar métricas sem se perder
+- perfil bem organizado
+- bio clara
+- nicho ou tema definido
+- conteúdos com gancho
+- stories para conexão
+- Reels com intenção
+- análise de métricas
 
-Escolha uma opção:
+Escolha:
 
 1. Quero sair do 0 aos 1.000 seguidores
 2. Quero crescer de 1.000 para 5.000
@@ -107,28 +109,28 @@ Você precisa entender:
 - iluminação
 - cenário
 - áudio
-- postura
 - roteiro simples
+- postura
+- edição básica
 - como transformar rotina em conteúdo
-- como usar o celular com mais intenção
 
-Escolha uma opção:
+Escolha:
 
-1. Quero aprender a gravar R$ 39,99eels
+1. Quero aprender a gravar Reels
 2. Quero melhorar meu setup
-3. Quero ideias de conteúdos
+3. Quero ideias de conteúdo
 4. Quero o link do curso`;
 }
 
 function paymentMenu(saudacao = "") {
   return `${saudacao}a condição atual está especial:
 
-De ${OLD_PR$ 39,99ICE}
-Por ${COUR$ 39,99SE_PR$ 39,99ICE}
+De ${OLD_PRICE}
+Por ${COURSE_PRICE}
 
 Pagamento único.
 
-Escolha uma opção:
+Escolha:
 
 1. Quero acessar a página do curso
 2. Quero saber o que está incluso
@@ -152,8 +154,6 @@ export function handleIncomingMessage(text = "", user = null) {
   const nome = getFirstName(user);
   const saudacao = nome ? `${nome}, ` : "";
   const currentStage = getStage(userKey);
-
-  let reply = "";
 
   if (
     msg.includes("menu") ||
@@ -186,7 +186,7 @@ export function handleIncomingMessage(text = "", user = null) {
     msg.includes("curso") ||
     msg.includes("como funciona") ||
     msg.includes("saber mais") ||
-    msg.includes("influencer academy") ||
+    msg.includes("influencer") ||
     msg.includes("influenciadora")
   ) {
     setStage(userKey, "curso");
@@ -200,7 +200,8 @@ export function handleIncomingMessage(text = "", user = null) {
     msg.includes("engajamento") ||
     msg.includes("alcance") ||
     msg.includes("views") ||
-    msg.includes("visualizacao")
+    msg.includes("visualizacao") ||
+    msg.includes("visualização")
   ) {
     setStage(userKey, "crescimento");
     return { intent: "crescimento", reply: growthMenu(saudacao) };
@@ -254,6 +255,8 @@ export function handleIncomingMessage(text = "", user = null) {
     return { intent: "suporte", reply: supportMenu(saudacao) };
   }
 
+  let reply = "";
+
   if (currentStage === "inicio") {
     if (isOption(msg, 1)) {
       setStage(userKey, "curso");
@@ -275,15 +278,15 @@ export function handleIncomingMessage(text = "", user = null) {
 
   else if (currentStage === "curso") {
     if (isOption(msg, 1)) {
-      reply = `${saudacao}no curso você aprende de forma prática:
+      reply = `${saudacao}no curso você aprende:
 
 - como organizar seu perfil
 - como escolher temas de conteúdo
-- como criar R$ 39,99eels com mais intenção
+- como criar Reels com mais intenção
 - como usar estética e posicionamento
 - como entender métricas
 - como montar uma rotina de postagem
-- como sair do improviso
+- como parar de postar no improviso
 
 Escolha:
 
@@ -310,7 +313,7 @@ Escolha:
     } else if (isOption(msg, 3)) {
       reply = `${saudacao}claro. A página do curso é essa:
 
-${COUR$ 39,99SE_LINK}
+${COURSE_LINK}
 
 Escolha:
 
@@ -332,11 +335,9 @@ Escolha:
 - bio bem construída
 - nicho definido
 - conteúdos simples e constantes
-- R$ 39,99eels com gancho
+- Reels com gancho
 - stories para conexão
 - identidade visual mínima
-
-O curso te guia nessa fase para você não postar no escuro.
 
 Escolha:
 
@@ -374,8 +375,6 @@ Você aprende a olhar:
 - seguidores novos
 - retenção
 
-O objetivo é parar de postar no achismo.
-
 Escolha:
 
 1. Quero conhecer o curso
@@ -390,14 +389,12 @@ Escolha:
 
   else if (currentStage === "conteudo") {
     if (isOption(msg, 1)) {
-      reply = `${saudacao}para gravar R$ 39,99eels melhores, você precisa de 4 pontos:
+      reply = `${saudacao}para gravar Reels melhores, você precisa de 4 pontos:
 
 1. gancho inicial
 2. imagem limpa
 3. roteiro simples
 4. final com intenção
-
-O curso mostra como pensar conteúdo para a pessoa parar, assistir e interagir.
 
 Escolha:
 
@@ -414,8 +411,6 @@ Escolha:
 - áudio claro
 - apoio/tripé
 - cenário com identidade
-
-Você não precisa começar perfeito. Precisa começar com direção.
 
 Escolha:
 
@@ -435,8 +430,6 @@ Escolha:
 - prova social
 - opinião sobre temas do seu mercado
 
-O curso te ajuda a transformar isso em calendário de conteúdo.
-
 Escolha:
 
 1. Quero conhecer o curso
@@ -446,7 +439,7 @@ Escolha:
     } else if (isOption(msg, 4)) {
       reply = `${saudacao}aqui está o link:
 
-${COUR$ 39,99SE_LINK}`;
+${COURSE_LINK}`;
       setStage(userKey, "link_enviado");
     }
   }
@@ -455,9 +448,9 @@ ${COUR$ 39,99SE_LINK}`;
     if (isOption(msg, 1)) {
       reply = `${saudacao}perfeito. Você pode acessar por aqui:
 
-${COUR$ 39,99SE_LINK}
+${COURSE_LINK}
 
-A condição atual está de ${OLD_PR$ 39,99ICE} por ${COUR$ 39,99SE_PR$ 39,99ICE}.`;
+A condição atual está de ${OLD_PRICE} por ${COURSE_PRICE}.`;
       setStage(userKey, "link_enviado");
     } else if (isOption(msg, 2)) {
       reply = `${saudacao}o acesso inclui:
@@ -465,13 +458,13 @@ A condição atual está de ${OLD_PR$ 39,99ICE} por ${COUR$ 39,99SE_PR$ 39,99ICE
 - aulas sobre crescimento
 - posicionamento
 - criação de conteúdo
-- R$ 39,99eels e stories
+- Reels e stories
 - estética do perfil
 - métricas e engajamento
 - organização de rotina
 - materiais de apoio
 
-E hoje está de ${OLD_PR$ 39,99ICE} por ${COUR$ 39,99SE_PR$ 39,99ICE}.
+E hoje está de ${OLD_PRICE} por ${COURSE_PRICE}.
 
 Escolha:
 
@@ -520,7 +513,7 @@ Assim fica mais fácil identificar se foi cadastro, login, pagamento ou área do
     } else if (isOption(msg, 3)) {
       reply = `${saudacao}aqui está o link:
 
-${COUR$ 39,99SE_LINK}`;
+${COURSE_LINK}`;
       setStage(userKey, "link_enviado");
     }
   }
@@ -537,6 +530,3 @@ ${COUR$ 39,99SE_LINK}`;
 }
 
 export default handleIncomingMessage;
-
-
-
