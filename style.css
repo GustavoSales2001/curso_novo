@@ -1,4 +1,4 @@
-:root{
+﻿:root{
   --bg:#071026;
   --panel:#0f172a;
   --muted:#9aa6b2;
@@ -268,4 +268,9 @@ a{color:inherit;text-decoration:none}
   .mobile-fixed-cta a{font-size:.95rem;padding:14px 12px;border-radius:14px;}
   .mobile-fixed-cta .btn-primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;}
   .mobile-fixed-cta .btn-secondary{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);color:#e6eef6;}
+}
+.old-price{
+  text-decoration: line-through;
+  opacity: .75;
+  font-weight: 700;
 }
