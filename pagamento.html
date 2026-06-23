@@ -358,7 +358,7 @@
       <section class="payment-card">
         <div class="eyebrow">Oferta especial de lançamento</div>
 
-        <h2>Garanta seu acesso hoje e comece a crescer com estratégia.</h2>
+        <h2>Garanta seu acesso e comece a crescer com mais direção.</h2>
 
         <p class="description">
           Entre para a Influencer Academy e aprenda a construir uma presença digital mais bonita,
@@ -369,14 +369,14 @@
           <div class="price-small">De <span class="old-price">R$ 69,99</span></div>
           <div class="new-label">Por apenas</div>
           <div class="new-price">R$ 39,99</div>
-          <div class="price-note">Pagamento único. Acesso ao curso + materiais de apoio + trilha prática.</div>
+          <div class="price-note">Pagamento único. Acesso ao curso, materiais de apoio e uma trilha prática para aplicar no seu perfil.</div>
         </div>
 
         <div class="benefits">
-          <div class="benefit">✨ Conteúdo para crescer do zero com mais clareza</div>
-          <div class="benefit">🎥 Aulas sobre Reels, stories e gravação com celular</div>
-          <div class="benefit">📈 Estratégia para entender métricas e engajamento</div>
-          <div class="benefit">🎀 Posicionamento, estética e presença digital</div>
+          <div class="benefit">✨ Conteúdo para sair do zero com mais clareza</div>
+          <div class="benefit">🎥 Aulas sobre Reels, stories, gravação e presença digital</div>
+          <div class="benefit">📈 Estratégia para entender métricas sem complicar</div>
+          <div class="benefit">🎀 Posicionamento, estética e identidade digital</div>
         </div>
 
         <div class="payment-method">
@@ -386,13 +386,13 @@
           </div>
 
           <p class="method-text">
-            Clique abaixo para gerar seu PIX com QR Code pelo Mercado Pago.
-            Depois é só pagar pelo app do banco.
+            Clique abaixo para gerar seu PIX com QR Code de forma rápida e segura.
+            Depois é só pagar pelo app do seu banco e acompanhar a liberação do acesso.
           </p>
 
           <div class="email-box">
             <input id="payerEmail" type="email" placeholder="Seu e-mail de cadastro" />
-            <button class="btn" id="generatePixBtn">Gerar QR Code PIX</button>
+            <button class="btn" id="generatePixBtn">Gerar meu PIX</button>
           </div>
 
           <div id="statusMessage" class="status"></div>
@@ -411,7 +411,7 @@
                 <div class="pix-code" id="pixCode"></div>
 
                 <button class="btn copy-btn" id="copyPixBtn">Copiar código PIX</button>
-                <button class="btn copy-btn" id="checkPaymentBtn">Já paguei, verificar acesso</button>
+                <button class="btn copy-btn" id="checkPaymentBtn">Já paguei, verificar meu acesso</button>
               </div>
             </div>
           </div>
@@ -551,7 +551,7 @@
         setStatus(error.message || "Erro ao gerar PIX. Tente novamente.", "error");
       } finally {
         generatePixBtn.disabled = false;
-        generatePixBtn.textContent = "Gerar QR Code PIX";
+        generatePixBtn.textContent = "Gerar meu PIX";
       }
     }
 
@@ -597,7 +597,7 @@
         setStatus("Não consegui consultar o pagamento agora. Tente novamente em instantes.", "error");
       } finally {
         checkPaymentBtn.disabled = false;
-        checkPaymentBtn.textContent = "Já paguei, verificar acesso";
+        checkPaymentBtn.textContent = "Já paguei, verificar meu acesso";
       }
     }
 
@@ -609,3 +609,14 @@
   </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
