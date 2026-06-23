@@ -860,8 +860,214 @@
 })();
 </script>
 <!-- IA LESSON LOCK PATCH END -->
+<!-- IA CLASSES LOCK PATCH START -->
+<style>
+  .class-card-click {
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    transition: .22s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .class-card-click:hover {
+    transform: translateY(-4px);
+    border-color: #e4afa3;
+    box-shadow: 0 20px 42px rgba(83,54,42,.10);
+  }
+
+  .class-card-click.locked {
+    opacity: .56;
+    cursor: not-allowed;
+    filter: grayscale(.2);
+    background: #f5eee9;
+  }
+
+  .class-card-click.locked:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: var(--line);
+  }
+
+  .class-card-click.done {
+    background: #f2fbf4;
+    border-color: #bce8cb;
+  }
+
+  .class-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 14px 0 10px;
+    padding: 8px 11px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 950;
+    border: 1px solid #ead7ce;
+    background: #fff;
+    color: #c87465;
+  }
+
+  .class-card-click.locked .class-status {
+    color: #8a7166;
+  }
+
+  .class-card-click.done .class-status {
+    color: #2e8b4d;
+    border-color: #bce8cb;
+  }
+
+  .class-lock-note {
+    display: block;
+    margin-top: 12px;
+    color: #8a7166;
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1.5;
+  }
+
+  .class-arrow {
+    margin-top: 18px;
+    display: inline-flex;
+    color: #c87465;
+    font-weight: 950;
+    font-size: 14px;
+  }
+</style>
+
+<script>
+(function(){
+  const classLessons = [
+    {
+      title: "Do zero aos primeiros 1.000",
+      desc: "Como construir uma base sólida sem se perder em tendências vazias.",
+      time: "42 min",
+      module: 0,
+      lesson: 0
+    },
+    {
+      title: "Reels que seguram atenção",
+      desc: "Estrutura de gancho, promessa, desenvolvimento e CTA para vídeos curtos.",
+      time: "38 min",
+      module: 3,
+      lesson: 0
+    },
+    {
+      title: "Canva visual premium",
+      desc: "Como criar capas, stories e carrosséis com estética de marca.",
+      time: "31 min",
+      module: 5,
+      lesson: 0
+    },
+    {
+      title: "CapCut profissional no celular",
+      desc: "Cortes, ritmo, legenda, zoom e exportação para redes sociais.",
+      time: "36 min",
+      module: 6,
+      lesson: 0
+    },
+    {
+      title: "IA para acelerar produção",
+      desc: "Prompts para ideias, roteiros, cenas, legendas e planejamento.",
+      time: "29 min",
+      module: 7,
+      lesson: 0
+    },
+    {
+      title: "Mídia kit e parcerias",
+      desc: "Como começar a se apresentar para marcas com organização e valor.",
+      time: "44 min",
+      module: 9,
+      lesson: 0
+    }
+  ];
+
+  function lessonKey(m,l){
+    return `m${m}-l${l}`;
+  }
+
+  function getCompletedClasses(){
+    try {
+      return JSON.parse(localStorage.getItem("ia_completed_lessons") || "[]");
+    } catch(e) {
+      return [];
+    }
+  }
+
+  function linearIndex(m,l){
+    return (m * 8) + l;
+  }
+
+  function isSpecificLessonUnlocked(m,l){
+    if (m === 0 && l === 0) return true;
+
+    const previous = linearIndex(m,l) - 1;
+    const previousModule = Math.floor(previous / 8);
+    const previousLesson = previous % 8;
+
+    return getCompletedClasses().includes(lessonKey(previousModule, previousLesson));
+  }
+
+  function isSpecificLessonDone(m,l){
+    return getCompletedClasses().includes(lessonKey(m,l));
+  }
+
+  window.openClassLesson = function(index){
+    const item = classLessons[index];
+
+    if (!isSpecificLessonUnlocked(item.module, item.lesson)) {
+      alert("Essa aula ainda está bloqueada. Continue pela sequência liberada nos módulos.");
+      return;
+    }
+
+    window.location.href = `aula.html?m=${item.module}&l=${item.lesson}`;
+  };
+
+  window.renderClasses = function(){
+    const grid = document.getElementById("classGrid");
+    if (!grid) return;
+
+    grid.innerHTML = classLessons.map((item, index) => {
+      const unlocked = isSpecificLessonUnlocked(item.module, item.lesson);
+      const done = isSpecificLessonDone(item.module, item.lesson);
+
+      let state = "locked";
+      let status = "🔒 Bloqueada";
+
+      if (done) {
+        state = "done";
+        status = "✅ Concluída";
+      } else if (unlocked) {
+        state = "unlocked";
+        status = "▶️ Liberada";
+      }
+
+      return `
+        <button type="button" class="simple-card class-card-click ${state}" onclick="openClassLesson(${index})">
+          <span class="tag">Aula ${index + 1}</span>
+          <span class="class-status">${status}</span>
+          <h4>${item.title}</h4>
+          <p>${item.desc}</p>
+          <br>
+          <p><strong>${item.time}</strong></p>
+          ${
+            unlocked
+              ? `<span class="class-arrow">Abrir aula →</span>`
+              : `<span class="class-lock-note">Continue a sequência anterior para liberar esta aula.</span>`
+          }
+        </button>
+      `;
+    }).join("");
+  };
+
+  renderClasses();
+})();
+</script>
+<!-- IA CLASSES LOCK PATCH END -->
 </body>
 </html>
+
 
 
 
