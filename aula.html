@@ -526,6 +526,60 @@
       .gallery-nav{width:42px;height:42px;flex-basis:42px}
     }
   </style>
+<style id="fix-gallery-modal">
+  .gallery-content {
+    height: calc(100vh - 40px) !important;
+    max-height: calc(100vh - 40px) !important;
+  }
+
+  .gallery-main {
+    flex: 1 !important;
+    min-height: 0 !important;
+    padding: 0 30px 18px !important;
+  }
+
+  .gallery-image-wrap {
+    height: calc(100vh - 250px) !important;
+    min-height: 0 !important;
+    overflow: auto !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .gallery-image-wrap img {
+    max-width: 100% !important;
+    max-height: calc(100vh - 300px) !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;
+    display: block !important;
+  }
+
+  .gallery-thumbs {
+    flex-shrink: 0 !important;
+  }
+
+  .gallery-header {
+    flex-shrink: 0 !important;
+  }
+
+  @media (max-width: 680px) {
+    .gallery-content {
+      width: calc(100% - 20px) !important;
+      height: calc(100vh - 20px) !important;
+      max-height: calc(100vh - 20px) !important;
+      margin: 10px auto !important;
+    }
+
+    .gallery-image-wrap {
+      height: calc(100vh - 240px) !important;
+    }
+
+    .gallery-image-wrap img {
+      max-height: calc(100vh - 280px) !important;
+    }
+  }
+</style>
 </head>
 
 <body>
@@ -970,3 +1024,4 @@
   </script>
 </body>
 </html>
+
