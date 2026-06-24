@@ -1,4 +1,5 @@
-﻿import express from "express";
+﻿import lessonUnlockRoutes from './lessonUnlocks.js';
+import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import mysql from "mysql2/promise";
@@ -3600,7 +3601,9 @@ async function start() {
     await initDB();
     await ensureTables();
 
-    app.listen(port, () => {
+    app.use("/api", lessonUnlockRoutes);
+
+app.listen(port, () => {
       console.log(`Servidor rodando na porta ${port}`);
     });
 
@@ -3621,6 +3624,7 @@ async function start() {
 }
 
 start();
+
 
 
 

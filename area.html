@@ -681,43 +681,46 @@
     const initial = location.hash ? location.hash.replace("#","") : "home";
     if(document.getElementById("view-" + initial)) setView(initial);
   </script>
-<!-- IA LESSON LOCK PATCH START -->
+<!-- IA PAID UNLOCK PATCH START -->
 <style>
-  .lesson-btn.locked {
-    opacity: .48 !important;
-    cursor: not-allowed !important;
-    background: #f4eee9 !important;
-    filter: grayscale(.25);
-  }
-
-  .lesson-btn.unlocked {
+  .lesson-btn.locked,
+  .class-card-click.locked {
+    opacity: .62 !important;
+    background: #f5eee9 !important;
     cursor: pointer !important;
+    filter: grayscale(.15);
   }
 
-  .lesson-btn.done {
+  .lesson-btn.done,
+  .class-card-click.done {
     background: #eefaf1 !important;
     border-color: #bce8cb !important;
   }
 
-  .lesson-btn .lesson-status {
+  .lesson-status,
+  .class-status {
     display: inline-flex;
-    margin-top: 8px;
-    padding: 7px 10px;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    padding: 8px 11px;
     border-radius: 999px;
     font-size: 12px;
-    font-weight: 900;
+    font-weight: 950;
+    border: 1px solid #ead7ce;
     background: #fff;
     color: #c87465;
-    border: 1px solid #ead7ce;
   }
 
-  .lesson-btn.locked .lesson-status {
-    color: #8a7166;
-  }
-
-  .lesson-btn.done .lesson-status {
-    color: #2e8b4d;
-    border-color: #bce8cb;
+  .unlock-price {
+    display: inline-flex;
+    margin-top: 12px;
+    padding: 9px 12px;
+    border-radius: 999px;
+    background: #3f2d26;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 950;
   }
 
   .module-alert {
@@ -731,51 +734,133 @@
     font-weight: 600;
   }
 
-  .module-alert strong {
-    color: #3f2d26;
+  .class-card-click {
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    transition: .22s ease;
+  }
+
+  .class-card-click:hover {
+    transform: translateY(-4px);
+    border-color: #e4afa3;
+    box-shadow: 0 20px 42px rgba(83,54,42,.10);
+  }
+
+  .class-card-click.locked:hover {
+    transform: translateY(-2px);
+  }
+
+  .class-arrow {
+    margin-top: 18px;
+    display: inline-flex;
+    color: #c87465;
+    font-weight: 950;
+    font-size: 14px;
   }
 </style>
 
 <script>
 (function(){
-  function key(m,l){
-    return `m${m}-l${l}`;
+  const classLessons = [
+    {title:"Do zero aos primeiros 1.000", desc:"Como construir uma base sólida sem se perder em tendências vazias.", time:"42 min", module:0, lesson:0},
+    {title:"Reels que seguram atenção", desc:"Estrutura de gancho, promessa, desenvolvimento e CTA para vídeos curtos.", time:"38 min", module:3, lesson:0},
+    {title:"Canva visual premium", desc:"Como criar capas, stories e carrosséis com estética de marca.", time:"31 min", module:5, lesson:0},
+    {title:"CapCut profissional no celular", desc:"Cortes, ritmo, legenda, zoom e exportação para redes sociais.", time:"36 min", module:6, lesson:0},
+    {title:"IA para acelerar produção", desc:"Prompts para ideias, roteiros, cenas, legendas e planejamento.", time:"29 min", module:7, lesson:0},
+    {title:"Mídia kit e parcerias", desc:"Como começar a se apresentar para marcas com organização e valor.", time:"44 min", module:9, lesson:0}
+  ];
+
+  function key(m,l){ return `m${m}-l${l}`; }
+
+  function getCompleted(){
+    try { return JSON.parse(localStorage.getItem("ia_completed_lessons") || "[]"); }
+    catch(e){ return []; }
   }
 
-  function getCompletedLessons(){
-    try {
-      return JSON.parse(localStorage.getItem("ia_completed_lessons") || "[]");
-    } catch(e) {
-      return [];
+  function getPaid(){
+    try { return JSON.parse(localStorage.getItem("ia_paid_unlocks") || "[]"); }
+    catch(e){ return []; }
+  }
+
+  function savePaid(arr){
+    localStorage.setItem("ia_paid_unlocks", JSON.stringify([...new Set(arr)]));
+  }
+
+  function getEmail(){
+    const keys = ["ia_user","usuario","currentUser","loggedUser","userData","user"];
+
+    for (const storageKey of keys) {
+      const raw = localStorage.getItem(storageKey);
+      if (!raw) continue;
+
+      try {
+        const user = JSON.parse(raw);
+        if (user && user.email) return String(user.email).trim().toLowerCase();
+      } catch(e) {}
     }
+
+    return localStorage.getItem("ia_user_email") || "";
   }
 
-  function linearIndex(m,l){
-    return (m * 8) + l;
-  }
+  function linearIndex(m,l){ return (m * 8) + l; }
 
-  function isLessonUnlocked(m,l){
+  function isSequentialUnlocked(m,l){
     if (m === 0 && l === 0) return true;
 
-    const completed = getCompletedLessons();
-    const current = linearIndex(m,l);
-    const previous = current - 1;
-
+    const previous = linearIndex(m,l) - 1;
     const previousModule = Math.floor(previous / 8);
     const previousLesson = previous % 8;
 
-    return completed.includes(key(previousModule, previousLesson));
+    return getCompleted().includes(key(previousModule, previousLesson));
   }
 
-  function isLessonDone(m,l){
-    return getCompletedLessons().includes(key(m,l));
+  function isPaidUnlocked(m,l){
+    return getPaid().includes(key(m,l));
+  }
+
+  function isDone(m,l){
+    return getCompleted().includes(key(m,l));
+  }
+
+  function isAvailable(m,l){
+    return isSequentialUnlocked(m,l) || isPaidUnlocked(m,l) || isDone(m,l);
+  }
+
+  function goUnlock(m,l){
+    window.location.href = `desbloqueio.html?m=${m}&l=${l}`;
+  }
+
+  async function syncPaidUnlocks(){
+    const email = getEmail();
+
+    if (!email) return;
+
+    try {
+      const response = await fetch(`https://cursonovo-production.up.railway.app/api/lesson-unlocks?email=${encodeURIComponent(email)}`);
+      const data = await response.json();
+
+      if (!response.ok || !Array.isArray(data.unlocks)) return;
+
+      const current = getPaid();
+
+      data.unlocks.forEach(item => {
+        current.push(key(Number(item.module_index), Number(item.lesson_index)));
+      });
+
+      savePaid(current);
+
+      if (typeof renderModules === "function") renderModules();
+      if (typeof renderClasses === "function") renderClasses();
+      if (typeof updateProgress === "function") updateProgress();
+    } catch(e) {}
   }
 
   window.openLesson = function(i){
     selectedLesson = i;
 
-    if (!isLessonUnlocked(selectedModule, selectedLesson)) {
-      alert("Essa aula ainda está bloqueada. Conclua a aula anterior para liberar.");
+    if (!isAvailable(selectedModule, selectedLesson)) {
+      goUnlock(selectedModule, selectedLesson);
       return;
     }
 
@@ -791,15 +876,14 @@
       <p>${m.desc}</p>
 
       <div class="module-alert">
-        <strong>Como funciona:</strong> as aulas seguem uma sequência. 
-        Você só libera a próxima depois de concluir a anterior. 
-        Clique em uma aula liberada para abrir uma página completa com explicação, passo a passo, exemplos e tarefa prática.
+        As aulas seguem uma trilha organizada. Quando uma aula ainda estiver bloqueada, você pode seguir a sequência normalmente ou desbloquear somente aquele conteúdo por R$ 14,99.
       </div>
 
       <div class="lesson-grid">
         ${m.lessons.map((lesson, i) => {
-          const unlocked = isLessonUnlocked(selectedModule, i);
-          const done = isLessonDone(selectedModule, i);
+          const available = isAvailable(selectedModule, i);
+          const done = isDone(selectedModule, i);
+          const paid = isPaidUnlocked(selectedModule, i);
 
           let status = "🔒 Bloqueada";
           let statusClass = "locked";
@@ -807,7 +891,10 @@
           if (done) {
             status = "✅ Concluída";
             statusClass = "done";
-          } else if (unlocked) {
+          } else if (paid) {
+            status = "💎 Liberada avulsa";
+            statusClass = "unlocked";
+          } else if (available) {
             status = "▶️ Liberada";
             statusClass = "unlocked";
           }
@@ -815,8 +902,9 @@
           return `
             <button class="lesson-btn ${statusClass}" onclick="openLesson(${i})">
               <b>${i + 1}. ${lesson}</b>
-              <span>${unlocked ? "Clique para abrir a aula completa" : "Conclua a aula anterior para liberar"}</span>
+              <span>${available ? "Clique para abrir a aula completa" : "Você pode desbloquear esta aula individualmente."}</span>
               <em class="lesson-status">${status}</em>
+              ${available ? "" : `<strong class="unlock-price">Desbloquear por R$ 14,99</strong>`}
             </button>
           `;
         }).join("")}
@@ -826,16 +914,15 @@
 
   window.renderModules = function(){
     const list = document.getElementById("moduleList");
+    if (!list) return;
 
     list.innerHTML = modules.map((m,i)=>{
-      const moduleStartUnlocked = isLessonUnlocked(i,0);
-      const moduleDoneCount = m.lessons.filter((_,lessonIndex)=>isLessonDone(i,lessonIndex)).length;
+      const moduleDoneCount = m.lessons.filter((_,lessonIndex)=>isDone(i,lessonIndex)).length;
 
       return `
         <button class="module-btn ${i===selectedModule ? "active" : ""}" onclick="openModule(${i})">
           <small>Módulo ${m.tag} · ${moduleDoneCount}/8 concluídas</small>
           <strong>${m.title}</strong>
-          ${moduleStartUnlocked ? "" : "<span style='display:block;margin-top:6px;color:#8a7166;font-size:12px;font-weight:800'>🔒 bloqueado até concluir o módulo anterior</span>"}
         </button>
       `;
     }).join("");
@@ -849,175 +936,11 @@
     renderModules();
   };
 
-  function refreshProgressPatch(){
-    if (typeof updateProgress === "function") {
-      updateProgress();
-    }
-  }
-
-  renderModules();
-  refreshProgressPatch();
-})();
-</script>
-<!-- IA LESSON LOCK PATCH END -->
-<!-- IA CLASSES LOCK PATCH START -->
-<style>
-  .class-card-click {
-    width: 100%;
-    text-align: left;
-    cursor: pointer;
-    transition: .22s ease;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .class-card-click:hover {
-    transform: translateY(-4px);
-    border-color: #e4afa3;
-    box-shadow: 0 20px 42px rgba(83,54,42,.10);
-  }
-
-  .class-card-click.locked {
-    opacity: .56;
-    cursor: not-allowed;
-    filter: grayscale(.2);
-    background: #f5eee9;
-  }
-
-  .class-card-click.locked:hover {
-    transform: none;
-    box-shadow: none;
-    border-color: var(--line);
-  }
-
-  .class-card-click.done {
-    background: #f2fbf4;
-    border-color: #bce8cb;
-  }
-
-  .class-status {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    margin: 14px 0 10px;
-    padding: 8px 11px;
-    border-radius: 999px;
-    font-size: 12px;
-    font-weight: 950;
-    border: 1px solid #ead7ce;
-    background: #fff;
-    color: #c87465;
-  }
-
-  .class-card-click.locked .class-status {
-    color: #8a7166;
-  }
-
-  .class-card-click.done .class-status {
-    color: #2e8b4d;
-    border-color: #bce8cb;
-  }
-
-  .class-lock-note {
-    display: block;
-    margin-top: 12px;
-    color: #8a7166;
-    font-size: 13px;
-    font-weight: 800;
-    line-height: 1.5;
-  }
-
-  .class-arrow {
-    margin-top: 18px;
-    display: inline-flex;
-    color: #c87465;
-    font-weight: 950;
-    font-size: 14px;
-  }
-</style>
-
-<script>
-(function(){
-  const classLessons = [
-    {
-      title: "Do zero aos primeiros 1.000",
-      desc: "Como construir uma base sólida sem se perder em tendências vazias.",
-      time: "42 min",
-      module: 0,
-      lesson: 0
-    },
-    {
-      title: "Reels que seguram atenção",
-      desc: "Estrutura de gancho, promessa, desenvolvimento e CTA para vídeos curtos.",
-      time: "38 min",
-      module: 3,
-      lesson: 0
-    },
-    {
-      title: "Canva visual premium",
-      desc: "Como criar capas, stories e carrosséis com estética de marca.",
-      time: "31 min",
-      module: 5,
-      lesson: 0
-    },
-    {
-      title: "CapCut profissional no celular",
-      desc: "Cortes, ritmo, legenda, zoom e exportação para redes sociais.",
-      time: "36 min",
-      module: 6,
-      lesson: 0
-    },
-    {
-      title: "IA para acelerar produção",
-      desc: "Prompts para ideias, roteiros, cenas, legendas e planejamento.",
-      time: "29 min",
-      module: 7,
-      lesson: 0
-    },
-    {
-      title: "Mídia kit e parcerias",
-      desc: "Como começar a se apresentar para marcas com organização e valor.",
-      time: "44 min",
-      module: 9,
-      lesson: 0
-    }
-  ];
-
-  function lessonKey(m,l){
-    return `m${m}-l${l}`;
-  }
-
-  function getCompletedClasses(){
-    try {
-      return JSON.parse(localStorage.getItem("ia_completed_lessons") || "[]");
-    } catch(e) {
-      return [];
-    }
-  }
-
-  function linearIndex(m,l){
-    return (m * 8) + l;
-  }
-
-  function isSpecificLessonUnlocked(m,l){
-    if (m === 0 && l === 0) return true;
-
-    const previous = linearIndex(m,l) - 1;
-    const previousModule = Math.floor(previous / 8);
-    const previousLesson = previous % 8;
-
-    return getCompletedClasses().includes(lessonKey(previousModule, previousLesson));
-  }
-
-  function isSpecificLessonDone(m,l){
-    return getCompletedClasses().includes(lessonKey(m,l));
-  }
-
   window.openClassLesson = function(index){
     const item = classLessons[index];
 
-    if (!isSpecificLessonUnlocked(item.module, item.lesson)) {
-      alert("Essa aula ainda está bloqueada. Continue pela sequência liberada nos módulos.");
+    if (!isAvailable(item.module, item.lesson)) {
+      goUnlock(item.module, item.lesson);
       return;
     }
 
@@ -1029,8 +952,9 @@
     if (!grid) return;
 
     grid.innerHTML = classLessons.map((item, index) => {
-      const unlocked = isSpecificLessonUnlocked(item.module, item.lesson);
-      const done = isSpecificLessonDone(item.module, item.lesson);
+      const available = isAvailable(item.module, item.lesson);
+      const done = isDone(item.module, item.lesson);
+      const paid = isPaidUnlocked(item.module, item.lesson);
 
       let state = "locked";
       let status = "🔒 Bloqueada";
@@ -1038,7 +962,10 @@
       if (done) {
         state = "done";
         status = "✅ Concluída";
-      } else if (unlocked) {
+      } else if (paid) {
+        state = "unlocked";
+        status = "💎 Liberada avulsa";
+      } else if (available) {
         state = "unlocked";
         status = "▶️ Liberada";
       }
@@ -1051,22 +978,21 @@
           <p>${item.desc}</p>
           <br>
           <p><strong>${item.time}</strong></p>
-          ${
-            unlocked
-              ? `<span class="class-arrow">Abrir aula →</span>`
-              : `<span class="class-lock-note">Continue a sequência anterior para liberar esta aula.</span>`
-          }
+          ${available ? `<span class="class-arrow">Abrir aula →</span>` : `<span class="unlock-price">Desbloquear por R$ 14,99</span>`}
         </button>
       `;
     }).join("");
   };
 
+  renderModules();
   renderClasses();
+  syncPaidUnlocks();
 })();
 </script>
-<!-- IA CLASSES LOCK PATCH END -->
+<!-- IA PAID UNLOCK PATCH END -->
 </body>
 </html>
+
 
 
 

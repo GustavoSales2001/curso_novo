@@ -520,6 +520,11 @@
     function isUnlocked(m,l){
       if (m === 0 && l === 0) return true;
 
+      try {
+        const paid = JSON.parse(localStorage.getItem("ia_paid_unlocks") || "[]");
+        if (paid.includes(key(m,l))) return true;
+      } catch(e) {}
+
       const previous = linearIndex(m,l) - 1;
       const pm = Math.floor(previous / 8);
       const pl = previous % 8;
@@ -652,12 +657,12 @@ Métrica observada: retenção, respostas, salvamentos e novos seguidores.</code
       document.getElementById("app").innerHTML = `
         <div class="blocked">
           <span class="eyebrow">Aula bloqueada</span>
-          <h1>Complete a etapa anterior para manter a sequência da trilha.</h1>
+          <h1>Esta aula ainda não está liberada na sequência atual. Você pode continuar pela trilha normal ou liberar este conteúdo de forma avulsa.</h1>
           <p style="color:#8a7166;line-height:1.7;font-size:18px;max-width:680px;margin:18px auto">
             A trilha foi organizada em sequência para você evoluir com clareza. 
             Volte para os módulos e continue pela próxima aula liberada.
           </p>
-          <a class="btn primary" href="area.html#modules">Voltar para os módulos</a>
+          <a class="btn light" href="area.html#modules">Voltar para os módulos</a> <a class="btn primary" href="desbloqueio.html?m=${moduleIndex}&l=${lessonIndex}">Desbloquear por R$ 14,99</a>
         </div>
       `;
     }
@@ -769,6 +774,7 @@ Métrica observada: retenção, respostas, salvamentos e novos seguidores.</code
   </script>
 </body>
 </html>
+
 
 
 

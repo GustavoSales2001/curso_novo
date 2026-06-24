@@ -1,0 +1,561 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Desbloquear Aula - Influencer Academy</title>
+
+  <style>
+    :root{
+      --bg:#f7f1eb;
+      --white:#fff;
+      --text:#3f2d26;
+      --muted:#8a7166;
+      --line:#ead7ce;
+      --rose:#d98f82;
+      --rose-dark:#c87465;
+      --rose-soft:#f8dfd8;
+      --shadow:0 24px 70px rgba(83,54,42,.12);
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family:"Segoe UI",Arial,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left,rgba(217,143,130,.18),transparent 30%),
+        radial-gradient(circle at bottom right,rgba(217,143,130,.14),transparent 30%),
+        linear-gradient(180deg,#fbf7f3,#f6efe9);
+      padding:28px;
+    }
+
+    .page{
+      max-width:1050px;
+      margin:0 auto;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      background:rgba(255,255,255,.78);
+      border:1px solid var(--line);
+      border-radius:28px;
+      padding:18px 22px;
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(12px);
+      margin-bottom:24px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+
+    .logo{
+      width:52px;
+      height:52px;
+      border-radius:18px;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg,var(--rose),#e8aa9d);
+      color:#fff;
+      font-weight:950;
+    }
+
+    .brand strong{
+      display:block;
+      font-size:22px;
+      letter-spacing:-.03em;
+    }
+
+    .brand span{
+      display:block;
+      color:var(--muted);
+      font-size:13px;
+      margin-top:3px;
+    }
+
+    a{text-decoration:none;color:inherit}
+
+    .back{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:16px;
+      padding:13px 16px;
+      font-weight:900;
+    }
+
+    .layout{
+      display:grid;
+      grid-template-columns:1fr 380px;
+      gap:24px;
+      align-items:start;
+    }
+
+    .card{
+      background:rgba(255,255,255,.88);
+      border:1px solid var(--line);
+      border-radius:34px;
+      box-shadow:var(--shadow);
+      padding:34px;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      padding:10px 14px;
+      border-radius:999px;
+      background:var(--rose-soft);
+      color:var(--rose-dark);
+      font-weight:950;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      margin-bottom:18px;
+    }
+
+    h1{
+      margin:0 0 14px;
+      font-size:46px;
+      line-height:1.05;
+      letter-spacing:-.055em;
+    }
+
+    p{
+      color:var(--muted);
+      line-height:1.75;
+      font-size:16px;
+    }
+
+    .price-box{
+      margin:26px 0;
+      border-radius:28px;
+      padding:28px;
+      background:linear-gradient(135deg,#3f2d26,#5c4137);
+      color:white;
+    }
+
+    .price-box small{
+      display:block;
+      color:#ead7ce;
+      font-weight:900;
+      text-transform:uppercase;
+      margin-bottom:8px;
+    }
+
+    .price{
+      font-size:62px;
+      font-weight:950;
+      letter-spacing:-.06em;
+      margin:0;
+    }
+
+    label{
+      display:block;
+      font-weight:900;
+      margin:18px 0 8px;
+    }
+
+    input{
+      width:100%;
+      height:54px;
+      border-radius:18px;
+      border:1px solid var(--line);
+      background:#fff;
+      padding:0 16px;
+      outline:none;
+      color:var(--text);
+      font-size:15px;
+    }
+
+    input:focus{
+      border-color:var(--rose);
+      box-shadow:0 0 0 4px rgba(217,143,130,.14);
+    }
+
+    .btn{
+      width:100%;
+      min-height:54px;
+      border:none;
+      border-radius:18px;
+      background:linear-gradient(135deg,var(--rose),var(--rose-dark));
+      color:#fff;
+      font-weight:950;
+      cursor:pointer;
+      margin-top:14px;
+      box-shadow:0 15px 30px rgba(217,143,130,.25);
+    }
+
+    .btn.light{
+      background:#fff;
+      color:var(--text);
+      border:1px solid var(--line);
+      box-shadow:none;
+    }
+
+    .status{
+      display:none;
+      padding:14px 16px;
+      border-radius:18px;
+      font-weight:850;
+      line-height:1.45;
+      font-size:14px;
+      margin-top:16px;
+    }
+
+    .status.show{display:block}
+    .status.ok{background:#f0fff6;border:1px solid #bce8cb;color:#2f7a4f}
+    .status.error{background:#fff1f1;border:1px solid #f1c0c0;color:#a04444}
+
+    .pix-result{
+      display:none;
+      margin-top:22px;
+      padding:22px;
+      border:1px solid var(--line);
+      border-radius:28px;
+      background:#fffaf7;
+    }
+
+    .pix-result.show{
+      display:block;
+    }
+
+    .qr-box{
+      width:260px;
+      height:260px;
+      border-radius:24px;
+      border:1px solid var(--line);
+      background:#fff;
+      margin:0 auto 18px;
+      display:grid;
+      place-items:center;
+      padding:14px;
+      text-align:center;
+      color:var(--muted);
+      font-weight:900;
+    }
+
+    .qr-box img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+    }
+
+    .pix-code{
+      padding:14px;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:18px;
+      color:#5c463c;
+      font-size:12px;
+      line-height:1.5;
+      max-height:130px;
+      overflow:auto;
+      word-break:break-all;
+    }
+
+    .side-card{
+      position:sticky;
+      top:24px;
+    }
+
+    .side-card h2{
+      margin:0 0 14px;
+      font-size:28px;
+      letter-spacing:-.04em;
+    }
+
+    .list{
+      display:grid;
+      gap:13px;
+      margin-top:18px;
+    }
+
+    .item{
+      padding:14px;
+      border-radius:18px;
+      background:#fff7f3;
+      border:1px solid var(--line);
+      color:#5c4137;
+      line-height:1.55;
+      font-weight:750;
+    }
+
+    @media(max-width:900px){
+      .layout{grid-template-columns:1fr}
+      .side-card{position:relative;top:0}
+      h1{font-size:36px}
+    }
+
+    @media(max-width:600px){
+      body{padding:14px}
+      .topbar{flex-direction:column;align-items:flex-start}
+      .back{width:100%;text-align:center}
+      .card{padding:24px}
+      .qr-box{width:220px;height:220px}
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">IA</div>
+        <div>
+          <strong>Influencer Academy</strong>
+          <span>Desbloqueio de aula específica</span>
+        </div>
+      </div>
+
+      <a class="back" href="area.html#classes">← Voltar</a>
+    </header>
+
+    <section class="layout">
+      <section class="card">
+        <span class="eyebrow">Acesso avulso</span>
+        <h1>Desbloqueie esta aula sem esperar a sequência.</h1>
+
+        <p>
+          Esse acesso libera somente a aula escolhida. As demais continuam seguindo a trilha normal do curso.
+        </p>
+
+        <div class="price-box">
+          <small>Desbloqueio individual</small>
+          <div class="price">R$ 14,99</div>
+          <p style="color:#ead7ce;margin:8px 0 0">Pagamento único para esta aula específica.</p>
+        </div>
+
+        <p id="lessonInfo"><strong>Aula selecionada:</strong> carregando...</p>
+
+        <label for="email">E-mail usado no cadastro</label>
+        <input id="email" type="email" placeholder="seuemail@exemplo.com" />
+
+        <button class="btn" id="generateBtn">Gerar PIX de R$ 14,99</button>
+
+        <div id="status" class="status"></div>
+
+        <div id="pixResult" class="pix-result">
+          <div id="qrBox" class="qr-box">QR Code</div>
+
+          <p>
+            Escaneie o QR Code ou copie o código PIX abaixo. Depois, clique em verificar pagamento.
+          </p>
+
+          <div id="pixCode" class="pix-code"></div>
+
+          <button class="btn light" id="copyBtn">Copiar código PIX</button>
+          <button class="btn" id="checkBtn">Já paguei, liberar aula</button>
+        </div>
+      </section>
+
+      <aside class="card side-card">
+        <h2>Como funciona</h2>
+
+        <div class="list">
+          <div class="item">🔒 Você escolhe uma aula bloqueada.</div>
+          <div class="item">💳 Paga R$ 14,99 para liberar só essa aula.</div>
+          <div class="item">✅ Após aprovação, a aula fica disponível para seu e-mail.</div>
+          <div class="item">📚 O restante da trilha continua com a sequência normal.</div>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    const API_BASE_URL = "https://cursonovo-production.up.railway.app/api";
+
+    const modules = [
+      {title:"Posicionamento e nicho",lessons:["Escolha do nicho principal","Público ideal e dores reais","Promessa clara do perfil","Tom de voz da criadora","Diferenciação no mercado","Conteúdos de autoridade","Linha editorial inicial","Tarefa final do posicionamento"]},
+      {title:"Bio, estética e primeira impressão",lessons:["Foto de perfil profissional","Nome pesquisável","Bio com proposta clara","Destaques organizados","Capas e identidade visual","Paleta e fontes","Feed com coerência","Checklist final do perfil"]},
+      {title:"Ideias e pilares de conteúdo",lessons:["3 pilares principais","Ideias por etapa do funil","Conteúdo de conexão","Conteúdo educativo","Conteúdo de autoridade","Conteúdo de venda leve","Banco de ideias","Calendário semanal"]},
+      {title:"Reels com gancho e retenção",lessons:["Gancho nos 3 segundos","Promessa do vídeo","Roteiro curto","Cortes dinâmicos","Legendas estratégicas","CTA natural","Análise de retenção","Repetição de formatos"]},
+      {title:"Stories para conexão",lessons:["Bastidores reais","Enquetes e caixinhas","Prova social","Sequência de storytelling","Stories de rotina","CTA sem forçar","Oferta leve","Calendário de stories"]},
+      {title:"Canva para identidade visual",lessons:["Brand Kit simples","Templates 4:5","Capas de Reels","Carrossel educativo","Stories com CTA","Organização em pastas","Exportação correta","Revisão visual"]},
+      {title:"CapCut para edição dinâmica",lessons:["Timeline organizada","Cortes de pausa","Zooms e movimentos","Legenda automática","Destaque de palavras","Áudio e ruído","Exportação ideal","Checklist final"]},
+      {title:"IA para roteiro e vídeo",lessons:["Prompt de ideias","Roteiro com IA","Ganchos alternativos","Cenas de apoio","Descrição para vídeo IA","Legendas com IA","Calendário com IA","Humanização do resultado"]},
+      {title:"Métricas e crescimento",lessons:["Alcance e impressões","Retenção dos Reels","Salvamentos","Compartilhamentos","Novos seguidores","Formatos vencedores","Ajuste semanal","Relatório simples"]},
+      {title:"Monetização e parcerias",lessons:["Mídia kit inicial","Proposta para marcas","Valores e entregáveis","Prova social","Abordagem profissional","Organização de collabs","Pós-venda","Plano de monetização"]}
+    ];
+
+    const params = new URLSearchParams(window.location.search);
+    const moduleIndex = Number(params.get("m") || 0);
+    const lessonIndex = Number(params.get("l") || 0);
+
+    const emailInput = document.getElementById("email");
+    const lessonInfo = document.getElementById("lessonInfo");
+    const generateBtn = document.getElementById("generateBtn");
+    const statusBox = document.getElementById("status");
+    const pixResult = document.getElementById("pixResult");
+    const qrBox = document.getElementById("qrBox");
+    const pixCode = document.getElementById("pixCode");
+    const copyBtn = document.getElementById("copyBtn");
+    const checkBtn = document.getElementById("checkBtn");
+
+    let currentPaymentId = null;
+    let currentPixCode = "";
+
+    function lessonKey(m,l) {
+      return `m${m}-l${l}`;
+    }
+
+    function getUserEmail() {
+      const keys = ["ia_user","usuario","currentUser","loggedUser","userData","user"];
+
+      for (const key of keys) {
+        const raw = localStorage.getItem(key);
+        if (!raw) continue;
+
+        try {
+          const user = JSON.parse(raw);
+          if (user && user.email) return String(user.email).toLowerCase();
+        } catch(e) {}
+      }
+
+      return localStorage.getItem("ia_user_email") || "";
+    }
+
+    function savePaidUnlock(m,l) {
+      let arr = [];
+
+      try {
+        arr = JSON.parse(localStorage.getItem("ia_paid_unlocks") || "[]");
+      } catch(e) {}
+
+      const key = lessonKey(m,l);
+
+      if (!arr.includes(key)) {
+        arr.push(key);
+      }
+
+      localStorage.setItem("ia_paid_unlocks", JSON.stringify(arr));
+    }
+
+    function setStatus(message, type = "ok") {
+      statusBox.textContent = message;
+      statusBox.className = "status show " + type;
+    }
+
+    function getLessonTitle() {
+      const module = modules[moduleIndex];
+
+      if (!module || !module.lessons[lessonIndex]) {
+        return "Aula específica";
+      }
+
+      return `${module.title} · ${module.lessons[lessonIndex]}`;
+    }
+
+    async function generatePix() {
+      const email = emailInput.value.trim().toLowerCase();
+
+      if (!email) {
+        setStatus("Digite o e-mail usado no cadastro.", "error");
+        return;
+      }
+
+      generateBtn.disabled = true;
+      generateBtn.textContent = "Gerando PIX...";
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/lesson-unlocks/pix`, {
+          method: "POST",
+          headers: {"Content-Type":"application/json"},
+          body: JSON.stringify({
+            email,
+            moduleIndex,
+            lessonIndex,
+            lessonTitle: getLessonTitle()
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || "Erro ao gerar PIX.");
+        }
+
+        currentPaymentId = data.payment_id || data.id;
+        currentPixCode = data.qr_code || "";
+
+        if (data.qr_code_base64) {
+          qrBox.innerHTML = `<img src="data:image/png;base64,${data.qr_code_base64}" alt="QR Code PIX">`;
+        } else {
+          qrBox.textContent = "QR Code indisponível. Use o código copia e cola.";
+        }
+
+        pixCode.textContent = currentPixCode || "Código PIX não retornado.";
+        pixResult.classList.add("show");
+
+        setStatus("PIX gerado com sucesso.", "ok");
+      } catch (error) {
+        setStatus(error.message || "Erro ao gerar PIX.", "error");
+      } finally {
+        generateBtn.disabled = false;
+        generateBtn.textContent = "Gerar PIX de R$ 14,99";
+      }
+    }
+
+    async function copyPix() {
+      if (!currentPixCode) {
+        setStatus("Gere o PIX primeiro.", "error");
+        return;
+      }
+
+      try {
+        await navigator.clipboard.writeText(currentPixCode);
+        setStatus("Código PIX copiado.", "ok");
+      } catch(e) {
+        setStatus("Copie manualmente o código PIX.", "error");
+      }
+    }
+
+    async function checkPayment() {
+      if (!currentPaymentId) {
+        setStatus("Gere o PIX primeiro.", "error");
+        return;
+      }
+
+      checkBtn.disabled = true;
+      checkBtn.textContent = "Verificando...";
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/lesson-unlocks/status/${currentPaymentId}`);
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || "Erro ao verificar pagamento.");
+        }
+
+        if (data.approved) {
+          savePaidUnlock(moduleIndex, lessonIndex);
+          setStatus("Pagamento aprovado. Aula liberada!", "ok");
+
+          setTimeout(() => {
+            window.location.href = `aula.html?m=${moduleIndex}&l=${lessonIndex}`;
+          }, 900);
+        } else {
+          setStatus("Pagamento ainda não aprovado. Aguarde alguns instantes e tente novamente.", "error");
+        }
+      } catch (error) {
+        setStatus(error.message || "Erro ao verificar pagamento.", "error");
+      } finally {
+        checkBtn.disabled = false;
+        checkBtn.textContent = "Já paguei, liberar aula";
+      }
+    }
+
+    lessonInfo.innerHTML = `<strong>Aula selecionada:</strong> ${getLessonTitle()}`;
+    emailInput.value = getUserEmail();
+
+    generateBtn.addEventListener("click", generatePix);
+    copyBtn.addEventListener("click", copyPix);
+    checkBtn.addEventListener("click", checkPayment);
+  </script>
+</body>
+</html>
