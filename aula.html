@@ -18,7 +18,6 @@
       --rose-soft:#f8dfd8;
       --brown:#563b31;
       --shadow:0 24px 70px rgba(83,54,42,.11);
-      --green:#2e8b4d;
     }
 
     *{box-sizing:border-box}
@@ -55,11 +54,7 @@
       margin-bottom:24px;
     }
 
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:14px;
-    }
+    .brand{display:flex;align-items:center;gap:14px}
 
     .logo{
       width:52px;
@@ -73,25 +68,10 @@
       font-size:18px;
     }
 
-    .brand strong{
-      display:block;
-      font-size:22px;
-      letter-spacing:-.03em;
-    }
+    .brand strong{display:block;font-size:22px;letter-spacing:-.03em}
+    .brand span{display:block;color:var(--muted);font-size:13px;margin-top:3px;font-weight:700}
 
-    .brand span{
-      display:block;
-      color:var(--muted);
-      font-size:13px;
-      margin-top:3px;
-      font-weight:700;
-    }
-
-    .top-actions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
+    .top-actions{display:flex;gap:10px;flex-wrap:wrap}
 
     .btn{
       border:none;
@@ -119,9 +99,7 @@
       border:1px solid var(--line);
     }
 
-    .btn:hover{
-      transform:translateY(-2px);
-    }
+    .btn:hover{transform:translateY(-2px)}
 
     .hero{
       background:
@@ -222,21 +200,13 @@
       letter-spacing:-.03em;
     }
 
-    .panel p{
-      color:var(--muted);
-      line-height:1.8;
-      font-size:17px;
-    }
-
-    .panel ul,
-    .panel ol{
+    .panel p,.panel li{
       color:var(--muted);
       line-height:1.8;
       font-size:16px;
-      padding-left:22px;
     }
 
-    .teaching-card{
+    .teaching-card,.task-box{
       padding:22px;
       border-radius:26px;
       border:1px solid var(--line);
@@ -244,40 +214,121 @@
       margin:18px 0;
     }
 
-    .teaching-card strong{
-      color:var(--brown);
-    }
-
-    .example-box{
-      background:#fff;
-      border:1px solid var(--line);
-      border-radius:24px;
-      padding:20px;
-      margin:18px 0;
-    }
-
-    .example-box code{
-      display:block;
-      white-space:pre-wrap;
-      background:#3f2d26;
-      color:#fff;
-      padding:16px;
-      border-radius:18px;
-      line-height:1.7;
-      font-family:Consolas,monospace;
-      margin-top:12px;
-    }
-
     .task-box{
       background:linear-gradient(135deg,#fff,#fff4ef);
-      border:1px solid #e4afa3;
-      border-radius:26px;
-      padding:24px;
-      margin-top:22px;
+      border-color:#e4afa3;
     }
 
-    .task-box h3{
-      margin-top:0;
+    .album-section{
+      margin-top:30px;
+      background:#fffaf7;
+      border:1px solid #ecdcd3;
+      border-radius:30px;
+      padding:28px;
+    }
+
+    .album-section h2{
+      margin:0 0 10px;
+    }
+
+    .album-section > p{
+      margin:0 0 24px;
+    }
+
+    .album-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(240px,1fr));
+      gap:18px;
+    }
+
+    .album-card{
+      background:#fff;
+      border:1px solid #ead8ce;
+      border-radius:24px;
+      overflow:hidden;
+      padding:0;
+      cursor:pointer;
+      transition:.2s ease;
+      text-align:left;
+    }
+
+    .album-card:hover{
+      transform:translateY(-4px);
+      box-shadow:0 14px 30px rgba(80,48,35,.10);
+    }
+
+    .album-cover{
+      min-height:190px;
+      padding:18px;
+      color:#fff;
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      overflow:hidden;
+    }
+
+    .album-cover::after{
+      content:"";
+      position:absolute;
+      width:145px;
+      height:145px;
+      border-radius:50%;
+      background:rgba(255,255,255,.18);
+      right:-35px;
+      bottom:-45px;
+    }
+
+    .album-cover h3{
+      font-size:24px;
+      line-height:1.12;
+      margin:14px 0 8px;
+      color:#fff;
+      position:relative;
+      z-index:1;
+    }
+
+    .album-cover p{
+      margin:0;
+      font-size:14px;
+      color:rgba(255,255,255,.92);
+      position:relative;
+      z-index:1;
+    }
+
+    .album-badge{
+      display:inline-flex;
+      width:fit-content;
+      padding:8px 14px;
+      border-radius:999px;
+      background:rgba(255,255,255,.18);
+      font-size:12px;
+      font-weight:800;
+      letter-spacing:.06em;
+      position:relative;
+      z-index:1;
+    }
+
+    .album-instagram{background:linear-gradient(135deg,#ff6a5c,#d63a86)}
+    .album-canva{background:linear-gradient(135deg,#20bde3,#5f74ff)}
+    .album-capcut{background:linear-gradient(135deg,#273043,#4b5568)}
+    .album-ia{background:linear-gradient(135deg,#ff8b7b,#9a5bdb)}
+
+    .album-body{
+      padding:18px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    .album-body strong{
+      font-size:18px;
+      color:#4b342d;
+    }
+
+    .album-body span{
+      font-size:14px;
+      color:#8b6d62;
     }
 
     .side{
@@ -304,133 +355,175 @@
       line-height:1.65;
     }
 
-    .print-grid{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:14px;
-      margin-top:18px;
-    }
-
-    .print-card{
-      border:1px solid var(--line);
-      border-radius:20px;
-      overflow:hidden;
-      background:#fff;
-      cursor:zoom-in;
-      box-shadow:0 12px 24px rgba(83,54,42,.06);
-    }
-
-    .print-card img{
-      width:100%;
-      display:block;
-      aspect-ratio:4/5;
-      object-fit:cover;
-    }
-
-    .print-card span{
-      display:block;
-      padding:12px;
-      font-weight:850;
-      color:var(--brown);
-    }
-
-    .blocked{
-      background:#fff;
-      border:1px solid var(--line);
-      border-radius:34px;
-      padding:34px;
-      box-shadow:var(--shadow);
-      text-align:center;
-    }
-
-    .blocked h1{
-      font-size:42px;
-      margin:auto;
-    }
-
-    .modal{
+    .gallery-modal{
       position:fixed;
       inset:0;
-      background:rgba(26,18,15,.82);
       display:none;
-      align-items:center;
-      justify-content:center;
       z-index:9999;
-      padding:28px;
     }
 
-    .modal.show{
-      display:flex;
+    .gallery-modal.active{
+      display:block;
     }
 
-    .modal img{
-      max-width:min(92vw,760px);
-      max-height:88vh;
-      border-radius:24px;
-      box-shadow:0 30px 80px rgba(0,0,0,.35);
-    }
-
-    .modal button{
+    .gallery-overlay{
       position:absolute;
-      top:24px;
-      right:24px;
+      inset:0;
+      background:rgba(26,20,17,.72);
+      backdrop-filter:blur(6px);
+    }
+
+    .gallery-content{
+      position:relative;
+      width:min(1100px,calc(100% - 40px));
+      max-height:calc(100vh - 40px);
+      margin:20px auto;
+      background:#fffaf7;
+      border-radius:26px;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      box-shadow:0 20px 70px rgba(0,0,0,.22);
+    }
+
+    .gallery-close{
+      position:absolute;
+      top:14px;
+      right:16px;
+      width:42px;
+      height:42px;
       border:none;
-      background:#fff;
-      color:var(--brown);
-      border-radius:999px;
-      padding:12px 16px;
-      font-weight:950;
+      border-radius:50%;
+      background:#f1dfd7;
+      color:#4b342d;
+      font-size:28px;
+      cursor:pointer;
+      z-index:5;
+    }
+
+    .gallery-header{
+      padding:28px 30px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+
+    .gallery-header small{
+      display:block;
+      color:#c97d68;
+      font-weight:800;
+      letter-spacing:.05em;
+      margin-bottom:6px;
+    }
+
+    .gallery-header h3{
+      font-size:28px;
+      color:#4b342d;
+      margin:0;
+    }
+
+    .gallery-actions{
+      display:flex;
+      gap:10px;
+    }
+
+    .gallery-actions button{
+      width:42px;
+      height:42px;
+      border:none;
+      border-radius:14px;
+      background:#e4a091;
+      color:#fff;
+      font-size:24px;
       cursor:pointer;
     }
 
+    .gallery-main{
+      position:relative;
+      padding:0 30px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+    }
+
+    .gallery-image-wrap{
+      flex:1;
+      min-height:520px;
+      background:#f6ece7;
+      border-radius:20px;
+      overflow:auto;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+
+    .gallery-image-wrap img{
+      max-width:100%;
+      height:auto;
+      transition:transform .2s ease;
+      transform-origin:center center;
+      border-radius:16px;
+      box-shadow:0 12px 24px rgba(0,0,0,.08);
+    }
+
+    .gallery-nav{
+      flex:0 0 50px;
+      width:50px;
+      height:50px;
+      border:none;
+      border-radius:50%;
+      background:#e6a191;
+      color:#fff;
+      font-size:34px;
+      cursor:pointer;
+    }
+
+    .gallery-thumbs{
+      padding:0 30px 28px;
+      display:flex;
+      gap:12px;
+      overflow-x:auto;
+    }
+
+    .gallery-thumbs button{
+      border:2px solid transparent;
+      border-radius:16px;
+      overflow:hidden;
+      background:#fff;
+      padding:0;
+      cursor:pointer;
+      flex:0 0 110px;
+      height:140px;
+    }
+
+    .gallery-thumbs button.active{
+      border-color:#d98775;
+    }
+
+    .gallery-thumbs img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
     @media(max-width:980px){
-      .grid{
-        grid-template-columns:1fr;
-      }
-
-      .side{
-        position:relative;
-        top:0;
-      }
-
-      .print-grid{
-        grid-template-columns:repeat(2,1fr);
-      }
+      .grid{grid-template-columns:1fr}
+      .side{position:relative;top:0}
+      .album-grid{grid-template-columns:1fr}
     }
 
     @media(max-width:680px){
-      .page{
-        padding:14px;
-      }
-
-      .topbar{
-        flex-direction:column;
-        align-items:flex-start;
-      }
-
-      h1{
-        font-size:38px;
-      }
-
-      .hero{
-        padding:24px;
-      }
-
-      .panel{
-        padding:22px;
-      }
-
-      .print-grid{
-        grid-template-columns:1fr;
-      }
-
-      .top-actions{
-        width:100%;
-      }
-
-      .top-actions .btn{
-        width:100%;
-      }
+      .page{padding:14px}
+      .topbar{flex-direction:column;align-items:flex-start}
+      h1{font-size:38px}
+      .hero,.panel{padding:24px}
+      .gallery-main{padding:0 14px 18px}
+      .gallery-header,.gallery-thumbs{padding-left:14px;padding-right:14px}
+      .gallery-image-wrap{min-height:360px}
+      .gallery-nav{width:42px;height:42px;flex-basis:42px}
     }
   </style>
 </head>
@@ -438,116 +531,147 @@
 <body>
   <main class="page" id="app"></main>
 
-  <div class="modal" id="imageModal">
-    <button id="closeModal">Fechar</button>
-    <img id="modalImg" src="" alt="Print ampliado">
+  <div id="galleryModal" class="gallery-modal">
+    <div class="gallery-overlay" onclick="closeGallery()"></div>
+
+    <div class="gallery-content">
+      <button class="gallery-close" onclick="closeGallery()">×</button>
+
+      <div class="gallery-header">
+        <div>
+          <small id="galleryCategory">Álbum</small>
+          <h3 id="galleryTitle">Galeria da aula</h3>
+        </div>
+
+        <div class="gallery-actions">
+          <button onclick="zoomOutImage()">−</button>
+          <button onclick="zoomInImage()">+</button>
+        </div>
+      </div>
+
+      <div class="gallery-main">
+        <button class="gallery-nav" onclick="prevImage()">‹</button>
+
+        <div class="gallery-image-wrap">
+          <img id="galleryMainImage" src="" alt="Imagem da galeria">
+        </div>
+
+        <button class="gallery-nav" onclick="nextImage()">›</button>
+      </div>
+
+      <div id="galleryThumbs" class="gallery-thumbs"></div>
+    </div>
   </div>
 
   <script>
-    const printFiles = [
-      ["Instagram Profile","assets/prints/instagram-profile.png"],
-      ["Instagram Reels","assets/prints/instagram-reels.png"],
-      ["Instagram Insights","assets/prints/instagram-insights.png"],
-      ["Canva Brand Kit","assets/prints/canva-brand.png"],
-      ["Canva Carousel","assets/prints/canva-carousel.png"],
-      ["Canva Stories","assets/prints/canva-stories.png"],
-      ["CapCut Timeline","assets/prints/capcut-timeline.png"],
-      ["CapCut Captions","assets/prints/capcut-captions.png"],
-      ["CapCut Export","assets/prints/capcut-export.png"],
-      ["AI Script","assets/prints/ai-script.png"],
-      ["AI Video","assets/prints/ai-video.png"],
-      ["Workflow Calendar","assets/prints/workflow-calendar.png"]
+    const modules = [
+      {tag:"01",title:"Posicionamento e nicho",desc:"Defina o espaço que você quer ocupar e para quem deseja comunicar.",lessons:["Escolha do nicho principal","Público ideal e dores reais","Promessa clara do perfil","Tom de voz da criadora","Diferenciação no mercado","Conteúdos de autoridade","Linha editorial inicial","Tarefa final do posicionamento"]},
+      {tag:"02",title:"Bio, estética e primeira impressão",desc:"Transforme seu perfil em uma vitrine clara, bonita e confiável.",lessons:["Foto de perfil profissional","Nome pesquisável","Bio com proposta clara","Destaques organizados","Capas e identidade visual","Paleta e fontes","Feed com coerência","Checklist final do perfil"]},
+      {tag:"03",title:"Ideias e pilares de conteúdo",desc:"Organize temas para não depender só de inspiração.",lessons:["3 pilares principais","Ideias por etapa do funil","Conteúdo de conexão","Conteúdo educativo","Conteúdo de autoridade","Conteúdo de venda leve","Banco de ideias","Calendário semanal"]},
+      {tag:"04",title:"Reels com gancho e retenção",desc:"Crie vídeos curtos com começo forte e estrutura clara.",lessons:["Gancho nos 3 segundos","Promessa do vídeo","Roteiro curto","Cortes dinâmicos","Legendas estratégicas","CTA natural","Análise de retenção","Repetição de formatos"]},
+      {tag:"05",title:"Stories para conexão",desc:"Use stories para relacionamento, desejo e confiança.",lessons:["Bastidores reais","Enquetes e caixinhas","Prova social","Sequência de storytelling","Stories de rotina","CTA sem forçar","Oferta leve","Calendário de stories"]},
+      {tag:"06",title:"Canva para identidade visual",desc:"Crie posts, capas e carrosséis com aparência profissional.",lessons:["Brand Kit simples","Templates 4:5","Capas de Reels","Carrossel educativo","Stories com CTA","Organização em pastas","Exportação correta","Revisão visual"]},
+      {tag:"07",title:"CapCut para edição dinâmica",desc:"Edite vídeos com ritmo, legendas e acabamento limpo.",lessons:["Timeline organizada","Cortes de pausa","Zooms e movimentos","Legenda automática","Destaque de palavras","Áudio e ruído","Exportação ideal","Checklist final"]},
+      {tag:"08",title:"IA para roteiro e vídeo",desc:"Use IA para destravar criatividade e produção.",lessons:["Prompt de ideias","Roteiro com IA","Ganchos alternativos","Cenas de apoio","Descrição para vídeo IA","Legendas com IA","Calendário com IA","Humanização do resultado"]},
+      {tag:"09",title:"Métricas e crescimento",desc:"Leia dados e transforme insight em decisão.",lessons:["Alcance e impressões","Retenção dos Reels","Salvamentos","Compartilhamentos","Novos seguidores","Formatos vencedores","Ajuste semanal","Relatório simples"]},
+      {tag:"10",title:"Monetização e parcerias",desc:"Prepare sua imagem para atrair oportunidades.",lessons:["Mídia kit inicial","Proposta para marcas","Valores e entregáveis","Prova social","Abordagem profissional","Organização de collabs","Pós-venda","Plano de monetização"]}
     ];
 
-    const modules = [
-      {tag:"01",title:"Posicionamento e nicho",desc:"Defina o espaço que você quer ocupar e para quem deseja comunicar.",prints:[0,1,3],lessons:["Escolha do nicho principal","Público ideal e dores reais","Promessa clara do perfil","Tom de voz da criadora","Diferenciação no mercado","Conteúdos de autoridade","Linha editorial inicial","Tarefa final do posicionamento"]},
-      {tag:"02",title:"Bio, estética e primeira impressão",desc:"Transforme seu perfil em uma vitrine clara, bonita e confiável.",prints:[0,3,4],lessons:["Foto de perfil profissional","Nome pesquisável","Bio com proposta clara","Destaques organizados","Capas e identidade visual","Paleta e fontes","Feed com coerência","Checklist final do perfil"]},
-      {tag:"03",title:"Ideias e pilares de conteúdo",desc:"Organize temas para não depender só de inspiração.",prints:[1,4,11],lessons:["3 pilares principais","Ideias por etapa do funil","Conteúdo de conexão","Conteúdo educativo","Conteúdo de autoridade","Conteúdo de venda leve","Banco de ideias","Calendário semanal"]},
-      {tag:"04",title:"Reels com gancho e retenção",desc:"Crie vídeos curtos com começo forte e estrutura clara.",prints:[1,6,7],lessons:["Gancho nos 3 segundos","Promessa do vídeo","Roteiro curto","Cortes dinâmicos","Legendas estratégicas","CTA natural","Análise de retenção","Repetição de formatos"]},
-      {tag:"05",title:"Stories para conexão",desc:"Use stories para relacionamento, desejo e confiança.",prints:[5,0,11],lessons:["Bastidores reais","Enquetes e caixinhas","Prova social","Sequência de storytelling","Stories de rotina","CTA sem forçar","Oferta leve","Calendário de stories"]},
-      {tag:"06",title:"Canva para identidade visual",desc:"Crie posts, capas e carrosséis com aparência profissional.",prints:[3,4,5],lessons:["Brand Kit simples","Templates 4:5","Capas de Reels","Carrossel educativo","Stories com CTA","Organização em pastas","Exportação correta","Revisão visual"]},
-      {tag:"07",title:"CapCut para edição dinâmica",desc:"Edite vídeos com ritmo, legendas e acabamento limpo.",prints:[6,7,8],lessons:["Timeline organizada","Cortes de pausa","Zooms e movimentos","Legenda automática","Destaque de palavras","Áudio e ruído","Exportação ideal","Checklist final"]},
-      {tag:"08",title:"IA para roteiro e vídeo",desc:"Use IA para destravar criatividade e produção.",prints:[9,10,11],lessons:["Prompt de ideias","Roteiro com IA","Ganchos alternativos","Cenas de apoio","Descrição para vídeo IA","Legendas com IA","Calendário com IA","Humanização do resultado"]},
-      {tag:"09",title:"Métricas e crescimento",desc:"Leia dados e transforme insight em decisão.",prints:[2,1,11],lessons:["Alcance e impressões","Retenção dos Reels","Salvamentos","Compartilhamentos","Novos seguidores","Formatos vencedores","Ajuste semanal","Relatório simples"]},
-      {tag:"10",title:"Monetização e parcerias",desc:"Prepare sua imagem para atrair oportunidades.",prints:[0,3,11],lessons:["Mídia kit inicial","Proposta para marcas","Valores e entregáveis","Prova social","Abordagem profissional","Organização de collabs","Pós-venda","Plano de monetização"]}
-    ];
+    const galleries = {
+      instagram:{
+        category:"INSTAGRAM",
+        title:"Instagram - aplicação prática",
+        coverClass:"album-instagram",
+        subtitle:"Ajustes de perfil, Reels, stories e métricas.",
+        images:[
+          "assets/prints/album/instagram-1.png",
+          "assets/prints/album/instagram-2.png",
+          "assets/prints/album/instagram-3.png",
+          "assets/prints/album/instagram-4.png"
+        ]
+      },
+      canva:{
+        category:"CANVA",
+        title:"Canva - modelo visual",
+        coverClass:"album-canva",
+        subtitle:"Identidade, carrossel, stories e post 4:5.",
+        images:[
+          "assets/prints/album/canva-1.png",
+          "assets/prints/album/canva-2.png",
+          "assets/prints/album/canva-3.png",
+          "assets/prints/album/canva-4.png"
+        ]
+      },
+      capcut:{
+        category:"CAPCUT",
+        title:"CapCut - vídeo passo a passo",
+        coverClass:"album-capcut",
+        subtitle:"Cortes, legendas, zoom e exportação.",
+        images:[
+          "assets/prints/album/capcut-1.png",
+          "assets/prints/album/capcut-2.png",
+          "assets/prints/album/capcut-3.png",
+          "assets/prints/album/capcut-4.png"
+        ]
+      },
+      ia:{
+        category:"IA",
+        title:"IA - prompt da aula",
+        coverClass:"album-ia",
+        subtitle:"Ideias, ganchos, cenas e calendário.",
+        images:[
+          "assets/prints/album/ia-1.png",
+          "assets/prints/album/ia-2.png",
+          "assets/prints/album/ia-3.png",
+          "assets/prints/album/ia-4.png"
+        ]
+      }
+    };
 
     const params = new URLSearchParams(window.location.search);
     const moduleIndex = Number(params.get("m") || 0);
     const lessonIndex = Number(params.get("l") || 0);
 
-// PRINTS POR AULA PATCH START
-    function pad2(value){
-      return String(value + 1).padStart(2, "0");
-    }
+    let currentGallery = null;
+    let currentIndex = 0;
+    let currentZoom = 1;
 
-    printFiles.length = 0;
-
-    const lessonPrintBase = `assets/aulas/modulo-${pad2(moduleIndex)}/aula-${pad2(lessonIndex)}`;
-
-    printFiles.push(
-      ["Instagram - aplicação prática", `${lessonPrintBase}/print-01-instagram.png`],
-      ["Canva - modelo visual", `${lessonPrintBase}/print-02-canva.png`],
-      ["CapCut - vídeo passo a passo", `${lessonPrintBase}/print-03-capcut.png`],
-      ["IA - prompt da aula", `${lessonPrintBase}/print-04-ia.png`]
-    );
-
-    modules.forEach(module => {
-      module.prints = [0, 1, 2, 3];
-    });
-// PRINTS POR AULA PATCH END
-
-    function key(m,l){
-      return `m${m}-l${l}`;
-    }
+    function key(m,l){ return `m${m}-l${l}`; }
 
     function getCompleted(){
-      try {
-        return JSON.parse(localStorage.getItem("ia_completed_lessons") || "[]");
-      } catch(e) {
-        return [];
-      }
+      try { return JSON.parse(localStorage.getItem("ia_completed_lessons") || "[]"); }
+      catch(e){ return []; }
     }
 
     function saveCompleted(arr){
       localStorage.setItem("ia_completed_lessons", JSON.stringify(arr));
     }
 
-    function linearIndex(m,l){
-      return (m * 8) + l;
-    }
+    function linearIndex(m,l){ return (m * 8) + l; }
 
     function isUnlocked(m,l){
-      if (m === 0 && l === 0) return true;
-
-      try {
-        const paid = JSON.parse(localStorage.getItem("ia_paid_unlocks") || "[]");
-        if (paid.includes(key(m,l))) return true;
-      } catch(e) {}
-
+      if(m === 0 && l === 0) return true;
       const previous = linearIndex(m,l) - 1;
       const pm = Math.floor(previous / 8);
       const pl = previous % 8;
-
       return getCompleted().includes(key(pm,pl));
     }
 
     function getProgress(){
       const total = modules.length * 8;
-      const completed = getCompleted().length;
-      return Math.round((completed / total) * 100);
+      return Math.round((getCompleted().length / total) * 100);
     }
 
     function nextLessonUrl(){
       let nextM = moduleIndex;
       let nextL = lessonIndex + 1;
 
-      if (nextL >= 8) {
+      if(nextL >= 8){
         nextM++;
         nextL = 0;
       }
 
-      if (nextM >= modules.length) {
+      if(nextM >= modules.length){
         return "area.html#modules";
       }
 
@@ -556,114 +680,117 @@
 
     function completeLesson(){
       const completed = getCompleted();
-      const currentKey = key(moduleIndex, lessonIndex);
+      const current = key(moduleIndex, lessonIndex);
 
-      if (!completed.includes(currentKey)) {
-        completed.push(currentKey);
+      if(!completed.includes(current)){
+        completed.push(current);
         saveCompleted(completed);
       }
 
       renderPage(true);
     }
 
-    function openImage(src){
-      document.getElementById("modalImg").src = src;
-      document.getElementById("imageModal").classList.add("show");
-    }
-
-    document.getElementById("closeModal").addEventListener("click",()=>{
-      document.getElementById("imageModal").classList.remove("show");
-    });
-
-    document.getElementById("imageModal").addEventListener("click",(e)=>{
-      if(e.target.id === "imageModal") {
-        e.currentTarget.classList.remove("show");
-      }
-    });
-
     function buildTeachingContent(module, lesson){
       return `
-        <h2>O que você vai aprender aqui</h2>
+        <h2>O que você vai aprender nesta aula</h2>
         <p>
-          Nesta aula, você vai entender como colocar em prática <strong>${lesson.toLowerCase()}</strong> dentro da sua estratégia como influenciadora.
-          A ideia não é ficar só na teoria: é transformar o conteúdo em uma ação real no seu perfil.
+          Nesta aula, você vai aprender a aplicar <strong>${lesson.toLowerCase()}</strong> dentro da sua estratégia como influenciadora.
+          A proposta é transformar teoria em prática, usando exemplos visuais, organização de conteúdo e uma atividade simples para fixar.
         </p>
 
         <div class="teaching-card">
-          <strong>Ideia principal:</strong>
-          uma criadora cresce com mais consistência quando entende o que está fazendo, por que está fazendo e como perceber se funcionou.
-          Essa aula existe para tirar você do improviso e te colocar em um processo mais profissional.
+          <strong>Ideia central:</strong>
+          crescer como criadora não depende apenas de postar mais. Depende de entender o que está sendo comunicado,
+          como isso aparece visualmente e qual ação o público deve tomar depois de consumir seu conteúdo.
         </div>
 
-        <h3>1. Antes de aplicar, entenda por que isso importa</h3>
+        <h3>1. Entenda a função desta etapa</h3>
         <p>
-          O módulo <strong>${module.title}</strong> faz parte da construção da sua presença digital. 
-          Ele ajuda você a criar um perfil mais claro, mais bonito e mais fácil de ser entendido por quem chega pela primeira vez.
-          Quando essa etapa é ignorada, a criadora até posta, mas o público não entende exatamente por que deveria acompanhar, confiar ou comprar dela.
+          O módulo <strong>${module.title}</strong> ajuda você a construir uma presença mais clara e profissional.
+          Essa aula trabalha uma parte específica dessa construção, para que seu perfil deixe de parecer improvisado
+          e passe a comunicar posicionamento, intenção e valor.
         </p>
 
-        <h3>2. Como aplicar isso no seu perfil</h3>
+        <h3>2. Como aplicar no seu perfil</h3>
         <ol>
-          <li>Abra seu Instagram e observe seu perfil como se você fosse uma pessoa nova chegando ali.</li>
+          <li>Abra seu Instagram e observe seu perfil como se fosse uma pessoa nova chegando ali.</li>
           <li>Veja se a mensagem principal está clara em poucos segundos.</li>
-          <li>Identifique o que está confuso, genérico ou desalinhado com o público que você quer atrair.</li>
-          <li>Aplique uma melhoria pequena, mas visível, com base nesta aula.</li>
-          <li>Depois de publicar ou ajustar, acompanhe se houve mais respostas, cliques, salvamentos ou interações.</li>
+          <li>Identifique o que pode ser melhorado na estética, no texto ou na estrutura.</li>
+          <li>Use os álbuns abaixo para estudar exemplos de Instagram, Canva, CapCut e IA.</li>
+          <li>Faça uma pequena aplicação prática ainda hoje.</li>
         </ol>
 
         <h3>3. Exemplo prático</h3>
-        <div class="example-box">
-          <p>
-            Em vez de pensar apenas “preciso postar mais”, pense como uma criadora estratégica:
-          </p>
-          <code>Objetivo da semana: fortalecer minha presença.
-Ação: aplicar ${lesson.toLowerCase()}.
-Formato: 1 Reel + 3 stories + 1 post/carrossel.
-Métrica observada: retenção, respostas, salvamentos e novos seguidores.</code>
+        <p>
+          Em vez de apenas pensar “preciso postar”, organize assim:
+        </p>
+
+        <div class="teaching-card">
+          <strong>Objetivo:</strong> melhorar ${lesson.toLowerCase()}.<br>
+          <strong>Formato:</strong> 1 ajuste no perfil + 1 conteúdo curto + 1 sequência de stories.<br>
+          <strong>Métrica observada:</strong> respostas, salvamentos, retenção ou novos seguidores.
         </div>
 
-        <h3>4. Erros que podem te travar nessa etapa</h3>
+        <h3>4. Erros comuns</h3>
         <ul>
-          <li>Copiar outras criadoras sem adaptar para a sua realidade.</li>
-          <li>Postar apenas quando sente inspiração, sem processo.</li>
-          <li>Focar só em estética e esquecer clareza de mensagem.</li>
-          <li>Ignorar métricas e não revisar o que funcionou.</li>
-          <li>Usar ferramentas como Canva, CapCut ou IA sem uma intenção estratégica.</li>
-        </ul>
-
-        <h3>5. Checklist rápido da aula</h3>
-        <ul>
-          <li>Eu entendi o objetivo dessa aula?</li>
-          <li>Eu apliquei pelo menos uma melhoria no meu perfil ou conteúdo?</li>
-          <li>Eu tenho um exemplo prático salvo para repetir depois?</li>
-          <li>Eu sei qual métrica vou observar?</li>
-          <li>Eu consigo explicar essa etapa com minhas próprias palavras?</li>
+          <li>Copiar outras criadoras sem adaptar para o seu nicho.</li>
+          <li>Usar Canva ou CapCut sem uma intenção clara.</li>
+          <li>Postar sem revisar se o conteúdo está fácil de entender.</li>
+          <li>Ignorar os insights e repetir formatos sem avaliar resultado.</li>
         </ul>
 
         <div class="task-box">
           <h3>Tarefa de casa</h3>
           <p>
-            Faça uma aplicação real desta aula hoje. Pode ser ajustar um trecho da bio, criar um roteiro,
-            organizar um template, editar um vídeo, revisar métricas ou montar uma sequência de stories.
-          </p>
-          <p>
-            Use esta atividade como exercício de fixação. Quando terminar, marque a aula como concluída para acompanhar seu progresso.
+            Aplique essa aula em uma ação real: ajuste algo no perfil, crie um roteiro, monte um template,
+            edite um vídeo ou escreva uma sequência de stories. Depois, marque esta aula como concluída para salvar seu progresso.
           </p>
         </div>
       `;
     }
 
+    function renderAlbums(){
+      return `
+        <section class="album-section">
+          <h2>Álbuns práticos da aula</h2>
+          <p>
+            Clique em cada quadro para abrir a galeria, navegar pelas imagens e dar zoom no passo a passo.
+          </p>
+
+          <div class="album-grid">
+            ${Object.keys(galleries).map(key => {
+              const g = galleries[key];
+              return `
+                <button class="album-card" onclick="openGallery('${key}')">
+                  <div class="album-cover ${g.coverClass}">
+                    <span class="album-badge">${g.category}</span>
+                    <div>
+                      <h3>${g.title}</h3>
+                      <p>${g.subtitle}</p>
+                    </div>
+                  </div>
+                  <div class="album-body">
+                    <strong>${g.title}</strong>
+                    <span>Clique para abrir o álbum com 4 prints</span>
+                  </div>
+                </button>
+              `;
+            }).join("")}
+          </div>
+        </section>
+      `;
+    }
+
     function renderBlocked(){
       document.getElementById("app").innerHTML = `
-        <div class="blocked">
-          <span class="eyebrow">Aula bloqueada</span>
-          <h1>Esta aula ainda não está liberada na sequência atual. Você pode continuar pela trilha normal ou liberar este conteúdo de forma avulsa.</h1>
-          <p style="color:#8a7166;line-height:1.7;font-size:18px;max-width:680px;margin:18px auto">
-            A trilha foi organizada em sequência para você evoluir com clareza. 
-            Volte para os módulos e continue pela próxima aula liberada.
-          </p>
-          <a class="btn light" href="area.html#modules">Voltar para os módulos</a> <a class="btn primary" href="desbloqueio.html?m=${moduleIndex}&l=${lessonIndex}">Desbloquear por R$ 14,99</a>
-        </div>
+        <section class="hero">
+          <span class="eyebrow">Aula em sequência</span>
+          <h1>Complete a etapa anterior para continuar a trilha.</h1>
+          <p>A jornada foi organizada em ordem para manter o aprendizado mais claro e progressivo.</p>
+          <div style="margin-top:24px">
+            <a class="btn primary" href="area.html#modules">Voltar para os módulos</a>
+          </div>
+        </section>
       `;
     }
 
@@ -692,7 +819,7 @@ Métrica observada: retenção, respostas, salvamentos e novos seguidores.</code
         <section class="hero">
           <span class="eyebrow">${module.title}</span>
           <h1>${lesson}</h1>
-          <p>${module.desc} Nesta aula, você vai estudar com mais profundidade, ver exemplos e aplicar uma tarefa prática antes de avançar.</p>
+          <p>${module.desc} Estude a explicação, abra os álbuns visuais e aplique a tarefa de casa no seu perfil.</p>
 
           <div class="progress-box">
             <div class="progress-head">
@@ -709,33 +836,22 @@ Métrica observada: retenção, respostas, salvamentos e novos seguidores.</code
           <article class="panel">
             ${justCompleted ? `
               <div class="teaching-card" style="background:#eefaf1;border-color:#bce8cb;color:#2e8b4d">
-                <strong>Parabéns!</strong> Aula marcada como concluída. Você já pode continuar sua jornada.
+                <strong>Parabéns!</strong> Aula marcada como concluída e progresso salvo.
               </div>
             ` : ""}
 
             ${buildTeachingContent(module, lesson)}
-
-            <h2>4 prints passo a passo desta aula</h2>
-            <p>Cada imagem abaixo representa um app diferente aplicado nesta aula: Instagram, Canva, CapCut e IA. Clique para ampliar e estudar o passo a passo.</p>
-
-            <div class="print-grid">
-              ${module.prints.map(idx => `
-                <div class="print-card" onclick="openImage('${printFiles[idx][1]}')">
-                  <img src="${printFiles[idx][1]}" alt="${printFiles[idx][0]}">
-                  <span>${printFiles[idx][0]}</span>
-                </div>
-              `).join("")}
-            </div>
+            ${renderAlbums()}
 
             <div class="task-box">
               <h3>Finalizar aula</h3>
               <p>
-                Marque como concluída somente depois de estudar o conteúdo e fazer a tarefa prática.
-                Isso libera a próxima aula da sequência.
+                Marque como concluída depois de estudar o conteúdo e fazer sua tarefa de casa.
+                Assim seu progresso ficará salvo na trilha.
               </p>
 
               <button class="btn primary" onclick="completeLesson()">
-                ${done ? "Aula concluída ✓" : "Concluir aula"}
+                ${done ? "Aula concluída ✓" : "Marcar aula como concluída"}
               </button>
 
               ${done ? `<a class="btn light" style="margin-left:8px" href="${nextLessonUrl()}">Ir para próxima aula</a>` : ""}
@@ -752,21 +868,101 @@ Métrica observada: retenção, respostas, salvamentos e novos seguidores.</code
 
             <div class="side-card">
               <h3>Como aproveitar melhor</h3>
-              <p>Leia o conteúdo, abra os guias visuais, aplique no seu perfil e marque como concluída quando terminar.</p>
+              <p>Leia o conteúdo, abra os álbuns, estude os prints, aplique no seu perfil e marque como concluída quando terminar.</p>
             </div>
 
             <div class="side-card">
               <h3>Próximo passo</h3>
-              <p>${done ? "A próxima aula já está liberada." : "Quando terminar, avance para o próximo conteúdo da trilha."}</p>
+              <p>${done ? "Você já pode continuar sua jornada." : "Finalize esta aula com calma e avance no seu ritmo."}</p>
             </div>
           </aside>
         </section>
       `;
     }
 
-    if (!modules[moduleIndex] || !modules[moduleIndex].lessons[lessonIndex]) {
+    function openGallery(key,startIndex = 0){
+      currentGallery = galleries[key];
+      currentIndex = startIndex;
+      currentZoom = 1;
+
+      document.getElementById("galleryModal").classList.add("active");
+      document.body.style.overflow = "hidden";
+      document.getElementById("galleryCategory").textContent = currentGallery.category;
+      document.getElementById("galleryTitle").textContent = currentGallery.title;
+
+      renderMainImage();
+      renderThumbs();
+    }
+
+    function closeGallery(){
+      document.getElementById("galleryModal").classList.remove("active");
+      document.body.style.overflow = "";
+    }
+
+    function renderMainImage(){
+      const img = document.getElementById("galleryMainImage");
+      img.src = currentGallery.images[currentIndex];
+      img.style.transform = `scale(${currentZoom})`;
+    }
+
+    function renderThumbs(){
+      const thumbs = document.getElementById("galleryThumbs");
+      thumbs.innerHTML = "";
+
+      currentGallery.images.forEach((src,index) => {
+        const btn = document.createElement("button");
+        if(index === currentIndex) btn.classList.add("active");
+
+        btn.innerHTML = `<img src="${src}" alt="Thumb ${index + 1}">`;
+        btn.onclick = () => {
+          currentIndex = index;
+          currentZoom = 1;
+          renderMainImage();
+          renderThumbs();
+        };
+
+        thumbs.appendChild(btn);
+      });
+    }
+
+    function prevImage(){
+      if(!currentGallery) return;
+      currentIndex = (currentIndex - 1 + currentGallery.images.length) % currentGallery.images.length;
+      currentZoom = 1;
+      renderMainImage();
+      renderThumbs();
+    }
+
+    function nextImage(){
+      if(!currentGallery) return;
+      currentIndex = (currentIndex + 1) % currentGallery.images.length;
+      currentZoom = 1;
+      renderMainImage();
+      renderThumbs();
+    }
+
+    function zoomInImage(){
+      currentZoom = Math.min(currentZoom + .2, 3);
+      renderMainImage();
+    }
+
+    function zoomOutImage(){
+      currentZoom = Math.max(currentZoom - .2, 1);
+      renderMainImage();
+    }
+
+    document.addEventListener("keydown", function(e){
+      const modalOpen = document.getElementById("galleryModal").classList.contains("active");
+      if(!modalOpen) return;
+
+      if(e.key === "Escape") closeGallery();
+      if(e.key === "ArrowRight") nextImage();
+      if(e.key === "ArrowLeft") prevImage();
+    });
+
+    if(!modules[moduleIndex] || !modules[moduleIndex].lessons[lessonIndex]){
       window.location.href = "area.html#modules";
-    } else if (!isUnlocked(moduleIndex, lessonIndex)) {
+    } else if(!isUnlocked(moduleIndex, lessonIndex)){
       renderBlocked();
     } else {
       renderPage();
@@ -774,22 +970,3 @@ Métrica observada: retenção, respostas, salvamentos e novos seguidores.</code
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
