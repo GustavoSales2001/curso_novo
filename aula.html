@@ -580,6 +580,181 @@
     }
   }
 </style>
+<style id="premium-gallery-fix">
+  .gallery-content {
+    width: min(1080px, 92vw) !important;
+    height: min(860px, 90vh) !important;
+    max-height: 90vh !important;
+    margin: 5vh auto !important;
+    border-radius: 32px !important;
+    background: #fffaf7 !important;
+    display: grid !important;
+    grid-template-rows: auto minmax(0, 1fr) auto !important;
+    overflow: hidden !important;
+  }
+
+  .gallery-header {
+    position: relative !important;
+    z-index: 3 !important;
+    padding: 30px 150px 18px 32px !important;
+    background: #fffaf7 !important;
+  }
+
+  .gallery-header small {
+    display: block !important;
+    color: #c77f6e !important;
+    font-size: 13px !important;
+    font-weight: 900 !important;
+    letter-spacing: .08em !important;
+    text-transform: uppercase !important;
+    margin-bottom: 8px !important;
+  }
+
+  .gallery-header h3 {
+    margin: 0 !important;
+    font-size: clamp(28px, 3vw, 42px) !important;
+    line-height: 1.05 !important;
+    color: #4b342d !important;
+    letter-spacing: -0.04em !important;
+  }
+
+  .gallery-main {
+    min-height: 0 !important;
+    padding: 0 32px 18px !important;
+    display: grid !important;
+    grid-template-columns: 56px 1fr 56px !important;
+    gap: 18px !important;
+    align-items: center !important;
+  }
+
+  .gallery-image-wrap {
+    height: 100% !important;
+    min-height: 0 !important;
+    background: #f3e9e4 !important;
+    border-radius: 28px !important;
+    padding: 24px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: auto !important;
+  }
+
+  .gallery-image-wrap img {
+    max-width: 100% !important;
+    max-height: 100% !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;
+    border-radius: 22px !important;
+    background: #fff !important;
+    box-shadow: 0 18px 45px rgba(63,45,38,.14) !important;
+  }
+
+  .gallery-thumbs {
+    padding: 0 32px 28px !important;
+    display: flex !important;
+    gap: 12px !important;
+    overflow-x: auto !important;
+    background: #fffaf7 !important;
+  }
+
+  .gallery-thumbs button {
+    width: 96px !important;
+    height: 128px !important;
+    flex: 0 0 96px !important;
+    border-radius: 18px !important;
+    border: 2px solid transparent !important;
+    overflow: hidden !important;
+    background: #fff !important;
+    padding: 0 !important;
+    cursor: pointer !important;
+  }
+
+  .gallery-thumbs button.active {
+    border-color: #d98f82 !important;
+    box-shadow: 0 10px 24px rgba(217,143,130,.24) !important;
+  }
+
+  .gallery-thumbs img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+
+  .gallery-close,
+  .gallery-actions button {
+    background: #df9889 !important;
+    color: #fff !important;
+    box-shadow: 0 12px 28px rgba(217,143,130,.28) !important;
+  }
+
+  .gallery-close {
+    top: 22px !important;
+    right: 24px !important;
+    z-index: 5 !important;
+  }
+
+  .gallery-actions {
+    position: absolute !important;
+    top: 22px !important;
+    right: 78px !important;
+    z-index: 4 !important;
+    display: flex !important;
+    gap: 10px !important;
+  }
+
+  .gallery-nav {
+    width: 54px !important;
+    height: 54px !important;
+    flex: 0 0 54px !important;
+    border-radius: 50% !important;
+    background: #df9889 !important;
+    color: #fff !important;
+    font-size: 34px !important;
+    box-shadow: 0 12px 28px rgba(217,143,130,.25) !important;
+  }
+
+  @media (max-width: 760px) {
+    .gallery-content {
+      width: calc(100vw - 20px) !important;
+      height: calc(100vh - 20px) !important;
+      margin: 10px auto !important;
+      border-radius: 24px !important;
+    }
+
+    .gallery-header {
+      padding: 22px 120px 14px 18px !important;
+    }
+
+    .gallery-main {
+      grid-template-columns: 42px 1fr 42px !important;
+      gap: 8px !important;
+      padding: 0 14px 14px !important;
+    }
+
+    .gallery-image-wrap {
+      padding: 14px !important;
+      border-radius: 20px !important;
+    }
+
+    .gallery-nav {
+      width: 42px !important;
+      height: 42px !important;
+      flex-basis: 42px !important;
+      font-size: 28px !important;
+    }
+
+    .gallery-thumbs {
+      padding: 0 14px 18px !important;
+    }
+
+    .gallery-thumbs button {
+      width: 76px !important;
+      height: 104px !important;
+      flex-basis: 76px !important;
+    }
+  }
+</style>
 </head>
 
 <body>
@@ -1022,6 +1197,118 @@
       renderPage();
     }
   </script>
+<style id="locked-module-lesson-css">
+  .locked-module-page {
+    background: rgba(255,255,255,.88);
+    border: 1px solid #ead7ce;
+    border-radius: 34px;
+    padding: 42px;
+    box-shadow: 0 24px 70px rgba(83,54,42,.11);
+    text-align: center;
+  }
+
+  .locked-module-page h1 {
+    max-width: 760px;
+    margin: 14px auto;
+    font-size: clamp(36px, 5vw, 58px);
+    line-height: 1.05;
+    letter-spacing: -0.055em;
+    color: #3f2d26;
+  }
+
+  .locked-module-page p {
+    max-width: 680px;
+    margin: 0 auto 24px;
+    color: #8a7166;
+    line-height: 1.75;
+    font-size: 18px;
+  }
+</style>
+
+<script id="dynamic-gallery-by-lesson">
+(function(){
+  const ACTIVE_MODULES = 5;
+
+  function pad2(n){
+    return String(n).padStart(2, "0");
+  }
+
+  function lessonFolder(){
+    const modulo = `modulo${pad2(moduleIndex + 1)}`;
+    const aula = `aula${pad2(lessonIndex + 1)}`;
+    return `assets/prints/${modulo}/${aula}`;
+  }
+
+  const galleryInfo = {
+    instagram: {
+      category: "INSTAGRAM",
+      title: "Instagram - aplicação prática",
+      subtitle: "Perfil, Reels, stories e métricas aplicados ao tema da aula."
+    },
+    canva: {
+      category: "CANVA",
+      title: "Canva - modelo visual",
+      subtitle: "Templates, identidade visual, carrosséis e materiais de apoio."
+    },
+    capcut: {
+      category: "CAPCUT",
+      title: "CapCut - vídeo passo a passo",
+      subtitle: "Cortes, ritmo, legendas, efeitos e exportação."
+    },
+    ia: {
+      category: "IA PROMPT",
+      title: "IA - prompt da aula",
+      subtitle: "Prompts para transformar a aula em roteiro, ideias e plano de ação."
+    }
+  };
+
+  window.openGallery = function(key, startIndex = 0){
+    const info = galleryInfo[key];
+    const folder = lessonFolder();
+
+    currentGallery = {
+      category: info.category,
+      title: info.title,
+      subtitle: info.subtitle,
+      images: [
+        `${folder}/${key}-1.png`,
+        `${folder}/${key}-2.png`,
+        `${folder}/${key}-3.png`,
+        `${folder}/${key}-4.png`
+      ]
+    };
+
+    currentIndex = startIndex;
+    currentZoom = 1;
+
+    document.getElementById("galleryModal").classList.add("active");
+    document.body.style.overflow = "hidden";
+    document.getElementById("galleryCategory").textContent = currentGallery.category;
+    document.getElementById("galleryTitle").textContent = currentGallery.title;
+
+    renderMainImage();
+    renderThumbs();
+  };
+
+  const oldRenderPage = window.renderPage;
+
+  if(moduleIndex >= ACTIVE_MODULES){
+    document.getElementById("app").innerHTML = `
+      <section class="locked-module-page">
+        <span class="eyebrow">Conteúdo em breve</span>
+        <h1>Este módulo ainda está sendo preparado.</h1>
+        <p>
+          Os cinco primeiros módulos já formam a trilha principal da Influencer Academy.
+          As próximas etapas ficarão bloqueadas por enquanto e poderão ser liberadas depois.
+        </p>
+        <a class="btn primary" href="area.html#modules">Voltar para os módulos</a>
+      </section>
+    `;
+  }
+})();
+</script>
 </body>
 </html>
+
+
 

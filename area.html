@@ -990,8 +990,104 @@
 })();
 </script>
 <!-- IA PAID UNLOCK PATCH END -->
+<style id="five-modules-css">
+  .module-btn.locked-module {
+    opacity: .58 !important;
+    cursor: not-allowed !important;
+    filter: grayscale(.25);
+    background: #f5eee9 !important;
+  }
+
+  .module-btn.locked-module:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  .module-lock-badge {
+    display: inline-flex;
+    margin-top: 8px;
+    padding: 7px 10px;
+    border-radius: 999px;
+    background: #fff;
+    border: 1px solid #ead7ce;
+    color: #8a7166;
+    font-size: 12px;
+    font-weight: 900;
+  }
+</style>
+
+<script id="five-modules-patch">
+(function(){
+  const ACTIVE_MODULES = 5;
+
+  function getCompletedLessons(){
+    try {
+      return JSON.parse(localStorage.getItem("ia_completed_lessons") || "[]");
+    } catch(e) {
+      return [];
+    }
+  }
+
+  function lessonKey(m,l){
+    return `m${m}-l${l}`;
+  }
+
+  function moduleDoneCount(moduleIndex){
+    const completed = getCompletedLessons();
+    let total = 0;
+
+    for(let i = 0; i < 8; i++){
+      if(completed.includes(lessonKey(moduleIndex, i))) total++;
+    }
+
+    return total;
+  }
+
+  window.openModule = function(i){
+    if(i >= ACTIVE_MODULES){
+      alert("Esse módulo será liberado em breve.");
+      return;
+    }
+
+    selectedModule = i;
+    selectedLesson = 0;
+    renderModules();
+  };
+
+  window.renderModules = function(){
+    const list = document.getElementById("moduleList");
+
+    if (!list || !window.modules && typeof modules === "undefined") return;
+
+    if(selectedModule >= ACTIVE_MODULES){
+      selectedModule = 0;
+      selectedLesson = 0;
+    }
+
+    list.innerHTML = modules.map((m,i)=>{
+      const locked = i >= ACTIVE_MODULES;
+      const done = moduleDoneCount(i);
+
+      return `
+        <button class="module-btn ${i === selectedModule ? "active" : ""} ${locked ? "locked-module" : ""}" onclick="openModule(${i})">
+          <small>Módulo ${m.tag} · ${locked ? "em breve" : `${done}/8 concluídas`}</small>
+          <strong>${m.title}</strong>
+          ${locked ? `<span class="module-lock-badge">🔒 Em breve novas aulas</span>` : ""}
+        </button>
+      `;
+    }).join("");
+
+    renderModuleContent();
+  };
+
+  if(typeof renderModules === "function"){
+    renderModules();
+  }
+})();
+</script>
 </body>
 </html>
+
 
 
 
