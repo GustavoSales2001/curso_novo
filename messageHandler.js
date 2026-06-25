@@ -148,6 +148,43 @@ export function handleIncomingMessage(text = "", user = null) {
   const saudacao = firstName ? `${firstName}, ` : "";
   const stage = getStage(userKey);
 
+  // Respostas diretas do menu principal
+  if (stage === "suporte" && ["1","2","3","4","5"].includes(msg)) {
+    return {
+      intent: "suporte_humano",
+      reply: `${name ? name + ", " : ""}claro 💕
+
+Para suporte humano, envie sua dúvida com print por aqui:
+https://wa.me/5511922198936`
+    };
+  }
+
+  if (msg === "1") {
+    setStage(userKey, "curso");
+    return { intent: "curso", reply: courseMenu(name) };
+  }
+
+  if (msg === "2") {
+    setStage(userKey, "crescimento");
+    return { intent: "crescimento", reply: growthMenu(name) };
+  }
+
+  if (msg === "3") {
+    setStage(userKey, "conteudo");
+    return { intent: "conteudo", reply: contentMenu(name) };
+  }
+
+  if (msg === "4") {
+    setStage(userKey, "pagamento");
+    return { intent: "pagamento", reply: paymentMenu(name) };
+  }
+
+  if (msg === "5") {
+    setStage(userKey, "suporte");
+    return { intent: "suporte", reply: supportMenu(name) };
+  }
+
+
   if (!msg || msg.length <= 2) {
     setStage(userKey, "inicio");
     return { intent: "menu", reply: mainMenu(saudacao) };
