@@ -3,12 +3,16 @@
 const COURSE_LINK = "https://gustavosales2001.github.io/curso_novo/";
 const COURSE_PRICE = "R$ 39,99";
 const OLD_PRICE = "R$ 69,99";
+const SUPPORT_WHATSAPP = "5511933128628";
+const HUMAN_WHATSAPP = "5511922198936";
 
 function normalizeText(value = "") {
   return String(value || "")
     .toLowerCase()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^\w\s]/g, " ")
+    .replace(/\s+/g, " ")
     .trim();
 }
 
@@ -17,102 +21,117 @@ function getUserKey(user) {
 }
 
 function getFirstName(user) {
-  return user?.name ? user.name.split(" ")[0] : "";
+  const name = user?.name || user?.nome || "";
+  return name ? String(name).split(" ")[0] : "";
 }
 
 function setStage(userKey, stage) {
-  conversationState.set(userKey, { stage, updatedAt: Date.now() });
+  conversationState.set(userKey, {
+    stage,
+    updatedAt: Date.now()
+  });
 }
 
 function getStage(userKey) {
   return conversationState.get(userKey)?.stage || "inicio";
 }
 
+function hasAny(msg, keywords) {
+  return keywords.some(keyword => msg.includes(normalizeText(keyword)));
+}
+
 function isOption(msg, number) {
   const options = {
-    1: ["1", "opcao 1", "opção 1", "primeira", "quero a primeira"],
-    2: ["2", "opcao 2", "opção 2", "segunda", "quero a segunda"],
-    3: ["3", "opcao 3", "opção 3", "terceira", "quero a terceira"],
-    4: ["4", "opcao 4", "opção 4", "quarta", "quero a quarta"],
-    5: ["5", "opcao 5", "opção 5", "quinta", "quero a quinta"]
+    1: ["1", "opcao 1", "opção 1", "primeira", "primeiro", "quero a primeira"],
+    2: ["2", "opcao 2", "opção 2", "segunda", "segundo", "quero a segunda"],
+    3: ["3", "opcao 3", "opção 3", "terceira", "terceiro", "quero a terceira"],
+    4: ["4", "opcao 4", "opção 4", "quarta", "quarto", "quero a quarta"],
+    5: ["5", "opcao 5", "opção 5", "quinta", "quinto", "quero a quinta"]
   };
 
   return options[number].some(option => msg === normalizeText(option) || msg.includes(normalizeText(option)));
 }
 
 function mainMenu(saudacao = "") {
-  return `${saudacao}entendi 😊
+  return `${saudacao}oi! 💕 Bem-vinda à Influencer Academy.
 
-Para eu te ajudar melhor, escolha uma opção:
+Me conta o que você quer entender:
 
-1. Quero saber mais sobre o curso
-2. Quero crescer do 0 aos primeiros seguidores
-3. Quero aprender a gravar melhor com celular
+1. Quero saber como funciona o curso
+2. Quero sair do zero e crescer no Instagram
+3. Quero aprender a gravar Reels e stories melhores
 4. Quero saber valor e pagamento
-5. Estou com problema no acesso ou cadastro`;
+5. Estou com problema no acesso ou cadastro
+
+Pode responder só com o número.`;
 }
 
 function courseMenu(saudacao = "") {
-  return `${saudacao}o Influencer Academy é um curso para mulheres que querem crescer na internet com mais estratégia, estética e consistência.
+  return `${saudacao}a Influencer Academy é uma trilha prática para quem quer crescer como criadora de conteúdo com mais clareza, estética e estratégia.
 
-Você aprende sobre:
+Dentro do curso você aprende:
 
-- crescimento no Instagram
-- criação de conteúdo
-- Reels e stories
-- posicionamento
-- estética do perfil
-- métricas e engajamento
-- rotina de gravação
+✨ como sair do zero aos primeiros seguidores
+✨ como organizar bio, perfil e posicionamento
+✨ como criar Reels, stories e conteúdos com intenção
+✨ como usar Canva, CapCut e IA
+✨ como entender métricas sem complicar
+✨ como criar uma rotina de conteúdo possível
+✨ como transformar sua presença digital em oportunidade
+
+O foco é parar de postar no escuro e começar a crescer com direção.
 
 Escolha:
 
-1. Quero ver o que aprendo
-2. Quero saber se serve para mim
-3. Quero o link do curso
-4. Quero falar sobre pagamento`;
+1. Ver o que está incluso
+2. Saber se serve para mim
+3. Receber o link do curso
+4. Saber o valor`;
 }
 
 function growthMenu(saudacao = "") {
-  return `${saudacao}crescer do zero não é só postar todos os dias.
+  return `${saudacao}crescer do zero não é só postar muito. É postar com clareza.
 
-Você precisa de clareza, consistência e estratégia:
+No começo, você precisa entender:
 
-- perfil bem organizado
-- bio clara
-- nicho ou tema definido
-- conteúdos com gancho
-- stories para conexão
-- Reels com intenção
-- análise de métricas
+✨ qual público quer atrair
+✨ quais conteúdos fazem sentido para sua fase
+✨ como deixar o perfil mais confiável
+✨ como criar Reels com gancho
+✨ como usar stories para conexão
+✨ como acompanhar métricas sem surtar
+
+A ideia do curso é te mostrar o caminho do 0 aos 1.000 e depois dos 1.000 aos 5.000 seguidores.
 
 Escolha:
 
-1. Quero sair do 0 aos 1.000 seguidores
-2. Quero crescer de 1.000 para 5.000
-3. Quero entender métricas e engajamento
-4. Quero conhecer o curso`;
+1. Quero entender a primeira fase
+2. Quero melhorar meu perfil
+3. Quero aprender Reels
+4. Quero acessar o curso`;
 }
 
 function contentMenu(saudacao = "") {
-  return `${saudacao}para gravar melhor, você não precisa começar com equipamentos caros.
+  return `${saudacao}para gravar melhor, você não precisa começar com equipamento caro.
 
-Você precisa entender:
+Você precisa aprender:
 
-- enquadramento
-- iluminação
-- cenário
-- áudio
-- roteiro simples
-- postura
-- edição básica
-- como transformar rotina em conteúdo
+🎥 enquadramento
+💡 iluminação
+🎙️ áudio
+📱 gravação com celular
+✂️ edição no CapCut
+📝 roteiro simples
+✨ ideias com IA
+📊 análise do que performa melhor
+
+O curso te guia nesse processo com aulas e materiais práticos.
 
 Escolha:
 
-1. Quero aprender a gravar Reels
-2. Quero melhorar meu setup
-3. Quero ideias de conteúdo
+1. Quero aprender Reels
+2. Quero melhorar stories
+3. Quero usar Canva e CapCut
 4. Quero o link do curso`;
 }
 
@@ -122,13 +141,16 @@ function paymentMenu(saudacao = "") {
 De ${OLD_PRICE}
 Por ${COURSE_PRICE}
 
-Pagamento único.
+É pagamento único e o acesso é feito pela página do curso.
+
+Link:
+${COURSE_LINK}
 
 Escolha:
 
-1. Quero acessar a página do curso
+1. Quero acessar agora
 2. Quero saber o que está incluso
-3. Quero tirar dúvida antes de pagar
+3. Tenho dúvida antes de pagar
 4. Tive problema no pagamento`;
 }
 
@@ -139,201 +161,377 @@ function supportMenu(saudacao = "") {
 2. Login
 3. Pagamento
 4. Área do aluno não abre
-5. Quero falar com suporte`;
+5. Quero falar com suporte humano`;
+}
+
+function humanSupportMessage(saudacao = "") {
+  return `${saudacao}claro 💕
+
+Para falar com uma pessoa:
+
+👩‍💼 Dúvidas sobre o curso, conteúdo e orientação:
+https://wa.me/${HUMAN_WHATSAPP}
+
+👨‍💻 Erro no site, login, pagamento, cadastro ou bug:
+https://wa.me/${SUPPORT_WHATSAPP}
+
+Se puder, envie um print junto para resolver mais rápido.`;
 }
 
 export function handleIncomingMessage(text = "", user = null) {
   const msg = normalizeText(text);
   const userKey = getUserKey(user);
-  const nome = getFirstName(user);
-  const saudacao = nome ? `${nome}, ` : "";
+  const firstName = getFirstName(user);
+  const saudacao = firstName ? `${firstName}, ` : "";
   const currentStage = getStage(userKey);
 
-  if (msg.includes("menu") || msg.includes("voltar") || msg.includes("inicio")) {
+  if (!msg || msg.length <= 2) {
+    return {
+      intent: "menu",
+      reply: mainMenu(saudacao)
+    };
+  }
+
+  if (
+    hasAny(msg, ["menu", "voltar", "inicio", "início", "começar de novo", "comecar de novo"])
+  ) {
     setStage(userKey, "inicio");
-    return { intent: "menu", reply: mainMenu(saudacao) };
+    return {
+      intent: "menu",
+      reply: mainMenu(saudacao)
+    };
   }
 
-  if (msg.includes("oi") || msg.includes("ola") || msg.includes("olá") || msg.includes("opa") || msg.includes("bom dia") || msg.includes("boa tarde") || msg.includes("boa noite")) {
+  if (
+    hasAny(msg, ["oi", "ola", "olá", "opa", "bom dia", "boa tarde", "boa noite", "tudo bem"])
+  ) {
     setStage(userKey, "inicio");
-    return { intent: "saudacao", reply: `${saudacao}oi! Tudo bem? 💕\n\n${mainMenu("")}` };
+    return {
+      intent: "saudacao",
+      reply: mainMenu(saudacao)
+    };
   }
 
-  if (msg.includes("curso") || msg.includes("funciona") || msg.includes("saber mais") || msg.includes("influencer") || msg.includes("influenciadora")) {
-    setStage(userKey, "curso");
-    return { intent: "curso", reply: courseMenu(saudacao) };
-  }
-
-  if (msg.includes("seguidor") || msg.includes("seguidores") || msg.includes("crescer") || msg.includes("engajamento") || msg.includes("alcance") || msg.includes("views") || msg.includes("visualizacao") || msg.includes("visualização")) {
-    setStage(userKey, "crescimento");
-    return { intent: "crescimento", reply: growthMenu(saudacao) };
-  }
-
-  if (msg.includes("gravar") || msg.includes("reels") || msg.includes("story") || msg.includes("stories") || msg.includes("conteudo") || msg.includes("conteúdo") || msg.includes("celular") || msg.includes("setup") || msg.includes("microfone")) {
-    setStage(userKey, "conteudo");
-    return { intent: "conteudo", reply: contentMenu(saudacao) };
-  }
-
-  if (msg.includes("valor") || msg.includes("preco") || msg.includes("preço") || msg.includes("quanto custa") || msg.includes("pagamento") || msg.includes("pix") || msg.includes("cartao") || msg.includes("cartão") || msg.includes("boleto")) {
-    setStage(userKey, "pagamento");
-    return { intent: "pagamento", reply: paymentMenu(saudacao) };
-  }
-
-  if (msg.includes("erro") || msg.includes("bug") || msg.includes("travou") || msg.includes("nao abre") || msg.includes("não abre") || msg.includes("login") || msg.includes("senha") || msg.includes("cadastro") || msg.includes("acesso")) {
+  if (
+    hasAny(msg, ["humano", "atendente", "suporte", "pessoa", "falar com alguem", "falar com alguém"])
+  ) {
     setStage(userKey, "suporte");
-    return { intent: "suporte", reply: supportMenu(saudacao) };
+    return {
+      intent: "humano",
+      reply: humanSupportMessage(saudacao)
+    };
   }
 
-  let reply = "";
+  if (
+    hasAny(msg, ["curso", "como funciona", "saber mais", "influencer academy", "influenciadora", "criadora"])
+  ) {
+    setStage(userKey, "curso");
+    return {
+      intent: "curso",
+      reply: courseMenu(saudacao)
+    };
+  }
+
+  if (
+    hasAny(msg, ["seguidor", "seguidores", "crescer", "engajamento", "alcance", "views", "visualizacao", "visualização", "instagram"])
+  ) {
+    setStage(userKey, "crescimento");
+    return {
+      intent: "crescimento",
+      reply: growthMenu(saudacao)
+    };
+  }
+
+  if (
+    hasAny(msg, ["gravar", "reels", "story", "stories", "conteudo", "conteúdo", "celular", "setup", "microfone", "camera", "câmera", "capcut", "canva", "ia"])
+  ) {
+    setStage(userKey, "conteudo");
+    return {
+      intent: "conteudo",
+      reply: contentMenu(saudacao)
+    };
+  }
+
+  if (
+    hasAny(msg, ["valor", "preco", "preço", "quanto custa", "pagamento", "pix", "cartao", "cartão", "boleto", "desconto", "promocao", "promoção"])
+  ) {
+    setStage(userKey, "pagamento");
+    return {
+      intent: "pagamento",
+      reply: paymentMenu(saudacao)
+    };
+  }
+
+  if (
+    hasAny(msg, ["erro", "bug", "travou", "nao abre", "não abre", "login", "senha", "cadastro", "acesso", "paguei", "não liberou", "nao liberou"])
+  ) {
+    setStage(userKey, "suporte");
+    return {
+      intent: "suporte",
+      reply: supportMenu(saudacao)
+    };
+  }
 
   if (currentStage === "inicio") {
     if (isOption(msg, 1)) {
       setStage(userKey, "curso");
-      reply = courseMenu(saudacao);
-    } else if (isOption(msg, 2)) {
+      return { intent: "curso", reply: courseMenu(saudacao) };
+    }
+
+    if (isOption(msg, 2)) {
       setStage(userKey, "crescimento");
-      reply = growthMenu(saudacao);
-    } else if (isOption(msg, 3)) {
+      return { intent: "crescimento", reply: growthMenu(saudacao) };
+    }
+
+    if (isOption(msg, 3)) {
       setStage(userKey, "conteudo");
-      reply = contentMenu(saudacao);
-    } else if (isOption(msg, 4)) {
+      return { intent: "conteudo", reply: contentMenu(saudacao) };
+    }
+
+    if (isOption(msg, 4)) {
       setStage(userKey, "pagamento");
-      reply = paymentMenu(saudacao);
-    } else if (isOption(msg, 5)) {
+      return { intent: "pagamento", reply: paymentMenu(saudacao) };
+    }
+
+    if (isOption(msg, 5)) {
       setStage(userKey, "suporte");
-      reply = supportMenu(saudacao);
+      return { intent: "suporte", reply: supportMenu(saudacao) };
     }
   }
 
   if (currentStage === "curso") {
     if (isOption(msg, 1)) {
-      reply = `${saudacao}no curso você aprende a organizar seu perfil, criar conteúdos com mais intenção, melhorar Reels, stories, estética, métricas e rotina de postagem.
+      return {
+        intent: "curso_incluso",
+        reply: `${saudacao}dentro do curso você encontra:
 
-Escolha:
+✨ módulos de posicionamento e nicho
+✨ bio, estética e primeira impressão
+✨ ideias e pilares de conteúdo
+✨ Reels com gancho e retenção
+✨ stories para conexão
+✨ Canva para identidade visual
+✨ CapCut para edição dinâmica
+✨ IA para roteiro e vídeo
+✨ métricas e crescimento
+✨ monetização e parcerias
 
-1. Quero saber se serve para mim
-2. Quero o valor
-3. Quero acessar a página`;
-      setStage(userKey, "curso_detalhe");
-    } else if (isOption(msg, 2)) {
-      reply = `${saudacao}serve se você quer começar como influenciadora, posta mas sente que não cresce, quer gravar melhor e transformar conteúdo em oportunidade.
+Link do curso:
+${COURSE_LINK}`
+      };
+    }
 
-Escolha:
+    if (isOption(msg, 2)) {
+      return {
+        intent: "curso_para_mim",
+        reply: `${saudacao}serve muito se você:
 
-1. Sim, esse é meu caso
-2. Quero o link
-3. Quero saber o valor`;
-      setStage(userKey, "curso_caso");
-    } else if (isOption(msg, 3)) {
-      reply = `${saudacao}claro. A página do curso é essa:
+✨ quer começar como criadora
+✨ posta, mas sente que não cresce
+✨ quer um perfil mais profissional
+✨ quer aprender Reels, stories e edição
+✨ quer usar Canva, CapCut e IA
+✨ quer parar de depender de achismo
 
-${COURSE_LINK}`;
-      setStage(userKey, "link_enviado");
-    } else if (isOption(msg, 4)) {
+Se esse é seu momento, o curso foi feito para te dar direção.`
+      };
+    }
+
+    if (isOption(msg, 3)) {
+      return {
+        intent: "link",
+        reply: `${saudacao}claro 💕
+
+Aqui está o link do curso:
+${COURSE_LINK}
+
+A condição atual é de ${OLD_PRICE} por ${COURSE_PRICE}.`
+      };
+    }
+
+    if (isOption(msg, 4)) {
       setStage(userKey, "pagamento");
-      reply = paymentMenu(saudacao);
+      return { intent: "pagamento", reply: paymentMenu(saudacao) };
     }
   }
 
   if (currentStage === "crescimento") {
     if (isOption(msg, 1)) {
-      reply = `${saudacao}para sair do 0 aos primeiros 1.000 seguidores, o foco é base: perfil claro, bio bem construída, nicho definido, Reels com gancho e stories para conexão.
+      return {
+        intent: "fase_0_1000",
+        reply: `${saudacao}na fase do 0 aos 1.000 seguidores, o foco é construir base.
 
-Escolha:
+Você precisa ajustar:
+✨ nicho
+✨ bio
+✨ foto e nome
+✨ pilares de conteúdo
+✨ rotina simples
+✨ Reels com gancho
+✨ stories para conexão
 
-1. Quero conhecer o curso
-2. Quero saber o valor
-3. Quero o link`;
-      setStage(userKey, "crescimento_detalhe");
-    } else if (isOption(msg, 2)) {
-      reply = `${saudacao}de 1.000 para 5.000 seguidores, você precisa entender o que performa, repetir formatos vencedores, aumentar retenção e criar comunidade.
+Não é sobre postar qualquer coisa. É sobre deixar claro por que alguém deve te seguir.`
+      };
+    }
 
-Escolha:
+    if (isOption(msg, 2)) {
+      return {
+        intent: "perfil",
+        reply: `${saudacao}para melhorar o perfil, comece por:
 
-1. Quero aprender isso
-2. Quero saber o valor
-3. Quero acessar`;
-      setStage(userKey, "crescimento_detalhe");
-    } else if (isOption(msg, 3)) {
-      reply = `${saudacao}métricas mostram o que está funcionando: visualizações, alcance, curtidas, salvamentos, compartilhamentos e seguidores novos.
+✨ nome pesquisável
+✨ bio com promessa clara
+✨ destaques organizados
+✨ foto com boa presença
+✨ identidade visual simples
+✨ CTA direto
 
-Escolha:
+Seu perfil precisa responder rápido: quem é você, o que entrega e por que seguir.`
+      };
+    }
 
-1. Quero conhecer o curso
-2. Quero o link
-3. Quero tirar dúvida`;
-      setStage(userKey, "crescimento_detalhe");
+    if (isOption(msg, 3)) {
+      setStage(userKey, "conteudo");
+      return { intent: "conteudo", reply: contentMenu(saudacao) };
+    }
+
+    if (isOption(msg, 4)) {
+      return {
+        intent: "link",
+        reply: `${saudacao}aqui está o link da Influencer Academy:
+${COURSE_LINK}`
+      };
     }
   }
 
   if (currentStage === "conteudo") {
     if (isOption(msg, 1)) {
-      reply = `${saudacao}para gravar Reels melhores, você precisa de gancho inicial, imagem limpa, roteiro simples e final com intenção.
+      return {
+        intent: "reels",
+        reply: `${saudacao}para um Reel funcionar melhor, pense nessa estrutura:
 
-Escolha:
+1. gancho forte nos primeiros segundos
+2. promessa clara
+3. desenvolvimento direto
+4. cortes sem enrolação
+5. legenda fácil de acompanhar
+6. CTA no final
 
-1. Quero conhecer o curso
-2. Quero saber o valor
-3. Quero o link`;
-      setStage(userKey, "conteudo_detalhe");
-    } else if (isOption(msg, 2)) {
-      reply = `${saudacao}um setup simples já ajuda muito: celular bem posicionado, luz natural, fundo limpo, áudio claro, apoio/tripé e cenário com identidade.
+No curso, você aprende isso com exemplos e passo a passo.`
+      };
+    }
 
-Escolha:
+    if (isOption(msg, 2)) {
+      return {
+        intent: "stories",
+        reply: `${saudacao}stories bons criam conexão.
 
-1. Quero aprender isso
-2. Quero o link
-3. Quero saber o valor`;
-      setStage(userKey, "conteudo_detalhe");
-    } else if (isOption(msg, 3)) {
-      reply = `${saudacao}ideias para começar: bastidores, rotina, antes e depois, erros comuns, dicas rápidas, tendências adaptadas, prova social e opinião.
+Use:
+✨ bastidores
+✨ rotina real
+✨ enquetes
+✨ caixinhas
+✨ prova social
+✨ indicação de conteúdo
+✨ CTA leve
 
-Escolha:
+A ideia é fazer as pessoas sentirem que acompanham você de perto.`
+      };
+    }
 
-1. Quero conhecer o curso
-2. Quero o link
-3. Quero tirar dúvida`;
-      setStage(userKey, "conteudo_detalhe");
+    if (isOption(msg, 3)) {
+      return {
+        intent: "ferramentas",
+        reply: `${saudacao}Canva, CapCut e IA ajudam muito quando você sabe o que está fazendo.
+
+Canva: identidade visual, capas e carrosséis.
+CapCut: edição, cortes, legendas e ritmo.
+IA: ideias, roteiros, ganchos e organização.
+
+O curso mostra como usar essas ferramentas sem deixar tudo artificial.`
+      };
+    }
+
+    if (isOption(msg, 4)) {
+      return {
+        intent: "link",
+        reply: `${saudacao}link do curso:
+${COURSE_LINK}`
+      };
     }
   }
 
   if (currentStage === "pagamento") {
     if (isOption(msg, 1)) {
-      reply = `${saudacao}perfeito. Você pode acessar por aqui:
+      return {
+        intent: "link_pagamento",
+        reply: `${saudacao}perfeito 💕
 
+Você pode acessar por aqui:
 ${COURSE_LINK}
 
-A condição atual está de ${OLD_PRICE} por ${COURSE_PRICE}.`;
-      setStage(userKey, "link_enviado");
-    } else if (isOption(msg, 2)) {
-      reply = `${saudacao}o acesso inclui aulas sobre crescimento, posicionamento, criação de conteúdo, Reels, stories, estética, métricas, engajamento e materiais de apoio.
+Condição atual:
+De ${OLD_PRICE}
+Por ${COURSE_PRICE}`
+      };
+    }
 
-Hoje está de ${OLD_PRICE} por ${COURSE_PRICE}.`;
-      setStage(userKey, "pagamento_detalhe");
-    } else if (isOption(msg, 3)) {
-      reply = `${saudacao}claro. Pode me mandar sua dúvida sobre o curso, pagamento ou acesso.`;
-      setStage(userKey, "duvida");
-    } else if (isOption(msg, 4)) {
+    if (isOption(msg, 2)) {
+      return {
+        intent: "incluso",
+        reply: `${saudacao}está incluso:
+
+✨ acesso ao curso
+✨ área do aluno
+✨ módulos práticos
+✨ materiais de apoio
+✨ aulas sobre Instagram, Canva, CapCut e IA
+✨ trilha de crescimento
+✨ conteúdo para aplicar no seu perfil`
+      };
+    }
+
+    if (isOption(msg, 3)) {
+      return {
+        intent: "duvida_pagamento",
+        reply: `${saudacao}me manda sua dúvida com calma.
+
+Pode ser sobre valor, PIX, cartão, acesso, cadastro ou liberação do curso.`
+      };
+    }
+
+    if (isOption(msg, 4)) {
       setStage(userKey, "suporte");
-      reply = supportMenu(saudacao);
+      return {
+        intent: "problema_pagamento",
+        reply: supportMenu(saudacao)
+      };
     }
   }
 
   if (currentStage === "suporte") {
-    reply = `${saudacao}entendi. Para verificar melhor, me envie:
-
-- print da tela
-- e-mail usado no cadastro
-- em qual parte travou`;
-    setStage(userKey, "aguardando_suporte");
+    if (isOption(msg, 1) || isOption(msg, 2) || isOption(msg, 3) || isOption(msg, 4) || isOption(msg, 5)) {
+      return {
+        intent: "suporte_humano",
+        reply: humanSupportMessage(saudacao)
+      };
+    }
   }
 
-  if (!reply) {
-    reply = mainMenu(saudacao);
-    setStage(userKey, "inicio");
-  }
+  return {
+    intent: "fallback",
+    reply: `${saudacao}entendi 💕
 
-  return { intent: currentStage, reply };
+Para eu te ajudar melhor, me diz se sua dúvida é sobre:
+
+1. Curso
+2. Crescimento no Instagram
+3. Reels, stories e conteúdo
+4. Valor e pagamento
+5. Acesso ou suporte
+
+Pode responder só com o número.`
+  };
 }
 
 export default handleIncomingMessage;

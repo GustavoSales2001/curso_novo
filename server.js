@@ -3475,7 +3475,7 @@ app.post("/api/webhooks/whatsapp", async (req, res) => {
       userId: user?.id || null,
       celular: from,
       direction: "out",
-      messageText: reply,
+      messageText: finalReply,
       waMessageId: sendResponse?.messages?.[0]?.id || null,
       rawPayload: sendResponse
     });
@@ -3624,6 +3624,7 @@ app.listen(port, () => {
 }
 
 start();
+
 
 
 
