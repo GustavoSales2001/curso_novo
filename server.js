@@ -1,5 +1,4 @@
-﻿import lessonUnlockRoutes from './lessonUnlocks.js';
-import express from "express";
+﻿import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import mysql from "mysql2/promise";
@@ -7,11 +6,10 @@ import crypto from "crypto";
 import { MercadoPagoConfig, Payment } from "mercadopago";
 import handleIncomingMessage from "./messageHandler.js";
 
-const BOT_VERSION = "influencer-academy-whatsapp-v4";
+const BOT_VERSION = "influencer-academy-whatsapp-v5";
 const COURSE_NAME_SAFE = "Influencer Academy";
 const COURSE_URL_SAFE = "https://gustavosales2001.github.io/curso_novo/";
 const COURSE_PRICE_SAFE = "R$ 39,99";
-
 
 dotenv.config();
 
@@ -24,8 +22,6 @@ const port = Number(process.env.PORT || 3000);
 
 app.disable("x-powered-by");
 app.use(express.json());
-
-
 app.get("/api/bot-version", (req, res) => {
   res.json({
     ok: true,
@@ -35,9 +31,6 @@ app.get("/api/bot-version", (req, res) => {
     price: COURSE_PRICE_SAFE,
     message: "Bot Influencer Academy ativo"
   });
-});
-
-
 });
 
 
@@ -3433,7 +3426,6 @@ app.post("/api/webhooks/whatsapp", async (req, res) => {
     const value = changes?.value;
 
     console.log("Webhook WhatsApp payload recebido.");
-    console.log("BOT_VERSION ativo no webhook:", BOT_VERSION);
 
     const message = value?.messages?.[0];
 
@@ -3486,7 +3478,11 @@ app.post("/api/webhooks/whatsapp", async (req, res) => {
 
     const { intent, reply } = handleIncomingMessage(text, user);
 
-    const finalReply = reply || "Posso te ajudar com curso, Instagram, Reels, pagamento ou acesso 😊";
+    let finalReply = reply;
+    if (intent === "FALLBACK") {
+      const claudeReply = await maybeGetClaudeReply(text, user);
+      finalReply = claudeReply || reply || "Posso te ajudar com pagamento, acesso ou dúvidas do curso 😊";
+    }
 
     const sendResponse = await sendWhatsAppText(from, finalReply);
 
@@ -3494,7 +3490,7 @@ app.post("/api/webhooks/whatsapp", async (req, res) => {
       userId: user?.id || null,
       celular: from,
       direction: "out",
-      messageText: finalReply,
+      messageText: reply,
       waMessageId: sendResponse?.messages?.[0]?.id || null,
       rawPayload: sendResponse
     });
@@ -3620,9 +3616,7 @@ async function start() {
     await initDB();
     await ensureTables();
 
-    app.use("/api", lessonUnlockRoutes);
-
-app.listen(port, () => {
+    app.listen(port, () => {
       console.log(`Servidor rodando na porta ${port}`);
     });
 
@@ -3643,10 +3637,6 @@ app.listen(port, () => {
 }
 
 start();
-
-
-
-
 
 
 
