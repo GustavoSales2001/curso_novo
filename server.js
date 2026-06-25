@@ -7,6 +7,12 @@ import crypto from "crypto";
 import { MercadoPagoConfig, Payment } from "mercadopago";
 import handleIncomingMessage from "./messageHandler.js";
 
+const BOT_VERSION = "influencer-academy-whatsapp-v4";
+const COURSE_NAME_SAFE = "Influencer Academy";
+const COURSE_URL_SAFE = "https://gustavosales2001.github.io/curso_novo/";
+const COURSE_PRICE_SAFE = "R$ 39,99";
+
+
 dotenv.config();
 
 const app = express();
@@ -19,15 +25,19 @@ const port = Number(process.env.PORT || 3000);
 app.disable("x-powered-by");
 app.use(express.json());
 
+
 app.get("/api/bot-version", (req, res) => {
   res.json({
     ok: true,
     bot_version: BOT_VERSION,
-    course_name: COURSE_NAME,
-    course_url: COURSE_FRONTEND_URL,
-    price: COURSE_PRICE,
+    course_name: COURSE_NAME_SAFE,
+    course_url: COURSE_URL_SAFE,
+    price: COURSE_PRICE_SAFE,
     message: "Bot Influencer Academy ativo"
   });
+});
+
+
 });
 
 
@@ -3423,6 +3433,7 @@ app.post("/api/webhooks/whatsapp", async (req, res) => {
     const value = changes?.value;
 
     console.log("Webhook WhatsApp payload recebido.");
+    console.log("BOT_VERSION ativo no webhook:", BOT_VERSION);
 
     const message = value?.messages?.[0];
 
