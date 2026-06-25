@@ -1,10 +1,7 @@
 ﻿const COURSE_LINK = "https://gustavosales2001.github.io/curso_novo/";
 const COURSE_PRICE = "R$ 39,99";
 const OLD_PRICE = "R$ 69,99";
-const SUPPORT_WHATSAPP = "5511933128628";
-const HUMAN_WHATSAPP = "5511922198936";
-
-const conversationState = new Map();
+const SUPPORT_WHATSAPP = "5511922198936";
 
 function normalizeText(value = "") {
   return String(value || "")
@@ -16,32 +13,18 @@ function normalizeText(value = "") {
     .trim();
 }
 
-function getUserKey(user) {
-  return String(user?.id || user?.celular || user?.email || "anonymous");
-}
-
 function getFirstName(user) {
   const name = user?.name || user?.nome || "";
   return name ? String(name).split(" ")[0] : "";
 }
 
-function setStage(userKey, stage) {
-  conversationState.set(userKey, { stage, updatedAt: Date.now() });
+function hasAny(msg, words) {
+  return words.some(word => msg.includes(normalizeText(word)));
 }
 
-function getStage(userKey) {
-  return conversationState.get(userKey)?.stage || "inicio";
-}
+function mainMenu(name = "") {
+  const saudacao = name ? `${name}, ` : "";
 
-function hasAny(msg, keywords) {
-  return keywords.some(keyword => msg.includes(normalizeText(keyword)));
-}
-
-function isOption(msg, number) {
-  return msg === String(number) || msg.includes(`opcao ${number}`) || msg.includes(`opção ${number}`);
-}
-
-function mainMenu(saudacao = "") {
   return `${saudacao}oi! 💕 Bem-vinda à Influencer Academy.
 
 Me conta o que você quer entender:
@@ -55,235 +38,134 @@ Me conta o que você quer entender:
 Pode responder só com o número.`;
 }
 
-function courseMenu(saudacao = "") {
+function courseMenu(name = "") {
+  const saudacao = name ? `${name}, ` : "";
+
   return `${saudacao}a Influencer Academy é uma trilha prática para quem quer crescer como criadora de conteúdo com mais clareza, estética e estratégia.
 
-Dentro do curso você aprende:
+Você aprende a organizar seu perfil, criar conteúdo com intenção, melhorar Reels e stories, usar Canva, CapCut e IA, entender métricas e construir uma presença digital mais forte.
 
-✨ sair do zero aos primeiros seguidores
-✨ organizar bio, perfil e posicionamento
-✨ criar Reels e stories com intenção
-✨ usar Canva, CapCut e IA
-✨ entender métricas sem complicar
-✨ criar rotina de conteúdo
-✨ se posicionar melhor para marcas e oportunidades
+Dentro do curso tem:
+✨ posicionamento e nicho
+✨ bio e primeira impressão
+✨ ideias e pilares de conteúdo
+✨ Reels com gancho e retenção
+✨ stories para conexão
+✨ Canva para identidade visual
+✨ CapCut para edição
+✨ IA para ideias, roteiros e produção
+✨ métricas e crescimento
+✨ monetização e parcerias
 
 Link do curso:
 ${COURSE_LINK}`;
 }
 
-function growthMenu(saudacao = "") {
-  return `${saudacao}crescer do zero não é só postar muito. É postar com direção.
+function growthMenu(name = "") {
+  const saudacao = name ? `${name}, ` : "";
 
-No começo, você precisa ajustar:
+  return `${saudacao}para sair do zero no Instagram, você precisa parar de postar no escuro e começar a postar com direção.
 
-✨ nicho e posicionamento
-✨ bio e primeira impressão
-✨ conteúdos que fazem sentido para sua fase
-✨ Reels com gancho
-✨ stories para conexão
-✨ rotina simples de postagem
-✨ análise de métricas
+O foco inicial é:
 
-O curso te mostra o caminho do 0 aos 1.000 e depois dos 1.000 aos 5.000 seguidores.`;
+✨ definir nicho e público
+✨ deixar a bio clara
+✨ organizar destaques
+✨ criar conteúdos de conexão
+✨ fazer Reels com gancho
+✨ aparecer nos stories com intenção
+✨ acompanhar o que dá resultado
+
+O curso te mostra o caminho do 0 aos 1.000 seguidores e depois dos 1.000 aos 5.000 com uma trilha prática.`;
 }
 
-function contentMenu(saudacao = "") {
-  return `${saudacao}para criar conteúdo melhor, você não precisa começar com equipamento caro.
+function contentMenu(name = "") {
+  const saudacao = name ? `${name}, ` : "";
 
-Você aprende:
+  return `${saudacao}nessa parte você aprende a produzir conteúdo com mais qualidade, mesmo usando o celular.
+
+Você aprende sobre:
 
 🎥 gravação com celular
 💡 iluminação simples
 🎙️ áudio mais limpo
 ✂️ edição no CapCut
-🎨 identidade visual no Canva
-📝 roteiro para Reels
-✨ ideias com IA
-📊 análise de conteúdo
+🎨 posts, capas e carrosséis no Canva
+📝 roteiros para Reels
+✨ ideias e prompts com IA
+📊 análise de métricas
 
-Tudo de forma prática para aplicar no seu perfil.`;
+A ideia é criar vídeos e posts com mais estética, clareza e estratégia, sem depender de achismo.`;
 }
 
-function paymentMenu(saudacao = "") {
+function paymentMenu(name = "") {
+  const saudacao = name ? `${name}, ` : "";
+
   return `${saudacao}a condição atual está especial:
 
 De ${OLD_PRICE}
 Por ${COURSE_PRICE}
 
-É pagamento único.
+É pagamento único e o acesso é feito pela página do curso.
 
 Link:
 ${COURSE_LINK}
 
-Se tiver problema no pagamento ou acesso, me avisa que te direciono.`;
+Depois do pagamento, você acessa a área do aluno para acompanhar os módulos e conteúdos.`;
 }
 
-function supportMenu(saudacao = "") {
+function supportMenu(name = "") {
+  const saudacao = name ? `${name}, ` : "";
+
   return `${saudacao}me diz onde está o problema:
 
 1. Cadastro
 2. Login
 3. Pagamento
-4. Área do aluno
-5. Quero falar com suporte humano`;
-}
+4. Área do aluno não abre
+5. Quero falar com suporte humano
 
-function humanSupportMessage(saudacao = "") {
-  return `${saudacao}claro 💕
-
-👩‍💼 Dúvidas sobre curso, conteúdo e orientação:
-https://wa.me/${HUMAN_WHATSAPP}
-
-👨‍💻 Erro no site, login, pagamento, cadastro ou bug:
-https://wa.me/${SUPPORT_WHATSAPP}
-
-Se puder, envie um print junto.`;
+Se preferir, envie um print para o suporte:
+https://wa.me/${SUPPORT_WHATSAPP}`;
 }
 
 export function handleIncomingMessage(text = "", user = null) {
   const msg = normalizeText(text);
-  const userKey = getUserKey(user);
-  const firstName = getFirstName(user);
-  const saudacao = firstName ? `${firstName}, ` : "";
-  const stage = getStage(userKey);
+  const name = getFirstName(user);
 
-  // Respostas diretas do menu principal
-  if (stage === "suporte" && ["1","2","3","4","5"].includes(msg)) {
-    return {
-      intent: "suporte_humano",
-      reply: `${name ? name + ", " : ""}claro 💕
-
-Para suporte humano, envie sua dúvida com print por aqui:
-https://wa.me/5511922198936`
-    };
+  if (!msg || hasAny(msg, ["oi", "ola", "olá", "opa", "bom dia", "boa tarde", "boa noite", "menu", "voltar", "inicio", "início"])) {
+    return { intent: "menu", reply: mainMenu(name) };
   }
 
-  if (msg === "1") {
-    setStage(userKey, "curso");
+  if (msg === "1" || hasAny(msg, ["como funciona", "curso", "saber mais", "entender o curso"])) {
     return { intent: "curso", reply: courseMenu(name) };
   }
 
-  if (msg === "2") {
-    setStage(userKey, "crescimento");
+  if (msg === "2" || hasAny(msg, ["sair do zero", "crescer", "seguidores", "instagram", "engajamento", "alcance"])) {
     return { intent: "crescimento", reply: growthMenu(name) };
   }
 
-  if (msg === "3") {
-    setStage(userKey, "conteudo");
+  if (msg === "3" || hasAny(msg, ["reels", "story", "stories", "canva", "capcut", "ia", "conteudo", "conteúdo", "gravar", "video", "vídeo"])) {
     return { intent: "conteudo", reply: contentMenu(name) };
   }
 
-  if (msg === "4") {
-    setStage(userKey, "pagamento");
+  if (msg === "4" || hasAny(msg, ["valor", "preco", "preço", "quanto custa", "pagamento", "pix", "cartao", "cartão"])) {
     return { intent: "pagamento", reply: paymentMenu(name) };
   }
 
-  if (msg === "5") {
-    setStage(userKey, "suporte");
+  if (msg === "5" || hasAny(msg, ["erro", "bug", "login", "senha", "cadastro", "acesso", "paguei", "não liberou", "nao liberou", "suporte"])) {
     return { intent: "suporte", reply: supportMenu(name) };
-  }
-
-
-  if (!msg || msg.length <= 2) {
-    setStage(userKey, "inicio");
-    return { intent: "menu", reply: mainMenu(saudacao) };
-  }
-
-  if (hasAny(msg, ["menu", "voltar", "inicio", "início", "comecar de novo", "começar de novo"])) {
-    setStage(userKey, "inicio");
-    return { intent: "menu", reply: mainMenu(saudacao) };
-  }
-
-  if (hasAny(msg, ["oi", "ola", "olá", "opa", "bom dia", "boa tarde", "boa noite", "tudo bem"])) {
-    setStage(userKey, "inicio");
-    return { intent: "saudacao", reply: mainMenu(saudacao) };
-  }
-
-  if (hasAny(msg, ["humano", "atendente", "suporte", "pessoa", "falar com alguem", "falar com alguém"])) {
-    setStage(userKey, "suporte");
-    return { intent: "humano", reply: humanSupportMessage(saudacao) };
-  }
-
-  if (hasAny(msg, ["valor", "preco", "preço", "quanto custa", "pagamento", "pix", "cartao", "cartão", "boleto", "desconto"])) {
-    setStage(userKey, "pagamento");
-    return { intent: "pagamento", reply: paymentMenu(saudacao) };
-  }
-
-  if (hasAny(msg, ["curso", "como funciona", "saber mais", "influencer", "influenciadora", "criadora"])) {
-    setStage(userKey, "curso");
-    return { intent: "curso", reply: courseMenu(saudacao) };
-  }
-
-  if (hasAny(msg, ["seguidor", "seguidores", "crescer", "engajamento", "alcance", "views", "instagram"])) {
-    setStage(userKey, "crescimento");
-    return { intent: "crescimento", reply: growthMenu(saudacao) };
-  }
-
-  if (hasAny(msg, ["reels", "story", "stories", "conteudo", "conteúdo", "gravar", "canva", "capcut", "ia", "video", "vídeo"])) {
-    setStage(userKey, "conteudo");
-    return { intent: "conteudo", reply: contentMenu(saudacao) };
-  }
-
-  if (hasAny(msg, ["erro", "bug", "travou", "nao abre", "não abre", "login", "senha", "cadastro", "acesso", "paguei", "nao liberou", "não liberou"])) {
-    setStage(userKey, "suporte");
-    return { intent: "suporte", reply: supportMenu(saudacao) };
-  }
-
-  if (stage === "inicio") {
-    if (isOption(msg, 1)) {
-      setStage(userKey, "curso");
-      return { intent: "curso", reply: courseMenu(saudacao) };
-    }
-
-    if (isOption(msg, 2)) {
-      setStage(userKey, "crescimento");
-      return { intent: "crescimento", reply: growthMenu(saudacao) };
-    }
-
-    if (isOption(msg, 3)) {
-      setStage(userKey, "conteudo");
-      return { intent: "conteudo", reply: contentMenu(saudacao) };
-    }
-
-    if (isOption(msg, 4)) {
-      setStage(userKey, "pagamento");
-      return { intent: "pagamento", reply: paymentMenu(saudacao) };
-    }
-
-    if (isOption(msg, 5)) {
-      setStage(userKey, "suporte");
-      return { intent: "suporte", reply: supportMenu(saudacao) };
-    }
-  }
-
-  if (stage === "pagamento" && isOption(msg, 1)) {
-    return {
-      intent: "link",
-      reply: `${saudacao}perfeito 💕
-
-Aqui está o link:
-${COURSE_LINK}
-
-Condição atual:
-De ${OLD_PRICE}
-Por ${COURSE_PRICE}`
-    };
-  }
-
-  if (stage === "suporte" && (isOption(msg, 1) || isOption(msg, 2) || isOption(msg, 3) || isOption(msg, 4) || isOption(msg, 5))) {
-    return { intent: "suporte_humano", reply: humanSupportMessage(saudacao) };
   }
 
   return {
     intent: "fallback",
-    reply: `${saudacao}entendi 💕
+    reply: `${name ? name + ", " : ""}entendi 💕
 
-Para eu te ajudar melhor, me diz se sua dúvida é sobre:
+Para eu te ajudar melhor, escolha uma opção:
 
 1. Curso
 2. Crescimento no Instagram
-3. Reels, stories e conteúdo
+3. Reels, stories, Canva, CapCut e IA
 4. Valor e pagamento
 5. Acesso ou suporte
 

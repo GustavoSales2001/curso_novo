@@ -4,53 +4,54 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tirar dúvidas | Influencer Academy</title>
+
   <style>
     :root{
-      --bg:#f7f1eb;
-      --card:#fffaf6;
-      --white:#ffffff;
-      --text:#3d3028;
-      --muted:#7b6a60;
-      --line:#eaded4;
-      --primary:#d9877d;
-      --primary-dark:#c46d63;
-      --shadow:0 20px 55px rgba(92,63,45,.12);
+      --bg:#f8f1eb;
+      --card:#fffaf7;
+      --white:#fff;
+      --text:#3f2d26;
+      --muted:#8a7166;
+      --line:#ead7ce;
+      --rose:#d98f82;
+      --rose-dark:#c87465;
+      --rose-soft:#f7ddd6;
+      --shadow:0 22px 70px rgba(83,54,42,.12);
     }
 
-    *{
-      box-sizing:border-box;
-      margin:0;
-      padding:0;
-      font-family:Inter, Segoe UI, Arial, sans-serif;
-    }
+    *{box-sizing:border-box}
 
     body{
+      margin:0;
       min-height:100vh;
-      background:
-        radial-gradient(circle at top left, rgba(217,135,125,.16), transparent 26%),
-        radial-gradient(circle at bottom right, rgba(185,140,116,.12), transparent 30%),
-        linear-gradient(180deg,#faf5f0 0%,#f7f1eb 100%);
+      font-family:"Segoe UI",Arial,sans-serif;
       color:var(--text);
-      padding:24px;
+      background:
+        radial-gradient(circle at top left,rgba(217,143,130,.18),transparent 30%),
+        radial-gradient(circle at bottom right,rgba(217,143,130,.14),transparent 32%),
+        linear-gradient(180deg,#fbf7f3,#f6eee8);
     }
 
+    a{text-decoration:none;color:inherit}
+
     .page{
-      max-width:1360px;
+      max-width:1180px;
       margin:0 auto;
+      padding:26px;
     }
 
     .topbar{
       display:flex;
-      align-items:center;
       justify-content:space-between;
-      gap:18px;
-      margin-bottom:22px;
-      padding:16px 20px;
-      background:rgba(255,255,255,.72);
+      align-items:center;
+      gap:16px;
+      background:rgba(255,255,255,.78);
       border:1px solid var(--line);
-      border-radius:26px;
+      border-radius:28px;
+      padding:16px 20px;
       box-shadow:var(--shadow);
-      backdrop-filter:blur(12px);
+      backdrop-filter:blur(14px);
+      margin-bottom:22px;
     }
 
     .brand{
@@ -60,27 +61,28 @@
     }
 
     .logo{
-      width:50px;
-      height:50px;
-      border-radius:17px;
-      background:linear-gradient(135deg,var(--primary),#e7aaa0);
+      width:52px;
+      height:52px;
+      border-radius:18px;
       display:grid;
       place-items:center;
-      color:white;
-      font-weight:900;
-      font-size:19px;
-      flex-shrink:0;
+      background:linear-gradient(135deg,var(--rose),#e8aa9d);
+      color:#fff;
+      font-weight:950;
+      letter-spacing:-.04em;
     }
 
-    .brand h1{
-      font-size:23px;
-      line-height:1.1;
+    .brand strong{
+      display:block;
+      font-size:22px;
+      letter-spacing:-.03em;
     }
 
-    .brand p{
+    .brand span{
+      display:block;
       color:var(--muted);
-      font-size:14px;
-      margin-top:4px;
+      font-size:13px;
+      margin-top:2px;
     }
 
     .top-actions{
@@ -91,481 +93,391 @@
 
     .btn{
       border:none;
-      text-decoration:none;
-      cursor:pointer;
-      padding:14px 18px;
       border-radius:16px;
-      font-weight:900;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      transition:.2s;
+      padding:14px 18px;
+      font-weight:950;
+      cursor:pointer;
+      background:linear-gradient(135deg,var(--rose),var(--rose-dark));
+      color:#fff;
+      box-shadow:0 14px 28px rgba(217,143,130,.22);
     }
 
-    .btn:hover{
-      transform:translateY(-2px);
-    }
-
-    .btn-light{
-      background:white;
+    .btn.secondary{
+      background:#fff;
       color:var(--text);
       border:1px solid var(--line);
-    }
-
-    .btn-primary{
-      background:linear-gradient(135deg,var(--primary),#e5a193);
-      color:white;
-      box-shadow:0 14px 30px rgba(217,135,125,.25);
+      box-shadow:none;
     }
 
     .layout{
       display:grid;
-      grid-template-columns:330px 1fr;
+      grid-template-columns:280px 1fr;
       gap:22px;
-      min-height:calc(100vh - 130px);
+      align-items:stretch;
     }
 
-    .sidebar{
-      display:flex;
-      flex-direction:column;
-      gap:16px;
+    .side{
+      display:grid;
+      gap:14px;
+      align-content:start;
     }
 
-    .card{
+    .side-card{
       background:rgba(255,255,255,.82);
       border:1px solid var(--line);
-      border-radius:28px;
-      padding:22px;
+      border-radius:26px;
+      padding:20px;
       box-shadow:var(--shadow);
     }
 
-    .card h3{
+    .side-card h3{
+      margin:0 0 10px;
       font-size:18px;
-      margin-bottom:10px;
     }
 
-    .card p{
+    .side-card p{
+      margin:0;
       color:var(--muted);
-      line-height:1.6;
-      font-size:15px;
+      line-height:1.65;
+      font-size:14px;
     }
 
-    .chips{
+    .quick-side{
       display:flex;
       flex-wrap:wrap;
-      gap:10px;
-      margin-top:16px;
+      gap:8px;
+      margin-top:14px;
     }
 
-    .chip{
+    .pill{
       border:1px solid var(--line);
-      background:#fff4ef;
+      background:#fff7f3;
       color:var(--text);
-      padding:10px 12px;
       border-radius:999px;
-      font-weight:800;
-      font-size:13px;
+      padding:10px 12px;
+      font-size:12px;
+      font-weight:950;
       cursor:pointer;
     }
 
-    .chat{
+    .chat-shell{
       background:rgba(255,255,255,.86);
       border:1px solid var(--line);
-      border-radius:32px;
+      border-radius:30px;
+      overflow:hidden;
       box-shadow:var(--shadow);
+      min-height:660px;
       display:flex;
       flex-direction:column;
-      overflow:hidden;
-      min-height:720px;
     }
 
-    .chat-head{
-      padding:22px 24px;
-      border-bottom:1px solid var(--line);
-      background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(255,250,246,.9));
+    .chat-header{
       display:flex;
-      align-items:center;
       justify-content:space-between;
-      gap:16px;
-      flex-wrap:wrap;
-    }
-
-    .bot-profile{
-      display:flex;
       align-items:center;
       gap:14px;
+      padding:18px 22px;
+      border-bottom:1px solid var(--line);
+      background:rgba(255,250,247,.92);
+    }
+
+    .bot-info{
+      display:flex;
+      align-items:center;
+      gap:12px;
     }
 
     .avatar{
-      width:54px;
-      height:54px;
-      border-radius:18px;
-      background:linear-gradient(135deg,var(--primary),#e7aaa0);
-      color:white;
-      font-weight:900;
+      width:46px;
+      height:46px;
+      border-radius:17px;
       display:grid;
       place-items:center;
+      background:linear-gradient(135deg,var(--rose),#e8aa9d);
+      color:#fff;
+      font-weight:950;
     }
 
-    .chat-head h2{
-      font-size:20px;
+    .bot-info strong{
+      display:block;
+      font-size:18px;
     }
 
-    .chat-head p{
+    .bot-info span{
+      display:block;
+      font-size:13px;
       color:var(--muted);
-      font-size:14px;
-      margin-top:3px;
     }
 
     .status{
-      display:flex;
+      display:inline-flex;
       align-items:center;
       gap:8px;
-      padding:10px 14px;
+      padding:9px 12px;
       border-radius:999px;
-      background:white;
       border:1px solid var(--line);
+      background:#fff;
       color:var(--muted);
-      font-weight:800;
-      font-size:13px;
+      font-size:12px;
+      font-weight:900;
     }
 
     .dot{
-      width:9px;
-      height:9px;
-      border-radius:50%;
-      background:#36b56f;
-      box-shadow:0 0 0 5px rgba(54,181,111,.12);
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      background:#33c46a;
+      box-shadow:0 0 0 5px rgba(51,196,106,.12);
     }
 
     .messages{
       flex:1;
-      padding:24px;
-      overflow:auto;
-      display:flex;
-      flex-direction:column;
-      gap:14px;
+      padding:26px;
+      overflow-y:auto;
+      min-height:450px;
+      max-height:560px;
       background:
-        radial-gradient(circle at top right,rgba(217,135,125,.08),transparent 34%),
-        transparent;
+        radial-gradient(circle at 20% 0%,rgba(217,143,130,.08),transparent 28%),
+        linear-gradient(180deg,#fffaf7,#fff);
     }
 
-    .row{
+    .msg-row{
       display:flex;
       gap:10px;
-      max-width:84%;
+      margin:0 0 16px;
       align-items:flex-end;
     }
 
-    .row.user{
-      align-self:flex-end;
-      flex-direction:row-reverse;
+    .msg-row.user{
+      justify-content:flex-end;
     }
 
-    .bubble-icon{
-      width:38px;
-      height:38px;
-      border-radius:14px;
-      background:white;
-      border:1px solid var(--line);
+    .mini-avatar{
+      width:34px;
+      height:34px;
+      border-radius:13px;
       display:grid;
       place-items:center;
-      flex-shrink:0;
+      background:#fff;
+      border:1px solid var(--line);
+      font-size:16px;
+      flex:0 0 auto;
     }
 
     .bubble{
-      padding:14px 16px;
+      max-width:min(640px,82%);
+      padding:15px 17px;
       border-radius:20px;
       line-height:1.65;
-      font-size:15px;
       white-space:pre-wrap;
-      box-shadow:0 10px 24px rgba(0,0,0,.05);
-    }
-
-    .row.bot .bubble{
-      background:white;
+      font-size:14px;
       border:1px solid var(--line);
-      border-bottom-left-radius:7px;
-    }
-
-    .row.user .bubble{
-      background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-      color:white;
-      border-bottom-right-radius:7px;
-    }
-
-    .meta{
-      color:var(--muted);
-      font-size:11px;
-      margin-top:5px;
-    }
-
-    .suggestions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      padding:0 24px 18px;
-    }
-
-    .suggestion{
-      border:1px solid var(--line);
-      background:white;
-      border-radius:999px;
-      padding:10px 14px;
+      background:#fff;
       color:var(--text);
-      font-weight:800;
+    }
+
+    .user .bubble{
+      background:linear-gradient(135deg,var(--rose),var(--rose-dark));
+      color:#fff;
+      border-color:transparent;
+    }
+
+    .quick-replies{
+      display:flex;
+      flex-wrap:wrap;
+      gap:9px;
+      padding:0 26px 18px;
+      background:#fff;
+    }
+
+    .quick{
+      border:1px solid var(--line);
+      background:#fff;
+      color:var(--text);
+      border-radius:999px;
+      padding:10px 13px;
+      font-size:12px;
+      font-weight:950;
       cursor:pointer;
-      font-size:13px;
     }
 
     .composer{
+      display:grid;
+      grid-template-columns:auto auto 1fr auto;
+      gap:10px;
+      padding:18px;
       border-top:1px solid var(--line);
-      padding:18px 20px;
-      background:#fffdfb;
+      background:#fffaf7;
       position:relative;
     }
 
-    .files{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-bottom:12px;
-    }
-
-    .file-tag{
-      background:#fff4ef;
-      border:1px solid var(--line);
-      padding:8px 11px;
-      border-radius:999px;
-      font-size:13px;
-      color:var(--text);
-      font-weight:800;
-    }
-
-    .input-line{
-      display:flex;
-      align-items:flex-end;
-      gap:12px;
-    }
-
     .icon-btn{
-      width:52px;
-      height:52px;
+      width:48px;
+      height:48px;
       border-radius:17px;
       border:1px solid var(--line);
-      background:#fff4ef;
+      background:#fff;
       cursor:pointer;
       font-size:20px;
+      display:grid;
+      place-items:center;
     }
 
     textarea{
-      flex:1;
-      min-height:54px;
-      max-height:150px;
+      width:100%;
+      min-height:48px;
+      max-height:120px;
       resize:none;
-      border:1px solid var(--line);
-      border-radius:20px;
-      background:#fff4ef;
-      padding:15px 16px;
-      outline:none;
-      color:var(--text);
-      font-size:15px;
-      line-height:1.5;
-    }
-
-    textarea::placeholder{
-      color:#a9958b;
-    }
-
-    .send{
-      min-width:150px;
-      height:54px;
-      border:none;
       border-radius:18px;
-      background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-      color:white;
-      font-weight:900;
-      cursor:pointer;
-      box-shadow:0 14px 30px rgba(217,135,125,.25);
+      border:1px solid var(--line);
+      outline:none;
+      padding:14px 16px;
+      font-family:inherit;
+      font-size:14px;
+      color:var(--text);
+      background:#fff;
+    }
+
+    textarea:focus{
+      border-color:var(--rose);
+      box-shadow:0 0 0 4px rgba(217,143,130,.13);
     }
 
     .emoji-box{
       position:absolute;
-      left:20px;
-      bottom:90px;
-      width:250px;
-      padding:12px;
-      background:white;
+      left:18px;
+      bottom:82px;
+      background:#fff;
       border:1px solid var(--line);
-      border-radius:20px;
       box-shadow:var(--shadow);
+      border-radius:20px;
+      padding:12px;
       display:none;
-      flex-wrap:wrap;
       gap:8px;
-      z-index:5;
+      flex-wrap:wrap;
+      max-width:260px;
+      z-index:4;
     }
 
-    .emoji-box.open{
+    .emoji-box.show{
       display:flex;
     }
 
-    .emoji{
-      width:38px;
-      height:38px;
-      border-radius:12px;
+    .emoji-box button{
       border:none;
-      background:#fff4ef;
+      background:#fff7f3;
+      border-radius:12px;
+      padding:8px;
+      font-size:19px;
       cursor:pointer;
-      font-size:18px;
     }
 
-    @media(max-width:1000px){
-      .layout{
-        grid-template-columns:1fr;
-      }
+    .file-note{
+      grid-column:3 / 5;
+      color:var(--muted);
+      font-size:12px;
+      display:none;
     }
 
-    @media(max-width:720px){
-      body{
-        padding:12px;
-      }
+    .file-note.show{
+      display:block;
+    }
 
-      .topbar{
-        align-items:flex-start;
-        flex-direction:column;
-      }
+    @media(max-width:900px){
+      .layout{grid-template-columns:1fr}
+      .side{grid-template-columns:1fr}
+      .composer{grid-template-columns:auto auto 1fr}
+      .composer .btn{grid-column:1 / -1}
+    }
 
-      .top-actions{
-        width:100%;
-      }
-
-      .top-actions .btn{
-        flex:1;
-      }
-
-      .chat{
-        min-height:75vh;
-      }
-
-      .row{
-        max-width:100%;
-      }
-
-      .input-line{
-        flex-wrap:wrap;
-      }
-
-      textarea{
-        width:100%;
-        flex-basis:100%;
-      }
-
-      .send{
-        width:100%;
-      }
-
-      .icon-btn{
-        flex:1;
-      }
+    @media(max-width:600px){
+      .page{padding:14px}
+      .topbar{align-items:flex-start;flex-direction:column}
+      .top-actions{width:100%}
+      .top-actions .btn{flex:1}
+      .messages{padding:16px}
+      .bubble{max-width:90%}
     }
   </style>
 </head>
+
 <body>
   <main class="page">
     <header class="topbar">
       <div class="brand">
         <div class="logo">IA</div>
         <div>
-          <h1>Influencer Academy</h1>
-          <p>Atendimento inteligente para tirar dúvidas sobre curso, acesso e pagamento.</p>
+          <strong>Influencer Academy</strong>
+          <span>Atendimento inteligente para tirar dúvidas sobre curso, acesso e pagamento.</span>
         </div>
       </div>
 
       <div class="top-actions">
-        <a class="btn btn-light" href="index.html">← Voltar ao site</a>
-        <a class="btn btn-primary" href="index.html#trilha">Ver curso</a>
+        <a class="btn secondary" href="index.html">← Voltar ao site</a>
+        <a class="btn" href="index.html#preco">Ver curso</a>
       </div>
     </header>
 
     <section class="layout">
-      <aside class="sidebar">
-        <div class="card">
+      <aside class="side">
+        <div class="side-card">
           <h3>Me conta, como posso te ajudar?</h3>
           <p>Você pode perguntar sobre o curso, pagamento, acesso, crescimento no Instagram, Reels, stories, Canva, CapCut e criação de conteúdo.</p>
 
-          <div class="chips">
-            <button class="chip quick">Quero entender o curso</button>
-            <button class="chip quick">Qual é o valor hoje?</button>
-            <button class="chip quick">Quero crescer do zero</button>
-            <button class="chip quick">Estou com problema no acesso</button>
+          <div class="quick-side">
+            <button class="pill" data-send="Como funciona o curso?">Quero entender o curso</button>
+            <button class="pill" data-send="Qual é o valor hoje?">Qual é o valor?</button>
+            <button class="pill" data-send="Quero crescer do zero">Quero crescer do zero</button>
+            <button class="pill" data-send="Estou com problema no acesso">Problema no acesso</button>
           </div>
         </div>
 
-        <div class="card">
+        <div class="side-card">
           <h3>Dica para eu te responder melhor</h3>
           <p>Me manda sua dúvida com detalhes. Exemplo: “quero crescer de 1.000 para 5.000 seguidores” ou “não consigo acessar minha área da aluna”.</p>
         </div>
 
-        <div class="card">
+        <div class="side-card">
           <h3>Dentro do curso você aprende sobre</h3>
           <p>✨ Crescimento no Instagram<br>🎥 Reels e stories<br>📱 Gravação com celular<br>📈 Métricas e engajamento<br>🎀 Posicionamento e estética</p>
         </div>
       </aside>
 
-      <section class="chat">
-        <div class="chat-head">
-          <div class="bot-profile">
+      <section class="chat-shell">
+        <div class="chat-header">
+          <div class="bot-info">
             <div class="avatar">IA</div>
             <div>
-              <h2>Chat de dúvidas</h2>
-              <p>Converse com a assistente do Influencer Academy.</p>
+              <strong>Chat de dúvidas</strong>
+              <span>Converse com a assistente da Influencer Academy.</span>
             </div>
           </div>
 
-          <div class="status">
-            <span class="dot"></span>
-            Bot online
-          </div>
+          <div class="status"><span class="dot"></span> Bot online</div>
         </div>
 
         <div class="messages" id="messages"></div>
 
-        <div class="suggestions">
-          <button class="suggestion">Como funciona o curso?</button>
-          <button class="suggestion">Qual é o valor hoje?</button>
-          <button class="suggestion">Quero crescer no Instagram</button>
-          <button class="suggestion">Quero melhorar meus vídeos</button>
-          <button class="suggestion">Estou com problema no login</button>
+        <div class="quick-replies">
+          <button class="quick" data-send="Como funciona o curso?">Como funciona o curso?</button>
+          <button class="quick" data-send="Qual é o valor hoje?">Qual é o valor hoje?</button>
+          <button class="quick" data-send="Quero crescer no Instagram">Quero crescer no Instagram</button>
+          <button class="quick" data-send="Quero melhorar meus vídeos">Quero melhorar meus vídeos</button>
+          <button class="quick" data-send="Estou com problema no login">Estou com problema no login</button>
         </div>
 
         <div class="composer">
+          <button class="icon-btn" id="emojiBtn" title="Emoji">😊</button>
+          <button class="icon-btn" id="attachBtn" title="Anexar arquivo">📎</button>
+          <textarea id="input" placeholder="Digite sua dúvida aqui..."></textarea>
+          <button class="btn" id="sendBtn">Enviar</button>
+
           <div class="emoji-box" id="emojiBox">
-            <button class="emoji">😊</button>
-            <button class="emoji">😍</button>
-            <button class="emoji">✨</button>
-            <button class="emoji">💕</button>
-            <button class="emoji">🎥</button>
-            <button class="emoji">📱</button>
-            <button class="emoji">📈</button>
-            <button class="emoji">🔥</button>
-            <button class="emoji">🙌</button>
-            <button class="emoji">💡</button>
-            <button class="emoji">🤍</button>
-            <button class="emoji">🎀</button>
+            <button>💕</button><button>✨</button><button>😊</button><button>📱</button><button>🎥</button><button>🔥</button><button>💡</button><button>📈</button><button>🎀</button><button>✅</button>
           </div>
 
-          <div class="files" id="files"></div>
-
-          <div class="input-line">
-            <button class="icon-btn" id="emojiBtn" type="button">😊</button>
-            <button class="icon-btn" id="attachBtn" type="button">📎</button>
-            <input type="file" id="fileInput" multiple hidden>
-
-            <textarea id="chatInput" placeholder="Digite sua dúvida aqui..."></textarea>
-
-            <button class="send" id="sendBtn" type="button">Enviar</button>
-          </div>
+          <input id="fileInput" type="file" hidden />
+          <div class="file-note" id="fileNote"></div>
         </div>
       </section>
     </section>
@@ -573,138 +485,212 @@
 
   <script>
     const API_URL = "https://cursonovo-production.up.railway.app/api/site-chat";
-    const CHAT_SESSION_KEY = "influencer_academy_site_session";
-    const CHAT_SESSION_ID = localStorage.getItem(CHAT_SESSION_KEY) || crypto.randomUUID();
-    localStorage.setItem(CHAT_SESSION_KEY, CHAT_SESSION_ID);
+
     const messages = document.getElementById("messages");
-    const input = document.getElementById("chatInput");
+    const input = document.getElementById("input");
     const sendBtn = document.getElementById("sendBtn");
     const emojiBtn = document.getElementById("emojiBtn");
     const emojiBox = document.getElementById("emojiBox");
     const attachBtn = document.getElementById("attachBtn");
     const fileInput = document.getElementById("fileInput");
-    const filesBox = document.getElementById("files");
-    let selectedFiles = [];
+    const fileNote = document.getElementById("fileNote");
 
-    function time(){
-      return new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
+    let selectedFile = null;
+
+    function localReply(text) {
+      const msg = String(text || "").toLowerCase();
+
+      if (msg.includes("valor") || msg.includes("preço") || msg.includes("pagamento") || msg.includes("pix")) {
+        return `A condição atual está especial:
+
+De R$ 69,99
+Por R$ 39,99
+
+É pagamento único e o acesso é feito pela página do curso.
+
+Link:
+https://gustavosales2001.github.io/curso_novo/`;
+      }
+
+      if (msg.includes("zero") || msg.includes("instagram") || msg.includes("seguidor") || msg.includes("crescer")) {
+        return `Para sair do zero no Instagram, você precisa de direção.
+
+O curso te ajuda com:
+✨ nicho e posicionamento
+✨ bio e primeira impressão
+✨ Reels com gancho
+✨ stories para conexão
+✨ rotina de postagem
+✨ métricas simples
+
+A ideia é parar de postar no escuro e crescer com estratégia.`;
+      }
+
+      if (msg.includes("reels") || msg.includes("stories") || msg.includes("canva") || msg.includes("capcut") || msg.includes("vídeo") || msg.includes("video") || msg.includes("ia")) {
+        return `Nessa parte você aprende a produzir melhor usando o celular.
+
+Você vê:
+🎥 gravação
+💡 iluminação
+✂️ edição no CapCut
+🎨 Canva para posts e capas
+✨ IA para ideias e roteiros
+📊 métricas para melhorar os conteúdos`;
+      }
+
+      if (msg.includes("login") || msg.includes("acesso") || msg.includes("cadastro") || msg.includes("erro")) {
+        return `Me manda mais detalhes do problema.
+
+Pode ser:
+1. cadastro
+2. login
+3. pagamento
+4. área do aluno
+5. aula bloqueada
+
+Se puder, envie um print para ajudar na análise.`;
+      }
+
+      return `A Influencer Academy é uma trilha prática para quem quer crescer como criadora de conteúdo com mais clareza, estética e estratégia.
+
+Você aprende Instagram, Reels, stories, Canva, CapCut, IA, métricas, posicionamento e monetização.
+
+Link do curso:
+https://gustavosales2001.github.io/curso_novo/`;
     }
 
-    function escapeHtml(text){
-      return String(text || "")
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;");
-    }
-
-    function addMessage(role,text){
+    function addMessage(text, type = "bot") {
       const row = document.createElement("div");
-      row.className = "row " + role;
+      row.className = "msg-row " + (type === "user" ? "user" : "bot");
 
-      const icon = document.createElement("div");
-      icon.className = "bubble-icon";
-      icon.textContent = role === "bot" ? "🤖" : "👩";
+      if (type !== "user") {
+        const avatar = document.createElement("div");
+        avatar.className = "mini-avatar";
+        avatar.textContent = "🤖";
+        row.appendChild(avatar);
+      }
 
-      const wrap = document.createElement("div");
       const bubble = document.createElement("div");
       bubble.className = "bubble";
-      bubble.innerHTML = escapeHtml(text).replace(/\n/g,"<br>");
+      bubble.textContent = text;
+      row.appendChild(bubble);
 
-      const meta = document.createElement("div");
-      meta.className = "meta";
-      meta.textContent = time();
-
-      wrap.appendChild(bubble);
-      wrap.appendChild(meta);
-      row.appendChild(icon);
-      row.appendChild(wrap);
+      if (type === "user") {
+        const avatar = document.createElement("div");
+        avatar.className = "mini-avatar";
+        avatar.textContent = "👩";
+        row.appendChild(avatar);
+      }
 
       messages.appendChild(row);
       messages.scrollTop = messages.scrollHeight;
     }
 
-    function renderFiles(){
-      filesBox.innerHTML = "";
-      selectedFiles.forEach(file => {
-        const tag = document.createElement("div");
-        tag.className = "file-tag";
-        tag.textContent = "📎 " + file.name;
-        filesBox.appendChild(tag);
-      });
+    function setTyping() {
+      const row = document.createElement("div");
+      row.className = "msg-row bot";
+      row.id = "typing";
+
+      const avatar = document.createElement("div");
+      avatar.className = "mini-avatar";
+      avatar.textContent = "🤖";
+
+      const bubble = document.createElement("div");
+      bubble.className = "bubble";
+      bubble.textContent = "Digitando...";
+
+      row.appendChild(avatar);
+      row.appendChild(bubble);
+      messages.appendChild(row);
+      messages.scrollTop = messages.scrollHeight;
     }
 
-    async function sendMessage(customText){
+    function removeTyping() {
+      const typing = document.getElementById("typing");
+      if (typing) typing.remove();
+    }
+
+    async function sendMessage(customText) {
       const text = (customText || input.value || "").trim();
-      if(!text && selectedFiles.length === 0) return;
 
-      const fileNames = selectedFiles.map(file => file.name);
-      const userText = text + (fileNames.length ? "\n\nArquivos anexados: " + fileNames.join(", ") : "");
+      if (!text && !selectedFile) return;
 
-      addMessage("user", userText || "Arquivo anexado");
+      const finalText = selectedFile
+        ? `${text || "Enviei um arquivo para análise."}\n\nArquivo anexado: ${selectedFile.name}`
+        : text;
+
+      addMessage(finalText, "user");
       input.value = "";
-      selectedFiles = [];
-      renderFiles();
+      selectedFile = null;
+      fileNote.classList.remove("show");
+      fileNote.textContent = "";
 
-      addMessage("bot", "Digitando...");
+      setTyping();
 
-      try{
-        const response = await fetch(API_URL,{
-          method:"POST",
-          headers:{"Content-Type":"application/json"},
-          body:JSON.stringify({
-            message:text || "Enviei um anexo.",
-            attachments:fileNames,
-            source:"site-chat",
-            sessionId: CHAT_SESSION_ID
+      try {
+        const response = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            message: finalText,
+            name: "Milene"
           })
         });
 
         const data = await response.json();
 
-        messages.lastChild.remove();
+        removeTyping();
 
-        addMessage("bot", data.reply || "Recebi sua mensagem. Pode me mandar mais detalhes?");
-      }catch(error){
-        messages.lastChild.remove();
+        if (!response.ok || !data.reply) {
+          addMessage(localReply(finalText), "bot");
+          return;
+        }
 
-        addMessage("bot", "Tive um problema para responder agora. Tente novamente em instantes.");
+        addMessage(data.reply, "bot");
+      } catch (error) {
+        removeTyping();
+        addMessage(localReply(finalText), "bot");
       }
     }
 
     sendBtn.addEventListener("click", () => sendMessage());
 
-    input.addEventListener("keydown", event => {
-      if(event.key === "Enter" && !event.shiftKey){
+    input.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" && !event.shiftKey) {
         event.preventDefault();
         sendMessage();
       }
     });
 
-    emojiBtn.addEventListener("click", () => {
-      emojiBox.classList.toggle("open");
+    document.querySelectorAll("[data-send]").forEach(button => {
+      button.addEventListener("click", () => sendMessage(button.dataset.send));
     });
 
-    document.querySelectorAll(".emoji").forEach(btn => {
-      btn.addEventListener("click", () => {
-        input.value += btn.textContent;
+    emojiBtn.addEventListener("click", () => {
+      emojiBox.classList.toggle("show");
+    });
+
+    emojiBox.querySelectorAll("button").forEach(button => {
+      button.addEventListener("click", () => {
+        input.value += button.textContent;
         input.focus();
+        emojiBox.classList.remove("show");
       });
     });
 
     attachBtn.addEventListener("click", () => fileInput.click());
 
-    fileInput.addEventListener("change", event => {
-      selectedFiles = Array.from(event.target.files || []);
-      renderFiles();
-      fileInput.value = "";
+    fileInput.addEventListener("change", () => {
+      selectedFile = fileInput.files[0];
+
+      if (selectedFile) {
+        fileNote.textContent = `Arquivo anexado: ${selectedFile.name}`;
+        fileNote.classList.add("show");
+      }
     });
 
-    document.querySelectorAll(".suggestion,.quick").forEach(btn => {
-      btn.addEventListener("click", () => sendMessage(btn.textContent));
-    });
-
-    addMessage("bot", `Oi! ✨
-Eu sou a assistente do Influencer Academy.
+    addMessage(`Oi! ✨
+Eu sou a assistente da Influencer Academy.
 
 Posso te ajudar com:
 • dúvidas sobre o curso
@@ -717,15 +703,3 @@ Me manda sua dúvida ou escolha uma opção abaixo.`);
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-

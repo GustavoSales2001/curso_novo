@@ -5,6 +5,7 @@ import mysql from "mysql2/promise";
 import crypto from "crypto";
 import { MercadoPagoConfig, Payment } from "mercadopago";
 import handleIncomingMessage from "./messageHandler.js";
+import siteChatRoutes from "./siteChatRoutes.js";
 
 const BOT_VERSION = "influencer-academy-whatsapp-v5";
 const COURSE_NAME_SAFE = "Influencer Academy";
@@ -22,6 +23,7 @@ const port = Number(process.env.PORT || 3000);
 
 app.disable("x-powered-by");
 app.use(express.json());
+app.use("/api", siteChatRoutes);
 app.get("/api/bot-version", (req, res) => {
   res.json({
     ok: true,
