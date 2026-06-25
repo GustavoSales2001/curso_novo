@@ -119,7 +119,7 @@
             <button class="pg-nav pg-prev" data-action="prev">‹</button>
             <img class="pg-image" id="pgImage" alt="Print ampliado" draggable="false" />
             <button class="pg-nav pg-next" data-action="next">›</button>
-            <div class="pg-zoom-badge" id="pgZoomBadge">100%</div>
+            <div class="pg-zoom-badge" id="pgZoomBadge">100%</div><div class="pg-scroll-hint">Role para subir/descer</div>
           </div>
 
           <aside class="pg-side">
@@ -310,10 +310,15 @@
   }
 
   function handleWheel(event) {
-    event.preventDefault();
+    if (event.ctrlKey) {
+      event.preventDefault();
+      const direction = event.deltaY > 0 ? -0.12 : 0.12;
+      zoom(direction);
+      return;
+    }
 
-    const direction = event.deltaY > 0 ? -0.12 : 0.12;
-    zoom(direction);
+    // Sem Ctrl, deixa a barra de rolagem funcionar normalmente.
+    // Use Ctrl + roda do mouse para zoom.
   }
 
   function toggleDoubleZoom(event) {
@@ -591,3 +596,4 @@
     init();
   }
 })();
+
