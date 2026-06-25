@@ -32,26 +32,37 @@ function getUserKey(user = {}) {
   ).toLowerCase();
 }
 
+function hasAny(msg, words) {
+  return words.some(word => msg.includes(normalizeText(word)));
+}
+
 function getMemory(user = {}) {
   const key = getUserKey(user);
 
   if (!memories.has(key)) {
     memories.set(key, {
-      stage: "inicio",
+      currentPath: "",
       lastIntent: "",
-      lastOffer: "",
       lastReply: "",
       lastUserText: "",
-      turns: [],
-      used: {},
+      pathIndex: {
+        course: 0,
+        growth: 0,
+        content: 0,
+        payment: 0,
+        money: 0,
+        support: 0,
+        fallback: 0
+      },
       known: {
         name: getFirstName(user),
+        level: "",
         interest: "",
         objection: "",
-        followers: "",
-        level: "",
-        pain: ""
-      }
+        pain: "",
+        followers: ""
+      },
+      turns: []
     });
   }
 
@@ -64,39 +75,15 @@ function getMemory(user = {}) {
   return memory;
 }
 
-function hasAny(msg, words) {
-  return words.some(word => msg.includes(normalizeText(word)));
-}
-
-function pick(memory, group, list) {
-  if (!memory.used[group]) memory.used[group] = [];
-
-  let available = list
-    .map((text, index) => ({ text, index }))
-    .filter(item => !memory.used[group].includes(item.index));
-
-  if (available.length === 0) {
-    memory.used[group] = [];
-    available = list.map((text, index) => ({ text, index }));
-  }
-
-  const selected = available[Math.floor(Math.random() * available.length)];
-  memory.used[group].push(selected.index);
-  memory.lastReply = selected.text;
-
-  return selected.text;
-}
-
-function namePrefix(memory) {
+function prefix(memory) {
   return memory.known.name ? `${memory.known.name}, ` : "";
 }
 
 function remember(memory, text) {
   const msg = normalizeText(text);
-
   memory.lastUserText = text;
 
-  if (hasAny(msg, ["zero", "iniciante", "comecando", "começando", "nunca postei", "poucos seguidores"])) {
+  if (hasAny(msg, ["zero", "iniciante", "começando", "comecando", "nunca postei", "poucos seguidores"])) {
     memory.known.level = "iniciante";
   }
 
@@ -105,27 +92,23 @@ function remember(memory, text) {
     memory.known.pain = "posta mas não cresce";
   }
 
-  if (hasAny(msg, ["sem dinheiro", "sem grana", "sem condicoes", "sem condições", "nao tenho dinheiro", "não tenho dinheiro", "caro"])) {
+  if (hasAny(msg, ["sem dinheiro", "sem grana", "sem condições", "sem condicoes", "caro", "não tenho dinheiro", "nao tenho dinheiro"])) {
     memory.known.objection = "dinheiro";
   }
 
-  if (hasAny(msg, ["sem tempo", "correria", "trabalho muito", "nao tenho tempo", "não tenho tempo"])) {
+  if (hasAny(msg, ["sem tempo", "correria", "trabalho muito", "não tenho tempo", "nao tenho tempo"])) {
     memory.known.objection = "tempo";
   }
 
-  if (hasAny(msg, ["vergonha", "tenho vergonha", "medo de aparecer", "nao gosto de aparecer", "não gosto de aparecer"])) {
+  if (hasAny(msg, ["vergonha", "medo de aparecer", "não gosto de aparecer", "nao gosto de aparecer"])) {
     memory.known.objection = "vergonha";
-  }
-
-  if (hasAny(msg, ["medo", "vale a pena", "funciona", "garantia", "resultado"])) {
-    memory.known.objection = "confiança";
   }
 
   if (hasAny(msg, ["reels", "stories", "canva", "capcut", "ia", "video", "vídeo", "gravar", "editar"])) {
     memory.known.interest = "conteudo";
   }
 
-  if (hasAny(msg, ["crescer", "seguidores", "engajamento", "alcance", "views", "instagram"])) {
+  if (hasAny(msg, ["crescer", "seguidores", "engajamento", "alcance", "instagram", "views"])) {
     memory.known.interest = "crescimento";
   }
 
@@ -135,422 +118,424 @@ function remember(memory, text) {
   }
 }
 
-function isYes(msg) {
+function nextFromPath(memory, pathName, replies) {
+  memory.currentPath = pathName;
+  memory.lastIntent = pathName;
+
+  if (typeof memory.pathIndex[pathName] !== "number") {
+    memory.pathIndex[pathName] = 0;
+  }
+
+  const index = memory.pathIndex[pathName] % replies.length;
+  memory.pathIndex[pathName] += 1;
+
+  const reply = replies[index];
+  memory.lastReply = reply;
+
+  return reply;
+}
+
+function isContinue(msg) {
   return hasAny(msg, [
     "sim", "quero", "pode", "me explica", "me explique", "explica",
-    "manda", "me manda", "claro", "bora", "vamos", "prosseguir",
-    "continuar", "continua", "ok", "ta", "tá", "pode ser"
+    "continua", "continuar", "e depois", "proximo", "próximo",
+    "me fala mais", "manda mais", "quero saber mais", "ok", "ta", "tá",
+    "pode ser", "entendi", "certo", "bora", "vamos"
   ]);
 }
 
-function greeting(memory) {
-  memory.stage = "inicio";
-  memory.lastIntent = "greeting";
-
-  return pick(memory, "greeting", [
-    `${namePrefix(memory)}oii! 💕 Tudo bem?
-
-Antes de te mandar qualquer coisa, me conta: você está começando do zero ou já posta e sente que não cresce?
-
-Pode responder:
-1. Quero entender o curso
-2. Quero crescer
-3. Quero melhorar meus conteúdos
-4. Quero saber o valor`,
-
-    `${namePrefix(memory)}oi, tudo bem? ✨ Seja bem-vinda à Influencer Academy.
-
-Me diz o que você quer resolver primeiro:
-
-1. Entender como funciona o curso
-2. Crescer no Instagram
-3. Melhorar Reels, stories, Canva, CapCut e IA
-4. Ver valor e pagamento`,
-
-    `${namePrefix(memory)}oii 💕 Que bom te ver por aqui.
-
-Vou te ajudar sem enrolação. Sua dúvida é mais sobre o curso, crescimento, conteúdo ou valor?
-
-1. Curso
-2. Crescimento
-3. Conteúdo
-4. Valor`,
-
-    `${namePrefix(memory)}oi! ✨ Me conta uma coisa: hoje você sente que falta mais direção, ideias de conteúdo ou segurança para aparecer?
-
-1. Quero entender o curso
-2. Quero crescer
-3. Quero melhorar meus conteúdos
-4. Quero saber o valor`,
-
-    `${namePrefix(memory)}oii, tudo certo? 💕
-
-A Influencer Academy é para quem quer crescer como criadora de conteúdo com mais estratégia.
-
-Por onde você quer começar?
-1. Curso
-2. Crescimento
-3. Conteúdo
-4. Valor`
-  ]);
-}
-
-function coursePath(memory) {
-  memory.stage = "curso";
-  memory.lastIntent = "course";
-  memory.lastOffer = "course";
-
-  return pick(memory, "course", [
+const paths = {
+  course: [
     `A Influencer Academy é uma trilha prática para quem quer crescer como criadora de conteúdo com mais clareza, estética e estratégia.
 
-Ela te guia por etapas:
-1. posicionamento e nicho
-2. bio e primeira impressão
-3. ideias de conteúdo
-4. Reels e stories
-5. Canva, CapCut e IA
-6. métricas e crescimento
-7. parcerias e monetização
+Ela não é só sobre postar mais. É sobre entender o que postar, como se posicionar e como transformar seu perfil em uma presença digital mais forte.
 
-A ideia é tirar você do “posto qualquer coisa” e te colocar em um caminho mais profissional.
+Dentro da trilha você aprende perfil, conteúdo, Reels, stories, Canva, CapCut, IA, métricas e parcerias.
 
-Quer que eu te explique por onde você começaria dentro do curso?`,
+Quer que eu te explique por onde a aluna começa dentro do curso?`,
 
-    `Funciona assim: o curso organiza o crescimento em fases.
+    `A primeira parte do curso é sobre posicionamento.
 
-Primeiro você arruma a base do perfil. Depois aprende a criar conteúdo com intenção. Depois começa a entender métricas, melhorar o que funciona e se preparar para oportunidades.
+Antes de pensar em viralizar, você precisa saber:
+• quem você quer atrair
+• qual mensagem quer passar
+• que tipo de conteúdo combina com você
+• como seu perfil deve ser percebido
 
-Não é um curso só de edição. É uma trilha de presença digital.
+Sem isso, a pessoa posta muito, mas não constrói uma identidade clara.
 
-Você hoje está começando do zero ou já tem perfil ativo?`,
+Quer que eu te explique essa primeira etapa?`,
 
-    `O curso foi pensado para quem quer deixar de postar no achismo.
+    `Depois do posicionamento, o curso entra na parte do perfil.
 
-Você aprende:
-✨ o que postar
-✨ como organizar o perfil
-✨ como gravar melhor
-✨ como editar no CapCut
-✨ como criar no Canva
-✨ como usar IA sem parecer artificial
-✨ como acompanhar métricas
-✨ como se posicionar para parcerias
+A ideia é melhorar a primeira impressão: bio, foto, nome, destaques, posts fixados e clareza visual.
 
-Quer que eu te mostre o que tem nos módulos?`,
+Quando alguém entra no seu perfil, ela precisa entender em poucos segundos quem você é, o que entrega e por que deveria te seguir.
 
-    `A Influencer Academy não é só “aprenda Instagram”. Ela junta estratégia, estética e prática.
+Quer que eu te mostre o que geralmente trava o perfil de quem quer crescer?`,
 
-Você aprende a transformar seu perfil em uma vitrine mais clara, com conteúdos que fazem sentido para atrair pessoas certas.
+    `A terceira parte é sobre ideias e pilares de conteúdo.
 
-O foco é crescer com direção, não depender de sorte ou viral aleatório.
+Em vez de acordar todo dia pensando “o que eu posto hoje?”, você aprende a criar temas fixos para seu perfil.
 
-Quer que eu te explique se serve para sua fase?`,
+Exemplo:
+• conteúdo educativo
+• bastidores
+• prova social
+• conexão
+• autoridade
+• venda leve
 
-    `O curso é como um mapa.
+Isso cria consistência e facilita muito a produção.
 
-Você entra talvez sem saber o que postar, como gravar ou como crescer. A trilha vai te mostrando:
-• como definir sua mensagem
-• como montar seu perfil
-• como criar ideias
-• como transformar ideias em Reels
-• como usar ferramentas
-• como medir resultado
+Quer que eu te explique como usar pilares na prática?`,
 
-Me fala: sua maior dificuldade hoje é ideia, gravação ou crescimento?`,
+    `Depois vem Reels.
 
-    `Ele foi criado para quem quer virar criadora de conteúdo/influenciadora com mais profissionalismo.
+O curso ensina como criar vídeos curtos com gancho, retenção e CTA.
 
-Você não precisa ter muitos seguidores para começar. O ponto é aprender a construir uma base boa desde o início.
+Um Reel bom precisa prender a atenção logo no início. Não adianta esperar 10 segundos para chegar no ponto.
 
-A trilha começa no posicionamento e vai até monetização e parcerias.
+Você aprende estrutura, roteiro, ritmo e chamada para ação.
 
-Quer que eu te fale o valor atual?`,
+Quer que eu te dê um exemplo de Reel simples?`,
 
-    `Pensa no curso como uma área da aluna com aulas organizadas.
+    `Também tem uma parte forte de stories.
 
-Cada parte te ajuda a evoluir:
-perfil primeiro, conteúdo depois, ferramentas em seguida e métricas para ajustar.
+Stories não servem só para postar qualquer coisa do dia. Eles ajudam a criar conexão.
 
-Assim você não fica pulando de dica em dica sem saber o que aplicar.
+Você aprende a usar bastidor, enquete, caixinha, rotina, prova social e CTA leve.
 
-Quer que eu te explique o caminho do 0 aos primeiros seguidores?`,
+É ali que muita gente começa a confiar mais em você.
 
-    `A proposta do curso é te deixar menos dependente de “inspiração do dia”.
+Quer que eu te explique uma sequência de stories para iniciante?`,
 
-Você aprende a ter um processo:
-planejar, gravar, editar, postar, analisar e repetir o que funciona.
+    `A parte de ferramentas entra depois da estratégia.
 
-Isso deixa o crescimento mais leve e menos confuso.
+Canva ajuda na estética.
+CapCut ajuda na edição.
+IA ajuda nas ideias, roteiros e legendas.
 
-Você quer usar isso para crescer como influenciadora de qual nicho?`,
+Mas o curso mostra como usar isso com intenção, para não ficar artificial nem genérico.
 
-    `Ele é bem direto para quem quer presença digital.
+Quer que eu te explique como cada ferramenta entra no dia a dia?`,
 
-Tem aulas de Instagram, Reels, stories, Canva, CapCut, IA, métricas, posicionamento e parcerias.
+    `Depois o curso entra em métricas.
 
-O diferencial é que tudo fica conectado: não adianta só editar bonito se o perfil não tem clareza.
+Você aprende a olhar o que realmente importa:
+• alcance
+• retenção
+• salvamentos
+• compartilhamentos
+• comentários
+• seguidores novos
+• tipo de conteúdo que performa
 
-Quer que eu te mostre o que está incluso?`,
+Assim você para de postar no escuro e começa a melhorar com base em dados.
 
-    `O curso funciona como uma trilha de evolução.
+Quer que eu te explique quais métricas uma iniciante deve olhar primeiro?`,
 
-Você começa entendendo quem você é no digital, depois aprende a aparecer melhor, criar conteúdo melhor e analisar o crescimento.
+    `Na parte final, a trilha fala sobre monetização e parcerias.
 
-É para quem quer parar de postar no escuro.
+Antes de cobrar ou fechar divulgação, você precisa construir percepção de valor.
 
-Quer que eu te diga qual seria seu primeiro passo dentro da trilha?`
-  ]);
-}
+Isso envolve perfil organizado, conteúdo consistente, prova social e posicionamento claro.
 
-function growthPath(memory) {
-  memory.stage = "crescimento";
-  memory.lastIntent = "growth";
-  memory.lastOffer = "growth";
+O curso te prepara para parecer mais profissional para marcas e oportunidades.
 
-  return pick(memory, "growth", [
+Quer que eu te explique como começar a se preparar para parcerias?`,
+
+    `Resumindo: o curso é uma jornada.
+
+Você sai de:
+“não sei o que postar”
+“meu perfil está parado”
+“não sei gravar”
+“não entendo métricas”
+
+Para uma rotina com mais direção, estética e estratégia.
+
+O valor atual é ${COURSE_PRICE}, de ${OLD_PRICE}.
+
+Link:
+${COURSE_LINK}
+
+Quer que eu te explique se ele serve para sua fase atual?`
+  ],
+
+  growth: [
     `Para crescer no Instagram, o primeiro passo não é postar mais. É postar com direção.
 
 Você precisa alinhar:
-1. nicho claro
-2. bio objetiva
-3. conteúdo que prende
-4. stories que conectam
-5. constância possível
-6. análise do que funciona
+1. nicho
+2. bio
+3. conteúdo
+4. frequência
+5. conexão
+6. análise
 
-O curso te ajuda a sair do improviso e entender o que fazer em cada fase.
+Quando essas partes não conversam, o perfil fica confuso e o crescimento trava.
 
-Você está no zero ou já posta hoje?`,
+Quer que eu te explique o primeiro passo para sair do zero?`,
 
-    `Crescer do zero exige uma base forte.
+    `O primeiro passo para sair do zero é deixar seu perfil entendível.
 
-Antes de pensar em viralizar, seu perfil precisa responder rápido:
-quem é você, o que entrega e por que alguém deveria te seguir.
+A pessoa entra e precisa saber:
+• quem é você
+• sobre o que você fala
+• por que seguir você
+• o que ela vai ganhar acompanhando seu conteúdo
 
-Depois vem Reels, stories, frequência e métricas.
+Se isso não está claro, ela pode até gostar de um vídeo, mas não segue.
 
-Quer que eu te passe o caminho do 0 aos 1.000 seguidores?`,
+Quer que eu te explique como ajustar a bio?`,
 
-    `Muita gente não cresce porque posta sem estratégia.
+    `A bio precisa ser objetiva.
 
-O curso trabalha crescimento por etapas:
-• atrair pessoas novas
-• prender atenção
-• gerar conexão
-• transformar visitantes em seguidores
-• criar rotina de conteúdo
+Uma boa bio responde:
+1. o que você faz
+2. para quem você faz
+3. qual resultado ou experiência entrega
+4. qual ação a pessoa deve tomar
 
-Me diz: você sente que falta ideia ou falta coragem de aparecer?`,
+Exemplo:
+“Te ajudo a criar conteúdo com mais estratégia, estética e constância.”
 
-    `Se você quer crescer, precisa parar de tentar agradar todo mundo.
+Quer que eu te explique como adaptar isso para um nicho?`,
 
-O perfil cresce melhor quando tem clareza:
-✨ para quem você fala
-✨ qual transformação você entrega
-✨ quais temas você repete
-✨ como você aparece
-✨ o que faz as pessoas voltarem
+    `Depois da bio, entram os pilares de conteúdo.
 
-Quer que eu te ajude a entender seus pilares de conteúdo?`,
+Para crescer, você precisa repetir temas. Não dá para falar de tudo ao mesmo tempo.
 
-    `O caminho do crescimento começa na primeira impressão.
+Uma estrutura simples:
+• conteúdo que atrai
+• conteúdo que conecta
+• conteúdo que ensina
+• conteúdo que gera desejo
+• conteúdo que vende sua imagem
 
-Se a pessoa entra no perfil e não entende nada, ela vai embora. Por isso bio, foto, nome, destaques e posts fixados são tão importantes.
+Quer que eu te explique cada tipo?`,
 
-Depois disso, Reels e stories ajudam a trazer alcance e conexão.
+    `Conteúdo que atrai é aquele que traz gente nova.
 
-Quer que eu te explique como ajustar o perfil primeiro?`,
+Normalmente funciona bem com:
+• dicas rápidas
+• erros comuns
+• listas
+• antes e depois
+• tendências adaptadas
+• frases fortes
 
-    `Crescer não é só número. É construir percepção.
+Esse tipo de conteúdo precisa ter gancho claro.
 
-Quando você posta com intenção, as pessoas começam a entender sua presença, confiar em você e lembrar do seu conteúdo.
+Quer que eu te mostre exemplos de ganchos?`,
 
-A Influencer Academy ensina essa construção desde a base.
+    `Conteúdo de conexão é o que faz a pessoa sentir que conhece você.
 
-Você quer crescer para fechar parcerias ou para fortalecer sua marca pessoal?`,
-
-    `Se o seu perfil está parado, normalmente o problema está em uma destas áreas:
-
-1. bio confusa
-2. nicho amplo demais
-3. conteúdo sem gancho
-4. stories sem conexão
-5. pouca consistência
-6. falta de análise
-
-O curso passa por cada uma dessas partes.
-
-Qual dessas você acha que mais pega para você hoje?`,
-
-    `Para sair do zero, não precisa fazer mil coisas. Precisa fazer o básico bem feito.
-
-Um plano simples:
-• melhorar perfil
-• criar 3 pilares
-• gravar Reels curtos
-• aparecer nos stories
-• repetir formatos que funcionam
-• analisar semanalmente
-
-Quer que eu te mande uma rotina simples de conteúdo?`,
-
-    `A fase inicial é sobre clareza e repetição.
-
-Você não precisa ter o conteúdo perfeito. Precisa criar sinais claros para o algoritmo e para as pessoas entenderem seu perfil.
-
-O curso organiza isso em aulas práticas.
-
-Você já tem um nicho definido ou ainda está em dúvida?`,
-
-    `Crescer fica mais fácil quando você entende que cada conteúdo tem uma função.
-
-Alguns atraem, outros conectam, outros educam e outros vendem sua imagem.
-
-A trilha te ensina a misturar esses formatos sem ficar perdida.
-
-Quer que eu te explique os tipos de conteúdo que mais ajudam no começo?`
-  ]);
-}
-
-function contentPath(memory) {
-  memory.stage = "conteudo";
-  memory.lastIntent = "content";
-  memory.lastOffer = "content";
-
-  return pick(memory, "content", [
-    `Para melhorar seus conteúdos, você precisa de método, não só inspiração.
-
-No curso você aprende:
-🎥 gravar com celular
-💡 iluminação simples
-✂️ edição no CapCut
-🎨 Canva para posts e capas
-✨ IA para ideias e roteiros
-📊 métricas para entender o que funcionou
-
-Quer que eu te explique uma rotina semanal de conteúdo?`,
-
-    `Reels, stories, Canva, CapCut e IA precisam trabalhar juntos.
-
-Reels atraem.
-Stories conectam.
-Canva organiza sua estética.
-CapCut melhora o ritmo.
-IA acelera ideias e roteiros.
-
-O curso te mostra como usar tudo isso sem parecer artificial.
-
-Hoje você trava mais para gravar ou para ter ideias?`,
-
-    `Conteúdo bom tem estrutura.
-
-Um Reel precisa:
-1. gancho forte
-2. promessa clara
-3. desenvolvimento rápido
-4. cortes sem enrolação
-5. legenda estratégica
-6. CTA natural
-
-Nos stories, o foco é conexão e bastidor.
-
-Quer que eu te mande um exemplo de estrutura de Reel?`,
-
-    `Se seus vídeos não prendem atenção, pode ser por 3 motivos:
-
-• começa devagar
-• não tem promessa clara
-• demora para chegar no ponto
-
-No curso você aprende a construir conteúdo com gancho e retenção.
-
-Quer que eu te explique como seria um gancho bom?`,
-
-    `Canva ajuda na estética, mas estética sozinha não sustenta crescimento.
-
-Você precisa unir:
-✨ identidade visual
-✨ mensagem clara
-✨ frequência
-✨ conteúdo com intenção
-
-A Influencer Academy ensina Canva dentro da estratégia, não só “design bonito”.
-
-Quer que eu te explique como organizar uma identidade simples?`,
-
-    `CapCut entra para deixar o conteúdo mais dinâmico.
-
-Você aprende sobre corte, ritmo, legenda, zoom, áudio e finalização.
-
-Mas antes da edição, vem o roteiro. Se o roteiro é fraco, a edição não salva.
-
-Quer que eu te passe uma estrutura simples de roteiro?`,
-
-    `IA pode te ajudar muito, principalmente se você sente falta de ideias.
-
-Você pode usar IA para:
-• criar pautas
-• gerar ganchos
-• transformar ideia em roteiro
-• criar legendas
-• montar calendário
-• adaptar conteúdo para seu nicho
-
-O curso mostra como usar sem ficar genérico.
-
-Quer que eu te explique um exemplo de prompt?`,
-
-    `Stories são uma parte muito importante.
-
-Eles criam proximidade. Não precisam ser perfeitos, precisam ser reais e intencionais.
-
-Você pode usar:
+Pode ser:
 • bastidor
 • rotina
+• opinião
+• história pessoal
+• dificuldade real
+• evolução
+
+Esse conteúdo transforma audiência fria em comunidade.
+
+Quer que eu te explique como fazer conexão sem se expor demais?`,
+
+    `Para crescer, Reels ajudam muito, mas eles precisam de estrutura.
+
+Um Reel simples:
+1. gancho nos primeiros 2 segundos
+2. promessa clara
+3. entrega rápida
+4. CTA no final
+
+Exemplo:
+“Se seu perfil não cresce, talvez o problema esteja na sua bio.”
+
+Quer que eu te mande mais exemplos de ganchos?`,
+
+    `Stories também influenciam no crescimento.
+
+Eles não têm o mesmo papel do Reel. O Reel atrai, o story aproxima.
+
+Nos stories, você pode usar:
 • enquete
+• bastidor
 • caixinha
-• prova social
+• opinião
 • indicação
-• CTA leve
+• rotina
+• prova social
 
-Quer que eu te mande uma sequência simples de stories?`,
+Quer que eu te passe uma sequência de stories para hoje?`,
 
-    `Se você quer melhorar vídeos, comece pelo básico:
+    `A consistência precisa ser possível.
 
-1. luz de frente
-2. celular limpo
-3. áudio próximo
-4. cenário organizado
-5. frase inicial forte
-6. cortes curtos
-7. legenda legível
+Não adianta prometer postar todo dia e desistir em uma semana.
 
-O curso aprofunda isso de forma prática.
+Uma rotina realista:
+• 3 Reels por semana
+• stories simples quase todos os dias
+• 1 carrossel ou post educativo
+• 1 dia para olhar métricas
 
-Você grava mais falando para câmera ou mostrando bastidores?`,
+Quer que eu te explique como organizar isso na semana?`,
 
-    `O conteúdo que cresce costuma ter uma função clara.
+    `O crescimento vem de testar, observar e repetir.
 
-Pode ser para:
+Toda semana você deve olhar:
+• qual conteúdo trouxe mais alcance
+• qual teve mais salvamentos
+• qual gerou seguidores
+• qual teve resposta nos stories
+
+Depois você repete o formato com outro tema.
+
+É isso que o curso te ensina a fazer com mais clareza.
+
+Quer saber como a Influencer Academy organiza essa trilha?`
+  ],
+
+  content: [
+    `Para melhorar seus conteúdos, você precisa de um processo.
+
+Não é só abrir a câmera e gravar. Você precisa saber:
+• qual ideia vai usar
+• qual gancho abre o vídeo
+• qual promessa será entregue
+• como editar
+• qual CTA usar
+
+Quer que eu te explique a estrutura de um Reel?`,
+
+    `Um Reel bom começa pelo gancho.
+
+O gancho é a primeira frase ou imagem que faz a pessoa parar.
+
+Exemplos:
+• “Você está errando nisso no seu perfil”
+• “Se você quer crescer, pare de fazer isso”
+• “3 coisas que deixam seu conteúdo mais profissional”
+• “O motivo do seu Reel não prender atenção”
+
+Quer que eu te mande mais modelos?`,
+
+    `Depois do gancho vem a promessa.
+
+A promessa é o que a pessoa vai ganhar assistindo.
+
+Exemplo:
+“Vou te mostrar como melhorar sua bio em 3 passos.”
+
+Sem promessa clara, a pessoa não sabe por que continuar vendo.
+
+Quer que eu te explique como transformar ideias em promessa?`,
+
+    `Depois vem o desenvolvimento.
+
+Aqui você precisa ser direta. Nada de enrolar.
+
+Uma estrutura boa:
+1. problema
+2. explicação rápida
+3. solução
+4. exemplo
+5. CTA
+
+Isso deixa o vídeo mais fácil de assistir.
+
+Quer que eu te dê um exemplo pronto?`,
+
+    `CapCut entra para melhorar ritmo.
+
+Você pode usar:
+• cortes secos
+• legendas automáticas
+• zoom leve
+• remoção de pausas
+• ajuste de áudio
+• capa final
+
+Mas cuidado: edição demais pode cansar. O ideal é deixar natural e claro.
+
+Quer que eu te explique uma edição simples para iniciante?`,
+
+    `Canva entra na parte visual.
+
+Com Canva você pode criar:
+• capas de Reels
+• posts 4:5
+• carrosséis
+• destaques
+• mídia kit
+• identidade visual
+
+O segredo é manter padrão, mas sem deixar tudo igual.
+
+Quer que eu te explique uma paleta simples para começar?`,
+
+    `IA ajuda muito quando falta ideia.
+
+Você pode pedir:
+• 20 ideias de Reels para seu nicho
+• ganchos para vídeos curtos
+• legendas com CTA
+• roteiro de 30 segundos
+• calendário semanal
+• adaptação de tendência
+
+Mas a IA precisa da sua personalidade. Senão fica genérico.
+
+Quer que eu te mande um modelo de prompt?`,
+
+    `Stories precisam parecer mais leves.
+
+Você pode fazer uma sequência assim:
+1. bom dia com contexto
+2. bastidor do dia
+3. enquete
+4. dica rápida
+5. CTA para responder no direct
+
+Isso gera conversa e aproxima as pessoas.
+
+Quer que eu te mande uma sequência pronta para copiar?`,
+
+    `Para gravar melhor com celular, comece pelo básico:
+
+• lente limpa
+• luz de frente
+• áudio próximo
+• cenário organizado
+• câmera na altura dos olhos
+• vídeo curto
+• frase inicial forte
+
+Você não precisa de equipamento caro para começar.
+
+Quer que eu te explique um setup simples?`,
+
+    `Um bom conteúdo tem função.
+
+Ele pode:
 • atrair
-• ensinar
 • conectar
+• educar
 • gerar desejo
-• vender sua imagem
+• vender
 • criar autoridade
 
-Quando você entende isso, para de postar aleatoriamente.
+Quando você entende a função de cada post, para de postar aleatoriamente.
 
-Quer que eu te explique os pilares de conteúdo?`
-  ]);
-}
+No curso, você aprende a montar essa estratégia.
 
-function pricePath(memory) {
-  memory.stage = "pagamento";
-  memory.lastIntent = "payment";
-  memory.lastOffer = "payment";
+Quer que eu te explique como montar um calendário semanal?`
+  ],
 
-  return pick(memory, "payment", [
+  payment: [
     `A condição atual está especial:
 
 De ${OLD_PRICE}
@@ -561,326 +546,142 @@ Por ${COURSE_PRICE}
 Link:
 ${COURSE_LINK}
 
-Antes de decidir, quer que eu te explique tudo que está incluso?`,
+Antes de decidir, posso te explicar exatamente o que está incluso no curso.`,
 
-    `Hoje o curso está por ${COURSE_PRICE}, pagamento único.
+    `O valor atual é ${COURSE_PRICE}.
 
-O valor anterior era ${OLD_PRICE}.
+Esse valor libera o acesso à trilha da Influencer Academy, com conteúdos sobre perfil, crescimento, Reels, stories, Canva, CapCut, IA, métricas e parcerias.
 
-Você acessa a página, faz o pagamento e segue para sua área da aluna.
+Quer que eu te explique para quem o curso é indicado?`,
 
-Link:
-${COURSE_LINK}
+    `Hoje está de ${OLD_PRICE} por ${COURSE_PRICE}.
 
-Quer que eu te diga para quem esse curso é mais indicado?`,
+A proposta é ser um valor acessível para quem está começando e quer crescer com mais direção.
 
-    `O investimento atual é ${COURSE_PRICE}.
+Não é mensalidade. É pagamento único.
 
-Ele inclui a trilha da Influencer Academy com aulas sobre Instagram, Reels, stories, Canva, CapCut, IA, métricas, posicionamento e parcerias.
+Quer que eu te explique como funciona depois do pagamento?`,
 
-Link:
-${COURSE_LINK}
+    `Depois do pagamento, você acessa a área da aluna e acompanha os módulos.
 
-Se sua dúvida for se vale a pena para sua fase, eu posso te ajudar a decidir.`,
+Minha sugestão é começar pelo início: posicionamento, perfil e pilares de conteúdo.
 
-    `O valor promocional é ${COURSE_PRICE}.
+Muita gente quer ir direto para Reels, mas o perfil precisa estar preparado antes.
 
-É um pagamento único para acessar a trilha.
+Quer que eu te explique a ordem ideal?`,
 
-Eu recomendo entrar se você quer realmente aplicar no seu perfil, porque o curso é prático.
+    `O curso custa ${COURSE_PRICE} no valor promocional atual.
 
-Link:
-${COURSE_LINK}
+Ele é indicado para quem:
+• quer começar como criadora
+• posta mas não cresce
+• quer melhorar conteúdo
+• quer aprender ferramentas
+• quer se preparar para parcerias
 
-Quer saber por qual módulo começar?`,
+Quer que eu te ajude a entender se vale para sua fase?`,
 
-    `Atualmente está assim:
+    `Se sua dúvida for segurança, eu entendo.
 
-${OLD_PRICE} → ${COURSE_PRICE}
+O curso não promete milagre. Ele entrega método, direção e prática.
 
-A proposta é ser acessível para quem está começando e quer organizar melhor sua presença digital.
+Resultado vem com aplicação, constância e ajustes.
 
-Link:
-${COURSE_LINK}
+Por isso o valor é pensado para ser acessível: ${COURSE_PRICE}.
 
-Se agora não for o momento financeiro, tudo bem. Posso te passar um primeiro passo gratuito também.`,
+Quer que eu te explique o que você já consegue aplicar na primeira semana?`,
 
-    `O curso está com oferta de lançamento por ${COURSE_PRICE}.
+    `Se o problema for dinheiro agora, tudo bem.
 
-Você não paga mensalidade. É acesso ao curso/área da aluna.
+Não precisa se apertar. Você pode começar com passos gratuitos:
+1. ajustar bio
+2. escolher 3 temas
+3. postar Reels simples
+4. aparecer nos stories
+5. observar métricas
 
-Link:
-${COURSE_LINK}
+Quando fizer sentido, o link está aqui:
+${COURSE_LINK}`,
 
-Quer que eu explique como funciona depois do pagamento?`,
-
-    `O valor hoje é ${COURSE_PRICE}.
-
-O que você recebe não é só uma aula solta, e sim uma trilha organizada para crescer como criadora.
-
-Link:
-${COURSE_LINK}
-
-Quer que eu te mostre a estrutura dos módulos?`,
-
-    `A condição atual é de ${OLD_PRICE} por ${COURSE_PRICE}.
-
-O pagamento é único e o foco é te dar direção para aplicar no perfil.
+    `O pagamento é feito pela página do curso.
 
 Link:
 ${COURSE_LINK}
 
-Você está pensando em comprar agora ou ainda quer entender melhor?`,
+Valor atual: ${COURSE_PRICE}
 
-    `O acesso está por ${COURSE_PRICE}.
+Depois, você segue para cadastro/acesso da área da aluna.
 
-Se você comparar com o tempo que se perde tentando descobrir tudo sozinha, a ideia é facilitar seu caminho e organizar o processo.
+Se tiver qualquer problema de acesso, pode chamar o suporte:
+https://wa.me/${SUPPORT_WHATSAPP}`,
+
+    `O investimento é ${COURSE_PRICE}, mas o mais importante é: entrar para aplicar.
+
+Se você só assistir e não colocar em prática, não muda muito.
+
+Agora, se você aplicar no perfil, já começa a enxergar melhor o que precisa ajustar.
+
+Quer que eu te explique uma primeira tarefa para fazer hoje?`,
+
+    `Resumo rápido:
+
+Valor atual: ${COURSE_PRICE}
+Valor anterior: ${OLD_PRICE}
+Pagamento: único
+Acesso: área da aluna
+Conteúdo: Instagram, Reels, stories, Canva, CapCut, IA, métricas e parcerias
 
 Link:
 ${COURSE_LINK}
 
-Quer que eu te explique se serve para iniciante?`,
+Quer que eu te mande o caminho mais indicado para começar?`
+  ]
+};
 
-    `Valor atual: ${COURSE_PRICE}.
+function greeting(memory) {
+  memory.currentPath = "inicio";
 
-Curso indicado para quem quer crescer, melhorar conteúdo, organizar perfil e aprender ferramentas como Canva, CapCut e IA.
+  return `${prefix(memory)}oii! 💕 Seja bem-vinda à Influencer Academy.
 
-Link:
-${COURSE_LINK}
+Me conta o que você quer entender primeiro:
 
-Quer que eu te mande um resumo rápido do que você aprende?`
-  ]);
-}
+1. Quero entender o curso
+2. Quero crescer no Instagram
+3. Quero melhorar meus conteúdos
+4. Quero saber o valor
 
-function continueLastPath(memory) {
-  if (memory.lastOffer === "course" || memory.lastIntent === "course") {
-    return pick(memory, "course_continue", [
-      `Claro. Dentro do curso, eu começaria por posicionamento.
-
-Antes de gravar mais, você precisa entender:
-• quem você quer atrair
-• qual mensagem quer passar
-• quais temas vão sustentar seu perfil
-• como transformar isso em conteúdo
-
-Depois disso, Reels e ferramentas ficam muito mais fáceis.`,
-
-      `Vou te explicar a trilha de forma simples:
-
-Primeiro: clareza do perfil.
-Segundo: conteúdo com intenção.
-Terceiro: ferramentas para produzir melhor.
-Quarto: métricas para ajustar.
-Quinto: monetização e parcerias.
-
-Assim você não pula etapas.`
-    ]);
-  }
-
-  if (memory.lastOffer === "growth" || memory.lastIntent === "growth") {
-    return pick(memory, "growth_continue", [
-      `Para crescer do zero, faça assim:
-
-1. ajuste sua bio
-2. escolha 3 pilares de conteúdo
-3. poste Reels curtos com gancho
-4. apareça nos stories
-5. observe o que gera resposta
-6. repita o que funcionou
-
-O curso aprofunda cada etapa com mais direção.`,
-
-      `Um caminho bem prático seria:
-
-Semana 1: arrumar perfil.
-Semana 2: testar Reels simples.
-Semana 3: criar rotina de stories.
-Semana 4: analisar métricas e repetir formatos.
-
-Isso já tira você do escuro.`
-    ]);
-  }
-
-  if (memory.lastOffer === "content" || memory.lastIntent === "content") {
-    return pick(memory, "content_continue", [
-      `Uma rotina semanal simples seria:
-
-Segunda: escolher 3 ideias.
-Terça: gravar tudo em bloco.
-Quarta: editar no CapCut.
-Quinta: criar capa ou apoio no Canva.
-Sexta: postar e responder comentários.
-Fim de semana: olhar métricas e salvar ideias novas.
-
-Isso deixa a produção mais leve.`,
-
-      `Exemplo de estrutura de Reel:
-
-1. “Você está errando nisso no seu perfil...”
-2. explique o erro
-3. mostre o jeito certo
-4. finalize com CTA: “salva para revisar depois”
-
-Simples, direto e com intenção.`
-    ]);
-  }
-
-  if (memory.lastOffer === "payment" || memory.lastIntent === "payment") {
-    return pick(memory, "payment_continue", [
-      `Depois do pagamento, você acessa a área da aluna e acompanha os módulos.
-
-O ideal é não começar pelo meio. Comece pelo perfil e posicionamento, porque isso sustenta o crescimento depois.`,
-
-      `Está incluso o acesso à trilha com módulos e conteúdos práticos.
-
-A ideia é você estudar e aplicar no seu perfil aos poucos, sem precisar fazer tudo em um dia.`
-    ]);
-  }
-
-  return coursePath(memory);
+Pode responder só com o número ou escrever sua dúvida do seu jeito.`;
 }
 
 function moneyObjection(memory) {
-  memory.stage = "objection_money";
-  memory.lastIntent = "money";
-  memory.known.objection = "dinheiro";
-
-  return pick(memory, "money", [
+  const replies = [
     `Eu te entendo de verdade 💕 Não se aperta por causa disso.
 
-Se agora não é o momento, começa por aqui:
-1. ajuste sua bio
-2. escolha 3 temas principais
-3. poste 3 Reels simples por semana
-4. use stories para criar conexão
+Se agora não é o momento, começa por uma ação gratuita: ajuste sua bio para deixar claro quem você ajuda e por que alguém deveria te seguir.
 
 Quando fizer sentido, o curso está por ${COURSE_PRICE}:
 ${COURSE_LINK}`,
 
     `Super entendo. Às vezes a vontade existe, mas o financeiro aperta.
 
-Não vou te pressionar. O que eu recomendo é você começar pelo gratuito: organize seu perfil e poste com mais intenção.
+Não vou te pressionar. O melhor agora é começar pelo básico: organizar perfil, escolher 3 temas e postar com mais intenção.
 
-Quando puder investir, o curso te ajuda a acelerar esse caminho.
+Quer que eu te ajude com uma ideia de conteúdo gratuita para hoje?`,
 
-Quer que eu te ajude com uma ideia de primeiro conteúdo?`,
+    `Obrigada por falar isso com sinceridade 💕
 
-    `Obrigada por falar com sinceridade 💕
+Mesmo sem comprar agora, você pode começar. O primeiro passo é parar de postar aleatório e escolher uma direção.
 
-Mesmo sem comprar agora, não para. Seu primeiro passo pode ser revisar sua bio e deixar claro o que você entrega.
+Quando puder investir, a trilha te ajuda a acelerar.
 
-Quando você conseguir, o acesso está por ${COURSE_PRICE}:
-${COURSE_LINK}
+Quer que eu te passe um primeiro passo simples?`
+  ];
 
-Quer que eu te passe uma tarefa prática para hoje?`
-  ]);
+  return nextFromPath(memory, "money", replies);
 }
 
-function timeObjection(memory) {
-  memory.stage = "objection_time";
-  memory.lastIntent = "time";
-
-  return pick(memory, "time", [
-    `Se o problema é tempo, o caminho não é postar mais. É postar melhor.
-
-Uma rotina possível:
-• 1 dia para planejar
-• 1 dia para gravar
-• 1 dia para editar
-• stories simples durante a semana
-
-O curso te ajuda justamente a criar esse processo.`,
-
-    `Te entendo. Conteúdo não pode virar um peso.
-
-Por isso a ideia é ter método: gravar em bloco, editar com modelo e reaproveitar ideias.
-
-Você não precisa viver para o Instagram. Precisa ter uma rotina possível.`
-  ]);
-}
-
-function shameObjection(memory) {
-  memory.stage = "objection_shame";
-  memory.lastIntent = "shame";
-
-  return pick(memory, "shame", [
-    `Ter vergonha de aparecer é muito mais comum do que parece.
-
-Você pode começar sem falar direto para câmera:
-• bastidores
-• mãos fazendo algo
-• tela do celular
-• rotina
-• narração
-• texto na tela
-
-Depois, aos poucos, você vai aparecendo mais.
-
-Quer que eu te mande ideias de Reels sem precisar mostrar o rosto?`,
-
-    `Não precisa começar se expondo de uma vez.
-
-O curso pode te ajudar a construir presença de forma gradual: primeiro com conteúdo de apoio, depois narração, depois stories simples e só depois câmera falando.
-
-O importante é começar com segurança.`
-  ]);
-}
-
-function trustObjection(memory) {
-  memory.stage = "objection_trust";
-  memory.lastIntent = "trust";
-
-  return pick(memory, "trust", [
-    `Sua dúvida é justa. Nenhum curso sério deve prometer milagre.
-
-O que a Influencer Academy entrega é método:
-✨ clareza de perfil
-✨ estratégia de conteúdo
-✨ ferramentas práticas
-✨ rotina
-✨ análise de métricas
-
-Resultado vem de aplicar, testar e ajustar.`,
-
-    `Eu prefiro ser bem transparente: o curso não é fórmula mágica.
-
-Ele serve para organizar seu caminho e parar de depender de achismo.
-
-Se você aplicar, consegue entender melhor o que postar, como aparecer e como melhorar seu perfil.`
-  ]);
-}
-
-function included(memory) {
-  memory.stage = "included";
-  memory.lastIntent = "included";
-
-  return pick(memory, "included", [
-    `Está incluso:
-
-1. Posicionamento e nicho
-2. Bio e primeira impressão
-3. Ideias e pilares
-4. Reels com gancho
-5. Stories para conexão
-6. Canva
-7. CapCut
-8. IA
-9. Métricas
-10. Monetização e parcerias
-
-Quer que eu te explique qual módulo combina mais com sua fase?`,
-
-    `Você aprende a construir presença digital de forma mais completa: perfil, conteúdo, ferramentas, métricas e parcerias.
-
-Não é só edição, nem só Instagram. É a estrutura para crescer com mais direção.`
-  ]);
-}
-
-function support(memory) {
-  memory.stage = "support";
-  memory.lastIntent = "support";
-
-  return pick(memory, "support", [
+function supportPath(memory) {
+  const replies = [
     `Vamos resolver.
 
 Me diz onde está o problema:
@@ -890,146 +691,83 @@ Me diz onde está o problema:
 4. área da aluna
 5. aula bloqueada
 
-Se puder, envie print para o suporte:
+Se puder, envie print para:
 https://wa.me/${SUPPORT_WHATSAPP}`,
 
-    `Entendi. Para suporte, preciso saber o ponto exato:
+    `Entendi. Para suporte, preciso saber o ponto exato.
 
-• não consegue cadastrar?
-• não consegue logar?
-• pagou e não liberou?
-• área da aluna não abre?
+É problema no cadastro, login, pagamento ou liberação de aula?
 
 Se for urgente, chama aqui com print:
 https://wa.me/${SUPPORT_WHATSAPP}`
-  ]);
-}
+  ];
 
-function buy(memory) {
-  memory.stage = "buy";
-  memory.lastIntent = "buy";
-
-  return pick(memory, "buy", [
-    `Perfeito 💕
-
-Aqui está o link:
-${COURSE_LINK}
-
-Condição atual:
-De ${OLD_PRICE}
-Por ${COURSE_PRICE}
-
-Depois do pagamento, você segue para acessar sua área da aluna.`,
-
-    `Claro! O acesso é por aqui:
-
-${COURSE_LINK}
-
-Valor atual: ${COURSE_PRICE}
-
-Minha sugestão: depois que entrar, comece pelo módulo de posicionamento antes de ir direto para Reels.`
-  ]);
-}
-
-function thanks(memory) {
-  memory.lastIntent = "thanks";
-
-  return pick(memory, "thanks", [
-    `Imagina 💕 Fico feliz em ajudar.
-
-Quando quiser, me chama por aqui.`,
-    `De nada! ✨ E lembra: começa com direção, não com perfeição.`,
-    `Por nada 💕 Se surgir outra dúvida, pode mandar.`
-  ]);
+  return nextFromPath(memory, "support", replies);
 }
 
 function fallback(memory) {
-  memory.lastIntent = "fallback";
-
-  return pick(memory, "fallback", [
+  const replies = [
     `Entendi 💕
 
 Para eu te responder melhor, me explica com um pouco mais de detalhe.
 
-Sua dúvida é mais sobre curso, crescimento, conteúdo, valor ou acesso?`,
+Sua dúvida é sobre curso, crescimento, conteúdo, valor ou acesso?`,
 
     `Boa pergunta. Quero te responder do jeito certo.
 
 Você está falando mais sobre como crescer, como funciona o curso ou sobre o valor?`,
 
-    `Certo, deixa eu entender melhor para não te mandar algo genérico.
+    `Certo, deixa eu entender melhor para não te mandar uma resposta genérica.
 
 Você quer ajuda com perfil, conteúdo, pagamento ou acesso?`
-  ]);
+  ];
+
+  return nextFromPath(memory, "fallback", replies);
 }
 
 function detectIntent(msg, memory) {
   if (!msg) return "greeting";
 
-  if (["1", "2", "3", "4", "5"].includes(msg)) {
-    return {
-      "1": "course",
-      "2": "growth",
-      "3": "content",
-      "4": "payment",
-      "5": "support"
-    }[msg];
+  if (msg === "1") return "course";
+  if (msg === "2") return "growth";
+  if (msg === "3") return "content";
+  if (msg === "4") return "payment";
+  if (msg === "5") return "support";
+
+  if (isContinue(msg) && memory.currentPath && paths[memory.currentPath]) {
+    return memory.currentPath;
   }
 
-  if (isYes(msg)) {
-    return "continue";
-  }
-
-  if (hasAny(msg, ["oi", "ola", "olá", "opa", "bom dia", "boa tarde", "boa noite", "tudo bem", "menu", "inicio", "início", "voltar"])) {
+  if (hasAny(msg, ["oi", "ola", "olá", "opa", "bom dia", "boa tarde", "boa noite", "menu", "inicio", "início"])) {
     return "greeting";
   }
 
-  if (hasAny(msg, ["obrigada", "obrigado", "valeu", "perfeito", "show", "amei"])) {
-    return "thanks";
-  }
-
-  if (hasAny(msg, ["quero comprar", "quero entrar", "manda o link", "me manda o link", "link", "acessar agora", "comprar agora"])) {
-    return "buy";
-  }
-
-  if (hasAny(msg, ["sem dinheiro", "sem grana", "sem condicoes", "sem condições", "caro", "não tenho dinheiro", "nao tenho dinheiro", "não consigo pagar", "nao consigo pagar"])) {
+  if (hasAny(msg, ["sem dinheiro", "sem grana", "sem condições", "sem condicoes", "caro", "não tenho dinheiro", "nao tenho dinheiro", "sem pix", "não consigo pagar", "nao consigo pagar"])) {
     return "money";
   }
 
-  if (hasAny(msg, ["sem tempo", "não tenho tempo", "nao tenho tempo", "correria", "trabalho muito"])) {
-    return "time";
-  }
-
-  if (hasAny(msg, ["vergonha", "medo de aparecer", "não gosto de aparecer", "nao gosto de aparecer"])) {
-    return "shame";
-  }
-
-  if (hasAny(msg, ["funciona mesmo", "vale a pena", "garantia", "resultado", "tenho medo", "medo"])) {
-    return "trust";
-  }
-
-  if (hasAny(msg, ["o que tem", "incluso", "inclui", "módulos", "modulos", "aulas", "conteúdo do curso", "conteudo do curso"])) {
-    return "included";
-  }
-
-  if (hasAny(msg, ["valor", "preço", "preco", "quanto custa", "pagamento", "pix", "cartão", "cartao", "boleto", "parcela"])) {
+  if (hasAny(msg, ["valor", "preço", "preco", "quanto custa", "pagamento", "pix", "cartão", "cartao", "boleto", "parcelamento"])) {
     return "payment";
   }
 
-  if (hasAny(msg, ["reels", "stories", "story", "canva", "capcut", "ia", "conteúdo", "conteudo", "gravar", "vídeo", "video", "editar", "legenda"])) {
+  if (hasAny(msg, ["reels", "stories", "story", "canva", "capcut", "ia", "conteúdo", "conteudo", "gravar", "vídeo", "video", "editar", "legenda", "roteiro"])) {
     return "content";
   }
 
-  if (hasAny(msg, ["crescer", "seguidores", "instagram", "engajamento", "alcance", "views", "visualização", "visualizacao", "viralizar", "do zero", "zero"])) {
+  if (hasAny(msg, ["crescer", "seguidores", "instagram", "engajamento", "alcance", "views", "viralizar", "do zero", "zero"])) {
     return "growth";
   }
 
-  if (hasAny(msg, ["curso", "como funciona", "explica", "saber mais", "influencer academy", "serve pra mim", "serve para mim"])) {
+  if (hasAny(msg, ["curso", "como funciona", "explica", "saber mais", "influencer academy", "serve pra mim", "serve para mim", "módulos", "modulos", "aulas", "incluso"])) {
     return "course";
   }
 
   if (hasAny(msg, ["login", "senha", "cadastro", "acesso", "paguei", "não liberou", "nao liberou", "erro", "bug", "travou", "suporte", "humano", "atendente"])) {
     return "support";
+  }
+
+  if (isContinue(msg) && memory.currentPath) {
+    return memory.currentPath;
   }
 
   return "fallback";
@@ -1047,29 +785,33 @@ export function handleIncomingMessage(text = "", user = {}) {
     at: new Date().toISOString()
   });
 
-  if (memory.turns.length > 30) {
-    memory.turns = memory.turns.slice(-30);
+  if (memory.turns.length > 40) {
+    memory.turns = memory.turns.slice(-40);
   }
 
   const intent = detectIntent(msg, memory);
-
   let reply;
 
-  if (intent === "greeting") reply = greeting(memory);
-  else if (intent === "course") reply = coursePath(memory);
-  else if (intent === "growth") reply = growthPath(memory);
-  else if (intent === "content") reply = contentPath(memory);
-  else if (intent === "payment") reply = pricePath(memory);
-  else if (intent === "continue") reply = continueLastPath(memory);
-  else if (intent === "money") reply = moneyObjection(memory);
-  else if (intent === "time") reply = timeObjection(memory);
-  else if (intent === "shame") reply = shameObjection(memory);
-  else if (intent === "trust") reply = trustObjection(memory);
-  else if (intent === "included") reply = included(memory);
-  else if (intent === "support") reply = support(memory);
-  else if (intent === "buy") reply = buy(memory);
-  else if (intent === "thanks") reply = thanks(memory);
-  else reply = fallback(memory);
+  if (intent === "greeting") {
+    reply = greeting(memory);
+  } else if (intent === "course") {
+    reply = nextFromPath(memory, "course", paths.course);
+  } else if (intent === "growth") {
+    reply = nextFromPath(memory, "growth", paths.growth);
+  } else if (intent === "content") {
+    reply = nextFromPath(memory, "content", paths.content);
+  } else if (intent === "payment") {
+    reply = nextFromPath(memory, "payment", paths.payment);
+  } else if (intent === "money") {
+    reply = moneyObjection(memory);
+  } else if (intent === "support") {
+    reply = supportPath(memory);
+  } else {
+    reply = fallback(memory);
+  }
+
+  memory.lastIntent = intent;
+  memory.lastReply = reply;
 
   memory.turns.push({
     role: "bot",
@@ -1078,19 +820,17 @@ export function handleIncomingMessage(text = "", user = {}) {
     at: new Date().toISOString()
   });
 
-  memory.lastIntent = intent === "continue" ? memory.lastIntent : intent;
-  memory.lastReply = reply;
-
   return {
     intent,
     reply,
     memory: {
-      stage: memory.stage,
+      currentPath: memory.currentPath,
+      lastIntent: memory.lastIntent,
+      level: memory.known.level,
       interest: memory.known.interest,
       objection: memory.known.objection,
-      followers: memory.known.followers,
-      level: memory.known.level,
-      pain: memory.known.pain
+      pain: memory.known.pain,
+      followers: memory.known.followers
     }
   };
 }

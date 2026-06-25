@@ -7,7 +7,7 @@ import { MercadoPagoConfig, Payment } from "mercadopago";
 import handleIncomingMessage from "./messageHandler.js";
 import siteChatRoutes from "./siteChatRoutes.js";
 
-const BOT_VERSION = "influencer-academy-whatsapp-v7-10paths";
+const BOT_VERSION = "influencer-academy-whatsapp-v8-40responses";
 const COURSE_NAME_SAFE = "Influencer Academy";
 const COURSE_URL_SAFE = "https://gustavosales2001.github.io/curso_novo/";
 const COURSE_PRICE_SAFE = "R$ 39,99";
@@ -3639,6 +3639,7 @@ async function start() {
 }
 
 start();
+
 
 
 
