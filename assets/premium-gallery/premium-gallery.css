@@ -464,3 +464,33 @@
   overflow: visible !important;
 }
 
+
+/* Ajuste final: sem alerta, imagem menor e galeria mais leve */
+.pgx-stage {
+  height: clamp(340px, 48vh, 540px) !important;
+}
+
+.pgx-image {
+  max-width: calc(100% - 110px) !important;
+  max-height: calc(100% - 82px) !important;
+  transition: transform .08s linear !important;
+}
+
+.pgx-thumb-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+}
+
+.pgx-thumb {
+  height: 112px !important;
+}
+
+.pgx-side {
+  overflow: visible !important;
+}
+
+.pgx-overlay {
+  overflow-y: auto !important;
+}
+

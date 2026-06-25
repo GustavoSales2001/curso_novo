@@ -25,7 +25,7 @@
       .trim();
   }
 
-  function escapeHtml(v) {
+  function esc(v) {
     return String(v || "").replace(/[&<>"']/g, m => ({
       "&": "&amp;",
       "<": "&lt;",
@@ -35,109 +35,151 @@
     }[m]));
   }
 
-  function looksLikeImagePath(v) {
+  function isImgPath(v) {
     const s = String(v || "").trim();
-    return /^(https?:|data:|blob:|\.\/|\/|assets\/|img\/|images\/)/i.test(s) || /\.(png|jpe?g|webp|gif|avif)(\?|#|$)/i.test(s);
+    return /^(https?:|data:|blob:|\.\/|\/|assets\/|img\/|images\/)/i.test(s) ||
+      /\.(png|jpe?g|webp|gif|avif)(\?|#|$)/i.test(s);
   }
 
-  function aulaTokens() {
+  function currentLessonInfo() {
     const params = new URLSearchParams(location.search);
     const m = Number(params.get("m") || 0) + 1;
     const l = Number(params.get("l") || 0) + 1;
 
-    const mm = String(m).padStart(2, "0");
-    const ll = String(l).padStart(2, "0");
-
     return {
-      module: m,
-      lesson: l,
-      moduleTokens: [`modulo${mm}`, `modulo-${mm}`, `modulo_${mm}`, `modulo${m}`, `modulo-${m}`, `modulo_${m}`],
-      lessonTokens: [`aula${ll}`, `aula-${ll}`, `aula_${ll}`, `aula${l}`, `aula-${l}`, `aula_${l}`]
+      m,
+      l,
+      moduleTokens: [
+        `modulo${String(m).padStart(2, "0")}`,
+        `modulo ${String(m).padStart(2, "0")}`,
+        `modulo${m}`,
+        `modulo ${m}`,
+        `module${m}`,
+        `module ${m}`
+      ],
+      lessonTokens: [
+        `aula${String(l).padStart(2, "0")}`,
+        `aula ${String(l).padStart(2, "0")}`,
+        `aula${l}`,
+        `aula ${l}`,
+        `lesson${l}`,
+        `lesson ${l}`
+      ]
     };
   }
 
   function aliasesFor(key) {
     const k = norm(key);
 
-    if (k.includes("instagram") || k.includes("insta")) return ["instagram", "insta", "perfil", "stories", "insights", "reels"];
-    if (k.includes("canva")) return ["canva", "design", "visual", "carrossel", "post", "capa"];
-    if (k.includes("capcut")) return ["capcut", "video", "edicao", "cortes", "legenda", "zoom"];
-    if (k === "ia" || k.includes("prompt") || k.includes("inteligencia")) return ["ia", "ai", "prompt", "roteiro", "ideia"];
+    if (k.includes("instagram") || k.includes("insta")) {
+      return ["instagram", "insta", "perfil", "bio", "stories", "insights", "reels"];
+    }
 
-    return k ? k.split(" ").filter(Boolean) : [];
+    if (k.includes("canva")) {
+      return ["canva", "design", "visual", "carrossel", "post", "capa"];
+    }
+
+    if (k.includes("capcut")) {
+      return ["capcut", "video", "edicao", "corte", "cortes", "legenda", "zoom"];
+    }
+
+    if (k === "ia" || k.includes("prompt") || k.includes("inteligencia")) {
+      return ["ia", "ai", "prompt", "roteiro", "ideia", "criatividade"];
+    }
+
+    return k.split(" ").filter(Boolean);
   }
 
-  function titleFromPath(path, index) {
-    const file = String(path || "").split("/").pop() || `Imagem ${index + 1}`;
+  function titleFromPath(src, index) {
+    const file = String(src || "").split("/").pop() || `Imagem ${index + 1}`;
+
     return file
       .replace(/\.(png|jpe?g|webp|gif|avif)$/i, "")
       .replace(/[-_]+/g, " ")
       .replace(/\b\w/g, c => c.toUpperCase());
   }
 
-  function imagesFromManifest(key) {
-    const manifest = Array.isArray(window.PREMIUM_GALLERY_MANIFEST) ? window.PREMIUM_GALLERY_MANIFEST : [];
-    const info = aulaTokens();
+  function getManifest() {
+    return Array.isArray(window.PREMIUM_GALLERY_MANIFEST)
+      ? window.PREMIUM_GALLERY_MANIFEST.filter(Boolean)
+      : [];
+  }
+
+  function unique(list) {
+    const seen = new Set();
+
+    return list.filter(item => {
+      const src = typeof item === "string" ? item : item.src;
+      if (!src || seen.has(src)) return false;
+      seen.add(src);
+      return true;
+    });
+  }
+
+  function findImagesByKey(key) {
+    const manifest = getManifest();
+    const info = currentLessonInfo();
+    const aliases = aliasesFor(key);
 
     if (!manifest.length) return [];
 
-    const normalized = manifest.map(src => ({
-      src,
-      n: norm(src)
-    }));
+    const scored = manifest.map(src => {
+      const n = norm(src);
+      let score = 0;
 
-    let aulaImgs = normalized.filter(item => {
-      const hasModule = info.moduleTokens.some(t => item.n.includes(norm(t)));
-      const hasLesson = info.lessonTokens.some(t => item.n.includes(norm(t)));
-      return hasModule && hasLesson;
+      if (aliases.some(a => n.includes(norm(a)))) score += 60;
+      if (info.lessonTokens.some(t => n.includes(norm(t)))) score += 35;
+      if (info.moduleTokens.some(t => n.includes(norm(t)))) score += 25;
+      if (n.includes("print")) score += 5;
+      if (n.includes("backup")) score -= 100;
+      if (n.includes("logo")) score -= 20;
+      if (n.includes("icon")) score -= 20;
+
+      return { src, score };
     });
 
-    if (!aulaImgs.length) {
-      aulaImgs = normalized.filter(item => {
-        const hasLesson = info.lessonTokens.some(t => item.n.includes(norm(t)));
-        return hasLesson;
-      });
+    let result = scored
+      .filter(item => item.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .map(item => item.src);
+
+    if (result.length < 4) {
+      const lessonImgs = scored
+        .filter(item => info.lessonTokens.some(t => norm(item.src).includes(norm(t))))
+        .sort((a, b) => b.score - a.score)
+        .map(item => item.src);
+
+      result = result.concat(lessonImgs);
     }
 
-    let result = aulaImgs;
-
-    const aliases = aliasesFor(key);
-    if (aliases.length) {
-      const filtered = aulaImgs.filter(item => aliases.some(a => item.n.includes(norm(a))));
-      if (filtered.length >= 2) result = filtered;
+    if (result.length < 4) {
+      result = result.concat(
+        manifest.filter(src => !norm(src).includes("backup"))
+      );
     }
 
-    if (!result.length) {
-      result = normalized.filter(item => aliases.some(a => item.n.includes(norm(a))));
-    }
+    result = unique(result).slice(0, 4);
 
-    if (!result.length) {
-      result = aulaImgs;
-    }
-
-    if (!result.length) {
-      result = normalized;
-    }
-
-    return result.slice(0, 4).map((item, index) => ({
-      src: item.src,
-      title: titleFromPath(item.src, index),
-      description: `Imagem ${index + 1} da aula ${info.lesson}`
+    return result.map((src, index) => ({
+      src,
+      title: titleFromPath(src, index),
+      description: `Print ${index + 1} da aula`
     }));
   }
 
-  function normalizeImages(input, titleKey) {
-    if (!input) return imagesFromManifest(titleKey);
+  function normalizeImages(input, key) {
+    if (!input) return findImagesByKey(key);
 
     if (Array.isArray(input)) {
-      const arr = input.map((item, index) => {
+      const result = input.map((item, index) => {
         if (!item) return null;
 
         if (typeof item === "string") {
-          if (!looksLikeImagePath(item)) return null;
+          if (!isImgPath(item)) return null;
           return {
             src: item,
-            title: `Imagem ${index + 1}`
+            title: `Imagem ${index + 1}`,
+            description: ""
           };
         }
 
@@ -149,13 +191,12 @@
           item.path ||
           item.file ||
           item.full ||
-          item.fullSrc ||
           item.large ||
           item.thumb ||
           item.thumbnail ||
           "";
 
-        if (!src) return null;
+        if (!src || !isImgPath(src)) return null;
 
         return {
           src,
@@ -164,39 +205,33 @@
         };
       }).filter(Boolean);
 
-      return arr.length ? arr.slice(0, 4) : imagesFromManifest(titleKey);
+      return result.length ? result.slice(0, 4) : findImagesByKey(key);
     }
 
     if (typeof input === "object") {
-      if (input.images || input.items || input.prints || input.gallery) {
-        return normalizeImages(input.images || input.items || input.prints || input.gallery, input.title || titleKey);
-      }
-
-      return normalizeImages([input], titleKey);
+      return normalizeImages(input.images || input.items || input.prints || input.gallery || [input], input.title || key);
     }
 
     if (typeof input === "string") {
       const raw = input.trim();
 
-      if (!raw) return imagesFromManifest(titleKey);
-
       try {
         const parsed = JSON.parse(raw);
-        return normalizeImages(parsed, titleKey);
+        return normalizeImages(parsed, key);
       } catch (_) {}
 
-      if (raw.includes(",") && raw.split(",").some(looksLikeImagePath)) {
-        return normalizeImages(raw.split(",").map(s => s.trim()), titleKey);
+      if (raw.includes(",") && raw.split(",").some(isImgPath)) {
+        return normalizeImages(raw.split(",").map(s => s.trim()), key);
       }
 
-      if (looksLikeImagePath(raw)) {
-        return [{ src: raw, title: "Imagem 1" }];
+      if (isImgPath(raw)) {
+        return [{ src: raw, title: "Imagem 1", description: "" }];
       }
 
-      return imagesFromManifest(raw || titleKey);
+      return findImagesByKey(raw || key);
     }
 
-    return imagesFromManifest(titleKey);
+    return findImagesByKey(key);
   }
 
   function ensureModal() {
@@ -216,25 +251,25 @@
             </div>
 
             <div class="pgx-toolbar">
-              <button class="pgx-btn small" id="pgxZoomOut">−</button>
-              <button class="pgx-btn small" id="pgxZoomIn">+</button>
-              <button class="pgx-btn" id="pgxReset">100%</button>
-              <button class="pgx-btn" id="pgxOpen">Abrir</button>
-              <button class="pgx-btn is-primary" id="pgxDownloadCurrent">Baixar</button>
-              <button class="pgx-btn is-danger small" id="pgxClose">×</button>
+              <button class="pgx-btn small" id="pgxZoomOut" type="button">−</button>
+              <button class="pgx-btn small" id="pgxZoomIn" type="button">+</button>
+              <button class="pgx-btn" id="pgxReset" type="button">100%</button>
+              <button class="pgx-btn" id="pgxOpen" type="button">Abrir</button>
+              <button class="pgx-btn is-primary" id="pgxDownloadCurrent" type="button">Baixar</button>
+              <button class="pgx-btn is-danger small" id="pgxClose" type="button">×</button>
             </div>
           </div>
 
           <div class="pgx-body">
             <div class="pgx-viewer">
-              <button class="pgx-nav" id="pgxPrev">‹</button>
+              <button class="pgx-nav" id="pgxPrev" type="button">‹</button>
 
               <div class="pgx-stage" id="pgxStage">
                 <img id="pgxImage" class="pgx-image" alt="Imagem da galeria" draggable="false">
                 <div class="pgx-stage-badge" id="pgxZoomBadge">100%</div>
               </div>
 
-              <button class="pgx-nav" id="pgxNext">›</button>
+              <button class="pgx-nav" id="pgxNext" type="button">›</button>
             </div>
 
             <aside class="pgx-side">
@@ -244,10 +279,10 @@
               <div class="pgx-thumb-grid" id="pgxThumbGrid"></div>
 
               <div class="pgx-side-actions">
-                <button class="pgx-btn is-soft" id="pgxSelectAll">Selecionar todas</button>
-                <button class="pgx-btn" id="pgxClearSelected">Limpar seleção</button>
-                <button class="pgx-btn is-primary" id="pgxDownloadSelected">Baixar selecionadas</button>
-                <button class="pgx-btn" id="pgxDownloadAll">Baixar as 4</button>
+                <button class="pgx-btn is-soft" id="pgxSelectAll" type="button">Selecionar todas</button>
+                <button class="pgx-btn" id="pgxClearSelected" type="button">Limpar seleção</button>
+                <button class="pgx-btn is-primary" id="pgxDownloadSelected" type="button">Baixar selecionadas</button>
+                <button class="pgx-btn" id="pgxDownloadAll" type="button">Baixar as 4</button>
               </div>
             </aside>
           </div>
@@ -286,10 +321,12 @@
     document.getElementById("pgxDownloadCurrent").onclick = () => download(state.currentIndex);
     document.getElementById("pgxDownloadSelected").onclick = downloadSelected;
     document.getElementById("pgxDownloadAll").onclick = downloadAll;
+
     document.getElementById("pgxSelectAll").onclick = () => {
       state.selected = new Set(state.images.map((_, i) => i));
       renderThumbs();
     };
+
     document.getElementById("pgxClearSelected").onclick = () => {
       state.selected.clear();
       renderThumbs();
@@ -379,39 +416,24 @@
     const item = state.images[state.currentIndex];
     if (!item) return;
 
-    els.image.onerror = () => {
-      const fallback = imagesFromManifest("");
-      if (fallback.length && fallback[0].src !== item.src) {
-        state.images = fallback;
-        state.currentIndex = 0;
-        renderThumbs();
-        loadCurrent();
-      }
-    };
-
     els.image.src = item.src;
     els.image.alt = item.title || `Imagem ${state.currentIndex + 1}`;
 
     els.title.textContent = item.title || `Imagem ${state.currentIndex + 1}`;
     els.subtitle.textContent = item.description || "Clique em uma miniatura para ampliar.";
-
     els.counter.textContent = `${state.currentIndex + 1}/${state.images.length}`;
+
     reset();
     renderThumbs();
   }
 
   function renderThumbs() {
-    els.thumbs.innerHTML = state.images.map((img, i) => {
-      const active = i === state.currentIndex ? "is-active" : "";
-      const selected = state.selected.has(i) ? "is-selected" : "";
-
-      return `
-        <button class="pgx-thumb ${active} ${selected}" data-i="${i}" type="button">
-          <img src="${escapeHtml(img.src)}" alt="${escapeHtml(img.title || `Imagem ${i + 1}`)}">
-          <span class="pgx-thumb-check">${state.selected.has(i) ? "✓" : "+"}</span>
-        </button>
-      `;
-    }).join("");
+    els.thumbs.innerHTML = state.images.map((img, i) => `
+      <button class="pgx-thumb ${i === state.currentIndex ? "is-active" : ""} ${state.selected.has(i) ? "is-selected" : ""}" data-i="${i}" type="button">
+        <img src="${esc(img.src)}" alt="${esc(img.title || `Imagem ${i + 1}`)}">
+        <span class="pgx-thumb-check">${state.selected.has(i) ? "✓" : "+"}</span>
+      </button>
+    `).join("");
 
     els.thumbs.querySelectorAll(".pgx-thumb").forEach(btn => {
       btn.onclick = e => {
@@ -492,20 +514,17 @@
     }
 
     if (!images.length) {
-      images = imagesFromManifest("");
+      images = findImagesByKey(title);
     }
 
     if (!images.length) {
-      alert("Não encontrei imagens para esta aula. Verifique se existem PNGs em assets/prints.");
+      console.warn("Galeria sem imagens encontradas.");
       return;
     }
 
     state.images = images.slice(0, 4);
     state.currentIndex = 0;
     state.selected = new Set([0]);
-
-    els.title.textContent = title;
-    els.subtitle.textContent = subtitle;
 
     renderThumbs();
     loadCurrent();
@@ -519,6 +538,9 @@
   window.openPrintGallery = openGallery;
   window.openLessonGallery = openGallery;
   window.showPremiumGallery = openGallery;
+  window.openAlbumGallery = openGallery;
+  window.openPrintAlbum = openGallery;
+  window.openToolGallery = openGallery;
 
   document.addEventListener("DOMContentLoaded", ensureModal);
 })();
