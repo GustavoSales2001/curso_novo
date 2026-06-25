@@ -1,2 +1,7 @@
 .env
-node_modules
+node_modulesbackup-*/
+*.backup*
+*.backup-*.html
+*.backup-*.js
+*.backup-*.css
+assets/prints/**/backup*/
