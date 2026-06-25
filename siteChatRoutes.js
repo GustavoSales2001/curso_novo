@@ -18,7 +18,8 @@ router.use((req, res, next) => {
 router.get("/site-chat/health", (req, res) => {
   res.json({
     ok: true,
-    message: "Chat do site Influencer Academy ativo"
+    message: "Chat do site Influencer Academy ativo",
+    version: "humanized-v1"
   });
 });
 
@@ -26,9 +27,9 @@ router.post("/site-chat", (req, res) => {
   try {
     const message = req.body?.message || "";
     const user = {
-      name: req.body?.name || "Milene",
+      name: req.body?.name || "Visitante",
       email: req.body?.email || "",
-      phone: req.body?.phone || ""
+      phone: req.body?.phone || req.body?.sessionId || "site-visitante"
     };
 
     const result = handleIncomingMessage(message, user);
@@ -36,7 +37,8 @@ router.post("/site-chat", (req, res) => {
     res.json({
       ok: true,
       intent: result.intent,
-      reply: result.reply
+      reply: result.reply,
+      memory: result.memory
     });
   } catch (error) {
     console.error("Erro no site-chat:", error);
