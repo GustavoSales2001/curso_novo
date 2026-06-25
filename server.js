@@ -19,6 +19,18 @@ const port = Number(process.env.PORT || 3000);
 app.disable("x-powered-by");
 app.use(express.json());
 
+app.get("/api/bot-version", (req, res) => {
+  res.json({
+    ok: true,
+    bot_version: BOT_VERSION,
+    course_name: COURSE_NAME,
+    course_url: COURSE_FRONTEND_URL,
+    price: COURSE_PRICE,
+    message: "Bot Influencer Academy ativo"
+  });
+});
+
+
 function cleanEnv(value = "") {
   return String(value || "")
     .trim()
@@ -3463,11 +3475,7 @@ app.post("/api/webhooks/whatsapp", async (req, res) => {
 
     const { intent, reply } = handleIncomingMessage(text, user);
 
-    let finalReply = reply;
-    if (intent === "FALLBACK") {
-      const claudeReply = await maybeGetClaudeReply(text, user);
-      finalReply = claudeReply || reply || "Posso te ajudar com pagamento, acesso ou dúvidas do curso 😊";
-    }
+    const finalReply = reply || "Posso te ajudar com curso, Instagram, Reels, pagamento ou acesso 😊";
 
     const sendResponse = await sendWhatsAppText(from, finalReply);
 
@@ -3624,6 +3632,7 @@ app.listen(port, () => {
 }
 
 start();
+
 
 
 
