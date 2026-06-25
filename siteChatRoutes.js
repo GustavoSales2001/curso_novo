@@ -39,10 +39,10 @@ router.post("/site-chat", (req, res) => {
       reply: result.reply
     });
   } catch (error) {
+    console.error("Erro no site-chat:", error);
     res.status(500).json({
       ok: false,
-      reply: "Tive um problema para responder agora. Tente novamente em instantes.",
-      error: error.message
+      reply: "Tive um problema para responder agora. Tente novamente em instantes."
     });
   }
 });
