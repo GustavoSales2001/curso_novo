@@ -1,599 +1,498 @@
 ﻿(function () {
   const state = {
+    title: 'Galeria',
+    subtitle: 'Selecione a imagem desejada',
     images: [],
-    index: 0,
-    scale: 1,
-    x: 0,
-    y: 0,
-    rotation: 0,
-    dragging: false,
-    startX: 0,
-    startY: 0,
-    originX: 0,
-    originY: 0,
+    currentIndex: 0,
     selected: new Set(),
-    lastAutoOpen: 0
+    zoom: 1,
+    minZoom: 1,
+    maxZoom: 4,
+    panX: 0,
+    panY: 0,
+    rafId: null,
+    dragging: false,
+    dragStartX: 0,
+    dragStartY: 0,
+    dragOriginX: 0,
+    dragOriginY: 0
   };
 
-  const SELECTORS = {
-    oldModal: [
-      ".album-modal",
-      ".modal",
-      ".lightbox",
-      ".gallery-modal",
-      ".image-modal",
-      ".prints-modal",
-      "[class*='modal']",
-      "[class*='lightbox']",
-      "[class*='gallery']"
-    ].join(",")
-  };
+  let els = {};
 
-  function sanitizeFileName(value) {
-    return String(value || "print")
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/[^\w\-]+/g, "-")
-      .replace(/\-+/g, "-")
-      .replace(/^\-|\-$/g, "")
-      .toLowerCase();
+  function esc(str) {
+    return String(str || '').replace(/[&<>"']/g, function (m) {
+      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[m];
+    });
   }
 
-  function getBestSrc(img) {
-    if (!img) return "";
-    return img.dataset.full || img.dataset.zoom || img.dataset.large || img.dataset.src || img.currentSrc || img.src || "";
-  }
+  function normalizeImages(input) {
+    if (!input) return [];
 
-  function extensionFromUrl(url) {
-    const clean = String(url || "").split("?")[0].split("#")[0];
-    const match = clean.match(/\.(png|jpe?g|webp|gif|avif)$/i);
-    return match ? match[1].toLowerCase().replace("jpeg", "jpg") : "png";
-  }
+    if (typeof input === 'string') {
+      const trimmed = input.trim();
 
-  function uniqueImagesFrom(nodes) {
-    const seen = new Set();
+      if (!trimmed) return [];
 
-    return Array.from(nodes)
-      .map((img, index) => {
-        const src = getBestSrc(img);
-        const title =
-          img.alt ||
-          img.dataset.title ||
-          img.getAttribute("aria-label") ||
-          img.closest("[data-title]")?.dataset.title ||
-          `Print ${index + 1}`;
+      try {
+        const parsed = JSON.parse(trimmed);
+        return normalizeImages(parsed);
+      } catch (e) {}
 
-        return { src, title, original: img };
-      })
-      .filter(item => {
-        if (!item.src || seen.has(item.src)) return false;
-        seen.add(item.src);
-        return true;
-      });
-  }
+      return trimmed
+        .split(',')
+        .map(s => s.trim())
+        .filter(Boolean)
+        .map((src, i) => ({ src, title: `Imagem ${i + 1}` }));
+    }
 
-  function isVisible(el) {
-    if (!el) return false;
-    const style = getComputedStyle(el);
-    const rect = el.getBoundingClientRect();
+    if (Array.isArray(input)) {
+      return input
+        .map((item, i) => {
+          if (!item) return null;
+          if (typeof item === 'string') return { src: item, title: `Imagem ${i + 1}` };
+          return {
+            src: item.src || item.url || item.image || '',
+            title: item.title || item.name || `Imagem ${i + 1}`,
+            description: item.description || ''
+          };
+        })
+        .filter(item => item && item.src);
+    }
 
-    return (
-      style.display !== "none" &&
-      style.visibility !== "hidden" &&
-      style.opacity !== "0" &&
-      rect.width > 80 &&
-      rect.height > 80
-    );
+    if (typeof input === 'object' && input.images) {
+      return normalizeImages(input.images);
+    }
+
+    return [];
   }
 
   function ensureModal() {
-    let modal = document.getElementById("premiumGallery");
+    if (document.getElementById('pgxOverlay')) {
+      cacheEls();
+      return;
+    }
 
-    if (modal) return modal;
+    const html = `
+      <div class="pgx-overlay" id="pgxOverlay">
+        <div class="pgx-shell" role="dialog" aria-modal="true" aria-label="Galeria premium">
+          <div class="pgx-topbar">
+            <div class="pgx-title-wrap">
+              <div class="pgx-kicker">Imagem da galeria</div>
+              <h2 class="pgx-title" id="pgxTitle">Galeria</h2>
+              <div class="pgx-subtitle" id="pgxSubtitle">Selecione a imagem desejada</div>
+            </div>
 
-    modal = document.createElement("div");
-    modal.id = "premiumGallery";
-    modal.className = "pg-modal";
-    modal.innerHTML = `
-      <div class="pg-shell" role="dialog" aria-modal="true">
-        <div class="pg-header">
-          <div>
-            <div class="pg-kicker" id="pgKicker">Galeria premium</div>
-            <h2 class="pg-title" id="pgTitle">Prints explicativos</h2>
-            <div class="pg-subtitle" id="pgSubtitle">Duplo clique para ampliar. Clique e arraste para mover a imagem.</div>
+            <div class="pgx-toolbar">
+              <button class="pgx-btn small" id="pgxZoomOut" type="button" title="Diminuir">−</button>
+              <button class="pgx-btn small" id="pgxZoomIn" type="button" title="Ampliar">+</button>
+              <button class="pgx-btn" id="pgxReset" type="button" title="Resetar zoom">100%</button>
+              <button class="pgx-btn" id="pgxOpen" type="button">Abrir</button>
+              <button class="pgx-btn is-primary" id="pgxDownloadCurrent" type="button">Baixar</button>
+              <button class="pgx-btn is-danger small" id="pgxClose" type="button" title="Fechar">×</button>
+            </div>
           </div>
 
-          <div class="pg-actions">
-            <button class="pg-btn" data-action="zoomOut" title="Diminuir zoom">−</button>
-            <button class="pg-btn" data-action="zoomIn" title="Aumentar zoom">+</button>
-            <button class="pg-btn" data-action="fit" title="Ajustar na tela">100%</button>
-            <button class="pg-btn" data-action="rotate" title="Girar">↻</button>
-            <button class="pg-btn" data-action="open" title="Abrir imagem em nova aba">Abrir</button>
-            <button class="pg-btn pg-primary" data-action="downloadCurrent" title="Baixar imagem atual">Baixar</button>
-            <button class="pg-btn pg-danger" data-action="close" title="Fechar">×</button>
-          </div>
-        </div>
+          <div class="pgx-body">
+            <div class="pgx-viewer">
+              <button class="pgx-nav" id="pgxPrev" type="button" aria-label="Anterior">‹</button>
 
-        <div class="pg-body">
-          <div class="pg-stage" id="pgStage">
-            <button class="pg-nav pg-prev" data-action="prev">‹</button>
-            <img class="pg-image" id="pgImage" alt="Print ampliado" draggable="false" />
-            <button class="pg-nav pg-next" data-action="next">›</button>
-            <div class="pg-zoom-badge" id="pgZoomBadge">100%</div><div class="pg-scroll-hint">Role para subir/descer</div>
+              <div class="pgx-stage" id="pgxStage">
+                <img id="pgxImage" class="pgx-image" alt="Imagem da galeria">
+                <div class="pgx-stage-badge" id="pgxZoomBadge">100%</div>
+              </div>
+
+              <button class="pgx-nav" id="pgxNext" type="button" aria-label="Próxima">›</button>
+            </div>
+
+            <aside class="pgx-side">
+              <h3>Imagens da galeria</h3>
+              <p>As 4 miniaturas ficam visíveis. Clique em uma delas para colocá-la em destaque.</p>
+
+              <div class="pgx-thumb-grid" id="pgxThumbGrid"></div>
+
+              <div class="pgx-side-actions">
+                <button class="pgx-btn is-soft" id="pgxSelectAll" type="button">Selecionar todas</button>
+                <button class="pgx-btn" id="pgxClearSelected" type="button">Limpar seleção</button>
+                <button class="pgx-btn is-primary" id="pgxDownloadSelected" type="button">Baixar selecionadas</button>
+                <button class="pgx-btn" id="pgxDownloadAll" type="button">Baixar as 4</button>
+              </div>
+            </aside>
           </div>
 
-          <aside class="pg-side">
+          <div class="pgx-footer">
             <div>
-              <h3 id="pgSideTitle">Álbum da aula</h3>
-              <p id="pgSideText">Selecione imagens para baixar juntas ou navegue pelos prints.</p>
+              <strong>Atalhos:</strong>
+              duplo clique amplia · clique e arraste move · setas navegam · ESC fecha
             </div>
-
-            <div class="pg-thumbs" id="pgThumbs"></div>
-
-            <div class="pg-select-actions">
-              <button class="pg-btn" data-action="selectAll">Selecionar todas</button>
-              <button class="pg-btn" data-action="clearSelection">Limpar</button>
-              <button class="pg-btn pg-primary" data-action="downloadSelected">Baixar selecionadas</button>
-              <button class="pg-btn pg-primary" data-action="downloadAll">Baixar as 4</button>
-            </div>
-          </aside>
-        </div>
-
-        <div class="pg-footer">
-          <div class="pg-hint">
-            <strong>Atalhos:</strong> ← → navegar · duplo clique amplia · roda do mouse ajusta zoom · ESC fecha.
+            <div class="pgx-counter" id="pgxCounter">1/4</div>
           </div>
-          <div id="pgCounter">1/1</div>
         </div>
       </div>
     `;
 
-    document.body.appendChild(modal);
-
-    modal.addEventListener("click", handleActionClick);
-    modal.querySelector("#pgStage").addEventListener("wheel", handleWheel, { passive: false });
-    modal.querySelector("#pgStage").addEventListener("pointerdown", startDrag);
-    window.addEventListener("pointermove", moveDrag);
-    window.addEventListener("pointerup", endDrag);
-    modal.querySelector("#pgImage").addEventListener("dblclick", toggleDoubleZoom);
-
-    document.addEventListener("keydown", handleKey);
-
-    return modal;
+    document.body.insertAdjacentHTML('beforeend', html);
+    cacheEls();
+    bindModalEvents();
   }
 
-  function showToast(text) {
-    let toast = document.querySelector(".pg-toast");
+  function cacheEls() {
+    els.overlay = document.getElementById('pgxOverlay');
+    els.title = document.getElementById('pgxTitle');
+    els.subtitle = document.getElementById('pgxSubtitle');
+    els.thumbGrid = document.getElementById('pgxThumbGrid');
+    els.image = document.getElementById('pgxImage');
+    els.stage = document.getElementById('pgxStage');
+    els.zoomBadge = document.getElementById('pgxZoomBadge');
+    els.counter = document.getElementById('pgxCounter');
 
-    if (!toast) {
-      toast = document.createElement("div");
-      toast.className = "pg-toast";
-      document.body.appendChild(toast);
-    }
+    els.prev = document.getElementById('pgxPrev');
+    els.next = document.getElementById('pgxNext');
+    els.close = document.getElementById('pgxClose');
+    els.zoomIn = document.getElementById('pgxZoomIn');
+    els.zoomOut = document.getElementById('pgxZoomOut');
+    els.reset = document.getElementById('pgxReset');
+    els.open = document.getElementById('pgxOpen');
 
-    toast.textContent = text;
-    toast.classList.add("pg-show");
-
-    clearTimeout(toast._timer);
-    toast._timer = setTimeout(() => toast.classList.remove("pg-show"), 2300);
+    els.downloadCurrent = document.getElementById('pgxDownloadCurrent');
+    els.downloadSelected = document.getElementById('pgxDownloadSelected');
+    els.downloadAll = document.getElementById('pgxDownloadAll');
+    els.selectAll = document.getElementById('pgxSelectAll');
+    els.clearSelected = document.getElementById('pgxClearSelected');
   }
 
-  function openPremiumGallery(images, startIndex = 0, title = "Prints explicativos") {
-    const normalized = Array.isArray(images) ? images.filter(item => item && item.src) : [];
-    if (!normalized.length) return;
+  function bindModalEvents() {
+    els.close.addEventListener('click', closeGallery);
+    els.overlay.addEventListener('click', function (e) {
+      if (e.target === els.overlay) closeGallery();
+    });
 
-    state.images = normalized;
-    state.index = Math.max(0, Math.min(startIndex, normalized.length - 1));
-    state.selected = new Set(normalized.map((_, index) => index));
+    els.prev.addEventListener('click', () => move(-1));
+    els.next.addEventListener('click', () => move(1));
+    els.zoomIn.addEventListener('click', () => setZoom(state.zoom + 0.2));
+    els.zoomOut.addEventListener('click', () => setZoom(state.zoom - 0.2));
+    els.reset.addEventListener('click', resetView);
+    els.open.addEventListener('click', openCurrentInNewTab);
+    els.downloadCurrent.addEventListener('click', () => downloadImage(state.currentIndex));
+    els.downloadSelected.addEventListener('click', downloadSelected);
+    els.downloadAll.addEventListener('click', downloadAll);
+    els.selectAll.addEventListener('click', () => {
+      state.selected = new Set(state.images.map((_, i) => i));
+      renderThumbs();
+    });
+    els.clearSelected.addEventListener('click', () => {
+      state.selected.clear();
+      renderThumbs();
+    });
 
-    const modal = ensureModal();
+    els.stage.addEventListener('dblclick', function () {
+      if (state.zoom === 1) {
+        setZoom(2.2);
+      } else {
+        resetView();
+      }
+    });
 
-    document.body.classList.add("pg-lock-scroll");
-    modal.classList.add("pg-show");
+    els.stage.addEventListener('wheel', function (e) {
+      e.preventDefault();
+      const delta = e.deltaY > 0 ? -0.18 : 0.18;
+      setZoom(state.zoom + delta);
+    }, { passive: false });
 
-    modal.querySelector("#pgTitle").textContent = title;
-    modal.querySelector("#pgKicker").textContent = normalized[state.index]?.title?.split(" - ")[0] || "Galeria premium";
-
-    renderThumbs();
-    renderImage(true);
+    els.stage.addEventListener('pointerdown', onPointerDown);
+    window.addEventListener('pointermove', onPointerMove);
+    window.addEventListener('pointerup', onPointerUp);
+    window.addEventListener('keydown', onKeyDown);
   }
 
-  function renderImage(reset = false) {
-    const item = state.images[state.index];
-    if (!item) return;
+  function onKeyDown(e) {
+    if (!els.overlay || !els.overlay.classList.contains('is-open')) return;
 
-    const modal = ensureModal();
-    const image = modal.querySelector("#pgImage");
+    if (e.key === 'Escape') closeGallery();
+    if (e.key === 'ArrowRight') move(1);
+    if (e.key === 'ArrowLeft') move(-1);
+  }
 
-    if (reset) {
-      state.scale = 1;
-      state.x = 0;
-      state.y = 0;
-      state.rotation = 0;
-    }
+  function onPointerDown(e) {
+    if (state.zoom <= 1) return;
 
-    image.src = item.src;
-    image.alt = item.title || "Print ampliado";
+    state.dragging = true;
+    state.dragStartX = e.clientX;
+    state.dragStartY = e.clientY;
+    state.dragOriginX = state.panX;
+    state.dragOriginY = state.panY;
+    els.image.classList.add('is-dragging');
+    try { els.stage.setPointerCapture(e.pointerId); } catch (_) {}
+  }
 
-    modal.querySelector("#pgKicker").textContent = item.title || "Print da aula";
-    modal.querySelector("#pgCounter").textContent = `${state.index + 1}/${state.images.length}`;
-    modal.querySelector("#pgSideTitle").textContent = item.title || "Álbum da aula";
+  function onPointerMove(e) {
+    if (!state.dragging) return;
 
-    applyTransform();
-    renderThumbs();
+    const dx = e.clientX - state.dragStartX;
+    const dy = e.clientY - state.dragStartY;
+
+    state.panX = state.dragOriginX + dx;
+    state.panY = state.dragOriginY + dy;
+    clampPan();
+    requestTransform();
+  }
+
+  function onPointerUp() {
+    if (!state.dragging) return;
+    state.dragging = false;
+    els.image.classList.remove('is-dragging');
+  }
+
+  function requestTransform() {
+    if (state.rafId) cancelAnimationFrame(state.rafId);
+    state.rafId = requestAnimationFrame(applyTransform);
   }
 
   function applyTransform() {
-    const image = document.getElementById("pgImage");
-    const badge = document.getElementById("pgZoomBadge");
-
-    if (!image) return;
-
-    image.style.transform = `translate(${state.x}px, ${state.y}px) scale(${state.scale}) rotate(${state.rotation}deg)`;
-    if (badge) badge.textContent = `${Math.round(state.scale * 100)}%`;
+    state.rafId = null;
+    els.image.style.transform = `translate3d(${state.panX}px, ${state.panY}px, 0) scale(${state.zoom})`;
+    els.zoomBadge.textContent = `${Math.round(state.zoom * 100)}%`;
+    els.reset.textContent = `${Math.round(state.zoom * 100)}%`;
   }
 
-  function renderThumbs() {
-    const thumbs = document.getElementById("pgThumbs");
-    if (!thumbs) return;
-
-    thumbs.innerHTML = "";
-
-    state.images.forEach((item, index) => {
-      const thumb = document.createElement("div");
-      thumb.className = "pg-thumb" + (index === state.index ? " pg-active" : "");
-      thumb.dataset.index = String(index);
-
-      thumb.innerHTML = `
-        <input class="pg-check" type="checkbox" ${state.selected.has(index) ? "checked" : ""} />
-        <img src="${item.src}" alt="${item.title || "Print"}" draggable="false" />
-        <div class="pg-thumb-label">${index + 1}. ${item.title || "Print da aula"}</div>
-      `;
-
-      thumb.addEventListener("click", event => {
-        if (event.target.classList.contains("pg-check")) {
-          if (event.target.checked) state.selected.add(index);
-          else state.selected.delete(index);
-          return;
-        }
-
-        state.index = index;
-        renderImage(true);
-      });
-
-      thumbs.appendChild(thumb);
-    });
-  }
-
-  function closeGallery() {
-    const modal = document.getElementById("premiumGallery");
-    if (!modal) return;
-
-    modal.classList.remove("pg-show");
-    document.body.classList.remove("pg-lock-scroll");
-  }
-
-  function nextImage() {
-    if (!state.images.length) return;
-    state.index = (state.index + 1) % state.images.length;
-    renderImage(true);
-  }
-
-  function prevImage() {
-    if (!state.images.length) return;
-    state.index = (state.index - 1 + state.images.length) % state.images.length;
-    renderImage(true);
-  }
-
-  function zoom(delta) {
-    state.scale = Math.max(0.5, Math.min(6, +(state.scale + delta).toFixed(2)));
-
-    if (state.scale <= 1) {
-      state.x = 0;
-      state.y = 0;
-    }
-
-    applyTransform();
-  }
-
-  function fitImage() {
-    state.scale = 1;
-    state.x = 0;
-    state.y = 0;
-    state.rotation = 0;
-    applyTransform();
-  }
-
-  function rotateImage() {
-    state.rotation = (state.rotation + 90) % 360;
-    applyTransform();
-  }
-
-  function handleWheel(event) {
-    if (event.ctrlKey) {
-      event.preventDefault();
-      const direction = event.deltaY > 0 ? -0.12 : 0.12;
-      zoom(direction);
-      return;
-    }
-
-    // Sem Ctrl, deixa a barra de rolagem funcionar normalmente.
-    // Use Ctrl + roda do mouse para zoom.
-  }
-
-  function toggleDoubleZoom(event) {
-    event.preventDefault();
-
-    if (state.scale <= 1.05) {
-      state.scale = 2.4;
-    } else {
-      state.scale = 1;
-      state.x = 0;
-      state.y = 0;
-    }
-
-    applyTransform();
-  }
-
-  function startDrag(event) {
-    if (!event.target.closest("#pgStage")) return;
-    if (event.target.closest("button")) return;
-
-    state.dragging = true;
-    state.startX = event.clientX;
-    state.startY = event.clientY;
-    state.originX = state.x;
-    state.originY = state.y;
-
-    document.getElementById("pgStage")?.classList.add("pg-dragging");
-  }
-
-  function moveDrag(event) {
-    if (!state.dragging) return;
-
-    state.x = state.originX + (event.clientX - state.startX);
-    state.y = state.originY + (event.clientY - state.startY);
-
-    applyTransform();
-  }
-
-  function endDrag() {
-    state.dragging = false;
-    document.getElementById("pgStage")?.classList.remove("pg-dragging");
-  }
-
-  function handleKey(event) {
-    const modal = document.getElementById("premiumGallery");
-    if (!modal || !modal.classList.contains("pg-show")) return;
-
-    if (event.key === "Escape") closeGallery();
-    if (event.key === "ArrowRight") nextImage();
-    if (event.key === "ArrowLeft") prevImage();
-    if (event.key === "+" || event.key === "=") zoom(0.2);
-    if (event.key === "-") zoom(-0.2);
-    if (event.key === "0") fitImage();
-  }
-
-  function handleActionClick(event) {
-    const button = event.target.closest("[data-action]");
-    if (!button) return;
-
-    const action = button.dataset.action;
-
-    if (action === "close") closeGallery();
-    if (action === "next") nextImage();
-    if (action === "prev") prevImage();
-    if (action === "zoomIn") zoom(0.22);
-    if (action === "zoomOut") zoom(-0.22);
-    if (action === "fit") fitImage();
-    if (action === "rotate") rotateImage();
-    if (action === "open") openCurrentInNewTab();
-    if (action === "downloadCurrent") downloadCurrent();
-    if (action === "downloadSelected") downloadSelected();
-    if (action === "downloadAll") downloadAll();
-    if (action === "selectAll") {
-      state.images.forEach((_, index) => state.selected.add(index));
-      renderThumbs();
-      showToast("Todas as imagens foram selecionadas.");
-    }
-    if (action === "clearSelection") {
-      state.selected.clear();
-      renderThumbs();
-      showToast("Seleção limpa.");
-    }
-  }
-
-  function openCurrentInNewTab() {
-    const item = state.images[state.index];
-    if (!item) return;
-    window.open(item.src, "_blank", "noopener,noreferrer");
-  }
-
-  async function downloadUrl(url, filename) {
-    try {
-      const response = await fetch(url);
-      const blob = await response.blob();
-      const blobUrl = URL.createObjectURL(blob);
-
-      const link = document.createElement("a");
-      link.href = blobUrl;
-      link.download = filename;
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-
-      setTimeout(() => URL.revokeObjectURL(blobUrl), 1200);
-    } catch (error) {
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = filename;
-      link.target = "_blank";
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-    }
-  }
-
-  async function downloadItem(item, index) {
-    const ext = extensionFromUrl(item.src);
-    const name = sanitizeFileName(item.title || `print-${index + 1}`);
-    await downloadUrl(item.src, `${String(index + 1).padStart(2, "0")}-${name}.${ext}`);
-  }
-
-  async function downloadCurrent() {
-    const item = state.images[state.index];
-    if (!item) return;
-
-    await downloadItem(item, state.index);
-    showToast("Imagem atual enviada para download.");
-  }
-
-  async function downloadSelected() {
-    const selectedIndexes = Array.from(state.selected).sort((a, b) => a - b);
-
-    if (!selectedIndexes.length) {
-      showToast("Selecione pelo menos uma imagem.");
-      return;
-    }
-
-    showToast(`Baixando ${selectedIndexes.length} imagem(ns)...`);
-
-    for (const index of selectedIndexes) {
-      await downloadItem(state.images[index], index);
-      await new Promise(resolve => setTimeout(resolve, 350));
-    }
-  }
-
-  async function downloadAll() {
-    state.images.forEach((_, index) => state.selected.add(index));
-    renderThumbs();
-    await downloadSelected();
-  }
-
-  function titleFromContext(element) {
-    const context =
-      element.closest("[data-title]") ||
-      element.closest("section") ||
-      element.closest("article") ||
-      document;
-
-    const title =
-      context.dataset?.title ||
-      context.querySelector?.("h1,h2,h3")?.textContent ||
-      document.title ||
-      "Prints explicativos";
-
-    return title.trim();
-  }
-
-  function collectImagesNear(element) {
-    const priorityContainers = [
-      element.closest(".pg-modal"),
-      element.closest(SELECTORS.oldModal),
-      element.closest("[data-gallery]"),
-      element.closest("[data-album]"),
-      element.closest(".album"),
-      element.closest(".prints"),
-      element.closest(".gallery"),
-      element.closest("section"),
-      element.closest("article")
-    ].filter(Boolean);
-
-    for (const container of priorityContainers) {
-      const imgs = uniqueImagesFrom(container.querySelectorAll("img"));
-      if (imgs.length >= 2) return imgs;
-    }
-
-    return uniqueImagesFrom(document.querySelectorAll("img")).slice(0, 12);
-  }
-
-  function interceptImageClicks() {
-    document.addEventListener("click", event => {
-      if (event.target.closest("#premiumGallery")) return;
-
-      const img = event.target.closest("img");
-      if (!img) {
-        setTimeout(openFromOldModalIfNeeded, 180);
-        return;
-      }
-
-      const src = getBestSrc(img);
-      if (!src) return;
-
-      const images = collectImagesNear(img);
-      if (!images.length) return;
-
-      const index = Math.max(0, images.findIndex(item => item.src === src));
-
-      event.preventDefault();
-      event.stopPropagation();
-
-      openPremiumGallery(images, index, titleFromContext(img));
-    }, true);
-  }
-
-  function openFromOldModalIfNeeded() {
-    if (Date.now() - state.lastAutoOpen < 900) return;
-
-    const candidates = Array.from(document.querySelectorAll(SELECTORS.oldModal))
-      .filter(el => !el.closest("#premiumGallery"))
-      .filter(isVisible)
-      .sort((a, b) => b.querySelectorAll("img").length - a.querySelectorAll("img").length);
-
-    const modal = candidates.find(el => el.querySelectorAll("img").length >= 2);
-
-    if (!modal || modal.dataset.pgHandled === "true") return;
-
-    const images = uniqueImagesFrom(modal.querySelectorAll("img"));
-    if (images.length < 2) return;
-
-    modal.dataset.pgHandled = "true";
-    modal.style.display = "none";
-
-    state.lastAutoOpen = Date.now();
-    openPremiumGallery(images, 0, titleFromContext(modal));
-  }
-
-  function observeOldModal() {
-    const observer = new MutationObserver(() => {
-      setTimeout(openFromOldModalIfNeeded, 120);
-    });
-
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-      attributeFilter: ["class", "style"]
-    });
-  }
-
-  function exposeApi() {
-    window.PremiumGallery = {
-      open(images, startIndex = 0, title = "Prints explicativos") {
-        const normalized = images.map((item, index) => {
-          if (typeof item === "string") {
-            return { src: item, title: `Print ${index + 1}` };
-          }
-
-          return item;
-        });
-
-        openPremiumGallery(normalized, startIndex, title);
-      }
+  function getNaturalSize() {
+    const img = els.image;
+    return {
+      width: img.naturalWidth || 1200,
+      height: img.naturalHeight || 1200
     };
   }
 
-  function init() {
+  function clampPan() {
+    const stageW = els.stage.clientWidth - 36;
+    const stageH = els.stage.clientHeight - 36;
+
+    const natural = getNaturalSize();
+    const fitScale = Math.min(stageW / natural.width, stageH / natural.height);
+    const viewW = natural.width * fitScale * state.zoom;
+    const viewH = natural.height * fitScale * state.zoom;
+
+    const maxX = Math.max(0, (viewW - stageW) / 2);
+    const maxY = Math.max(0, (viewH - stageH) / 2);
+
+    state.panX = Math.min(maxX, Math.max(-maxX, state.panX));
+    state.panY = Math.min(maxY, Math.max(-maxY, state.panY));
+  }
+
+  function setZoom(value) {
+    const next = Math.max(state.minZoom, Math.min(state.maxZoom, value));
+    state.zoom = next;
+
+    if (state.zoom <= 1) {
+      state.panX = 0;
+      state.panY = 0;
+    } else {
+      clampPan();
+    }
+
+    requestTransform();
+  }
+
+  function resetView() {
+    state.zoom = 1;
+    state.panX = 0;
+    state.panY = 0;
+    requestTransform();
+  }
+
+  function move(direction) {
+    if (!state.images.length) return;
+    state.currentIndex = (state.currentIndex + direction + state.images.length) % state.images.length;
+    loadCurrent();
+    renderThumbs();
+  }
+
+  function setCurrent(index) {
+    state.currentIndex = index;
+    loadCurrent();
+    renderThumbs();
+  }
+
+  function renderThumbs() {
+    els.thumbGrid.innerHTML = state.images.map((img, index) => {
+      const active = index === state.currentIndex ? 'is-active' : '';
+      const selected = state.selected.has(index) ? 'is-selected' : '';
+      return `
+        <button class="pgx-thumb ${active} ${selected}" type="button" data-index="${index}" title="${esc(img.title || `Imagem ${index + 1}`)}">
+          <img src="${esc(img.src)}" alt="${esc(img.title || `Imagem ${index + 1}`)}">
+          <span class="pgx-thumb-check" data-check="${index}">${state.selected.has(index) ? '✓' : '+'}</span>
+        </button>
+      `;
+    }).join('');
+
+    els.thumbGrid.querySelectorAll('.pgx-thumb').forEach(btn => {
+      btn.addEventListener('click', function (e) {
+        const check = e.target.closest('.pgx-thumb-check');
+        const idx = Number(btn.dataset.index);
+
+        if (check) {
+          e.stopPropagation();
+          toggleSelected(idx);
+          return;
+        }
+
+        setCurrent(idx);
+      });
+    });
+
+    els.counter.textContent = `${state.currentIndex + 1}/${state.images.length}`;
+  }
+
+  function toggleSelected(index) {
+    if (state.selected.has(index)) {
+      state.selected.delete(index);
+    } else {
+      state.selected.add(index);
+    }
+    renderThumbs();
+  }
+
+  function loadCurrent() {
+    const current = state.images[state.currentIndex];
+    if (!current) return;
+
+    els.image.src = current.src;
+    els.image.alt = current.title || `Imagem ${state.currentIndex + 1}`;
+    resetView();
+
+    const title = current.title || state.title || 'Imagem da galeria';
+    const description = current.description || state.subtitle || 'Selecione uma miniatura para visualizar.';
+    els.title.textContent = title;
+    els.subtitle.textContent = description;
+
+    els.image.onload = function () {
+      clampPan();
+      requestTransform();
+    };
+  }
+
+  function downloadUrl(url, filename) {
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename || 'imagem';
+    a.target = '_blank';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  }
+
+  function fileNameFor(index) {
+    const img = state.images[index];
+    const base = (img.title || `imagem-${index + 1}`)
+      .toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+    const ext = (img.src.split('.').pop() || 'png').split('?')[0];
+    return `${base || 'imagem'}-${index + 1}.${ext}`;
+  }
+
+  function downloadImage(index) {
+    const img = state.images[index];
+    if (!img) return;
+    downloadUrl(img.src, fileNameFor(index));
+  }
+
+  function downloadSelected() {
+    const list = Array.from(state.selected);
+    if (!list.length) {
+      downloadImage(state.currentIndex);
+      return;
+    }
+    list.forEach((idx, i) => setTimeout(() => downloadImage(idx), i * 240));
+  }
+
+  function downloadAll() {
+    state.images.forEach((_, i) => setTimeout(() => downloadImage(i), i * 220));
+  }
+
+  function openCurrentInNewTab() {
+    const current = state.images[state.currentIndex];
+    if (!current) return;
+    window.open(current.src, '_blank');
+  }
+
+  function closeGallery() {
+    els.overlay.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+
+  function openGallery(payload, maybeImages, maybeSubtitle) {
     ensureModal();
-    interceptImageClicks();
-    observeOldModal();
-    exposeApi();
+
+    let title = 'Galeria';
+    let subtitle = 'Selecione uma miniatura';
+    let images = [];
+
+    if (typeof payload === 'object' && !Array.isArray(payload) && payload !== null && payload.images) {
+      title = payload.title || title;
+      subtitle = payload.subtitle || subtitle;
+      images = normalizeImages(payload.images);
+    } else if (typeof payload === 'string' && Array.isArray(maybeImages)) {
+      title = payload;
+      subtitle = maybeSubtitle || subtitle;
+      images = normalizeImages(maybeImages);
+    } else if (Array.isArray(payload)) {
+      images = normalizeImages(payload);
+    } else if (typeof payload === 'string' && !maybeImages) {
+      images = normalizeImages(payload);
+    } else {
+      images = normalizeImages(maybeImages || payload);
+    }
+
+    if (!images.length) return;
+
+    state.title = title;
+    state.subtitle = subtitle;
+    state.images = images.slice(0, 4); // sempre focando nas 4 imagens da aula
+    state.currentIndex = 0;
+    state.selected = new Set([0]);
+
+    els.title.textContent = title;
+    els.subtitle.textContent = subtitle;
+    renderThumbs();
+    loadCurrent();
+
+    els.overlay.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init);
-  } else {
-    init();
+  function parseImagesFromElement(el) {
+    const raw = el.dataset.galleryImages || el.dataset.images || el.dataset.gallery || '';
+    return normalizeImages(raw);
   }
+
+  function autoBindCards() {
+    document.addEventListener('click', function (e) {
+      const card = e.target.closest('[data-gallery-images],[data-images],[data-gallery],.js-open-gallery,.gallery-card');
+      if (!card) return;
+
+      const hasInline = card.getAttribute('onclick');
+      if (hasInline) return;
+
+      const images = parseImagesFromElement(card);
+      if (!images.length) return;
+
+      e.preventDefault();
+      const title = card.dataset.galleryTitle || card.dataset.title || card.querySelector('h3,h4,strong')?.textContent?.trim() || 'Galeria';
+      const subtitle = card.dataset.gallerySubtitle || card.dataset.subtitle || 'Selecione uma miniatura';
+      openGallery({ title, subtitle, images });
+    });
+  }
+
+  window.openPremiumGallery = openGallery;
+  window.openGallery = openGallery;
+  window.openPrintGallery = openGallery;
+  window.openLessonGallery = openGallery;
+  window.showPremiumGallery = openGallery;
+
+  document.addEventListener('DOMContentLoaded', function () {
+    ensureModal();
+    autoBindCards();
+  });
 })();
-
