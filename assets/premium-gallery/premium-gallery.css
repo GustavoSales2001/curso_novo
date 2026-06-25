@@ -439,3 +439,28 @@
     font-size: 15px;
   }
 }
+
+/* Correção aula 4: imagem principal menor, miniaturas fixas e movimento mais leve */
+.pgx-stage {
+  height: clamp(340px, 48vh, 560px) !important;
+}
+
+.pgx-image {
+  max-width: calc(100% - 96px) !important;
+  max-height: calc(100% - 76px) !important;
+  transition: transform .08s linear !important;
+}
+
+.pgx-thumb-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+}
+
+.pgx-thumb {
+  height: 112px !important;
+}
+
+.pgx-side {
+  overflow: visible !important;
+}
+

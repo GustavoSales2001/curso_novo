@@ -1,498 +1,524 @@
 ﻿(function () {
   const state = {
-    title: 'Galeria',
-    subtitle: 'Selecione a imagem desejada',
     images: [],
     currentIndex: 0,
     selected: new Set(),
     zoom: 1,
-    minZoom: 1,
-    maxZoom: 4,
     panX: 0,
     panY: 0,
-    rafId: null,
     dragging: false,
-    dragStartX: 0,
-    dragStartY: 0,
-    dragOriginX: 0,
-    dragOriginY: 0
+    startX: 0,
+    startY: 0,
+    originX: 0,
+    originY: 0,
+    raf: null
   };
 
   let els = {};
 
-  function esc(str) {
-    return String(str || '').replace(/[&<>"']/g, function (m) {
-      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[m];
-    });
+  function norm(v) {
+    return String(v || "")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, " ")
+      .trim();
   }
 
-  function normalizeImages(input) {
-    if (!input) return [];
+  function escapeHtml(v) {
+    return String(v || "").replace(/[&<>"']/g, m => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    }[m]));
+  }
 
-    if (typeof input === 'string') {
-      const trimmed = input.trim();
+  function looksLikeImagePath(v) {
+    const s = String(v || "").trim();
+    return /^(https?:|data:|blob:|\.\/|\/|assets\/|img\/|images\/)/i.test(s) || /\.(png|jpe?g|webp|gif|avif)(\?|#|$)/i.test(s);
+  }
 
-      if (!trimmed) return [];
+  function aulaTokens() {
+    const params = new URLSearchParams(location.search);
+    const m = Number(params.get("m") || 0) + 1;
+    const l = Number(params.get("l") || 0) + 1;
 
-      try {
-        const parsed = JSON.parse(trimmed);
-        return normalizeImages(parsed);
-      } catch (e) {}
+    const mm = String(m).padStart(2, "0");
+    const ll = String(l).padStart(2, "0");
 
-      return trimmed
-        .split(',')
-        .map(s => s.trim())
-        .filter(Boolean)
-        .map((src, i) => ({ src, title: `Imagem ${i + 1}` }));
+    return {
+      module: m,
+      lesson: l,
+      moduleTokens: [`modulo${mm}`, `modulo-${mm}`, `modulo_${mm}`, `modulo${m}`, `modulo-${m}`, `modulo_${m}`],
+      lessonTokens: [`aula${ll}`, `aula-${ll}`, `aula_${ll}`, `aula${l}`, `aula-${l}`, `aula_${l}`]
+    };
+  }
+
+  function aliasesFor(key) {
+    const k = norm(key);
+
+    if (k.includes("instagram") || k.includes("insta")) return ["instagram", "insta", "perfil", "stories", "insights", "reels"];
+    if (k.includes("canva")) return ["canva", "design", "visual", "carrossel", "post", "capa"];
+    if (k.includes("capcut")) return ["capcut", "video", "edicao", "cortes", "legenda", "zoom"];
+    if (k === "ia" || k.includes("prompt") || k.includes("inteligencia")) return ["ia", "ai", "prompt", "roteiro", "ideia"];
+
+    return k ? k.split(" ").filter(Boolean) : [];
+  }
+
+  function titleFromPath(path, index) {
+    const file = String(path || "").split("/").pop() || `Imagem ${index + 1}`;
+    return file
+      .replace(/\.(png|jpe?g|webp|gif|avif)$/i, "")
+      .replace(/[-_]+/g, " ")
+      .replace(/\b\w/g, c => c.toUpperCase());
+  }
+
+  function imagesFromManifest(key) {
+    const manifest = Array.isArray(window.PREMIUM_GALLERY_MANIFEST) ? window.PREMIUM_GALLERY_MANIFEST : [];
+    const info = aulaTokens();
+
+    if (!manifest.length) return [];
+
+    const normalized = manifest.map(src => ({
+      src,
+      n: norm(src)
+    }));
+
+    let aulaImgs = normalized.filter(item => {
+      const hasModule = info.moduleTokens.some(t => item.n.includes(norm(t)));
+      const hasLesson = info.lessonTokens.some(t => item.n.includes(norm(t)));
+      return hasModule && hasLesson;
+    });
+
+    if (!aulaImgs.length) {
+      aulaImgs = normalized.filter(item => {
+        const hasLesson = info.lessonTokens.some(t => item.n.includes(norm(t)));
+        return hasLesson;
+      });
     }
+
+    let result = aulaImgs;
+
+    const aliases = aliasesFor(key);
+    if (aliases.length) {
+      const filtered = aulaImgs.filter(item => aliases.some(a => item.n.includes(norm(a))));
+      if (filtered.length >= 2) result = filtered;
+    }
+
+    if (!result.length) {
+      result = normalized.filter(item => aliases.some(a => item.n.includes(norm(a))));
+    }
+
+    if (!result.length) {
+      result = aulaImgs;
+    }
+
+    if (!result.length) {
+      result = normalized;
+    }
+
+    return result.slice(0, 4).map((item, index) => ({
+      src: item.src,
+      title: titleFromPath(item.src, index),
+      description: `Imagem ${index + 1} da aula ${info.lesson}`
+    }));
+  }
+
+  function normalizeImages(input, titleKey) {
+    if (!input) return imagesFromManifest(titleKey);
 
     if (Array.isArray(input)) {
-      return input
-        .map((item, i) => {
-          if (!item) return null;
-          if (typeof item === 'string') return { src: item, title: `Imagem ${i + 1}` };
+      const arr = input.map((item, index) => {
+        if (!item) return null;
+
+        if (typeof item === "string") {
+          if (!looksLikeImagePath(item)) return null;
           return {
-            src: item.src || item.url || item.image || '',
-            title: item.title || item.name || `Imagem ${i + 1}`,
-            description: item.description || ''
+            src: item,
+            title: `Imagem ${index + 1}`
           };
-        })
-        .filter(item => item && item.src);
+        }
+
+        const src =
+          item.src ||
+          item.url ||
+          item.image ||
+          item.imageUrl ||
+          item.path ||
+          item.file ||
+          item.full ||
+          item.fullSrc ||
+          item.large ||
+          item.thumb ||
+          item.thumbnail ||
+          "";
+
+        if (!src) return null;
+
+        return {
+          src,
+          title: item.title || item.name || item.label || `Imagem ${index + 1}`,
+          description: item.description || item.subtitle || ""
+        };
+      }).filter(Boolean);
+
+      return arr.length ? arr.slice(0, 4) : imagesFromManifest(titleKey);
     }
 
-    if (typeof input === 'object' && input.images) {
-      return normalizeImages(input.images);
+    if (typeof input === "object") {
+      if (input.images || input.items || input.prints || input.gallery) {
+        return normalizeImages(input.images || input.items || input.prints || input.gallery, input.title || titleKey);
+      }
+
+      return normalizeImages([input], titleKey);
     }
 
-    return [];
+    if (typeof input === "string") {
+      const raw = input.trim();
+
+      if (!raw) return imagesFromManifest(titleKey);
+
+      try {
+        const parsed = JSON.parse(raw);
+        return normalizeImages(parsed, titleKey);
+      } catch (_) {}
+
+      if (raw.includes(",") && raw.split(",").some(looksLikeImagePath)) {
+        return normalizeImages(raw.split(",").map(s => s.trim()), titleKey);
+      }
+
+      if (looksLikeImagePath(raw)) {
+        return [{ src: raw, title: "Imagem 1" }];
+      }
+
+      return imagesFromManifest(raw || titleKey);
+    }
+
+    return imagesFromManifest(titleKey);
   }
 
   function ensureModal() {
-    if (document.getElementById('pgxOverlay')) {
-      cacheEls();
+    if (document.getElementById("pgxOverlay")) {
+      cache();
       return;
     }
 
-    const html = `
+    document.body.insertAdjacentHTML("beforeend", `
       <div class="pgx-overlay" id="pgxOverlay">
-        <div class="pgx-shell" role="dialog" aria-modal="true" aria-label="Galeria premium">
+        <div class="pgx-shell">
           <div class="pgx-topbar">
-            <div class="pgx-title-wrap">
+            <div>
               <div class="pgx-kicker">Imagem da galeria</div>
               <h2 class="pgx-title" id="pgxTitle">Galeria</h2>
-              <div class="pgx-subtitle" id="pgxSubtitle">Selecione a imagem desejada</div>
+              <div class="pgx-subtitle" id="pgxSubtitle">Clique em uma miniatura para ampliar.</div>
             </div>
 
             <div class="pgx-toolbar">
-              <button class="pgx-btn small" id="pgxZoomOut" type="button" title="Diminuir">−</button>
-              <button class="pgx-btn small" id="pgxZoomIn" type="button" title="Ampliar">+</button>
-              <button class="pgx-btn" id="pgxReset" type="button" title="Resetar zoom">100%</button>
-              <button class="pgx-btn" id="pgxOpen" type="button">Abrir</button>
-              <button class="pgx-btn is-primary" id="pgxDownloadCurrent" type="button">Baixar</button>
-              <button class="pgx-btn is-danger small" id="pgxClose" type="button" title="Fechar">×</button>
+              <button class="pgx-btn small" id="pgxZoomOut">−</button>
+              <button class="pgx-btn small" id="pgxZoomIn">+</button>
+              <button class="pgx-btn" id="pgxReset">100%</button>
+              <button class="pgx-btn" id="pgxOpen">Abrir</button>
+              <button class="pgx-btn is-primary" id="pgxDownloadCurrent">Baixar</button>
+              <button class="pgx-btn is-danger small" id="pgxClose">×</button>
             </div>
           </div>
 
           <div class="pgx-body">
             <div class="pgx-viewer">
-              <button class="pgx-nav" id="pgxPrev" type="button" aria-label="Anterior">‹</button>
+              <button class="pgx-nav" id="pgxPrev">‹</button>
 
               <div class="pgx-stage" id="pgxStage">
-                <img id="pgxImage" class="pgx-image" alt="Imagem da galeria">
+                <img id="pgxImage" class="pgx-image" alt="Imagem da galeria" draggable="false">
                 <div class="pgx-stage-badge" id="pgxZoomBadge">100%</div>
               </div>
 
-              <button class="pgx-nav" id="pgxNext" type="button" aria-label="Próxima">›</button>
+              <button class="pgx-nav" id="pgxNext">›</button>
             </div>
 
             <aside class="pgx-side">
               <h3>Imagens da galeria</h3>
-              <p>As 4 miniaturas ficam visíveis. Clique em uma delas para colocá-la em destaque.</p>
+              <p>As 4 miniaturas ficam visíveis. Clique para destacar, ou selecione para baixar.</p>
 
               <div class="pgx-thumb-grid" id="pgxThumbGrid"></div>
 
               <div class="pgx-side-actions">
-                <button class="pgx-btn is-soft" id="pgxSelectAll" type="button">Selecionar todas</button>
-                <button class="pgx-btn" id="pgxClearSelected" type="button">Limpar seleção</button>
-                <button class="pgx-btn is-primary" id="pgxDownloadSelected" type="button">Baixar selecionadas</button>
-                <button class="pgx-btn" id="pgxDownloadAll" type="button">Baixar as 4</button>
+                <button class="pgx-btn is-soft" id="pgxSelectAll">Selecionar todas</button>
+                <button class="pgx-btn" id="pgxClearSelected">Limpar seleção</button>
+                <button class="pgx-btn is-primary" id="pgxDownloadSelected">Baixar selecionadas</button>
+                <button class="pgx-btn" id="pgxDownloadAll">Baixar as 4</button>
               </div>
             </aside>
           </div>
 
           <div class="pgx-footer">
-            <div>
-              <strong>Atalhos:</strong>
-              duplo clique amplia · clique e arraste move · setas navegam · ESC fecha
-            </div>
+            <div><strong>Atalhos:</strong> duplo clique amplia · clique e arraste move · setas navegam · ESC fecha</div>
             <div class="pgx-counter" id="pgxCounter">1/4</div>
           </div>
         </div>
       </div>
-    `;
+    `);
 
-    document.body.insertAdjacentHTML('beforeend', html);
-    cacheEls();
-    bindModalEvents();
+    cache();
+    bind();
   }
 
-  function cacheEls() {
-    els.overlay = document.getElementById('pgxOverlay');
-    els.title = document.getElementById('pgxTitle');
-    els.subtitle = document.getElementById('pgxSubtitle');
-    els.thumbGrid = document.getElementById('pgxThumbGrid');
-    els.image = document.getElementById('pgxImage');
-    els.stage = document.getElementById('pgxStage');
-    els.zoomBadge = document.getElementById('pgxZoomBadge');
-    els.counter = document.getElementById('pgxCounter');
-
-    els.prev = document.getElementById('pgxPrev');
-    els.next = document.getElementById('pgxNext');
-    els.close = document.getElementById('pgxClose');
-    els.zoomIn = document.getElementById('pgxZoomIn');
-    els.zoomOut = document.getElementById('pgxZoomOut');
-    els.reset = document.getElementById('pgxReset');
-    els.open = document.getElementById('pgxOpen');
-
-    els.downloadCurrent = document.getElementById('pgxDownloadCurrent');
-    els.downloadSelected = document.getElementById('pgxDownloadSelected');
-    els.downloadAll = document.getElementById('pgxDownloadAll');
-    els.selectAll = document.getElementById('pgxSelectAll');
-    els.clearSelected = document.getElementById('pgxClearSelected');
+  function cache() {
+    els.overlay = document.getElementById("pgxOverlay");
+    els.title = document.getElementById("pgxTitle");
+    els.subtitle = document.getElementById("pgxSubtitle");
+    els.image = document.getElementById("pgxImage");
+    els.stage = document.getElementById("pgxStage");
+    els.badge = document.getElementById("pgxZoomBadge");
+    els.counter = document.getElementById("pgxCounter");
+    els.thumbs = document.getElementById("pgxThumbGrid");
   }
 
-  function bindModalEvents() {
-    els.close.addEventListener('click', closeGallery);
-    els.overlay.addEventListener('click', function (e) {
-      if (e.target === els.overlay) closeGallery();
-    });
-
-    els.prev.addEventListener('click', () => move(-1));
-    els.next.addEventListener('click', () => move(1));
-    els.zoomIn.addEventListener('click', () => setZoom(state.zoom + 0.2));
-    els.zoomOut.addEventListener('click', () => setZoom(state.zoom - 0.2));
-    els.reset.addEventListener('click', resetView);
-    els.open.addEventListener('click', openCurrentInNewTab);
-    els.downloadCurrent.addEventListener('click', () => downloadImage(state.currentIndex));
-    els.downloadSelected.addEventListener('click', downloadSelected);
-    els.downloadAll.addEventListener('click', downloadAll);
-    els.selectAll.addEventListener('click', () => {
+  function bind() {
+    document.getElementById("pgxClose").onclick = close;
+    document.getElementById("pgxPrev").onclick = () => move(-1);
+    document.getElementById("pgxNext").onclick = () => move(1);
+    document.getElementById("pgxZoomIn").onclick = () => setZoom(state.zoom + .25);
+    document.getElementById("pgxZoomOut").onclick = () => setZoom(state.zoom - .25);
+    document.getElementById("pgxReset").onclick = reset;
+    document.getElementById("pgxOpen").onclick = openCurrent;
+    document.getElementById("pgxDownloadCurrent").onclick = () => download(state.currentIndex);
+    document.getElementById("pgxDownloadSelected").onclick = downloadSelected;
+    document.getElementById("pgxDownloadAll").onclick = downloadAll;
+    document.getElementById("pgxSelectAll").onclick = () => {
       state.selected = new Set(state.images.map((_, i) => i));
       renderThumbs();
-    });
-    els.clearSelected.addEventListener('click', () => {
+    };
+    document.getElementById("pgxClearSelected").onclick = () => {
       state.selected.clear();
       renderThumbs();
-    });
-
-    els.stage.addEventListener('dblclick', function () {
-      if (state.zoom === 1) {
-        setZoom(2.2);
-      } else {
-        resetView();
-      }
-    });
-
-    els.stage.addEventListener('wheel', function (e) {
-      e.preventDefault();
-      const delta = e.deltaY > 0 ? -0.18 : 0.18;
-      setZoom(state.zoom + delta);
-    }, { passive: false });
-
-    els.stage.addEventListener('pointerdown', onPointerDown);
-    window.addEventListener('pointermove', onPointerMove);
-    window.addEventListener('pointerup', onPointerUp);
-    window.addEventListener('keydown', onKeyDown);
-  }
-
-  function onKeyDown(e) {
-    if (!els.overlay || !els.overlay.classList.contains('is-open')) return;
-
-    if (e.key === 'Escape') closeGallery();
-    if (e.key === 'ArrowRight') move(1);
-    if (e.key === 'ArrowLeft') move(-1);
-  }
-
-  function onPointerDown(e) {
-    if (state.zoom <= 1) return;
-
-    state.dragging = true;
-    state.dragStartX = e.clientX;
-    state.dragStartY = e.clientY;
-    state.dragOriginX = state.panX;
-    state.dragOriginY = state.panY;
-    els.image.classList.add('is-dragging');
-    try { els.stage.setPointerCapture(e.pointerId); } catch (_) {}
-  }
-
-  function onPointerMove(e) {
-    if (!state.dragging) return;
-
-    const dx = e.clientX - state.dragStartX;
-    const dy = e.clientY - state.dragStartY;
-
-    state.panX = state.dragOriginX + dx;
-    state.panY = state.dragOriginY + dy;
-    clampPan();
-    requestTransform();
-  }
-
-  function onPointerUp() {
-    if (!state.dragging) return;
-    state.dragging = false;
-    els.image.classList.remove('is-dragging');
-  }
-
-  function requestTransform() {
-    if (state.rafId) cancelAnimationFrame(state.rafId);
-    state.rafId = requestAnimationFrame(applyTransform);
-  }
-
-  function applyTransform() {
-    state.rafId = null;
-    els.image.style.transform = `translate3d(${state.panX}px, ${state.panY}px, 0) scale(${state.zoom})`;
-    els.zoomBadge.textContent = `${Math.round(state.zoom * 100)}%`;
-    els.reset.textContent = `${Math.round(state.zoom * 100)}%`;
-  }
-
-  function getNaturalSize() {
-    const img = els.image;
-    return {
-      width: img.naturalWidth || 1200,
-      height: img.naturalHeight || 1200
     };
+
+    els.overlay.onclick = e => {
+      if (e.target === els.overlay) close();
+    };
+
+    els.stage.ondblclick = () => {
+      if (state.zoom <= 1) setZoom(2.2);
+      else reset();
+    };
+
+    els.stage.onwheel = e => {
+      e.preventDefault();
+      setZoom(state.zoom + (e.deltaY > 0 ? -.2 : .2));
+    };
+
+    els.stage.onpointerdown = e => {
+      if (state.zoom <= 1) return;
+
+      state.dragging = true;
+      state.startX = e.clientX;
+      state.startY = e.clientY;
+      state.originX = state.panX;
+      state.originY = state.panY;
+      els.image.classList.add("is-dragging");
+    };
+
+    window.addEventListener("pointermove", e => {
+      if (!state.dragging) return;
+
+      state.panX = state.originX + (e.clientX - state.startX);
+      state.panY = state.originY + (e.clientY - state.startY);
+      apply();
+    });
+
+    window.addEventListener("pointerup", () => {
+      state.dragging = false;
+      els.image.classList.remove("is-dragging");
+    });
+
+    window.addEventListener("keydown", e => {
+      if (!els.overlay.classList.contains("is-open")) return;
+      if (e.key === "Escape") close();
+      if (e.key === "ArrowRight") move(1);
+      if (e.key === "ArrowLeft") move(-1);
+    });
   }
 
-  function clampPan() {
-    const stageW = els.stage.clientWidth - 36;
-    const stageH = els.stage.clientHeight - 36;
+  function apply() {
+    if (state.raf) cancelAnimationFrame(state.raf);
 
-    const natural = getNaturalSize();
-    const fitScale = Math.min(stageW / natural.width, stageH / natural.height);
-    const viewW = natural.width * fitScale * state.zoom;
-    const viewH = natural.height * fitScale * state.zoom;
-
-    const maxX = Math.max(0, (viewW - stageW) / 2);
-    const maxY = Math.max(0, (viewH - stageH) / 2);
-
-    state.panX = Math.min(maxX, Math.max(-maxX, state.panX));
-    state.panY = Math.min(maxY, Math.max(-maxY, state.panY));
+    state.raf = requestAnimationFrame(() => {
+      els.image.style.transform = `translate3d(${state.panX}px, ${state.panY}px, 0) scale(${state.zoom})`;
+      els.badge.textContent = `${Math.round(state.zoom * 100)}%`;
+      document.getElementById("pgxReset").textContent = `${Math.round(state.zoom * 100)}%`;
+    });
   }
 
-  function setZoom(value) {
-    const next = Math.max(state.minZoom, Math.min(state.maxZoom, value));
-    state.zoom = next;
+  function reset() {
+    state.zoom = 1;
+    state.panX = 0;
+    state.panY = 0;
+    apply();
+  }
+
+  function setZoom(v) {
+    state.zoom = Math.max(1, Math.min(4, v));
 
     if (state.zoom <= 1) {
       state.panX = 0;
       state.panY = 0;
-    } else {
-      clampPan();
     }
 
-    requestTransform();
+    apply();
   }
 
-  function resetView() {
-    state.zoom = 1;
-    state.panX = 0;
-    state.panY = 0;
-    requestTransform();
-  }
-
-  function move(direction) {
+  function move(dir) {
     if (!state.images.length) return;
-    state.currentIndex = (state.currentIndex + direction + state.images.length) % state.images.length;
+    state.currentIndex = (state.currentIndex + dir + state.images.length) % state.images.length;
     loadCurrent();
-    renderThumbs();
   }
 
-  function setCurrent(index) {
-    state.currentIndex = index;
-    loadCurrent();
+  function loadCurrent() {
+    const item = state.images[state.currentIndex];
+    if (!item) return;
+
+    els.image.onerror = () => {
+      const fallback = imagesFromManifest("");
+      if (fallback.length && fallback[0].src !== item.src) {
+        state.images = fallback;
+        state.currentIndex = 0;
+        renderThumbs();
+        loadCurrent();
+      }
+    };
+
+    els.image.src = item.src;
+    els.image.alt = item.title || `Imagem ${state.currentIndex + 1}`;
+
+    els.title.textContent = item.title || `Imagem ${state.currentIndex + 1}`;
+    els.subtitle.textContent = item.description || "Clique em uma miniatura para ampliar.";
+
+    els.counter.textContent = `${state.currentIndex + 1}/${state.images.length}`;
+    reset();
     renderThumbs();
   }
 
   function renderThumbs() {
-    els.thumbGrid.innerHTML = state.images.map((img, index) => {
-      const active = index === state.currentIndex ? 'is-active' : '';
-      const selected = state.selected.has(index) ? 'is-selected' : '';
+    els.thumbs.innerHTML = state.images.map((img, i) => {
+      const active = i === state.currentIndex ? "is-active" : "";
+      const selected = state.selected.has(i) ? "is-selected" : "";
+
       return `
-        <button class="pgx-thumb ${active} ${selected}" type="button" data-index="${index}" title="${esc(img.title || `Imagem ${index + 1}`)}">
-          <img src="${esc(img.src)}" alt="${esc(img.title || `Imagem ${index + 1}`)}">
-          <span class="pgx-thumb-check" data-check="${index}">${state.selected.has(index) ? '✓' : '+'}</span>
+        <button class="pgx-thumb ${active} ${selected}" data-i="${i}" type="button">
+          <img src="${escapeHtml(img.src)}" alt="${escapeHtml(img.title || `Imagem ${i + 1}`)}">
+          <span class="pgx-thumb-check">${state.selected.has(i) ? "✓" : "+"}</span>
         </button>
       `;
-    }).join('');
+    }).join("");
 
-    els.thumbGrid.querySelectorAll('.pgx-thumb').forEach(btn => {
-      btn.addEventListener('click', function (e) {
-        const check = e.target.closest('.pgx-thumb-check');
-        const idx = Number(btn.dataset.index);
+    els.thumbs.querySelectorAll(".pgx-thumb").forEach(btn => {
+      btn.onclick = e => {
+        const i = Number(btn.dataset.i);
 
-        if (check) {
-          e.stopPropagation();
-          toggleSelected(idx);
+        if (e.target.classList.contains("pgx-thumb-check")) {
+          if (state.selected.has(i)) state.selected.delete(i);
+          else state.selected.add(i);
+          renderThumbs();
           return;
         }
 
-        setCurrent(idx);
-      });
+        state.currentIndex = i;
+        loadCurrent();
+      };
     });
-
-    els.counter.textContent = `${state.currentIndex + 1}/${state.images.length}`;
   }
 
-  function toggleSelected(index) {
-    if (state.selected.has(index)) {
-      state.selected.delete(index);
-    } else {
-      state.selected.add(index);
-    }
-    renderThumbs();
+  function filename(item, i) {
+    const ext = (String(item.src).split(".").pop() || "png").split("?")[0];
+    const base = norm(item.title || `imagem-${i + 1}`).replace(/\s+/g, "-") || `imagem-${i + 1}`;
+    return `${base}-${i + 1}.${ext}`;
   }
 
-  function loadCurrent() {
-    const current = state.images[state.currentIndex];
-    if (!current) return;
+  function download(i) {
+    const item = state.images[i];
+    if (!item) return;
 
-    els.image.src = current.src;
-    els.image.alt = current.title || `Imagem ${state.currentIndex + 1}`;
-    resetView();
-
-    const title = current.title || state.title || 'Imagem da galeria';
-    const description = current.description || state.subtitle || 'Selecione uma miniatura para visualizar.';
-    els.title.textContent = title;
-    els.subtitle.textContent = description;
-
-    els.image.onload = function () {
-      clampPan();
-      requestTransform();
-    };
-  }
-
-  function downloadUrl(url, filename) {
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename || 'imagem';
-    a.target = '_blank';
+    const a = document.createElement("a");
+    a.href = item.src;
+    a.download = filename(item, i);
+    a.target = "_blank";
     document.body.appendChild(a);
     a.click();
     a.remove();
   }
 
-  function fileNameFor(index) {
-    const img = state.images[index];
-    const base = (img.title || `imagem-${index + 1}`)
-      .toLowerCase()
-      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '');
-    const ext = (img.src.split('.').pop() || 'png').split('?')[0];
-    return `${base || 'imagem'}-${index + 1}.${ext}`;
-  }
-
-  function downloadImage(index) {
-    const img = state.images[index];
-    if (!img) return;
-    downloadUrl(img.src, fileNameFor(index));
-  }
-
   function downloadSelected() {
     const list = Array.from(state.selected);
-    if (!list.length) {
-      downloadImage(state.currentIndex);
-      return;
-    }
-    list.forEach((idx, i) => setTimeout(() => downloadImage(idx), i * 240));
+    if (!list.length) return download(state.currentIndex);
+    list.forEach((i, idx) => setTimeout(() => download(i), idx * 250));
   }
 
   function downloadAll() {
-    state.images.forEach((_, i) => setTimeout(() => downloadImage(i), i * 220));
+    state.images.forEach((_, i) => setTimeout(() => download(i), i * 250));
   }
 
-  function openCurrentInNewTab() {
-    const current = state.images[state.currentIndex];
-    if (!current) return;
-    window.open(current.src, '_blank');
+  function openCurrent() {
+    const item = state.images[state.currentIndex];
+    if (item) window.open(item.src, "_blank");
   }
 
-  function closeGallery() {
-    els.overlay.classList.remove('is-open');
-    document.body.style.overflow = '';
+  function close() {
+    els.overlay.classList.remove("is-open");
+    document.body.style.overflow = "";
   }
 
   function openGallery(payload, maybeImages, maybeSubtitle) {
     ensureModal();
 
-    let title = 'Galeria';
-    let subtitle = 'Selecione uma miniatura';
+    let title = "Galeria da aula";
+    let subtitle = "Clique em uma miniatura para ampliar.";
     let images = [];
 
-    if (typeof payload === 'object' && !Array.isArray(payload) && payload !== null && payload.images) {
+    if (typeof payload === "object" && payload && payload.images) {
       title = payload.title || title;
       subtitle = payload.subtitle || subtitle;
-      images = normalizeImages(payload.images);
-    } else if (typeof payload === 'string' && Array.isArray(maybeImages)) {
+      images = normalizeImages(payload.images, title);
+    } else if (typeof payload === "string" && maybeImages) {
       title = payload;
       subtitle = maybeSubtitle || subtitle;
-      images = normalizeImages(maybeImages);
-    } else if (Array.isArray(payload)) {
-      images = normalizeImages(payload);
-    } else if (typeof payload === 'string' && !maybeImages) {
-      images = normalizeImages(payload);
+      images = normalizeImages(maybeImages, payload);
+    } else if (typeof payload === "string") {
+      title = payload;
+      images = normalizeImages(payload, payload);
     } else {
-      images = normalizeImages(maybeImages || payload);
+      images = normalizeImages(payload, title);
     }
 
-    if (!images.length) return;
+    if (!images.length) {
+      images = imagesFromManifest("");
+    }
 
-    state.title = title;
-    state.subtitle = subtitle;
-    state.images = images.slice(0, 4); // sempre focando nas 4 imagens da aula
+    if (!images.length) {
+      alert("Não encontrei imagens para esta aula. Verifique se existem PNGs em assets/prints.");
+      return;
+    }
+
+    state.images = images.slice(0, 4);
     state.currentIndex = 0;
     state.selected = new Set([0]);
 
     els.title.textContent = title;
     els.subtitle.textContent = subtitle;
+
     renderThumbs();
     loadCurrent();
 
-    els.overlay.classList.add('is-open');
-    document.body.style.overflow = 'hidden';
+    els.overlay.classList.add("is-open");
+    document.body.style.overflow = "hidden";
   }
 
-  function parseImagesFromElement(el) {
-    const raw = el.dataset.galleryImages || el.dataset.images || el.dataset.gallery || '';
-    return normalizeImages(raw);
-  }
-
-  function autoBindCards() {
-    document.addEventListener('click', function (e) {
-      const card = e.target.closest('[data-gallery-images],[data-images],[data-gallery],.js-open-gallery,.gallery-card');
-      if (!card) return;
-
-      const hasInline = card.getAttribute('onclick');
-      if (hasInline) return;
-
-      const images = parseImagesFromElement(card);
-      if (!images.length) return;
-
-      e.preventDefault();
-      const title = card.dataset.galleryTitle || card.dataset.title || card.querySelector('h3,h4,strong')?.textContent?.trim() || 'Galeria';
-      const subtitle = card.dataset.gallerySubtitle || card.dataset.subtitle || 'Selecione uma miniatura';
-      openGallery({ title, subtitle, images });
-    });
-  }
-
-  window.openPremiumGallery = openGallery;
   window.openGallery = openGallery;
+  window.openPremiumGallery = openGallery;
   window.openPrintGallery = openGallery;
   window.openLessonGallery = openGallery;
   window.showPremiumGallery = openGallery;
 
-  document.addEventListener('DOMContentLoaded', function () {
-    ensureModal();
-    autoBindCards();
-  });
+  document.addEventListener("DOMContentLoaded", ensureModal);
 })();
