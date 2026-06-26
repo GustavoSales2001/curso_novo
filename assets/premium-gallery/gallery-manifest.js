@@ -11,6 +11,12 @@
                    "assets/prints/modulo02/aula02/ia-2.png",
                    "assets/prints/modulo02/aula02/ia-1.png"
                ],
+    "4-1-ia":  [
+                   "assets/prints/modulo04/aula01/ia-4.png",
+                   "assets/prints/modulo04/aula01/ia-3.png",
+                   "assets/prints/modulo04/aula01/ia-2.png",
+                   "assets/prints/modulo04/aula01/ia-1.png"
+               ],
     "5-6-instagram":  [
                           "assets/prints/modulo05/aula06/canva-4.png",
                           "assets/prints/modulo05/aula06/instagram-3.png",
@@ -41,6 +47,12 @@
                        "assets/prints/modulo04/aula02/capcut-2.png",
                        "assets/prints/modulo04/aula02/capcut-1.png"
                    ],
+    "5-3-canva":  [
+                      "assets/prints/modulo05/aula03/capcut-4.png",
+                      "assets/prints/modulo05/aula03/capcut-3.png",
+                      "assets/prints/modulo05/aula03/instagram-2.png",
+                      "assets/prints/modulo05/aula03/canva-1.png"
+                  ],
     "2-3-canva":  [
                       "assets/prints/modulo02/aula03/capcut-4.png",
                       "assets/prints/modulo02/aula03/capcut-3.png",
@@ -53,12 +65,6 @@
                    "assets/prints/modulo01/aula05/ia-2.png",
                    "assets/prints/modulo01/aula05/ia-1.png"
                ],
-    "3-6-canva":  [
-                      "assets/prints/modulo04/aula07/capcut-4.png",
-                      "assets/prints/modulo04/aula07/capcut-3.png",
-                      "assets/prints/modulo04/aula07/instagram-2.png",
-                      "assets/prints/modulo04/aula07/canva-1.png"
-                  ],
     "0-5-capcut":  [
                        "assets/prints/modulo01/aula06/instagram-4.png",
                        "assets/prints/modulo01/aula06/canva-3.png",
@@ -66,23 +72,11 @@
                        "assets/prints/modulo01/aula06/capcut-1.png"
                    ],
     "1-4-ia":  [
-                   "assets/prints/modulo01/aula04/ia-1.png",
-                   "assets/prints/modulo01/aula04/ia-2.png",
-                   "assets/prints/modulo01/aula04/ia-3.png",
-                   "assets/prints/modulo01/aula04/ia-4.png"
+                   "assets/prints/modulo01/aula04/instagram-1.png",
+                   "assets/prints/modulo01/aula04/canva-3.png",
+                   "assets/prints/modulo01/aula04/capcut-3.png",
+                   "assets/prints/modulo01/aula04/ia-3.png"
                ],
-    "5-6-capcut":  [
-                       "assets/prints/modulo05/aula06/instagram-4.png",
-                       "assets/prints/modulo05/aula06/canva-3.png",
-                       "assets/prints/modulo05/aula06/capcut-2.png",
-                       "assets/prints/modulo05/aula06/capcut-1.png"
-                   ],
-    "5-8-canva":  [
-                      "assets/prints/modulo05/aula08/capcut-4.png",
-                      "assets/prints/modulo05/aula08/capcut-3.png",
-                      "assets/prints/modulo05/aula08/instagram-2.png",
-                      "assets/prints/modulo05/aula08/canva-1.png"
-                  ],
     "4-6-instagram":  [
                           "assets/prints/modulo05/aula07/canva-4.png",
                           "assets/prints/modulo05/aula07/instagram-3.png",
@@ -107,18 +101,18 @@
                       "assets/prints/modulo03/aula08/instagram-2.png",
                       "assets/prints/modulo03/aula08/canva-1.png"
                   ],
-    "4-4-capcut":  [
-                       "assets/prints/modulo05/aula05/instagram-4.png",
-                       "assets/prints/modulo05/aula05/canva-3.png",
-                       "assets/prints/modulo05/aula05/capcut-2.png",
-                       "assets/prints/modulo05/aula05/capcut-1.png"
-                   ],
     "1-1-capcut":  [
                        "assets/prints/modulo02/aula02/instagram-4.png",
                        "assets/prints/modulo02/aula02/canva-3.png",
                        "assets/prints/modulo02/aula02/capcut-2.png",
                        "assets/prints/modulo02/aula02/capcut-1.png"
                    ],
+    "1-4-instagram":  [
+                          "assets/prints/modulo01/aula04/instagram-2.png",
+                          "assets/prints/modulo01/aula04/instagram-4.png",
+                          "assets/prints/modulo01/aula04/canva-2.png",
+                          "assets/prints/modulo01/aula04/ia-1.png"
+                      ],
     "1-6-ia":  [
                    "assets/prints/modulo02/aula07/ia-4.png",
                    "assets/prints/modulo02/aula07/ia-3.png",
@@ -203,6 +197,18 @@
                           "assets/prints/modulo04/aula05/instagram-1.png",
                           "assets/prints/modulo04/aula05/canva-2.png"
                       ],
+    "4-5-instagram":  [
+                          "assets/prints/modulo05/aula06/canva-4.png",
+                          "assets/prints/modulo05/aula06/instagram-3.png",
+                          "assets/prints/modulo05/aula06/instagram-1.png",
+                          "assets/prints/modulo05/aula06/canva-2.png"
+                      ],
+    "1-2-instagram":  [
+                          "assets/prints/modulo02/aula03/canva-4.png",
+                          "assets/prints/modulo02/aula03/instagram-3.png",
+                          "assets/prints/modulo02/aula03/instagram-1.png",
+                          "assets/prints/modulo02/aula03/canva-2.png"
+                      ],
     "2-1-canva":  [
                       "assets/prints/modulo03/aula02/capcut-4.png",
                       "assets/prints/modulo03/aula02/capcut-3.png",
@@ -215,18 +221,12 @@
                        "assets/prints/modulo03/aula01/capcut-2.png",
                        "assets/prints/modulo03/aula01/capcut-1.png"
                    ],
-    "2-2-canva":  [
-                      "assets/prints/modulo02/aula02/capcut-4.png",
-                      "assets/prints/modulo02/aula02/capcut-3.png",
-                      "assets/prints/modulo02/aula02/instagram-2.png",
-                      "assets/prints/modulo02/aula02/canva-1.png"
-                  ],
-    "4-2-capcut":  [
-                       "assets/prints/modulo04/aula02/instagram-4.png",
-                       "assets/prints/modulo04/aula02/canva-3.png",
-                       "assets/prints/modulo04/aula02/capcut-2.png",
-                       "assets/prints/modulo04/aula02/capcut-1.png"
-                   ],
+    "5-8-instagram":  [
+                          "assets/prints/modulo05/aula08/canva-4.png",
+                          "assets/prints/modulo05/aula08/instagram-3.png",
+                          "assets/prints/modulo05/aula08/instagram-1.png",
+                          "assets/prints/modulo05/aula08/canva-2.png"
+                      ],
     "5-4-canva":  [
                       "assets/prints/modulo05/aula04/capcut-4.png",
                       "assets/prints/modulo05/aula04/capcut-3.png",
@@ -257,12 +257,6 @@
                        "assets/prints/modulo03/aula02/capcut-2.png",
                        "assets/prints/modulo03/aula02/capcut-1.png"
                    ],
-    "5-7-ia":  [
-                   "assets/prints/modulo05/aula07/ia-4.png",
-                   "assets/prints/modulo05/aula07/ia-3.png",
-                   "assets/prints/modulo05/aula07/ia-2.png",
-                   "assets/prints/modulo05/aula07/ia-1.png"
-               ],
     "0-5-canva":  [
                       "assets/prints/modulo01/aula06/capcut-4.png",
                       "assets/prints/modulo01/aula06/capcut-3.png",
@@ -275,12 +269,6 @@
                           "assets/prints/modulo05/aula01/instagram-1.png",
                           "assets/prints/modulo05/aula01/canva-2.png"
                       ],
-    "3-4-canva":  [
-                      "assets/prints/modulo04/aula05/capcut-4.png",
-                      "assets/prints/modulo04/aula05/capcut-3.png",
-                      "assets/prints/modulo04/aula05/instagram-2.png",
-                      "assets/prints/modulo04/aula05/canva-1.png"
-                  ],
     "0-4-instagram":  [
                           "assets/prints/modulo01/aula05/canva-4.png",
                           "assets/prints/modulo01/aula05/instagram-3.png",
@@ -293,6 +281,12 @@
                    "assets/prints/modulo05/aula05/ia-2.png",
                    "assets/prints/modulo05/aula05/ia-1.png"
                ],
+    "1-8-instagram":  [
+                          "assets/prints/modulo01/aula08/canva-4.png",
+                          "assets/prints/modulo01/aula08/instagram-3.png",
+                          "assets/prints/modulo01/aula08/instagram-1.png",
+                          "assets/prints/modulo01/aula08/canva-2.png"
+                      ],
     "5-4-instagram":  [
                           "assets/prints/modulo05/aula04/canva-4.png",
                           "assets/prints/modulo05/aula04/instagram-3.png",
@@ -305,18 +299,12 @@
                    "assets/prints/modulo02/aula08/ia-2.png",
                    "assets/prints/modulo02/aula08/ia-1.png"
                ],
-    "0-7-ia":  [
-                   "assets/prints/modulo01/aula08/ia-4.png",
-                   "assets/prints/modulo01/aula08/ia-3.png",
-                   "assets/prints/modulo01/aula08/ia-2.png",
-                   "assets/prints/modulo01/aula08/ia-1.png"
-               ],
-    "1-8-instagram":  [
-                          "assets/prints/modulo01/aula08/canva-4.png",
-                          "assets/prints/modulo01/aula08/instagram-3.png",
-                          "assets/prints/modulo01/aula08/instagram-1.png",
-                          "assets/prints/modulo01/aula08/canva-2.png"
-                      ],
+    "0-7-capcut":  [
+                       "assets/prints/modulo01/aula08/instagram-4.png",
+                       "assets/prints/modulo01/aula08/canva-3.png",
+                       "assets/prints/modulo01/aula08/capcut-2.png",
+                       "assets/prints/modulo01/aula08/capcut-1.png"
+                   ],
     "2-8-capcut":  [
                        "assets/prints/modulo02/aula08/instagram-4.png",
                        "assets/prints/modulo02/aula08/canva-3.png",
@@ -341,11 +329,23 @@
                    "assets/prints/modulo03/aula03/ia-2.png",
                    "assets/prints/modulo03/aula03/ia-1.png"
                ],
+    "3-8-instagram":  [
+                          "assets/prints/modulo03/aula08/canva-4.png",
+                          "assets/prints/modulo03/aula08/instagram-3.png",
+                          "assets/prints/modulo03/aula08/instagram-1.png",
+                          "assets/prints/modulo03/aula08/canva-2.png"
+                      ],
     "0-6-capcut":  [
                        "assets/prints/modulo01/aula07/instagram-4.png",
                        "assets/prints/modulo01/aula07/canva-3.png",
                        "assets/prints/modulo01/aula07/capcut-2.png",
                        "assets/prints/modulo01/aula07/capcut-1.png"
+                   ],
+    "2-6-capcut":  [
+                       "assets/prints/modulo03/aula07/instagram-4.png",
+                       "assets/prints/modulo03/aula07/canva-3.png",
+                       "assets/prints/modulo03/aula07/capcut-2.png",
+                       "assets/prints/modulo03/aula07/capcut-1.png"
                    ],
     "4-5-capcut":  [
                        "assets/prints/modulo05/aula06/instagram-4.png",
@@ -358,12 +358,6 @@
                        "assets/prints/modulo05/aula04/canva-3.png",
                        "assets/prints/modulo05/aula04/capcut-2.png",
                        "assets/prints/modulo05/aula04/capcut-1.png"
-                   ],
-    "0-3-capcut":  [
-                       "assets/prints/modulo01/aula04/capcut-1.png",
-                       "assets/prints/modulo01/aula04/capcut-2.png",
-                       "assets/prints/modulo01/aula04/capcut-3.png",
-                       "assets/prints/modulo01/aula04/capcut-4.png"
                    ],
     "2-1-capcut":  [
                        "assets/prints/modulo03/aula02/instagram-4.png",
@@ -401,12 +395,6 @@
                    "assets/prints/modulo02/aula01/ia-2.png",
                    "assets/prints/modulo02/aula01/ia-1.png"
                ],
-    "2-2-capcut":  [
-                       "assets/prints/modulo02/aula02/instagram-4.png",
-                       "assets/prints/modulo02/aula02/canva-3.png",
-                       "assets/prints/modulo02/aula02/capcut-2.png",
-                       "assets/prints/modulo02/aula02/capcut-1.png"
-                   ],
     "5-7-instagram":  [
                           "assets/prints/modulo05/aula07/canva-4.png",
                           "assets/prints/modulo05/aula07/instagram-3.png",
@@ -437,12 +425,6 @@
                       "assets/prints/modulo04/aula01/instagram-2.png",
                       "assets/prints/modulo04/aula01/canva-1.png"
                   ],
-    "3-5-instagram":  [
-                          "assets/prints/modulo03/aula05/canva-4.png",
-                          "assets/prints/modulo03/aula05/instagram-3.png",
-                          "assets/prints/modulo03/aula05/instagram-1.png",
-                          "assets/prints/modulo03/aula05/canva-2.png"
-                      ],
     "0-6-instagram":  [
                           "assets/prints/modulo01/aula07/canva-4.png",
                           "assets/prints/modulo01/aula07/instagram-3.png",
@@ -479,6 +461,12 @@
                           "assets/prints/modulo02/aula07/instagram-1.png",
                           "assets/prints/modulo02/aula07/canva-2.png"
                       ],
+    "0-1-capcut":  [
+                       "assets/prints/modulo01/aula02/ia-1.png",
+                       "assets/prints/modulo01/aula02/ia-4.png",
+                       "assets/prints/modulo01/aula02/ia-3.png",
+                       "assets/prints/modulo01/aula02/ia-2.png"
+                   ],
     "4-8-ia":  [
                    "assets/prints/modulo04/aula08/ia-4.png",
                    "assets/prints/modulo04/aula08/ia-3.png",
@@ -497,23 +485,17 @@
                        "assets/prints/modulo02/aula01/capcut-2.png",
                        "assets/prints/modulo02/aula01/capcut-1.png"
                    ],
-    "2-4-canva":  [
-                      "assets/prints/modulo03/aula05/capcut-4.png",
-                      "assets/prints/modulo03/aula05/capcut-3.png",
-                      "assets/prints/modulo03/aula05/instagram-2.png",
-                      "assets/prints/modulo03/aula05/canva-1.png"
-                  ],
-    "0-0-capcut":  [
-                       "assets/prints/modulo01/aula01/instagram-3.png",
-                       "assets/prints/modulo01/aula01/canva-4.png",
-                       "assets/prints/modulo01/aula01/capcut-3.png",
-                       "assets/prints/modulo01/aula01/ia-4.png"
-                   ],
+    "2-2-instagram":  [
+                          "assets/prints/modulo02/aula02/canva-4.png",
+                          "assets/prints/modulo02/aula02/instagram-3.png",
+                          "assets/prints/modulo02/aula02/instagram-1.png",
+                          "assets/prints/modulo02/aula02/canva-2.png"
+                      ],
     "0-3-instagram":  [
-                          "assets/prints/modulo01/aula04/instagram-1.png",
                           "assets/prints/modulo01/aula04/instagram-2.png",
-                          "assets/prints/modulo01/aula04/instagram-3.png",
-                          "assets/prints/modulo01/aula04/instagram-4.png"
+                          "assets/prints/modulo01/aula04/instagram-4.png",
+                          "assets/prints/modulo01/aula04/canva-2.png",
+                          "assets/prints/modulo01/aula04/ia-1.png"
                       ],
     "3-6-instagram":  [
                           "assets/prints/modulo04/aula07/canva-4.png",
@@ -521,12 +503,12 @@
                           "assets/prints/modulo04/aula07/instagram-1.png",
                           "assets/prints/modulo04/aula07/canva-2.png"
                       ],
-    "0-6-ia":  [
-                   "assets/prints/modulo01/aula07/ia-4.png",
-                   "assets/prints/modulo01/aula07/ia-3.png",
-                   "assets/prints/modulo01/aula07/ia-2.png",
-                   "assets/prints/modulo01/aula07/ia-1.png"
-               ],
+    "0-0-capcut":  [
+                       "assets/prints/modulo01/aula01/instagram-3.png",
+                       "assets/prints/modulo01/aula01/canva-4.png",
+                       "assets/prints/modulo01/aula01/capcut-3.png",
+                       "assets/prints/modulo01/aula01/ia-4.png"
+                   ],
     "4-2-instagram":  [
                           "assets/prints/modulo04/aula02/canva-4.png",
                           "assets/prints/modulo04/aula02/instagram-3.png",
@@ -551,12 +533,24 @@
                    "assets/prints/modulo04/aula08/ia-2.png",
                    "assets/prints/modulo04/aula08/ia-1.png"
                ],
+    "0-2-ia":  [
+                   "assets/prints/modulo01/aula03/ia-1.png",
+                   "assets/prints/modulo01/aula03/ia-2.png",
+                   "assets/prints/modulo01/aula03/ia-3.png",
+                   "assets/prints/modulo01/aula03/ia-4.png"
+               ],
     "4-8-capcut":  [
                        "assets/prints/modulo04/aula08/instagram-4.png",
                        "assets/prints/modulo04/aula08/canva-3.png",
                        "assets/prints/modulo04/aula08/capcut-2.png",
                        "assets/prints/modulo04/aula08/capcut-1.png"
                    ],
+    "2-5-ia":  [
+                   "assets/prints/modulo03/aula06/ia-4.png",
+                   "assets/prints/modulo03/aula06/ia-3.png",
+                   "assets/prints/modulo03/aula06/ia-2.png",
+                   "assets/prints/modulo03/aula06/ia-1.png"
+               ],
     "4-3-canva":  [
                       "assets/prints/modulo04/aula03/capcut-4.png",
                       "assets/prints/modulo04/aula03/capcut-3.png",
@@ -575,12 +569,6 @@
                        "assets/prints/modulo02/aula03/capcut-2.png",
                        "assets/prints/modulo02/aula03/capcut-1.png"
                    ],
-    "4-5-canva":  [
-                      "assets/prints/modulo05/aula06/capcut-4.png",
-                      "assets/prints/modulo05/aula06/capcut-3.png",
-                      "assets/prints/modulo05/aula06/instagram-2.png",
-                      "assets/prints/modulo05/aula06/canva-1.png"
-                  ],
     "1-2-canva":  [
                       "assets/prints/modulo02/aula03/capcut-4.png",
                       "assets/prints/modulo02/aula03/capcut-3.png",
@@ -599,30 +587,24 @@
                           "assets/prints/modulo01/aula08/instagram-1.png",
                           "assets/prints/modulo01/aula08/canva-2.png"
                       ],
-    "0-7-capcut":  [
-                       "assets/prints/modulo01/aula08/instagram-4.png",
-                       "assets/prints/modulo01/aula08/canva-3.png",
-                       "assets/prints/modulo01/aula08/capcut-2.png",
-                       "assets/prints/modulo01/aula08/capcut-1.png"
+    "5-1-capcut":  [
+                       "assets/prints/modulo05/aula01/instagram-4.png",
+                       "assets/prints/modulo05/aula01/canva-3.png",
+                       "assets/prints/modulo05/aula01/capcut-2.png",
+                       "assets/prints/modulo05/aula01/capcut-1.png"
                    ],
-    "2-2-instagram":  [
-                          "assets/prints/modulo02/aula02/canva-4.png",
-                          "assets/prints/modulo02/aula02/instagram-3.png",
-                          "assets/prints/modulo02/aula02/instagram-1.png",
-                          "assets/prints/modulo02/aula02/canva-2.png"
-                      ],
     "0-4-canva":  [
                       "assets/prints/modulo01/aula05/capcut-4.png",
                       "assets/prints/modulo01/aula05/capcut-3.png",
                       "assets/prints/modulo01/aula05/instagram-2.png",
                       "assets/prints/modulo01/aula05/canva-1.png"
                   ],
-    "0-1-capcut":  [
-                       "assets/prints/modulo01/aula02/ia-1.png",
-                       "assets/prints/modulo01/aula02/ia-4.png",
-                       "assets/prints/modulo01/aula02/ia-3.png",
-                       "assets/prints/modulo01/aula02/ia-2.png"
-                   ],
+    "0-0-canva":  [
+                      "assets/prints/modulo01/aula01/instagram-2.png",
+                      "assets/prints/modulo01/aula01/canva-3.png",
+                      "assets/prints/modulo01/aula01/ia-2.png",
+                      "assets/prints/modulo01/aula01/capcut-2.png"
+                  ],
     "1-7-canva":  [
                       "assets/prints/modulo02/aula08/capcut-4.png",
                       "assets/prints/modulo02/aula08/capcut-3.png",
@@ -635,12 +617,6 @@
                    "assets/prints/modulo01/aula06/ia-2.png",
                    "assets/prints/modulo01/aula06/ia-1.png"
                ],
-    "0-0-canva":  [
-                      "assets/prints/modulo01/aula01/instagram-2.png",
-                      "assets/prints/modulo01/aula01/canva-3.png",
-                      "assets/prints/modulo01/aula01/ia-2.png",
-                      "assets/prints/modulo01/aula01/capcut-2.png"
-                  ],
     "2-5-capcut":  [
                        "assets/prints/modulo03/aula06/instagram-4.png",
                        "assets/prints/modulo03/aula06/canva-3.png",
@@ -648,10 +624,10 @@
                        "assets/prints/modulo03/aula06/capcut-1.png"
                    ],
     "1-4-capcut":  [
-                       "assets/prints/modulo01/aula04/capcut-1.png",
-                       "assets/prints/modulo01/aula04/capcut-2.png",
-                       "assets/prints/modulo01/aula04/capcut-3.png",
-                       "assets/prints/modulo01/aula04/capcut-4.png"
+                       "assets/prints/modulo01/aula04/instagram-3.png",
+                       "assets/prints/modulo01/aula04/canva-4.png",
+                       "assets/prints/modulo01/aula04/capcut-4.png",
+                       "assets/prints/modulo01/aula04/ia-2.png"
                    ],
     "2-3-instagram":  [
                           "assets/prints/modulo02/aula03/canva-4.png",
@@ -660,12 +636,6 @@
                           "assets/prints/modulo02/aula03/canva-2.png"
                       ],
     "2-4-ia":  [
-                   "assets/prints/modulo03/aula05/ia-4.png",
-                   "assets/prints/modulo03/aula05/ia-3.png",
-                   "assets/prints/modulo03/aula05/ia-2.png",
-                   "assets/prints/modulo03/aula05/ia-1.png"
-               ],
-    "3-5-ia":  [
                    "assets/prints/modulo03/aula05/ia-4.png",
                    "assets/prints/modulo03/aula05/ia-3.png",
                    "assets/prints/modulo03/aula05/ia-2.png",
@@ -683,6 +653,12 @@
                       "assets/prints/modulo02/aula07/instagram-2.png",
                       "assets/prints/modulo02/aula07/canva-1.png"
                   ],
+    "2-4-capcut":  [
+                       "assets/prints/modulo03/aula05/instagram-4.png",
+                       "assets/prints/modulo03/aula05/canva-3.png",
+                       "assets/prints/modulo03/aula05/capcut-2.png",
+                       "assets/prints/modulo03/aula05/capcut-1.png"
+                   ],
     "3-7-canva":  [
                       "assets/prints/modulo04/aula08/capcut-4.png",
                       "assets/prints/modulo04/aula08/capcut-3.png",
@@ -695,12 +671,12 @@
                        "assets/prints/modulo02/aula08/capcut-2.png",
                        "assets/prints/modulo02/aula08/capcut-1.png"
                    ],
-    "4-5-instagram":  [
-                          "assets/prints/modulo05/aula06/canva-4.png",
-                          "assets/prints/modulo05/aula06/instagram-3.png",
-                          "assets/prints/modulo05/aula06/instagram-1.png",
-                          "assets/prints/modulo05/aula06/canva-2.png"
-                      ],
+    "4-5-canva":  [
+                      "assets/prints/modulo05/aula06/capcut-4.png",
+                      "assets/prints/modulo05/aula06/capcut-3.png",
+                      "assets/prints/modulo05/aula06/instagram-2.png",
+                      "assets/prints/modulo05/aula06/canva-1.png"
+                  ],
     "1-7-ia":  [
                    "assets/prints/modulo02/aula08/ia-4.png",
                    "assets/prints/modulo02/aula08/ia-3.png",
@@ -713,12 +689,24 @@
                        "assets/prints/modulo02/aula06/capcut-2.png",
                        "assets/prints/modulo02/aula06/capcut-1.png"
                    ],
+    "2-0-ia":  [
+                   "assets/prints/modulo03/aula01/ia-4.png",
+                   "assets/prints/modulo03/aula01/ia-3.png",
+                   "assets/prints/modulo03/aula01/ia-2.png",
+                   "assets/prints/modulo03/aula01/ia-1.png"
+               ],
     "5-5-instagram":  [
                           "assets/prints/modulo05/aula05/canva-4.png",
                           "assets/prints/modulo05/aula05/instagram-3.png",
                           "assets/prints/modulo05/aula05/instagram-1.png",
                           "assets/prints/modulo05/aula05/canva-2.png"
                       ],
+    "1-8-canva":  [
+                      "assets/prints/modulo01/aula08/capcut-4.png",
+                      "assets/prints/modulo01/aula08/capcut-3.png",
+                      "assets/prints/modulo01/aula08/instagram-2.png",
+                      "assets/prints/modulo01/aula08/canva-1.png"
+                  ],
     "0-2-canva":  [
                       "assets/prints/modulo01/aula03/canva-1.png",
                       "assets/prints/modulo01/aula03/canva-2.png",
@@ -743,12 +731,12 @@
                       "assets/prints/modulo05/aula05/instagram-2.png",
                       "assets/prints/modulo05/aula05/canva-1.png"
                   ],
-    "2-6-capcut":  [
-                       "assets/prints/modulo03/aula07/instagram-4.png",
-                       "assets/prints/modulo03/aula07/canva-3.png",
-                       "assets/prints/modulo03/aula07/capcut-2.png",
-                       "assets/prints/modulo03/aula07/capcut-1.png"
-                   ],
+    "1-1-instagram":  [
+                          "assets/prints/modulo02/aula02/canva-4.png",
+                          "assets/prints/modulo02/aula02/instagram-3.png",
+                          "assets/prints/modulo02/aula02/instagram-1.png",
+                          "assets/prints/modulo02/aula02/canva-2.png"
+                      ],
     "2-3-capcut":  [
                        "assets/prints/modulo02/aula03/instagram-4.png",
                        "assets/prints/modulo02/aula03/canva-3.png",
@@ -791,18 +779,12 @@
                    "assets/prints/modulo04/aula02/ia-2.png",
                    "assets/prints/modulo04/aula02/ia-1.png"
                ],
-    "3-0-instagram":  [
-                          "assets/prints/modulo04/aula01/canva-4.png",
-                          "assets/prints/modulo04/aula01/instagram-3.png",
-                          "assets/prints/modulo04/aula01/instagram-1.png",
-                          "assets/prints/modulo04/aula01/canva-2.png"
-                      ],
-    "1-1-instagram":  [
-                          "assets/prints/modulo02/aula02/canva-4.png",
-                          "assets/prints/modulo02/aula02/instagram-3.png",
-                          "assets/prints/modulo02/aula02/instagram-1.png",
-                          "assets/prints/modulo02/aula02/canva-2.png"
-                      ],
+    "5-8-ia":  [
+                   "assets/prints/modulo05/aula08/ia-4.png",
+                   "assets/prints/modulo05/aula08/ia-3.png",
+                   "assets/prints/modulo05/aula08/ia-2.png",
+                   "assets/prints/modulo05/aula08/ia-1.png"
+               ],
     "2-5-canva":  [
                       "assets/prints/modulo03/aula06/capcut-4.png",
                       "assets/prints/modulo03/aula06/capcut-3.png",
@@ -887,6 +869,12 @@
                       "assets/prints/modulo02/aula08/instagram-2.png",
                       "assets/prints/modulo02/aula08/canva-1.png"
                   ],
+    "1-4-canva":  [
+                      "assets/prints/modulo01/aula04/canva-1.png",
+                      "assets/prints/modulo01/aula04/capcut-1.png",
+                      "assets/prints/modulo01/aula04/capcut-2.png",
+                      "assets/prints/modulo01/aula04/ia-4.png"
+                  ],
     "4-6-canva":  [
                       "assets/prints/modulo05/aula07/capcut-4.png",
                       "assets/prints/modulo05/aula07/capcut-3.png",
@@ -923,18 +911,12 @@
                       "assets/prints/modulo02/aula06/instagram-2.png",
                       "assets/prints/modulo02/aula06/canva-1.png"
                   ],
-    "3-8-instagram":  [
-                          "assets/prints/modulo03/aula08/canva-4.png",
-                          "assets/prints/modulo03/aula08/instagram-3.png",
-                          "assets/prints/modulo03/aula08/instagram-1.png",
-                          "assets/prints/modulo03/aula08/canva-2.png"
-                      ],
-    "3-3-canva":  [
-                      "assets/prints/modulo03/aula03/capcut-4.png",
-                      "assets/prints/modulo03/aula03/capcut-3.png",
-                      "assets/prints/modulo03/aula03/instagram-2.png",
-                      "assets/prints/modulo03/aula03/canva-1.png"
-                  ],
+    "4-2-capcut":  [
+                       "assets/prints/modulo04/aula02/instagram-4.png",
+                       "assets/prints/modulo04/aula02/canva-3.png",
+                       "assets/prints/modulo04/aula02/capcut-2.png",
+                       "assets/prints/modulo04/aula02/capcut-1.png"
+                   ],
     "0-1-ia":  [
                    "assets/prints/modulo01/aula02/canva-3.png",
                    "assets/prints/modulo01/aula02/instagram-4.png",
@@ -959,11 +941,11 @@
                       "assets/prints/modulo04/aula01/instagram-2.png",
                       "assets/prints/modulo04/aula01/canva-1.png"
                   ],
-    "4-0-capcut":  [
-                       "assets/prints/modulo05/aula01/instagram-4.png",
-                       "assets/prints/modulo05/aula01/canva-3.png",
-                       "assets/prints/modulo05/aula01/capcut-2.png",
-                       "assets/prints/modulo05/aula01/capcut-1.png"
+    "4-4-capcut":  [
+                       "assets/prints/modulo05/aula05/instagram-4.png",
+                       "assets/prints/modulo05/aula05/canva-3.png",
+                       "assets/prints/modulo05/aula05/capcut-2.png",
+                       "assets/prints/modulo05/aula05/capcut-1.png"
                    ],
     "5-3-capcut":  [
                        "assets/prints/modulo05/aula03/instagram-4.png",
@@ -971,11 +953,17 @@
                        "assets/prints/modulo05/aula03/capcut-2.png",
                        "assets/prints/modulo05/aula03/capcut-1.png"
                    ],
-    "4-1-ia":  [
-                   "assets/prints/modulo04/aula01/ia-4.png",
-                   "assets/prints/modulo04/aula01/ia-3.png",
-                   "assets/prints/modulo04/aula01/ia-2.png",
-                   "assets/prints/modulo04/aula01/ia-1.png"
+    "3-5-instagram":  [
+                          "assets/prints/modulo03/aula05/canva-4.png",
+                          "assets/prints/modulo03/aula05/instagram-3.png",
+                          "assets/prints/modulo03/aula05/instagram-1.png",
+                          "assets/prints/modulo03/aula05/canva-2.png"
+                      ],
+    "4-3-ia":  [
+                   "assets/prints/modulo04/aula03/ia-4.png",
+                   "assets/prints/modulo04/aula03/ia-3.png",
+                   "assets/prints/modulo04/aula03/ia-2.png",
+                   "assets/prints/modulo04/aula03/ia-1.png"
                ],
     "5-5-capcut":  [
                        "assets/prints/modulo05/aula05/instagram-4.png",
@@ -983,12 +971,12 @@
                        "assets/prints/modulo05/aula05/capcut-2.png",
                        "assets/prints/modulo05/aula05/capcut-1.png"
                    ],
-    "5-1-capcut":  [
-                       "assets/prints/modulo05/aula01/instagram-4.png",
-                       "assets/prints/modulo05/aula01/canva-3.png",
-                       "assets/prints/modulo05/aula01/capcut-2.png",
-                       "assets/prints/modulo05/aula01/capcut-1.png"
-                   ],
+    "3-4-canva":  [
+                      "assets/prints/modulo04/aula05/capcut-4.png",
+                      "assets/prints/modulo04/aula05/capcut-3.png",
+                      "assets/prints/modulo04/aula05/instagram-2.png",
+                      "assets/prints/modulo04/aula05/canva-1.png"
+                  ],
     "4-4-ia":  [
                    "assets/prints/modulo05/aula05/ia-4.png",
                    "assets/prints/modulo05/aula05/ia-3.png",
@@ -1037,18 +1025,24 @@
                           "assets/prints/modulo05/aula02/instagram-1.png",
                           "assets/prints/modulo05/aula02/canva-2.png"
                       ],
+    "2-4-canva":  [
+                      "assets/prints/modulo03/aula05/capcut-4.png",
+                      "assets/prints/modulo03/aula05/capcut-3.png",
+                      "assets/prints/modulo03/aula05/instagram-2.png",
+                      "assets/prints/modulo03/aula05/canva-1.png"
+                  ],
     "1-8-capcut":  [
                        "assets/prints/modulo01/aula08/instagram-4.png",
                        "assets/prints/modulo01/aula08/canva-3.png",
                        "assets/prints/modulo01/aula08/capcut-2.png",
                        "assets/prints/modulo01/aula08/capcut-1.png"
                    ],
-    "1-2-instagram":  [
-                          "assets/prints/modulo02/aula03/canva-4.png",
-                          "assets/prints/modulo02/aula03/instagram-3.png",
-                          "assets/prints/modulo02/aula03/instagram-1.png",
-                          "assets/prints/modulo02/aula03/canva-2.png"
-                      ],
+    "3-5-ia":  [
+                   "assets/prints/modulo03/aula05/ia-4.png",
+                   "assets/prints/modulo03/aula05/ia-3.png",
+                   "assets/prints/modulo03/aula05/ia-2.png",
+                   "assets/prints/modulo03/aula05/ia-1.png"
+               ],
     "3-0-ia":  [
                    "assets/prints/modulo04/aula01/ia-4.png",
                    "assets/prints/modulo04/aula01/ia-3.png",
@@ -1057,33 +1051,33 @@
                ],
     "0-3-canva":  [
                       "assets/prints/modulo01/aula04/canva-1.png",
-                      "assets/prints/modulo01/aula04/canva-2.png",
-                      "assets/prints/modulo01/aula04/canva-3.png",
-                      "assets/prints/modulo01/aula04/canva-4.png"
+                      "assets/prints/modulo01/aula04/capcut-1.png",
+                      "assets/prints/modulo01/aula04/capcut-2.png",
+                      "assets/prints/modulo01/aula04/ia-4.png"
                   ],
-    "1-4-canva":  [
-                      "assets/prints/modulo01/aula04/canva-1.png",
-                      "assets/prints/modulo01/aula04/canva-2.png",
-                      "assets/prints/modulo01/aula04/canva-3.png",
-                      "assets/prints/modulo01/aula04/canva-4.png"
-                  ],
+    "0-3-capcut":  [
+                       "assets/prints/modulo01/aula04/instagram-3.png",
+                       "assets/prints/modulo01/aula04/canva-4.png",
+                       "assets/prints/modulo01/aula04/capcut-4.png",
+                       "assets/prints/modulo01/aula04/ia-2.png"
+                   ],
     "2-4-instagram":  [
                           "assets/prints/modulo03/aula05/canva-4.png",
                           "assets/prints/modulo03/aula05/instagram-3.png",
                           "assets/prints/modulo03/aula05/instagram-1.png",
                           "assets/prints/modulo03/aula05/canva-2.png"
                       ],
-    "5-3-canva":  [
-                      "assets/prints/modulo05/aula03/capcut-4.png",
-                      "assets/prints/modulo05/aula03/capcut-3.png",
-                      "assets/prints/modulo05/aula03/instagram-2.png",
-                      "assets/prints/modulo05/aula03/canva-1.png"
-                  ],
-    "5-7-canva":  [
-                      "assets/prints/modulo05/aula07/capcut-4.png",
-                      "assets/prints/modulo05/aula07/capcut-3.png",
-                      "assets/prints/modulo05/aula07/instagram-2.png",
-                      "assets/prints/modulo05/aula07/canva-1.png"
+    "3-0-instagram":  [
+                          "assets/prints/modulo04/aula01/canva-4.png",
+                          "assets/prints/modulo04/aula01/instagram-3.png",
+                          "assets/prints/modulo04/aula01/instagram-1.png",
+                          "assets/prints/modulo04/aula01/canva-2.png"
+                      ],
+    "3-6-canva":  [
+                      "assets/prints/modulo04/aula07/capcut-4.png",
+                      "assets/prints/modulo04/aula07/capcut-3.png",
+                      "assets/prints/modulo04/aula07/instagram-2.png",
+                      "assets/prints/modulo04/aula07/canva-1.png"
                   ],
     "3-2-canva":  [
                       "assets/prints/modulo03/aula02/capcut-4.png",
@@ -1091,17 +1085,11 @@
                       "assets/prints/modulo03/aula02/instagram-2.png",
                       "assets/prints/modulo03/aula02/canva-1.png"
                   ],
-    "4-3-ia":  [
-                   "assets/prints/modulo04/aula03/ia-4.png",
-                   "assets/prints/modulo04/aula03/ia-3.png",
-                   "assets/prints/modulo04/aula03/ia-2.png",
-                   "assets/prints/modulo04/aula03/ia-1.png"
-               ],
-    "1-8-canva":  [
-                      "assets/prints/modulo01/aula08/capcut-4.png",
-                      "assets/prints/modulo01/aula08/capcut-3.png",
-                      "assets/prints/modulo01/aula08/instagram-2.png",
-                      "assets/prints/modulo01/aula08/canva-1.png"
+    "5-7-canva":  [
+                      "assets/prints/modulo05/aula07/capcut-4.png",
+                      "assets/prints/modulo05/aula07/capcut-3.png",
+                      "assets/prints/modulo05/aula07/instagram-2.png",
+                      "assets/prints/modulo05/aula07/canva-1.png"
                   ],
     "4-3-capcut":  [
                        "assets/prints/modulo04/aula03/instagram-4.png",
@@ -1109,29 +1097,35 @@
                        "assets/prints/modulo04/aula03/capcut-2.png",
                        "assets/prints/modulo04/aula03/capcut-1.png"
                    ],
-    "5-8-ia":  [
-                   "assets/prints/modulo05/aula08/ia-4.png",
-                   "assets/prints/modulo05/aula08/ia-3.png",
-                   "assets/prints/modulo05/aula08/ia-2.png",
-                   "assets/prints/modulo05/aula08/ia-1.png"
-               ],
-    "1-6-capcut":  [
-                       "assets/prints/modulo02/aula07/instagram-4.png",
-                       "assets/prints/modulo02/aula07/canva-3.png",
-                       "assets/prints/modulo02/aula07/capcut-2.png",
-                       "assets/prints/modulo02/aula07/capcut-1.png"
+    "5-8-canva":  [
+                      "assets/prints/modulo05/aula08/capcut-4.png",
+                      "assets/prints/modulo05/aula08/capcut-3.png",
+                      "assets/prints/modulo05/aula08/instagram-2.png",
+                      "assets/prints/modulo05/aula08/canva-1.png"
+                  ],
+    "4-0-capcut":  [
+                       "assets/prints/modulo05/aula01/instagram-4.png",
+                       "assets/prints/modulo05/aula01/canva-3.png",
+                       "assets/prints/modulo05/aula01/capcut-2.png",
+                       "assets/prints/modulo05/aula01/capcut-1.png"
                    ],
+    "2-1-instagram":  [
+                          "assets/prints/modulo03/aula02/canva-4.png",
+                          "assets/prints/modulo03/aula02/instagram-3.png",
+                          "assets/prints/modulo03/aula02/instagram-1.png",
+                          "assets/prints/modulo03/aula02/canva-2.png"
+                      ],
     "4-1-capcut":  [
                        "assets/prints/modulo04/aula01/instagram-4.png",
                        "assets/prints/modulo04/aula01/canva-3.png",
                        "assets/prints/modulo04/aula01/capcut-2.png",
                        "assets/prints/modulo04/aula01/capcut-1.png"
                    ],
-    "2-5-ia":  [
-                   "assets/prints/modulo03/aula06/ia-4.png",
-                   "assets/prints/modulo03/aula06/ia-3.png",
-                   "assets/prints/modulo03/aula06/ia-2.png",
-                   "assets/prints/modulo03/aula06/ia-1.png"
+    "0-6-ia":  [
+                   "assets/prints/modulo01/aula07/ia-4.png",
+                   "assets/prints/modulo01/aula07/ia-3.png",
+                   "assets/prints/modulo01/aula07/ia-2.png",
+                   "assets/prints/modulo01/aula07/ia-1.png"
                ],
     "0-2-capcut":  [
                        "assets/prints/modulo01/aula03/capcut-1.png",
@@ -1145,30 +1139,36 @@
                       "assets/prints/modulo02/aula01/instagram-2.png",
                       "assets/prints/modulo02/aula01/canva-1.png"
                   ],
-    "2-0-ia":  [
-                   "assets/prints/modulo03/aula01/ia-4.png",
-                   "assets/prints/modulo03/aula01/ia-3.png",
-                   "assets/prints/modulo03/aula01/ia-2.png",
-                   "assets/prints/modulo03/aula01/ia-1.png"
-               ],
+    "3-3-canva":  [
+                      "assets/prints/modulo03/aula03/capcut-4.png",
+                      "assets/prints/modulo03/aula03/capcut-3.png",
+                      "assets/prints/modulo03/aula03/instagram-2.png",
+                      "assets/prints/modulo03/aula03/canva-1.png"
+                  ],
     "1-2-ia":  [
                    "assets/prints/modulo02/aula03/ia-4.png",
                    "assets/prints/modulo02/aula03/ia-3.png",
                    "assets/prints/modulo02/aula03/ia-2.png",
                    "assets/prints/modulo02/aula03/ia-1.png"
                ],
-    "2-1-instagram":  [
-                          "assets/prints/modulo03/aula02/canva-4.png",
-                          "assets/prints/modulo03/aula02/instagram-3.png",
-                          "assets/prints/modulo03/aula02/instagram-1.png",
-                          "assets/prints/modulo03/aula02/canva-2.png"
-                      ],
-    "5-8-instagram":  [
-                          "assets/prints/modulo05/aula08/canva-4.png",
-                          "assets/prints/modulo05/aula08/instagram-3.png",
-                          "assets/prints/modulo05/aula08/instagram-1.png",
-                          "assets/prints/modulo05/aula08/canva-2.png"
-                      ],
+    "1-6-capcut":  [
+                       "assets/prints/modulo02/aula07/instagram-4.png",
+                       "assets/prints/modulo02/aula07/canva-3.png",
+                       "assets/prints/modulo02/aula07/capcut-2.png",
+                       "assets/prints/modulo02/aula07/capcut-1.png"
+                   ],
+    "5-7-ia":  [
+                   "assets/prints/modulo05/aula07/ia-4.png",
+                   "assets/prints/modulo05/aula07/ia-3.png",
+                   "assets/prints/modulo05/aula07/ia-2.png",
+                   "assets/prints/modulo05/aula07/ia-1.png"
+               ],
+    "5-6-capcut":  [
+                       "assets/prints/modulo05/aula06/instagram-4.png",
+                       "assets/prints/modulo05/aula06/canva-3.png",
+                       "assets/prints/modulo05/aula06/capcut-2.png",
+                       "assets/prints/modulo05/aula06/capcut-1.png"
+                   ],
     "2-1-ia":  [
                    "assets/prints/modulo03/aula02/ia-4.png",
                    "assets/prints/modulo03/aula02/ia-3.png",
@@ -1181,12 +1181,12 @@
                       "assets/prints/modulo02/aula07/instagram-2.png",
                       "assets/prints/modulo02/aula07/canva-1.png"
                   ],
-    "1-4-instagram":  [
-                          "assets/prints/modulo01/aula04/instagram-1.png",
-                          "assets/prints/modulo01/aula04/instagram-2.png",
-                          "assets/prints/modulo01/aula04/instagram-3.png",
-                          "assets/prints/modulo01/aula04/instagram-4.png"
-                      ],
+    "2-2-canva":  [
+                      "assets/prints/modulo02/aula02/capcut-4.png",
+                      "assets/prints/modulo02/aula02/capcut-3.png",
+                      "assets/prints/modulo02/aula02/instagram-2.png",
+                      "assets/prints/modulo02/aula02/canva-1.png"
+                  ],
     "4-7-instagram":  [
                           "assets/prints/modulo04/aula07/canva-4.png",
                           "assets/prints/modulo04/aula07/instagram-3.png",
@@ -1194,17 +1194,17 @@
                           "assets/prints/modulo04/aula07/canva-2.png"
                       ],
     "0-3-ia":  [
-                   "assets/prints/modulo01/aula04/ia-1.png",
-                   "assets/prints/modulo01/aula04/ia-2.png",
-                   "assets/prints/modulo01/aula04/ia-3.png",
-                   "assets/prints/modulo01/aula04/ia-4.png"
+                   "assets/prints/modulo01/aula04/instagram-1.png",
+                   "assets/prints/modulo01/aula04/canva-3.png",
+                   "assets/prints/modulo01/aula04/capcut-3.png",
+                   "assets/prints/modulo01/aula04/ia-3.png"
                ],
-    "2-4-capcut":  [
-                       "assets/prints/modulo03/aula05/instagram-4.png",
-                       "assets/prints/modulo03/aula05/canva-3.png",
-                       "assets/prints/modulo03/aula05/capcut-2.png",
-                       "assets/prints/modulo03/aula05/capcut-1.png"
-                   ],
+    "0-7-ia":  [
+                   "assets/prints/modulo01/aula08/ia-4.png",
+                   "assets/prints/modulo01/aula08/ia-3.png",
+                   "assets/prints/modulo01/aula08/ia-2.png",
+                   "assets/prints/modulo01/aula08/ia-1.png"
+               ],
     "5-6-ia":  [
                    "assets/prints/modulo05/aula06/ia-4.png",
                    "assets/prints/modulo05/aula06/ia-3.png",
@@ -1223,23 +1223,23 @@
                           "assets/prints/modulo03/aula01/instagram-1.png",
                           "assets/prints/modulo03/aula01/canva-2.png"
                       ],
-    "3-6-ia":  [
-                   "assets/prints/modulo04/aula07/ia-4.png",
-                   "assets/prints/modulo04/aula07/ia-3.png",
-                   "assets/prints/modulo04/aula07/ia-2.png",
-                   "assets/prints/modulo04/aula07/ia-1.png"
-               ],
+    "2-2-capcut":  [
+                       "assets/prints/modulo02/aula02/instagram-4.png",
+                       "assets/prints/modulo02/aula02/canva-3.png",
+                       "assets/prints/modulo02/aula02/capcut-2.png",
+                       "assets/prints/modulo02/aula02/capcut-1.png"
+                   ],
     "5-8-capcut":  [
                        "assets/prints/modulo05/aula08/instagram-4.png",
                        "assets/prints/modulo05/aula08/canva-3.png",
                        "assets/prints/modulo05/aula08/capcut-2.png",
                        "assets/prints/modulo05/aula08/capcut-1.png"
                    ],
-    "0-2-ia":  [
-                   "assets/prints/modulo01/aula03/ia-1.png",
-                   "assets/prints/modulo01/aula03/ia-2.png",
-                   "assets/prints/modulo01/aula03/ia-3.png",
-                   "assets/prints/modulo01/aula03/ia-4.png"
+    "3-6-ia":  [
+                   "assets/prints/modulo04/aula07/ia-4.png",
+                   "assets/prints/modulo04/aula07/ia-3.png",
+                   "assets/prints/modulo04/aula07/ia-2.png",
+                   "assets/prints/modulo04/aula07/ia-1.png"
                ],
     "0-0-ia":  [
                    "assets/prints/modulo01/aula01/instagram-4.png",
