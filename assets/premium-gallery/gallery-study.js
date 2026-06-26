@@ -1,4 +1,6 @@
 ﻿(function () {
+  const manifest = window.GALLERY_MANIFEST || {};
+
   const state = {
     app: "",
     title: "",
@@ -8,21 +10,19 @@
     scale: 1,
     x: 0,
     y: 0,
+    rotate: 0,
     dragging: false,
     sx: 0,
     sy: 0,
     ox: 0,
-    oy: 0,
-    rotate: 0
+    oy: 0
   };
-
-  const manifest = window.GALLERY_MANIFEST || {};
 
   function $(id) {
     return document.getElementById(id);
   }
 
-  function getParams() {
+  function params() {
     const url = new URL(window.location.href);
     return {
       m: Number(url.searchParams.get("m") || 0),
@@ -30,18 +30,11 @@
     };
   }
 
-  function detectApp(text) {
-    const t = String(text || "").toLowerCase();
-
-    if (t.includes("instagram") || t.includes("insta")) return "instagram";
-    if (t.includes("canva")) return "canva";
-    if (t.includes("capcut")) return "capcut";
-    if (t.includes("ia") || t.includes("prompt")) return "ia";
-
-    return "";
+  function lower(text) {
+    return String(text || "").toLowerCase();
   }
 
-  function label(app) {
+  function appLabel(app) {
     return {
       instagram: "Instagram",
       canva: "Canva",
@@ -50,8 +43,20 @@
     }[app] || "Galeria";
   }
 
+  function detectApps(text) {
+    const t = lower(text);
+    const apps = [];
+
+    if (t.includes("instagram") || t.includes("insta")) apps.push("instagram");
+    if (t.includes("canva")) apps.push("canva");
+    if (t.includes("capcut")) apps.push("capcut");
+    if (t.includes("ia") || t.includes("prompt")) apps.push("ia");
+
+    return apps;
+  }
+
   function getImages(app) {
-    const p = getParams();
+    const p = params();
 
     const keys = [
       `${p.m}-${p.l}-${app}`,
@@ -65,6 +70,50 @@
     }
 
     return [];
+  }
+
+  function findCorrectCard(target) {
+    let el = target;
+
+    while (el && el !== document.body) {
+      const text = el.innerText || "";
+      const apps = detectApps(text);
+      const rect = el.getBoundingClientRect();
+
+      const looksLikeCard =
+        apps.length === 1 &&
+        rect.width >= 180 &&
+        rect.width <= 460 &&
+        rect.height >= 120 &&
+        rect.height <= 430 &&
+        lower(text).includes("clique");
+
+      if (looksLikeCard) {
+        return {
+          card: el,
+          app: apps[0]
+        };
+      }
+
+      el = el.parentElement;
+    }
+
+    return null;
+  }
+
+  function getTitle(card, app) {
+    const heading = card.querySelector("h2,h3,h4,strong");
+
+    if (heading && heading.textContent.trim()) {
+      return heading.textContent.trim();
+    }
+
+    const lines = String(card.innerText || "")
+      .split("\n")
+      .map(v => v.trim())
+      .filter(Boolean);
+
+    return lines[0] || appLabel(app);
   }
 
   function ensureModal() {
@@ -234,12 +283,12 @@
     const images = getImages(app);
 
     if (!images.length) {
-      alert("Não encontrei as imagens desta aula. Verifique a pasta assets/prints.");
+      alert("Não encontrei as imagens desta aula para " + appLabel(app) + ".");
       return;
     }
 
     state.app = app;
-    state.title = title || label(app);
+    state.title = title || appLabel(app);
     state.images = images;
     state.current = 0;
     state.selected = new Set([0]);
@@ -248,9 +297,10 @@
     state.y = 0;
     state.rotate = 0;
 
-    $("gpKicker").textContent = label(app).toUpperCase();
+    $("gpKicker").textContent = appLabel(app).toUpperCase();
     $("gpTitle").textContent = state.title;
     $("gpOverlay").classList.remove("gp-hidden");
+    document.body.style.overflow = "hidden";
 
     renderThumbs();
     renderMain();
@@ -258,6 +308,7 @@
 
   function closeGallery() {
     $("gpOverlay").classList.add("gp-hidden");
+    document.body.style.overflow = "";
   }
 
   function renderMain() {
@@ -290,6 +341,7 @@
 
       thumb.onclick = function (e) {
         if (e.target.closest(".gp-check")) {
+          e.preventDefault();
           e.stopPropagation();
           toggleSelection(index);
           return;
@@ -421,39 +473,23 @@
     }
   }
 
-  function bindCards() {
-    const cards = Array.from(document.querySelectorAll("div, article, section, button, a"));
+  document.addEventListener("click", function (event) {
+    if (event.target.closest("#gpOverlay")) return;
 
-    cards.forEach(card => {
-      const text = String(card.innerText || "");
-      const lower = text.toLowerCase();
+    const found = findCorrectCard(event.target);
+    if (!found) return;
 
-      if (!lower.includes("clique para abrir")) return;
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
 
-      const app = detectApp(text);
-      if (!app) return;
-
-      card.style.cursor = "pointer";
-
-      card.addEventListener("click", function (event) {
-        event.preventDefault();
-        event.stopPropagation();
-
-        const heading = card.querySelector("h2,h3,h4,strong");
-        const title = heading && heading.textContent.trim()
-          ? heading.textContent.trim()
-          : label(app);
-
-        openGallery(app, title);
-      }, true);
-    });
-  }
-
-  document.addEventListener("DOMContentLoaded", bindCards);
+    const title = getTitle(found.card, found.app);
+    openGallery(found.app, title);
+  }, true);
 
   window.openGallery = function (title) {
-    const app = detectApp(title) || "instagram";
-    openGallery(app, title);
+    const apps = detectApps(title);
+    openGallery(apps[0] || "instagram", title);
   };
 
   window.openPremiumGallery = window.openGallery;
