@@ -22,7 +22,7 @@
     return document.getElementById(id);
   }
 
-  function params() {
+  function getParams() {
     const url = new URL(window.location.href);
     return {
       m: Number(url.searchParams.get("m") || 0),
@@ -41,7 +41,7 @@
     return "";
   }
 
-  function appLabel(app) {
+  function label(app) {
     return {
       instagram: "Instagram",
       canva: "Canva",
@@ -51,7 +51,7 @@
   }
 
   function getImages(app) {
-    const p = params();
+    const p = getParams();
 
     const keys = [
       `${p.m}-${p.l}-${app}`,
@@ -67,18 +67,6 @@
     return [];
   }
 
-  function getTitle(card, app) {
-    const h = card.querySelector("h2,h3,h4,strong");
-    if (h && h.textContent.trim()) return h.textContent.trim();
-
-    const lines = String(card.innerText || "")
-      .split("\n")
-      .map(v => v.trim())
-      .filter(Boolean);
-
-    return lines[0] || appLabel(app);
-  }
-
   function ensureModal() {
     if ($("gpOverlay")) return;
 
@@ -89,16 +77,13 @@
             <div>
               <div id="gpKicker" class="gp-kicker">Galeria</div>
               <h2 id="gpTitle" class="gp-title">Galeria</h2>
-              <p class="gp-subtitle">
-                Clique na imagem principal para estudar com zoom. Arraste para navegar nos detalhes.
-              </p>
+              <p class="gp-subtitle">Clique na imagem principal para estudar com zoom. Arraste para navegar nos detalhes.</p>
             </div>
 
             <div class="gp-toolbar">
               <button class="gp-btn" id="gpZoomOut" type="button">−</button>
               <button class="gp-btn" id="gpZoomIn" type="button">+</button>
               <button class="gp-btn" id="gpFit" type="button">Ajustar</button>
-              <button class="gp-btn" id="gp100" type="button">100%</button>
               <button class="gp-btn" id="gp200" type="button">200%</button>
               <button class="gp-btn" id="gpRotate" type="button">Girar</button>
               <button class="gp-btn" id="gpOpen" type="button">Abrir</button>
@@ -134,9 +119,9 @@
 
               <div class="gp-study-box">
                 <strong>Modo estudo:</strong><br>
-                • Clique na imagem grande para dar zoom.<br>
-                • Arraste a imagem ampliada para ler detalhes.<br>
-                • Use 100%, 200%, girar e abrir para estudar melhor.
+                • Clique na imagem grande para aproximar.<br>
+                • Arraste com zoom para ler detalhes.<br>
+                • Use 200%, Girar, Abrir e Baixar para estudar melhor.
               </div>
 
               <div class="gp-tools">
@@ -149,7 +134,7 @@
           </main>
 
           <footer class="gp-footer">
-            <strong>Atalhos:</strong> ESC fecha · setas navegam · clique na imagem amplia · arraste move · mouse ajusta zoom
+            <strong>Atalhos:</strong> ESC fecha · setas navegam · clique na imagem amplia · arraste move · duplo clique alterna zoom
           </footer>
         </div>
       </div>
@@ -163,10 +148,9 @@
     $("gpCloseSoft").onclick = closeGallery;
     $("gpPrev").onclick = () => move(-1);
     $("gpNext").onclick = () => move(1);
-    $("gpZoomIn").onclick = () => setZoom(state.scale + 0.25);
-    $("gpZoomOut").onclick = () => setZoom(state.scale - 0.25);
+    $("gpZoomIn").onclick = () => setZoom(state.scale + .25);
+    $("gpZoomOut").onclick = () => setZoom(state.scale - .25);
     $("gpFit").onclick = fitImage;
-    $("gp100").onclick = () => setZoom(1);
     $("gp200").onclick = () => setZoom(2);
     $("gpRotate").onclick = rotateImage;
     $("gpOpen").onclick = openCurrent;
@@ -180,44 +164,40 @@
     const main = $("gpMain");
 
     main.onclick = function () {
-      if (state.scale <= 1) {
-        setZoom(1.8);
-      }
+      if (state.scale <= 1) setZoom(1.8);
     };
 
-    main.ondblclick = function (event) {
-      event.preventDefault();
-      if (state.scale <= 1) setZoom(2.5);
-      else fitImage();
+    main.ondblclick = function (e) {
+      e.preventDefault();
+      state.scale <= 1 ? setZoom(2.5) : fitImage();
     };
 
-    main.onwheel = function (event) {
-      event.preventDefault();
-      const delta = event.deltaY > 0 ? -0.18 : 0.18;
-      setZoom(state.scale + delta);
+    main.onwheel = function (e) {
+      e.preventDefault();
+      setZoom(state.scale + (e.deltaY > 0 ? -.18 : .18));
     };
 
-    main.onpointerdown = function (event) {
+    main.onpointerdown = function (e) {
       if (state.scale <= 1) return;
 
       state.dragging = true;
-      state.sx = event.clientX;
-      state.sy = event.clientY;
+      state.sx = e.clientX;
+      state.sy = e.clientY;
       state.ox = state.x;
       state.oy = state.y;
 
       main.classList.add("dragging");
 
       try {
-        main.setPointerCapture(event.pointerId);
+        main.setPointerCapture(e.pointerId);
       } catch (_) {}
     };
 
-    main.onpointermove = function (event) {
+    main.onpointermove = function (e) {
       if (!state.dragging) return;
 
-      state.x = state.ox + event.clientX - state.sx;
-      state.y = state.oy + event.clientY - state.sy;
+      state.x = state.ox + e.clientX - state.sx;
+      state.y = state.oy + e.clientY - state.sy;
 
       applyTransform();
     };
@@ -226,26 +206,25 @@
     main.onpointercancel = stopDrag;
     main.onpointerleave = stopDrag;
 
-    document.addEventListener("keydown", function (event) {
+    document.addEventListener("keydown", function (e) {
       const overlay = $("gpOverlay");
-
       if (!overlay || overlay.classList.contains("gp-hidden")) return;
 
-      if (event.key === "Escape") closeGallery();
-      if (event.key === "ArrowLeft") move(-1);
-      if (event.key === "ArrowRight") move(1);
-      if (event.key === "+") setZoom(state.scale + 0.25);
-      if (event.key === "-") setZoom(state.scale - 0.25);
-      if (event.key === "0") fitImage();
+      if (e.key === "Escape") closeGallery();
+      if (e.key === "ArrowLeft") move(-1);
+      if (e.key === "ArrowRight") move(1);
+      if (e.key === "+") setZoom(state.scale + .25);
+      if (e.key === "-") setZoom(state.scale - .25);
+      if (e.key === "0") fitImage();
     });
   }
 
-  function stopDrag(event) {
+  function stopDrag(e) {
     state.dragging = false;
     $("gpMain").classList.remove("dragging");
 
     try {
-      $("gpMain").releasePointerCapture(event.pointerId);
+      $("gpMain").releasePointerCapture(e.pointerId);
     } catch (_) {}
   }
 
@@ -260,7 +239,7 @@
     }
 
     state.app = app;
-    state.title = title || appLabel(app);
+    state.title = title || label(app);
     state.images = images;
     state.current = 0;
     state.selected = new Set([0]);
@@ -269,7 +248,7 @@
     state.y = 0;
     state.rotate = 0;
 
-    $("gpKicker").textContent = appLabel(app).toUpperCase();
+    $("gpKicker").textContent = label(app).toUpperCase();
     $("gpTitle").textContent = state.title;
     $("gpOverlay").classList.remove("gp-hidden");
 
@@ -282,10 +261,9 @@
   }
 
   function renderMain() {
-    const src = state.images[state.current];
     const main = $("gpMain");
 
-    main.src = src;
+    main.src = state.images[state.current];
     main.alt = `${state.title} - imagem ${state.current + 1}`;
 
     $("gpCounter").textContent = `${state.current + 1}/${state.images.length}`;
@@ -298,21 +276,21 @@
     grid.innerHTML = "";
 
     state.images.forEach((src, index) => {
-      const item = document.createElement("div");
-      item.className =
+      const thumb = document.createElement("div");
+
+      thumb.className =
         "gp-thumb" +
         (index === state.current ? " active" : "") +
         (state.selected.has(index) ? " selected" : "");
 
-      item.innerHTML = `
+      thumb.innerHTML = `
         <button class="gp-check" type="button">${state.selected.has(index) ? "✓" : "+"}</button>
-        <img src="${src}" alt="Imagem ${index + 1}" loading="eager">
+        <img src="${src}" alt="Imagem ${index + 1}">
       `;
 
-      item.onclick = function (event) {
-        if (event.target.closest(".gp-check")) {
-          event.preventDefault();
-          event.stopPropagation();
+      thumb.onclick = function (e) {
+        if (e.target.closest(".gp-check")) {
+          e.stopPropagation();
           toggleSelection(index);
           return;
         }
@@ -322,7 +300,7 @@
         renderMain();
       };
 
-      grid.appendChild(item);
+      grid.appendChild(thumb);
     });
   }
 
@@ -384,13 +362,11 @@
     main.style.transform = `translate(${state.x}px, ${state.y}px) scale(${state.scale}) rotate(${state.rotate}deg)`;
 
     $("gpZoomPill").textContent = `${Math.round(state.scale * 100)}%`;
-    $("gp100").textContent = `${Math.round(state.scale * 100)}%`;
   }
 
   function downloadList(indices) {
     indices.forEach((index, order) => {
       const src = state.images[index];
-
       if (!src) return;
 
       setTimeout(function () {
@@ -417,14 +393,11 @@
 
   function openCurrent() {
     const src = state.images[state.current];
-    if (!src) return;
-
-    window.open(src, "_blank");
+    if (src) window.open(src, "_blank");
   }
 
   async function shareCurrent() {
     const src = state.images[state.current];
-
     if (!src) return;
 
     const url = new URL(src, window.location.href).href;
@@ -453,8 +426,9 @@
 
     cards.forEach(card => {
       const text = String(card.innerText || "");
+      const lower = text.toLowerCase();
 
-      if (!text.toLowerCase().includes("clique para abrir")) return;
+      if (!lower.includes("clique para abrir")) return;
 
       const app = detectApp(text);
       if (!app) return;
@@ -465,27 +439,21 @@
         event.preventDefault();
         event.stopPropagation();
 
-        const title = getTitle(card, app);
+        const heading = card.querySelector("h2,h3,h4,strong");
+        const title = heading && heading.textContent.trim()
+          ? heading.textContent.trim()
+          : label(app);
+
         openGallery(app, title);
       }, true);
     });
   }
 
-  function getTitle(card, app) {
-    const heading = card.querySelector("h2,h3,h4,strong");
-
-    if (heading && heading.textContent.trim()) {
-      return heading.textContent.trim();
-    }
-
-    return appLabel(app);
-  }
-
   document.addEventListener("DOMContentLoaded", bindCards);
 
   window.openGallery = function (title) {
-    const app = detectApp(title);
-    openGallery(app || "instagram", title);
+    const app = detectApp(title) || "instagram";
+    openGallery(app, title);
   };
 
   window.openPremiumGallery = window.openGallery;
