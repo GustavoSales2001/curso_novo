@@ -39,27 +39,64 @@
   function aliases(key) {
     const k = norm(key);
 
-    if (k.includes("instagram") || k.includes("insta")) return ["instagram", "insta", "perfil", "bio", "stories", "insights", "reels"];
-    if (k.includes("canva")) return ["canva", "design", "visual", "carrossel", "post", "capa"];
-    if (k.includes("capcut")) return ["capcut", "video", "edicao", "corte", "legenda", "zoom", "ritmo"];
-    if (k.includes("ia") || k.includes("prompt")) return ["ia", "prompt", "roteiro", "ideia", "ai"];
+    if (k.includes("instagram") || k.includes("insta")) {
+      return ["instagram", "insta", "perfil", "bio", "stories", "insights", "reels"];
+    }
+
+    if (k.includes("canva")) {
+      return ["canva", "design", "visual", "carrossel", "post", "capa"];
+    }
+
+    if (k.includes("capcut")) {
+      return ["capcut", "video", "edicao", "corte", "legenda", "zoom", "ritmo"];
+    }
+
+    if (k.includes("ia") || k.includes("prompt")) {
+      return ["ia", "prompt", "roteiro", "ideia", "ai"];
+    }
 
     return k.split(" ").filter(Boolean);
+  }
+
+  function currentLessonTokens() {
+    const params = new URLSearchParams(location.search);
+    const m = Number(params.get("m") || 0) + 1;
+    const l = Number(params.get("l") || 0) + 1;
+
+    return {
+      m,
+      l,
+      module: [
+        `modulo${String(m).padStart(2, "0")}`,
+        `modulo ${String(m).padStart(2, "0")}`,
+        `modulo${m}`,
+        `modulo ${m}`
+      ],
+      lesson: [
+        `aula${String(l).padStart(2, "0")}`,
+        `aula ${String(l).padStart(2, "0")}`,
+        `aula${l}`,
+        `aula ${l}`
+      ]
+    };
   }
 
   function imagesByKey(key) {
     const list = manifest();
     const a = aliases(key);
+    const lesson = currentLessonTokens();
 
     const scored = list.map(src => {
       const n = norm(src);
       let score = 0;
 
-      if (a.some(x => n.includes(norm(x)))) score += 80;
-      if (n.includes("aula04") || n.includes("aula 04") || n.includes("aula4") || n.includes("aula 4")) score += 35;
-      if (n.includes("modulo01") || n.includes("modulo 01") || n.includes("modulo1") || n.includes("modulo 1")) score += 20;
-      if (n.includes("backup")) score -= 200;
-      if (n.includes("logo") || n.includes("icon")) score -= 80;
+      if (a.some(x => n.includes(norm(x)))) score += 90;
+      if (lesson.lesson.some(x => n.includes(norm(x)))) score += 40;
+      if (lesson.module.some(x => n.includes(norm(x)))) score += 25;
+      if (n.includes("print")) score += 8;
+
+      if (n.includes("backup")) score -= 300;
+      if (n.includes("logo") || n.includes("icon")) score -= 100;
 
       return { src, score };
     });
@@ -70,10 +107,13 @@
       .map(x => x.src);
 
     if (chosen.length < 4) {
-      chosen = chosen.concat(list.filter(src => !norm(src).includes("backup")));
+      chosen = chosen.concat(
+        list.filter(src => !norm(src).includes("backup"))
+      );
     }
 
     const seen = new Set();
+
     chosen = chosen.filter(src => {
       if (!src || seen.has(src)) return false;
       seen.add(src);
@@ -100,47 +140,49 @@
           <div>
             <div class="final-gallery-kicker" id="fgKicker">Galeria</div>
             <h2 class="final-gallery-title" id="fgTitle">Galeria premium</h2>
-            <div class="final-gallery-subtitle">Duplo clique para ampliar. Clique e arraste para mover com zoom.</div>
+            <div class="final-gallery-subtitle">
+              Duplo clique na imagem para ampliar. Com zoom, clique e arraste para mover sem perder definição.
+            </div>
           </div>
 
           <div class="final-gallery-actions">
-            <button class="final-gallery-btn" id="fgZoomOut">−</button>
-            <button class="final-gallery-btn" id="fgZoomIn">+</button>
-            <button class="final-gallery-btn" id="fgReset">100%</button>
-            <button class="final-gallery-btn" id="fgOpen">Abrir</button>
-            <button class="final-gallery-btn primary" id="fgDownload">Baixar</button>
-            <button class="final-gallery-btn close" id="fgClose">×</button>
+            <button class="final-gallery-btn" id="fgZoomOut" type="button">−</button>
+            <button class="final-gallery-btn" id="fgZoomIn" type="button">+</button>
+            <button class="final-gallery-btn" id="fgReset" type="button">100%</button>
+            <button class="final-gallery-btn" id="fgShare" type="button">Compartilhar</button>
+            <button class="final-gallery-btn primary" id="fgDownload" type="button">Baixar</button>
+            <button class="final-gallery-btn close" id="fgClose" type="button">×</button>
           </div>
         </header>
 
         <main class="final-gallery-body">
           <section class="final-gallery-main">
-            <button class="final-gallery-nav" id="fgPrev">‹</button>
+            <button class="final-gallery-nav" id="fgPrev" type="button">‹</button>
 
             <div class="final-gallery-stage" id="fgStage">
               <img class="final-gallery-image" id="fgImage" draggable="false">
               <div class="final-gallery-zoom" id="fgZoomBadge">100%</div>
             </div>
 
-            <button class="final-gallery-nav" id="fgNext">›</button>
+            <button class="final-gallery-nav" id="fgNext" type="button">›</button>
           </section>
 
           <aside class="final-gallery-side">
             <h3>Imagens da galeria</h3>
-            <p>As quatro imagens ficam aqui. Clique para colocar em destaque.</p>
+            <p>Clique na miniatura para destacar. Use o círculo para selecionar mais de uma imagem.</p>
             <div class="final-gallery-thumbs" id="fgThumbs"></div>
 
             <div class="final-gallery-side-actions">
-              <button class="final-gallery-btn" id="fgSelectAll">Selecionar todas</button>
-              <button class="final-gallery-btn" id="fgClear">Limpar seleção</button>
-              <button class="final-gallery-btn primary" id="fgDownloadSelected">Baixar selecionadas</button>
-              <button class="final-gallery-btn" id="fgDownloadAll">Baixar as 4</button>
+              <button class="final-gallery-btn" id="fgSelectAll" type="button">Selecionar todas</button>
+              <button class="final-gallery-btn" id="fgClear" type="button">Limpar seleção</button>
+              <button class="final-gallery-btn primary" id="fgDownloadSelected" type="button">Baixar selecionadas</button>
+              <button class="final-gallery-btn" id="fgDownloadAll" type="button">Baixar as 4</button>
             </div>
           </aside>
         </main>
 
         <footer class="final-gallery-footer">
-          <div><strong>Atalhos:</strong> setas navegam · ESC fecha · duplo clique amplia</div>
+          <div><strong>Atalhos:</strong> setas navegam · ESC fecha · duplo clique amplia · arraste move com zoom</div>
           <div id="fgCounter">1/4</div>
         </footer>
       </div>
@@ -159,13 +201,13 @@
     el("fgClose").onclick = close;
     el("fgPrev").onclick = () => move(-1);
     el("fgNext").onclick = () => move(1);
-    el("fgZoomIn").onclick = () => setZoom(state.zoom + .25);
-    el("fgZoomOut").onclick = () => setZoom(state.zoom - .25);
+    el("fgZoomIn").onclick = () => setZoom(state.zoom + .35);
+    el("fgZoomOut").onclick = () => setZoom(state.zoom - .35);
     el("fgReset").onclick = reset;
-    el("fgOpen").onclick = openCurrent;
     el("fgDownload").onclick = () => download(state.index);
     el("fgDownloadSelected").onclick = downloadSelected;
     el("fgDownloadAll").onclick = downloadAll;
+    el("fgShare").onclick = shareCurrent;
 
     el("fgSelectAll").onclick = () => {
       state.images.forEach((_, i) => state.selected.add(i));
@@ -178,28 +220,33 @@
     };
 
     el("fgStage").ondblclick = () => {
-      state.zoom <= 1 ? setZoom(2.25) : reset();
+      state.zoom <= 1 ? setZoom(2.6) : reset();
     };
 
     el("fgStage").onwheel = e => {
       e.preventDefault();
-      setZoom(state.zoom + (e.deltaY > 0 ? -.2 : .2));
+      setZoom(state.zoom + (e.deltaY > 0 ? -.25 : .25));
     };
 
-    el("fgStage").onpointerdown = e => {
+    el("fgImage").onpointerdown = e => {
       if (state.zoom <= 1) return;
+
       state.dragging = true;
       state.sx = e.clientX;
       state.sy = e.clientY;
       state.ox = state.x;
       state.oy = state.y;
+
       el("fgImage").classList.add("dragging");
+      try { el("fgImage").setPointerCapture(e.pointerId); } catch (_) {}
     };
 
     window.addEventListener("pointermove", e => {
       if (!state.dragging) return;
+
       state.x = state.ox + e.clientX - state.sx;
       state.y = state.oy + e.clientY - state.sy;
+
       apply();
     });
 
@@ -216,6 +263,9 @@
       if (e.key === "Escape") close();
       if (e.key === "ArrowRight") move(1);
       if (e.key === "ArrowLeft") move(-1);
+      if (e.key === "+") setZoom(state.zoom + .35);
+      if (e.key === "-") setZoom(state.zoom - .35);
+      if (e.key === "0") reset();
     });
   }
 
@@ -248,11 +298,15 @@
     let imgs = [];
 
     if (Array.isArray(maybeImages)) {
-      imgs = maybeImages.map((x, i) => typeof x === "string" ? { src: x, title: `Imagem ${i + 1}` } : x).filter(x => x && x.src);
+      imgs = maybeImages
+        .map((x, i) => typeof x === "string" ? { src: x, title: `Imagem ${i + 1}` } : x)
+        .filter(x => x && x.src);
     }
 
     if (!imgs.length && payload && typeof payload === "object" && Array.isArray(payload.images)) {
-      imgs = payload.images.map((x, i) => typeof x === "string" ? { src: x, title: `Imagem ${i + 1}` } : x).filter(x => x && x.src);
+      imgs = payload.images
+        .map((x, i) => typeof x === "string" ? { src: x, title: `Imagem ${i + 1}` } : x)
+        .filter(x => x && x.src);
     }
 
     if (!imgs.length) {
@@ -279,9 +333,13 @@
     const item = state.images[state.index];
     if (!item) return;
 
-    el("fgImage").src = item.src;
-    el("fgImage").alt = item.title || `Imagem ${state.index + 1}`;
+    const img = el("fgImage");
+
+    img.src = item.src;
+    img.alt = item.title || `Imagem ${state.index + 1}`;
+
     el("fgCounter").textContent = `${state.index + 1}/${state.images.length}`;
+
     reset();
   }
 
@@ -297,11 +355,26 @@
         (i === state.index ? " active" : "") +
         (state.selected.has(i) ? " selected" : "");
 
-      btn.innerHTML = `<img src="${item.src}" alt="${item.title || `Imagem ${i + 1}`}">`;
+      btn.innerHTML = `
+        <img src="${item.src}" alt="${item.title || `Imagem ${i + 1}`}">
+        <span class="final-gallery-select-dot">${state.selected.has(i) ? "✓" : "+"}</span>
+      `;
 
-      btn.onclick = () => {
+      btn.onclick = e => {
+        if (e.target.classList.contains("final-gallery-select-dot")) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          if (state.selected.has(i)) state.selected.delete(i);
+          else state.selected.add(i);
+
+          render();
+          return;
+        }
+
         state.index = i;
         if (!state.selected.has(i)) state.selected.add(i);
+
         load();
         render();
       };
@@ -314,7 +387,11 @@
     if (state.raf) cancelAnimationFrame(state.raf);
 
     state.raf = requestAnimationFrame(() => {
-      el("fgImage").style.transform = `translate3d(${state.x}px, ${state.y}px, 0) scale(${state.zoom})`;
+      const img = el("fgImage");
+
+      img.style.transform = `translate3d(${state.x}px, ${state.y}px, 0) scale(${state.zoom})`;
+      img.classList.toggle("zoomed", state.zoom > 1);
+
       el("fgZoomBadge").textContent = `${Math.round(state.zoom * 100)}%`;
       el("fgReset").textContent = `${Math.round(state.zoom * 100)}%`;
     });
@@ -328,16 +405,20 @@
   }
 
   function setZoom(v) {
-    state.zoom = Math.max(1, Math.min(5, v));
-    if (state.zoom === 1) {
+    state.zoom = Math.max(1, Math.min(6, v));
+
+    if (state.zoom <= 1) {
+      state.zoom = 1;
       state.x = 0;
       state.y = 0;
     }
+
     apply();
   }
 
   function move(dir) {
     state.index = (state.index + dir + state.images.length) % state.images.length;
+    if (!state.selected.has(state.index)) state.selected.add(state.index);
     load();
     render();
   }
@@ -347,9 +428,18 @@
     document.body.style.overflow = "";
   }
 
-  function openCurrent() {
-    const item = state.images[state.index];
-    if (item) window.open(item.src, "_blank");
+  function fileName(item, i) {
+    const clean = (item.title || `imagem-${i + 1}`)
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+
+    const extMatch = String(item.src).split("?")[0].match(/\.(png|jpe?g|webp)$/i);
+    const ext = extMatch ? extMatch[1].toLowerCase().replace("jpeg", "jpg") : "png";
+
+    return `${clean || "imagem"}-${i + 1}.${ext}`;
   }
 
   function download(i) {
@@ -358,7 +448,7 @@
 
     const a = document.createElement("a");
     a.href = item.src;
-    a.download = (item.title || `imagem-${i + 1}`).replace(/\s+/g, "-").toLowerCase() + ".png";
+    a.download = fileName(item, i);
     a.target = "_blank";
     document.body.appendChild(a);
     a.click();
@@ -367,7 +457,12 @@
 
   function downloadSelected() {
     const list = Array.from(state.selected);
-    if (!list.length) return download(state.index);
+
+    if (!list.length) {
+      download(state.index);
+      return;
+    }
+
     list.forEach((i, k) => setTimeout(() => download(i), k * 250));
   }
 
@@ -375,12 +470,40 @@
     state.images.forEach((_, i) => setTimeout(() => download(i), i * 250));
   }
 
+  async function shareCurrent() {
+    const item = state.images[state.index];
+    if (!item) return;
+
+    const absoluteUrl = new URL(item.src, window.location.href).href;
+    const title = item.title || "Imagem da galeria";
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title,
+          text: "Imagem da aula - Influencer Academy",
+          url: absoluteUrl
+        });
+        return;
+      } catch (_) {}
+    }
+
+    try {
+      await navigator.clipboard.writeText(absoluteUrl);
+      alert("Link da imagem copiado para a área de transferência.");
+    } catch (_) {
+      window.open(absoluteUrl, "_blank");
+    }
+  }
+
   function guessKeyFromCard(card) {
     const text = norm(card.textContent || "");
+
     if (text.includes("instagram")) return "Instagram - aplicação prática";
     if (text.includes("canva")) return "Canva - modelo visual";
     if (text.includes("capcut")) return "CapCut - vídeo passo a passo";
     if (text.includes("ia") || text.includes("prompt")) return "IA - prompt da aula";
+
     return card.textContent.trim().split("\n")[0] || "Galeria premium";
   }
 
@@ -389,7 +512,10 @@
     if (!card) return;
 
     const text = norm(card.textContent || "");
-    if (!(text.includes("instagram") || text.includes("canva") || text.includes("capcut") || text.includes("ia") || text.includes("prompt"))) return;
+
+    if (!(text.includes("instagram") || text.includes("canva") || text.includes("capcut") || text.includes("ia") || text.includes("prompt"))) {
+      return;
+    }
 
     e.preventDefault();
     e.stopPropagation();

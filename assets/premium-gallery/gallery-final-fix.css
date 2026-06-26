@@ -1,12 +1,16 @@
-﻿/* GALERIA FINAL PREMIUM */
+﻿/* =========================================================
+   GALERIA FINAL PREMIUM — ZOOM, DRAG, SHARE E DOWNLOAD
+========================================================= */
+
 .final-gallery-overlay {
   position: fixed;
   inset: 0;
   z-index: 9999999;
   display: none;
-  padding: 28px;
-  background: rgba(42, 33, 30, .78);
-  backdrop-filter: blur(16px);
+  padding: 26px;
+  background: rgba(42, 33, 30, .80);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
   overflow-y: auto;
 }
 
@@ -17,18 +21,18 @@
 }
 
 .final-gallery-shell {
-  width: min(1320px, 96vw);
-  min-height: min(780px, 90vh);
+  width: min(1380px, 96vw);
+  min-height: min(820px, 91vh);
   background: #fffaf7;
   border-radius: 34px;
-  box-shadow: 0 35px 110px rgba(0,0,0,.35);
+  box-shadow: 0 35px 110px rgba(0,0,0,.36);
   overflow: hidden;
   display: grid;
   grid-template-rows: auto 1fr auto;
 }
 
 .final-gallery-header {
-  padding: 26px 32px 18px;
+  padding: 24px 32px 16px;
   display: flex;
   justify-content: space-between;
   gap: 22px;
@@ -37,11 +41,11 @@
 
 .final-gallery-kicker {
   font-size: 13px;
-  font-weight: 900;
+  font-weight: 950;
   letter-spacing: .12em;
   text-transform: uppercase;
   color: #d17b6d;
-  margin-bottom: 7px;
+  margin-bottom: 8px;
 }
 
 .final-gallery-title {
@@ -55,7 +59,7 @@
 .final-gallery-subtitle {
   margin-top: 10px;
   color: #8b7066;
-  font-size: 16px;
+  font-size: 15px;
 }
 
 .final-gallery-actions {
@@ -68,22 +72,23 @@
 
 .final-gallery-btn {
   border: 1px solid rgba(211, 140, 126, .35);
-  background: rgba(255,255,255,.92);
+  background: rgba(255,255,255,.94);
   color: #3e2c26;
   min-width: 48px;
   height: 48px;
   padding: 0 16px;
   border-radius: 16px;
-  font-weight: 900;
-  font-size: 15px;
+  font-weight: 950;
+  font-size: 14px;
   cursor: pointer;
   box-shadow: 0 12px 26px rgba(73,45,38,.08);
-  transition: .18s ease;
+  transition: transform .18s ease, background .18s ease, box-shadow .18s ease;
 }
 
 .final-gallery-btn:hover {
   transform: translateY(-1px);
   background: #fff;
+  box-shadow: 0 18px 34px rgba(73,45,38,.12);
 }
 
 .final-gallery-btn.primary {
@@ -101,10 +106,10 @@
 
 .final-gallery-body {
   min-height: 0;
-  padding: 22px 30px;
+  padding: 20px 30px;
   display: grid;
-  grid-template-columns: 1fr 305px;
-  gap: 26px;
+  grid-template-columns: minmax(0, 1fr) 318px;
+  gap: 24px;
 }
 
 .final-gallery-main {
@@ -123,17 +128,21 @@
   background: #fff;
   color: #3e2c26;
   font-size: 38px;
-  font-weight: 900;
+  font-weight: 950;
   cursor: pointer;
   box-shadow: 0 18px 42px rgba(63,42,36,.12);
+  transition: transform .18s ease;
+}
+
+.final-gallery-nav:hover {
+  transform: scale(1.04);
 }
 
 .final-gallery-stage {
-  height: min(68vh, 620px);
-  min-height: 470px;
+  height: min(70vh, 650px);
+  min-height: 500px;
   border-radius: 28px;
-  background:
-    linear-gradient(135deg, rgba(245,232,226,.92), rgba(255,250,247,.96));
+  background: linear-gradient(135deg, rgba(245,232,226,.92), rgba(255,250,247,.96));
   border: 1px solid rgba(116, 78, 66, .12);
   overflow: hidden;
   display: flex;
@@ -145,17 +154,22 @@
 }
 
 .final-gallery-image {
-  max-width: 92%;
-  max-height: 92%;
+  max-width: 96%;
+  max-height: 96%;
   object-fit: contain;
   border-radius: 18px;
   box-shadow: 0 22px 60px rgba(66,42,35,.14);
-  transform-origin: center;
+  transform-origin: center center;
   will-change: transform;
-  transition: transform .06s linear;
-  cursor: grab;
+  transition: transform .055s linear;
+  cursor: zoom-in;
   user-select: none;
   -webkit-user-drag: none;
+  image-rendering: auto;
+}
+
+.final-gallery-image.zoomed {
+  cursor: grab;
 }
 
 .final-gallery-image.dragging {
@@ -169,9 +183,9 @@
   bottom: 18px;
   padding: 11px 15px;
   border-radius: 999px;
-  background: rgba(255,255,255,.92);
+  background: rgba(255,255,255,.94);
   color: #3e2c26;
-  font-weight: 900;
+  font-weight: 950;
   font-size: 14px;
   box-shadow: 0 12px 28px rgba(63,42,36,.10);
 }
@@ -207,13 +221,18 @@
 
 .final-gallery-thumb {
   position: relative;
-  height: 132px;
+  height: 135px;
   border-radius: 16px;
   overflow: hidden;
   border: 2px solid transparent;
   background: #f7eee8;
   cursor: pointer;
   box-shadow: 0 12px 26px rgba(67,43,36,.08);
+  transition: transform .18s ease, border-color .18s ease;
+}
+
+.final-gallery-thumb:hover {
+  transform: translateY(-2px);
 }
 
 .final-gallery-thumb.active {
@@ -225,14 +244,14 @@
   position: absolute;
   top: 8px;
   right: 8px;
-  width: 26px;
-  height: 26px;
+  width: 27px;
+  height: 27px;
   display: grid;
   place-items: center;
   border-radius: 50%;
   background: #d37d70;
   color: #fff;
-  font-weight: 900;
+  font-weight: 950;
 }
 
 .final-gallery-thumb img {
@@ -240,6 +259,28 @@
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+/* botão pequeno para selecionar sem trocar a imagem */
+.final-gallery-select-dot {
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.8);
+  background: rgba(62,44,38,.52);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  font-weight: 950;
+  backdrop-filter: blur(8px);
+}
+
+.final-gallery-thumb.selected .final-gallery-select-dot {
+  background: #d37d70;
 }
 
 .final-gallery-side-actions {
@@ -268,7 +309,7 @@
 
   .final-gallery-stage {
     height: 54vh;
-    min-height: 360px;
+    min-height: 380px;
   }
 
   .final-gallery-thumbs {
@@ -276,6 +317,6 @@
   }
 
   .final-gallery-thumb {
-    height: 100px;
+    height: 105px;
   }
 }
