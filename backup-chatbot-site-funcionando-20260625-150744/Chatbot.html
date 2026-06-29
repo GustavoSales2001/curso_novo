@@ -1,0 +1,731 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tirar dúvidas | Influencer Academy</title>
+  <style>
+    :root{
+      --bg:#f7f1eb;
+      --card:#fffaf6;
+      --white:#ffffff;
+      --text:#3d3028;
+      --muted:#7b6a60;
+      --line:#eaded4;
+      --primary:#d9877d;
+      --primary-dark:#c46d63;
+      --shadow:0 20px 55px rgba(92,63,45,.12);
+    }
+
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+      font-family:Inter, Segoe UI, Arial, sans-serif;
+    }
+
+    body{
+      min-height:100vh;
+      background:
+        radial-gradient(circle at top left, rgba(217,135,125,.16), transparent 26%),
+        radial-gradient(circle at bottom right, rgba(185,140,116,.12), transparent 30%),
+        linear-gradient(180deg,#faf5f0 0%,#f7f1eb 100%);
+      color:var(--text);
+      padding:24px;
+    }
+
+    .page{
+      max-width:1360px;
+      margin:0 auto;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+      margin-bottom:22px;
+      padding:16px 20px;
+      background:rgba(255,255,255,.72);
+      border:1px solid var(--line);
+      border-radius:26px;
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(12px);
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+
+    .logo{
+      width:50px;
+      height:50px;
+      border-radius:17px;
+      background:linear-gradient(135deg,var(--primary),#e7aaa0);
+      display:grid;
+      place-items:center;
+      color:white;
+      font-weight:900;
+      font-size:19px;
+      flex-shrink:0;
+    }
+
+    .brand h1{
+      font-size:23px;
+      line-height:1.1;
+    }
+
+    .brand p{
+      color:var(--muted);
+      font-size:14px;
+      margin-top:4px;
+    }
+
+    .top-actions{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      border:none;
+      text-decoration:none;
+      cursor:pointer;
+      padding:14px 18px;
+      border-radius:16px;
+      font-weight:900;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      transition:.2s;
+    }
+
+    .btn:hover{
+      transform:translateY(-2px);
+    }
+
+    .btn-light{
+      background:white;
+      color:var(--text);
+      border:1px solid var(--line);
+    }
+
+    .btn-primary{
+      background:linear-gradient(135deg,var(--primary),#e5a193);
+      color:white;
+      box-shadow:0 14px 30px rgba(217,135,125,.25);
+    }
+
+    .layout{
+      display:grid;
+      grid-template-columns:330px 1fr;
+      gap:22px;
+      min-height:calc(100vh - 130px);
+    }
+
+    .sidebar{
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+
+    .card{
+      background:rgba(255,255,255,.82);
+      border:1px solid var(--line);
+      border-radius:28px;
+      padding:22px;
+      box-shadow:var(--shadow);
+    }
+
+    .card h3{
+      font-size:18px;
+      margin-bottom:10px;
+    }
+
+    .card p{
+      color:var(--muted);
+      line-height:1.6;
+      font-size:15px;
+    }
+
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:16px;
+    }
+
+    .chip{
+      border:1px solid var(--line);
+      background:#fff4ef;
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:999px;
+      font-weight:800;
+      font-size:13px;
+      cursor:pointer;
+    }
+
+    .chat{
+      background:rgba(255,255,255,.86);
+      border:1px solid var(--line);
+      border-radius:32px;
+      box-shadow:var(--shadow);
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
+      min-height:720px;
+    }
+
+    .chat-head{
+      padding:22px 24px;
+      border-bottom:1px solid var(--line);
+      background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(255,250,246,.9));
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+
+    .bot-profile{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+
+    .avatar{
+      width:54px;
+      height:54px;
+      border-radius:18px;
+      background:linear-gradient(135deg,var(--primary),#e7aaa0);
+      color:white;
+      font-weight:900;
+      display:grid;
+      place-items:center;
+    }
+
+    .chat-head h2{
+      font-size:20px;
+    }
+
+    .chat-head p{
+      color:var(--muted);
+      font-size:14px;
+      margin-top:3px;
+    }
+
+    .status{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 14px;
+      border-radius:999px;
+      background:white;
+      border:1px solid var(--line);
+      color:var(--muted);
+      font-weight:800;
+      font-size:13px;
+    }
+
+    .dot{
+      width:9px;
+      height:9px;
+      border-radius:50%;
+      background:#36b56f;
+      box-shadow:0 0 0 5px rgba(54,181,111,.12);
+    }
+
+    .messages{
+      flex:1;
+      padding:24px;
+      overflow:auto;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      background:
+        radial-gradient(circle at top right,rgba(217,135,125,.08),transparent 34%),
+        transparent;
+    }
+
+    .row{
+      display:flex;
+      gap:10px;
+      max-width:84%;
+      align-items:flex-end;
+    }
+
+    .row.user{
+      align-self:flex-end;
+      flex-direction:row-reverse;
+    }
+
+    .bubble-icon{
+      width:38px;
+      height:38px;
+      border-radius:14px;
+      background:white;
+      border:1px solid var(--line);
+      display:grid;
+      place-items:center;
+      flex-shrink:0;
+    }
+
+    .bubble{
+      padding:14px 16px;
+      border-radius:20px;
+      line-height:1.65;
+      font-size:15px;
+      white-space:pre-wrap;
+      box-shadow:0 10px 24px rgba(0,0,0,.05);
+    }
+
+    .row.bot .bubble{
+      background:white;
+      border:1px solid var(--line);
+      border-bottom-left-radius:7px;
+    }
+
+    .row.user .bubble{
+      background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+      color:white;
+      border-bottom-right-radius:7px;
+    }
+
+    .meta{
+      color:var(--muted);
+      font-size:11px;
+      margin-top:5px;
+    }
+
+    .suggestions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      padding:0 24px 18px;
+    }
+
+    .suggestion{
+      border:1px solid var(--line);
+      background:white;
+      border-radius:999px;
+      padding:10px 14px;
+      color:var(--text);
+      font-weight:800;
+      cursor:pointer;
+      font-size:13px;
+    }
+
+    .composer{
+      border-top:1px solid var(--line);
+      padding:18px 20px;
+      background:#fffdfb;
+      position:relative;
+    }
+
+    .files{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-bottom:12px;
+    }
+
+    .file-tag{
+      background:#fff4ef;
+      border:1px solid var(--line);
+      padding:8px 11px;
+      border-radius:999px;
+      font-size:13px;
+      color:var(--text);
+      font-weight:800;
+    }
+
+    .input-line{
+      display:flex;
+      align-items:flex-end;
+      gap:12px;
+    }
+
+    .icon-btn{
+      width:52px;
+      height:52px;
+      border-radius:17px;
+      border:1px solid var(--line);
+      background:#fff4ef;
+      cursor:pointer;
+      font-size:20px;
+    }
+
+    textarea{
+      flex:1;
+      min-height:54px;
+      max-height:150px;
+      resize:none;
+      border:1px solid var(--line);
+      border-radius:20px;
+      background:#fff4ef;
+      padding:15px 16px;
+      outline:none;
+      color:var(--text);
+      font-size:15px;
+      line-height:1.5;
+    }
+
+    textarea::placeholder{
+      color:#a9958b;
+    }
+
+    .send{
+      min-width:150px;
+      height:54px;
+      border:none;
+      border-radius:18px;
+      background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+      color:white;
+      font-weight:900;
+      cursor:pointer;
+      box-shadow:0 14px 30px rgba(217,135,125,.25);
+    }
+
+    .emoji-box{
+      position:absolute;
+      left:20px;
+      bottom:90px;
+      width:250px;
+      padding:12px;
+      background:white;
+      border:1px solid var(--line);
+      border-radius:20px;
+      box-shadow:var(--shadow);
+      display:none;
+      flex-wrap:wrap;
+      gap:8px;
+      z-index:5;
+    }
+
+    .emoji-box.open{
+      display:flex;
+    }
+
+    .emoji{
+      width:38px;
+      height:38px;
+      border-radius:12px;
+      border:none;
+      background:#fff4ef;
+      cursor:pointer;
+      font-size:18px;
+    }
+
+    @media(max-width:1000px){
+      .layout{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media(max-width:720px){
+      body{
+        padding:12px;
+      }
+
+      .topbar{
+        align-items:flex-start;
+        flex-direction:column;
+      }
+
+      .top-actions{
+        width:100%;
+      }
+
+      .top-actions .btn{
+        flex:1;
+      }
+
+      .chat{
+        min-height:75vh;
+      }
+
+      .row{
+        max-width:100%;
+      }
+
+      .input-line{
+        flex-wrap:wrap;
+      }
+
+      textarea{
+        width:100%;
+        flex-basis:100%;
+      }
+
+      .send{
+        width:100%;
+      }
+
+      .icon-btn{
+        flex:1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">IA</div>
+        <div>
+          <h1>Influencer Academy</h1>
+          <p>Atendimento inteligente para tirar dúvidas sobre curso, acesso e pagamento.</p>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <a class="btn btn-light" href="index.html">← Voltar ao site</a>
+        <a class="btn btn-primary" href="index.html#trilha">Ver curso</a>
+      </div>
+    </header>
+
+    <section class="layout">
+      <aside class="sidebar">
+        <div class="card">
+          <h3>Me conta, como posso te ajudar?</h3>
+          <p>Você pode perguntar sobre o curso, pagamento, acesso, crescimento no Instagram, Reels, stories, Canva, CapCut e criação de conteúdo.</p>
+
+          <div class="chips">
+            <button class="chip quick">Quero entender o curso</button>
+            <button class="chip quick">Qual é o valor hoje?</button>
+            <button class="chip quick">Quero crescer do zero</button>
+            <button class="chip quick">Estou com problema no acesso</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Dica para eu te responder melhor</h3>
+          <p>Me manda sua dúvida com detalhes. Exemplo: “quero crescer de 1.000 para 5.000 seguidores” ou “não consigo acessar minha área da aluna”.</p>
+        </div>
+
+        <div class="card">
+          <h3>Dentro do curso você aprende sobre</h3>
+          <p>✨ Crescimento no Instagram<br>🎥 Reels e stories<br>📱 Gravação com celular<br>📈 Métricas e engajamento<br>🎀 Posicionamento e estética</p>
+        </div>
+      </aside>
+
+      <section class="chat">
+        <div class="chat-head">
+          <div class="bot-profile">
+            <div class="avatar">IA</div>
+            <div>
+              <h2>Chat de dúvidas</h2>
+              <p>Converse com a assistente do Influencer Academy.</p>
+            </div>
+          </div>
+
+          <div class="status">
+            <span class="dot"></span>
+            Bot online
+          </div>
+        </div>
+
+        <div class="messages" id="messages"></div>
+
+        <div class="suggestions">
+          <button class="suggestion">Como funciona o curso?</button>
+          <button class="suggestion">Qual é o valor hoje?</button>
+          <button class="suggestion">Quero crescer no Instagram</button>
+          <button class="suggestion">Quero melhorar meus vídeos</button>
+          <button class="suggestion">Estou com problema no login</button>
+        </div>
+
+        <div class="composer">
+          <div class="emoji-box" id="emojiBox">
+            <button class="emoji">😊</button>
+            <button class="emoji">😍</button>
+            <button class="emoji">✨</button>
+            <button class="emoji">💕</button>
+            <button class="emoji">🎥</button>
+            <button class="emoji">📱</button>
+            <button class="emoji">📈</button>
+            <button class="emoji">🔥</button>
+            <button class="emoji">🙌</button>
+            <button class="emoji">💡</button>
+            <button class="emoji">🤍</button>
+            <button class="emoji">🎀</button>
+          </div>
+
+          <div class="files" id="files"></div>
+
+          <div class="input-line">
+            <button class="icon-btn" id="emojiBtn" type="button">😊</button>
+            <button class="icon-btn" id="attachBtn" type="button">📎</button>
+            <input type="file" id="fileInput" multiple hidden>
+
+            <textarea id="chatInput" placeholder="Digite sua dúvida aqui..."></textarea>
+
+            <button class="send" id="sendBtn" type="button">Enviar</button>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    const API_URL = "https://cursonovo-production.up.railway.app/api/site-chat";
+    const CHAT_SESSION_KEY = "influencer_academy_site_session";
+    const CHAT_SESSION_ID = localStorage.getItem(CHAT_SESSION_KEY) || crypto.randomUUID();
+    localStorage.setItem(CHAT_SESSION_KEY, CHAT_SESSION_ID);
+    const messages = document.getElementById("messages");
+    const input = document.getElementById("chatInput");
+    const sendBtn = document.getElementById("sendBtn");
+    const emojiBtn = document.getElementById("emojiBtn");
+    const emojiBox = document.getElementById("emojiBox");
+    const attachBtn = document.getElementById("attachBtn");
+    const fileInput = document.getElementById("fileInput");
+    const filesBox = document.getElementById("files");
+    let selectedFiles = [];
+
+    function time(){
+      return new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
+    }
+
+    function escapeHtml(text){
+      return String(text || "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;");
+    }
+
+    function addMessage(role,text){
+      const row = document.createElement("div");
+      row.className = "row " + role;
+
+      const icon = document.createElement("div");
+      icon.className = "bubble-icon";
+      icon.textContent = role === "bot" ? "🤖" : "👩";
+
+      const wrap = document.createElement("div");
+      const bubble = document.createElement("div");
+      bubble.className = "bubble";
+      bubble.innerHTML = escapeHtml(text).replace(/\n/g,"<br>");
+
+      const meta = document.createElement("div");
+      meta.className = "meta";
+      meta.textContent = time();
+
+      wrap.appendChild(bubble);
+      wrap.appendChild(meta);
+      row.appendChild(icon);
+      row.appendChild(wrap);
+
+      messages.appendChild(row);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function renderFiles(){
+      filesBox.innerHTML = "";
+      selectedFiles.forEach(file => {
+        const tag = document.createElement("div");
+        tag.className = "file-tag";
+        tag.textContent = "📎 " + file.name;
+        filesBox.appendChild(tag);
+      });
+    }
+
+    async function sendMessage(customText){
+      const text = (customText || input.value || "").trim();
+      if(!text && selectedFiles.length === 0) return;
+
+      const fileNames = selectedFiles.map(file => file.name);
+      const userText = text + (fileNames.length ? "\n\nArquivos anexados: " + fileNames.join(", ") : "");
+
+      addMessage("user", userText || "Arquivo anexado");
+      input.value = "";
+      selectedFiles = [];
+      renderFiles();
+
+      addMessage("bot", "Digitando...");
+
+      try{
+        const response = await fetch(API_URL,{
+          method:"POST",
+          headers:{"Content-Type":"application/json"},
+          body:JSON.stringify({
+            message:text || "Enviei um anexo.",
+            attachments:fileNames,
+            source:"site-chat",
+            sessionId: CHAT_SESSION_ID
+          })
+        });
+
+        const data = await response.json();
+
+        messages.lastChild.remove();
+
+        addMessage("bot", data.reply || "Recebi sua mensagem. Pode me mandar mais detalhes?");
+      }catch(error){
+        messages.lastChild.remove();
+
+        addMessage("bot", "Tive um problema para responder agora. Tente novamente em instantes.");
+      }
+    }
+
+    sendBtn.addEventListener("click", () => sendMessage());
+
+    input.addEventListener("keydown", event => {
+      if(event.key === "Enter" && !event.shiftKey){
+        event.preventDefault();
+        sendMessage();
+      }
+    });
+
+    emojiBtn.addEventListener("click", () => {
+      emojiBox.classList.toggle("open");
+    });
+
+    document.querySelectorAll(".emoji").forEach(btn => {
+      btn.addEventListener("click", () => {
+        input.value += btn.textContent;
+        input.focus();
+      });
+    });
+
+    attachBtn.addEventListener("click", () => fileInput.click());
+
+    fileInput.addEventListener("change", event => {
+      selectedFiles = Array.from(event.target.files || []);
+      renderFiles();
+      fileInput.value = "";
+    });
+
+    document.querySelectorAll(".suggestion,.quick").forEach(btn => {
+      btn.addEventListener("click", () => sendMessage(btn.textContent));
+    });
+
+    addMessage("bot", `Oi! ✨
+Eu sou a assistente do Influencer Academy.
+
+Posso te ajudar com:
+• dúvidas sobre o curso
+• valor e pagamento
+• acesso e cadastro
+• crescimento no Instagram
+• criação de conteúdo, Reels e stories
+
+Me manda sua dúvida ou escolha uma opção abaixo.`);
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

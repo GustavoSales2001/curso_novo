@@ -1,0 +1,1342 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aula - Influencer Academy</title>
+
+  <style>
+    :root{
+      --bg:#f7f1eb;
+      --paper:#fffaf7;
+      --white:#fff;
+      --text:#3f2d26;
+      --muted:#8a7166;
+      --line:#ead7ce;
+      --rose:#d98f82;
+      --rose-dark:#c87465;
+      --rose-soft:#f8dfd8;
+      --brown:#563b31;
+      --shadow:0 24px 70px rgba(83,54,42,.11);
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      font-family:"Segoe UI",Arial,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 0% 0%,rgba(217,143,130,.18),transparent 28%),
+        radial-gradient(circle at 100% 100%,rgba(217,143,130,.14),transparent 28%),
+        linear-gradient(180deg,#fbf7f3 0%,#f6efe9 100%);
+    }
+
+    a{text-decoration:none;color:inherit}
+
+    .page{
+      max-width:1180px;
+      margin:0 auto;
+      padding:28px;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      background:rgba(255,255,255,.78);
+      border:1px solid var(--line);
+      border-radius:28px;
+      padding:18px 22px;
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(12px);
+      margin-bottom:24px;
+    }
+
+    .brand{display:flex;align-items:center;gap:14px}
+
+    .logo{
+      width:52px;
+      height:52px;
+      border-radius:18px;
+      background:linear-gradient(135deg,var(--rose),#e8aa9d);
+      display:grid;
+      place-items:center;
+      color:#fff;
+      font-weight:950;
+      font-size:18px;
+    }
+
+    .brand strong{display:block;font-size:22px;letter-spacing:-.03em}
+    .brand span{display:block;color:var(--muted);font-size:13px;margin-top:3px;font-weight:700}
+
+    .top-actions{display:flex;gap:10px;flex-wrap:wrap}
+
+    .btn{
+      border:none;
+      min-height:48px;
+      padding:0 18px;
+      border-radius:16px;
+      font-weight:950;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      transition:.2s ease;
+    }
+
+    .btn.primary{
+      background:linear-gradient(135deg,var(--rose),var(--rose-dark));
+      color:#fff;
+      box-shadow:0 15px 30px rgba(217,143,130,.26);
+    }
+
+    .btn.light{
+      background:#fff;
+      color:var(--brown);
+      border:1px solid var(--line);
+    }
+
+    .btn:hover{transform:translateY(-2px)}
+
+    .hero{
+      background:
+        radial-gradient(circle at 95% 5%,rgba(217,143,130,.20),transparent 26%),
+        linear-gradient(135deg,rgba(255,255,255,.92),rgba(255,248,244,.92));
+      border:1px solid var(--line);
+      border-radius:38px;
+      padding:38px;
+      box-shadow:var(--shadow);
+      margin-bottom:24px;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      padding:10px 14px;
+      border-radius:999px;
+      background:var(--rose-soft);
+      color:var(--rose-dark);
+      font-weight:950;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      margin-bottom:18px;
+    }
+
+    h1{
+      margin:0;
+      max-width:920px;
+      font-size:54px;
+      line-height:1.03;
+      letter-spacing:-.055em;
+    }
+
+    .hero p{
+      margin:18px 0 0;
+      max-width:850px;
+      color:var(--muted);
+      line-height:1.75;
+      font-size:18px;
+    }
+
+    .progress-box{
+      margin-top:26px;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:18px;
+    }
+
+    .progress-head{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:12px;
+      color:var(--brown);
+      font-weight:900;
+    }
+
+    .progress-bar{
+      height:14px;
+      border-radius:999px;
+      overflow:hidden;
+      background:#f0e0d8;
+    }
+
+    .progress-fill{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg,var(--rose),var(--rose-dark));
+      transition:.3s ease;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 360px;
+      gap:24px;
+      align-items:start;
+    }
+
+    .panel{
+      background:rgba(255,255,255,.88);
+      border:1px solid var(--line);
+      border-radius:34px;
+      padding:30px;
+      box-shadow:var(--shadow);
+      margin-bottom:24px;
+    }
+
+    .panel h2{
+      margin:0 0 14px;
+      font-size:34px;
+      letter-spacing:-.04em;
+    }
+
+    .panel h3{
+      margin:24px 0 10px;
+      font-size:26px;
+      letter-spacing:-.03em;
+    }
+
+    .panel p,.panel li{
+      color:var(--muted);
+      line-height:1.8;
+      font-size:16px;
+    }
+
+    .teaching-card,.task-box{
+      padding:22px;
+      border-radius:26px;
+      border:1px solid var(--line);
+      background:#fff7f3;
+      margin:18px 0;
+    }
+
+    .task-box{
+      background:linear-gradient(135deg,#fff,#fff4ef);
+      border-color:#e4afa3;
+    }
+
+    .album-section{
+      margin-top:30px;
+      background:#fffaf7;
+      border:1px solid #ecdcd3;
+      border-radius:30px;
+      padding:28px;
+    }
+
+    .album-section h2{
+      margin:0 0 10px;
+    }
+
+    .album-section > p{
+      margin:0 0 24px;
+    }
+
+    .album-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(240px,1fr));
+      gap:18px;
+    }
+
+    .album-card{
+      background:#fff;
+      border:1px solid #ead8ce;
+      border-radius:24px;
+      overflow:hidden;
+      padding:0;
+      cursor:pointer;
+      transition:.2s ease;
+      text-align:left;
+    }
+
+    .album-card:hover{
+      transform:translateY(-4px);
+      box-shadow:0 14px 30px rgba(80,48,35,.10);
+    }
+
+    .album-cover{
+      min-height:190px;
+      padding:18px;
+      color:#fff;
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      overflow:hidden;
+    }
+
+    .album-cover::after{
+      content:"";
+      position:absolute;
+      width:145px;
+      height:145px;
+      border-radius:50%;
+      background:rgba(255,255,255,.18);
+      right:-35px;
+      bottom:-45px;
+    }
+
+    .album-cover h3{
+      font-size:24px;
+      line-height:1.12;
+      margin:14px 0 8px;
+      color:#fff;
+      position:relative;
+      z-index:1;
+    }
+
+    .album-cover p{
+      margin:0;
+      font-size:14px;
+      color:rgba(255,255,255,.92);
+      position:relative;
+      z-index:1;
+    }
+
+    .album-badge{
+      display:inline-flex;
+      width:fit-content;
+      padding:8px 14px;
+      border-radius:999px;
+      background:rgba(255,255,255,.18);
+      font-size:12px;
+      font-weight:800;
+      letter-spacing:.06em;
+      position:relative;
+      z-index:1;
+    }
+
+    .album-instagram{background:linear-gradient(135deg,#ff6a5c,#d63a86)}
+    .album-canva{background:linear-gradient(135deg,#20bde3,#5f74ff)}
+    .album-capcut{background:linear-gradient(135deg,#273043,#4b5568)}
+    .album-ia{background:linear-gradient(135deg,#ff8b7b,#9a5bdb)}
+
+    .album-body{
+      padding:18px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    .album-body strong{
+      font-size:18px;
+      color:#4b342d;
+    }
+
+    .album-body span{
+      font-size:14px;
+      color:#8b6d62;
+    }
+
+    .side{
+      position:sticky;
+      top:24px;
+    }
+
+    .side-card{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:30px;
+      padding:24px;
+      box-shadow:var(--shadow);
+      margin-bottom:18px;
+    }
+
+    .side-card h3{
+      margin:0 0 12px;
+      font-size:24px;
+    }
+
+    .side-card p{
+      color:var(--muted);
+      line-height:1.65;
+    }
+
+    .gallery-modal{
+      position:fixed;
+      inset:0;
+      display:none;
+      z-index:9999;
+    }
+
+    .gallery-modal.active{
+      display:block;
+    }
+
+    .gallery-overlay{
+      position:absolute;
+      inset:0;
+      background:rgba(26,20,17,.72);
+      backdrop-filter:blur(6px);
+    }
+
+    .gallery-content{
+      position:relative;
+      width:min(1100px,calc(100% - 40px));
+      max-height:calc(100vh - 40px);
+      margin:20px auto;
+      background:#fffaf7;
+      border-radius:26px;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      box-shadow:0 20px 70px rgba(0,0,0,.22);
+    }
+
+    .gallery-close{
+      position:absolute;
+      top:14px;
+      right:16px;
+      width:42px;
+      height:42px;
+      border:none;
+      border-radius:50%;
+      background:#f1dfd7;
+      color:#4b342d;
+      font-size:28px;
+      cursor:pointer;
+      z-index:5;
+    }
+
+    .gallery-header{
+      padding:28px 30px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+
+    .gallery-header small{
+      display:block;
+      color:#c97d68;
+      font-weight:800;
+      letter-spacing:.05em;
+      margin-bottom:6px;
+    }
+
+    .gallery-header h3{
+      font-size:28px;
+      color:#4b342d;
+      margin:0;
+    }
+
+    .gallery-actions{
+      display:flex;
+      gap:10px;
+    }
+
+    .gallery-actions button{
+      width:42px;
+      height:42px;
+      border:none;
+      border-radius:14px;
+      background:#e4a091;
+      color:#fff;
+      font-size:24px;
+      cursor:pointer;
+    }
+
+    .gallery-main{
+      position:relative;
+      padding:0 30px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+    }
+
+    .gallery-image-wrap{
+      flex:1;
+      min-height:520px;
+      background:#f6ece7;
+      border-radius:20px;
+      overflow:auto;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+
+    .gallery-image-wrap img{
+      max-width:100%;
+      height:auto;
+      transition:transform .2s ease;
+      transform-origin:center center;
+      border-radius:16px;
+      box-shadow:0 12px 24px rgba(0,0,0,.08);
+    }
+
+    .gallery-nav{
+      flex:0 0 50px;
+      width:50px;
+      height:50px;
+      border:none;
+      border-radius:50%;
+      background:#e6a191;
+      color:#fff;
+      font-size:34px;
+      cursor:pointer;
+    }
+
+    .gallery-thumbs{
+      padding:0 30px 28px;
+      display:flex;
+      gap:12px;
+      overflow-x:auto;
+    }
+
+    .gallery-thumbs button{
+      border:2px solid transparent;
+      border-radius:16px;
+      overflow:hidden;
+      background:#fff;
+      padding:0;
+      cursor:pointer;
+      flex:0 0 110px;
+      height:140px;
+    }
+
+    .gallery-thumbs button.active{
+      border-color:#d98775;
+    }
+
+    .gallery-thumbs img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    @media(max-width:980px){
+      .grid{grid-template-columns:1fr}
+      .side{position:relative;top:0}
+      .album-grid{grid-template-columns:1fr}
+    }
+
+    @media(max-width:680px){
+      .page{padding:14px}
+      .topbar{flex-direction:column;align-items:flex-start}
+      h1{font-size:38px}
+      .hero,.panel{padding:24px}
+      .gallery-main{padding:0 14px 18px}
+      .gallery-header,.gallery-thumbs{padding-left:14px;padding-right:14px}
+      .gallery-image-wrap{min-height:360px}
+      .gallery-nav{width:42px;height:42px;flex-basis:42px}
+    }
+  </style>
+<style id="fix-gallery-modal">
+  .gallery-content {
+    height: calc(100vh - 40px) !important;
+    max-height: calc(100vh - 40px) !important;
+  }
+
+  .gallery-main {
+    flex: 1 !important;
+    min-height: 0 !important;
+    padding: 0 30px 18px !important;
+  }
+
+  .gallery-image-wrap {
+    height: calc(100vh - 250px) !important;
+    min-height: 0 !important;
+    overflow: auto !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .gallery-image-wrap img {
+    max-width: 100% !important;
+    max-height: calc(100vh - 300px) !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;
+    display: block !important;
+  }
+
+  .gallery-thumbs {
+    flex-shrink: 0 !important;
+  }
+
+  .gallery-header {
+    flex-shrink: 0 !important;
+  }
+
+  @media (max-width: 680px) {
+    .gallery-content {
+      width: calc(100% - 20px) !important;
+      height: calc(100vh - 20px) !important;
+      max-height: calc(100vh - 20px) !important;
+      margin: 10px auto !important;
+    }
+
+    .gallery-image-wrap {
+      height: calc(100vh - 240px) !important;
+    }
+
+    .gallery-image-wrap img {
+      max-height: calc(100vh - 280px) !important;
+    }
+  }
+</style>
+<style id="premium-gallery-fix">
+  .gallery-content {
+    width: min(1080px, 92vw) !important;
+    height: min(860px, 90vh) !important;
+    max-height: 90vh !important;
+    margin: 5vh auto !important;
+    border-radius: 32px !important;
+    background: #fffaf7 !important;
+    display: grid !important;
+    grid-template-rows: auto minmax(0, 1fr) auto !important;
+    overflow: hidden !important;
+  }
+
+  .gallery-header {
+    position: relative !important;
+    z-index: 3 !important;
+    padding: 30px 150px 18px 32px !important;
+    background: #fffaf7 !important;
+  }
+
+  .gallery-header small {
+    display: block !important;
+    color: #c77f6e !important;
+    font-size: 13px !important;
+    font-weight: 900 !important;
+    letter-spacing: .08em !important;
+    text-transform: uppercase !important;
+    margin-bottom: 8px !important;
+  }
+
+  .gallery-header h3 {
+    margin: 0 !important;
+    font-size: clamp(28px, 3vw, 42px) !important;
+    line-height: 1.05 !important;
+    color: #4b342d !important;
+    letter-spacing: -0.04em !important;
+  }
+
+  .gallery-main {
+    min-height: 0 !important;
+    padding: 0 32px 18px !important;
+    display: grid !important;
+    grid-template-columns: 56px 1fr 56px !important;
+    gap: 18px !important;
+    align-items: center !important;
+  }
+
+  .gallery-image-wrap {
+    height: 100% !important;
+    min-height: 0 !important;
+    background: #f3e9e4 !important;
+    border-radius: 28px !important;
+    padding: 24px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: auto !important;
+  }
+
+  .gallery-image-wrap img {
+    max-width: 100% !important;
+    max-height: 100% !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;
+    border-radius: 22px !important;
+    background: #fff !important;
+    box-shadow: 0 18px 45px rgba(63,45,38,.14) !important;
+  }
+
+  .gallery-thumbs {
+    padding: 0 32px 28px !important;
+    display: flex !important;
+    gap: 12px !important;
+    overflow-x: auto !important;
+    background: #fffaf7 !important;
+  }
+
+  .gallery-thumbs button {
+    width: 96px !important;
+    height: 128px !important;
+    flex: 0 0 96px !important;
+    border-radius: 18px !important;
+    border: 2px solid transparent !important;
+    overflow: hidden !important;
+    background: #fff !important;
+    padding: 0 !important;
+    cursor: pointer !important;
+  }
+
+  .gallery-thumbs button.active {
+    border-color: #d98f82 !important;
+    box-shadow: 0 10px 24px rgba(217,143,130,.24) !important;
+  }
+
+  .gallery-thumbs img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+
+  .gallery-close,
+  .gallery-actions button {
+    background: #df9889 !important;
+    color: #fff !important;
+    box-shadow: 0 12px 28px rgba(217,143,130,.28) !important;
+  }
+
+  .gallery-close {
+    top: 22px !important;
+    right: 24px !important;
+    z-index: 5 !important;
+  }
+
+  .gallery-actions {
+    position: absolute !important;
+    top: 22px !important;
+    right: 78px !important;
+    z-index: 4 !important;
+    display: flex !important;
+    gap: 10px !important;
+  }
+
+  .gallery-nav {
+    width: 54px !important;
+    height: 54px !important;
+    flex: 0 0 54px !important;
+    border-radius: 50% !important;
+    background: #df9889 !important;
+    color: #fff !important;
+    font-size: 34px !important;
+    box-shadow: 0 12px 28px rgba(217,143,130,.25) !important;
+  }
+
+  @media (max-width: 760px) {
+    .gallery-content {
+      width: calc(100vw - 20px) !important;
+      height: calc(100vh - 20px) !important;
+      margin: 10px auto !important;
+      border-radius: 24px !important;
+    }
+
+    .gallery-header {
+      padding: 22px 120px 14px 18px !important;
+    }
+
+    .gallery-main {
+      grid-template-columns: 42px 1fr 42px !important;
+      gap: 8px !important;
+      padding: 0 14px 14px !important;
+    }
+
+    .gallery-image-wrap {
+      padding: 14px !important;
+      border-radius: 20px !important;
+    }
+
+    .gallery-nav {
+      width: 42px !important;
+      height: 42px !important;
+      flex-basis: 42px !important;
+      font-size: 28px !important;
+    }
+
+    .gallery-thumbs {
+      padding: 0 14px 18px !important;
+    }
+
+    .gallery-thumbs button {
+      width: 76px !important;
+      height: 104px !important;
+      flex-basis: 76px !important;
+    }
+  }
+</style>
+  <link rel="stylesheet" href="assets/premium-gallery/premium-gallery.css">
+
+<style id="scroll-global-fix">
+  html,
+  body {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    min-height: 100vh;
+  }
+
+  main,
+  section,
+  .lesson-layout,
+  .lesson-content,
+  .aula-content,
+  .page-content {
+    overflow: visible !important;
+  }
+</style>
+
+</head>
+
+<body>
+  <main class="page" id="app"></main>
+
+  <div id="galleryModal" class="gallery-modal">
+    <div class="gallery-overlay" onclick="closeGallery()"></div>
+
+    <div class="gallery-content">
+      <button class="gallery-close" onclick="closeGallery()">×</button>
+
+      <div class="gallery-header">
+        <div>
+          <small id="galleryCategory">Álbum</small>
+          <h3 id="galleryTitle">Galeria da aula</h3>
+        </div>
+
+        <div class="gallery-actions">
+          <button onclick="zoomOutImage()">−</button>
+          <button onclick="zoomInImage()">+</button>
+        </div>
+      </div>
+
+      <div class="gallery-main">
+        <button class="gallery-nav" onclick="prevImage()">‹</button>
+
+        <div class="gallery-image-wrap">
+          <img id="galleryMainImage" src="" alt="Imagem da galeria">
+        </div>
+
+        <button class="gallery-nav" onclick="nextImage()">›</button>
+      </div>
+
+      <div id="galleryThumbs" class="gallery-thumbs"></div>
+    </div>
+  </div>
+
+  <script>
+    const modules = [
+      {tag:"01",title:"Posicionamento e nicho",desc:"Defina o espaço que você quer ocupar e para quem deseja comunicar.",lessons:["Escolha do nicho principal","Público ideal e dores reais","Promessa clara do perfil","Tom de voz da criadora","Diferenciação no mercado","Conteúdos de autoridade","Linha editorial inicial","Tarefa final do posicionamento"]},
+      {tag:"02",title:"Bio, estética e primeira impressão",desc:"Transforme seu perfil em uma vitrine clara, bonita e confiável.",lessons:["Foto de perfil profissional","Nome pesquisável","Bio com proposta clara","Destaques organizados","Capas e identidade visual","Paleta e fontes","Feed com coerência","Checklist final do perfil"]},
+      {tag:"03",title:"Ideias e pilares de conteúdo",desc:"Organize temas para não depender só de inspiração.",lessons:["3 pilares principais","Ideias por etapa do funil","Conteúdo de conexão","Conteúdo educativo","Conteúdo de autoridade","Conteúdo de venda leve","Banco de ideias","Calendário semanal"]},
+      {tag:"04",title:"Reels com gancho e retenção",desc:"Crie vídeos curtos com começo forte e estrutura clara.",lessons:["Gancho nos 3 segundos","Promessa do vídeo","Roteiro curto","Cortes dinâmicos","Legendas estratégicas","CTA natural","Análise de retenção","Repetição de formatos"]},
+      {tag:"05",title:"Stories para conexão",desc:"Use stories para relacionamento, desejo e confiança.",lessons:["Bastidores reais","Enquetes e caixinhas","Prova social","Sequência de storytelling","Stories de rotina","CTA sem forçar","Oferta leve","Calendário de stories"]},
+      {tag:"06",title:"Canva para identidade visual",desc:"Crie posts, capas e carrosséis com aparência profissional.",lessons:["Brand Kit simples","Templates 4:5","Capas de Reels","Carrossel educativo","Stories com CTA","Organização em pastas","Exportação correta","Revisão visual"]},
+      {tag:"07",title:"CapCut para edição dinâmica",desc:"Edite vídeos com ritmo, legendas e acabamento limpo.",lessons:["Timeline organizada","Cortes de pausa","Zooms e movimentos","Legenda automática","Destaque de palavras","Áudio e ruído","Exportação ideal","Checklist final"]},
+      {tag:"08",title:"IA para roteiro e vídeo",desc:"Use IA para destravar criatividade e produção.",lessons:["Prompt de ideias","Roteiro com IA","Ganchos alternativos","Cenas de apoio","Descrição para vídeo IA","Legendas com IA","Calendário com IA","Humanização do resultado"]},
+      {tag:"09",title:"Métricas e crescimento",desc:"Leia dados e transforme insight em decisão.",lessons:["Alcance e impressões","Retenção dos Reels","Salvamentos","Compartilhamentos","Novos seguidores","Formatos vencedores","Ajuste semanal","Relatório simples"]},
+      {tag:"10",title:"Monetização e parcerias",desc:"Prepare sua imagem para atrair oportunidades.",lessons:["Mídia kit inicial","Proposta para marcas","Valores e entregáveis","Prova social","Abordagem profissional","Organização de collabs","Pós-venda","Plano de monetização"]}
+    ];
+
+    const galleries = {
+      instagram:{
+        category:"INSTAGRAM",
+        title:"Instagram - aplicação prática",
+        coverClass:"album-instagram",
+        subtitle:"Ajustes de perfil, Reels, stories e métricas.",
+        images:[
+          "assets/prints/album/instagram-1.png",
+          "assets/prints/album/instagram-2.png",
+          "assets/prints/album/instagram-3.png",
+          "assets/prints/album/instagram-4.png"
+        ]
+      },
+      canva:{
+        category:"CANVA",
+        title:"Canva - modelo visual",
+        coverClass:"album-canva",
+        subtitle:"Identidade, carrossel, stories e post 4:5.",
+        images:[
+          "assets/prints/album/canva-1.png",
+          "assets/prints/album/canva-2.png",
+          "assets/prints/album/canva-3.png",
+          "assets/prints/album/canva-4.png"
+        ]
+      },
+      capcut:{
+        category:"CAPCUT",
+        title:"CapCut - vídeo passo a passo",
+        coverClass:"album-capcut",
+        subtitle:"Cortes, legendas, zoom e exportação.",
+        images:[
+          "assets/prints/album/capcut-1.png",
+          "assets/prints/album/capcut-2.png",
+          "assets/prints/album/capcut-3.png",
+          "assets/prints/album/capcut-4.png"
+        ]
+      },
+      ia:{
+        category:"IA",
+        title:"IA - prompt da aula",
+        coverClass:"album-ia",
+        subtitle:"Ideias, ganchos, cenas e calendário.",
+        images:[
+          "assets/prints/album/ia-1.png",
+          "assets/prints/album/ia-2.png",
+          "assets/prints/album/ia-3.png",
+          "assets/prints/album/ia-4.png"
+        ]
+      }
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const moduleIndex = Number(params.get("m") || 0);
+    const lessonIndex = Number(params.get("l") || 0);
+
+    let currentGallery = null;
+    let currentIndex = 0;
+    let currentZoom = 1;
+
+    function key(m,l){ return `m${m}-l${l}`; }
+
+    function getCompleted(){
+      try { return JSON.parse(localStorage.getItem("ia_completed_lessons") || "[]"); }
+      catch(e){ return []; }
+    }
+
+    function saveCompleted(arr){
+      localStorage.setItem("ia_completed_lessons", JSON.stringify(arr));
+    }
+
+    function linearIndex(m,l){ return (m * 8) + l; }
+
+    function isUnlocked(m,l){
+      if(m === 0 && l === 0) return true;
+      const previous = linearIndex(m,l) - 1;
+      const pm = Math.floor(previous / 8);
+      const pl = previous % 8;
+      return getCompleted().includes(key(pm,pl));
+    }
+
+    function getProgress(){
+      const total = modules.length * 8;
+      return Math.round((getCompleted().length / total) * 100);
+    }
+
+    function nextLessonUrl(){
+      let nextM = moduleIndex;
+      let nextL = lessonIndex + 1;
+
+      if(nextL >= 8){
+        nextM++;
+        nextL = 0;
+      }
+
+      if(nextM >= modules.length){
+        return "area.html#modules";
+      }
+
+      return `aula.html?m=${nextM}&l=${nextL}`;
+    }
+
+    function completeLesson(){
+      const completed = getCompleted();
+      const current = key(moduleIndex, lessonIndex);
+
+      if(!completed.includes(current)){
+        completed.push(current);
+        saveCompleted(completed);
+      }
+
+      renderPage(true);
+    }
+
+    function buildTeachingContent(module, lesson){
+      return `
+        <h2>O que você vai aprender nesta aula</h2>
+        <p>
+          Nesta aula, você vai aprender a aplicar <strong>${lesson.toLowerCase()}</strong> dentro da sua estratégia como influenciadora.
+          A proposta é transformar teoria em prática, usando exemplos visuais, organização de conteúdo e uma atividade simples para fixar.
+        </p>
+
+        <div class="teaching-card">
+          <strong>Ideia central:</strong>
+          crescer como criadora não depende apenas de postar mais. Depende de entender o que está sendo comunicado,
+          como isso aparece visualmente e qual ação o público deve tomar depois de consumir seu conteúdo.
+        </div>
+
+        <h3>1. Entenda a função desta etapa</h3>
+        <p>
+          O módulo <strong>${module.title}</strong> ajuda você a construir uma presença mais clara e profissional.
+          Essa aula trabalha uma parte específica dessa construção, para que seu perfil deixe de parecer improvisado
+          e passe a comunicar posicionamento, intenção e valor.
+        </p>
+
+        <h3>2. Como aplicar no seu perfil</h3>
+        <ol>
+          <li>Abra seu Instagram e observe seu perfil como se fosse uma pessoa nova chegando ali.</li>
+          <li>Veja se a mensagem principal está clara em poucos segundos.</li>
+          <li>Identifique o que pode ser melhorado na estética, no texto ou na estrutura.</li>
+          <li>Use os álbuns abaixo para estudar exemplos de Instagram, Canva, CapCut e IA.</li>
+          <li>Faça uma pequena aplicação prática ainda hoje.</li>
+        </ol>
+
+        <h3>3. Exemplo prático</h3>
+        <p>
+          Em vez de apenas pensar “preciso postar”, organize assim:
+        </p>
+
+        <div class="teaching-card">
+          <strong>Objetivo:</strong> melhorar ${lesson.toLowerCase()}.<br>
+          <strong>Formato:</strong> 1 ajuste no perfil + 1 conteúdo curto + 1 sequência de stories.<br>
+          <strong>Métrica observada:</strong> respostas, salvamentos, retenção ou novos seguidores.
+        </div>
+
+        <h3>4. Erros comuns</h3>
+        <ul>
+          <li>Copiar outras criadoras sem adaptar para o seu nicho.</li>
+          <li>Usar Canva ou CapCut sem uma intenção clara.</li>
+          <li>Postar sem revisar se o conteúdo está fácil de entender.</li>
+          <li>Ignorar os insights e repetir formatos sem avaliar resultado.</li>
+        </ul>
+
+        <div class="task-box">
+          <h3>Tarefa de casa</h3>
+          <p>
+            Aplique essa aula em uma ação real: ajuste algo no perfil, crie um roteiro, monte um template,
+            edite um vídeo ou escreva uma sequência de stories. Depois, marque esta aula como concluída para salvar seu progresso.
+          </p>
+        </div>
+      `;
+    }
+
+    function renderAlbums(){
+      return `
+        <section class="album-section">
+          <h2>Álbuns práticos da aula</h2>
+          <p>
+            Clique em cada quadro para abrir a galeria, navegar pelas imagens e dar zoom no passo a passo.
+          </p>
+
+          <div class="album-grid">
+            ${Object.keys(galleries).map(key => {
+              const g = galleries[key];
+              return `
+                <button class="album-card" onclick="openGallery('${key}')">
+                  <div class="album-cover ${g.coverClass}">
+                    <span class="album-badge">${g.category}</span>
+                    <div>
+                      <h3>${g.title}</h3>
+                      <p>${g.subtitle}</p>
+                    </div>
+                  </div>
+                  <div class="album-body">
+                    <strong>${g.title}</strong>
+                    <span>Clique para abrir o álbum com 4 prints</span>
+                  </div>
+                </button>
+              `;
+            }).join("")}
+          </div>
+        </section>
+      `;
+    }
+
+    function renderBlocked(){
+      document.getElementById("app").innerHTML = `
+        <section class="hero">
+          <span class="eyebrow">Aula em sequência</span>
+          <h1>Complete a etapa anterior para continuar a trilha.</h1>
+          <p>A jornada foi organizada em ordem para manter o aprendizado mais claro e progressivo.</p>
+          <div style="margin-top:24px">
+            <a class="btn primary" href="area.html#modules">Voltar para os módulos</a>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderPage(justCompleted = false){
+      const module = modules[moduleIndex];
+      const lesson = module.lessons[lessonIndex];
+      const done = getCompleted().includes(key(moduleIndex, lessonIndex));
+      const progress = getProgress();
+
+      document.getElementById("app").innerHTML = `
+        <header class="topbar">
+          <div class="brand">
+            <div class="logo">IA</div>
+            <div>
+              <strong>Influencer Academy</strong>
+              <span>Módulo ${module.tag} · Aula ${lessonIndex + 1} de 8</span>
+            </div>
+          </div>
+
+          <div class="top-actions">
+            <a class="btn light" href="area.html#modules">← Voltar aos módulos</a>
+            ${done ? `<a class="btn primary" href="${nextLessonUrl()}">Próxima aula →</a>` : ""}
+          </div>
+        </header>
+
+        <section class="hero">
+          <span class="eyebrow">${module.title}</span>
+          <h1>${lesson}</h1>
+          <p>${module.desc} Estude a explicação, abra os álbuns visuais e aplique a tarefa de casa no seu perfil.</p>
+
+          <div class="progress-box">
+            <div class="progress-head">
+              <span>Progresso geral da trilha</span>
+              <span>${progress}%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width:${progress}%"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="grid">
+          <article class="panel">
+            ${justCompleted ? `
+              <div class="teaching-card" style="background:#eefaf1;border-color:#bce8cb;color:#2e8b4d">
+                <strong>Parabéns!</strong> Aula marcada como concluída e progresso salvo.
+              </div>
+            ` : ""}
+
+            ${buildTeachingContent(module, lesson)}
+            ${renderAlbums()}
+
+            <div class="task-box">
+              <h3>Finalizar aula</h3>
+              <p>
+                Marque como concluída depois de estudar o conteúdo e fazer sua tarefa de casa.
+                Assim seu progresso ficará salvo na trilha.
+              </p>
+
+              <button class="btn primary" onclick="completeLesson()">
+                ${done ? "Aula concluída ✓" : "Marcar aula como concluída"}
+              </button>
+
+              ${done ? `<a class="btn light" style="margin-left:8px" href="${nextLessonUrl()}">Ir para próxima aula</a>` : ""}
+            </div>
+          </article>
+
+          <aside class="side">
+            <div class="side-card">
+              <h3>Resumo da aula</h3>
+              <p><strong>Módulo:</strong> ${module.title}</p>
+              <p><strong>Aula:</strong> ${lesson}</p>
+              <p><strong>Status:</strong> ${done ? "Concluída" : "Em andamento"}</p>
+            </div>
+
+            <div class="side-card">
+              <h3>Como aproveitar melhor</h3>
+              <p>Leia o conteúdo, abra os álbuns, estude os prints, aplique no seu perfil e marque como concluída quando terminar.</p>
+            </div>
+
+            <div class="side-card">
+              <h3>Próximo passo</h3>
+              <p>${done ? "Você já pode continuar sua jornada." : "Finalize esta aula com calma e avance no seu ritmo."}</p>
+            </div>
+          </aside>
+        </section>
+      `;
+    }
+
+    function openGallery(key,startIndex = 0){
+      currentGallery = galleries[key];
+      currentIndex = startIndex;
+      currentZoom = 1;
+
+      document.getElementById("galleryModal").classList.add("active");
+      document.body.style.overflow = "hidden";
+      document.getElementById("galleryCategory").textContent = currentGallery.category;
+      document.getElementById("galleryTitle").textContent = currentGallery.title;
+
+      renderMainImage();
+      renderThumbs();
+    }
+
+    function closeGallery(){
+      document.getElementById("galleryModal").classList.remove("active");
+      document.body.style.overflow = "";
+    }
+
+    function renderMainImage(){
+      const img = document.getElementById("galleryMainImage");
+      img.src = currentGallery.images[currentIndex];
+      img.style.transform = `scale(${currentZoom})`;
+    }
+
+    function renderThumbs(){
+      const thumbs = document.getElementById("galleryThumbs");
+      thumbs.innerHTML = "";
+
+      currentGallery.images.forEach((src,index) => {
+        const btn = document.createElement("button");
+        if(index === currentIndex) btn.classList.add("active");
+
+        btn.innerHTML = `<img src="${src}" alt="Thumb ${index + 1}">`;
+        btn.onclick = () => {
+          currentIndex = index;
+          currentZoom = 1;
+          renderMainImage();
+          renderThumbs();
+        };
+
+        thumbs.appendChild(btn);
+      });
+    }
+
+    function prevImage(){
+      if(!currentGallery) return;
+      currentIndex = (currentIndex - 1 + currentGallery.images.length) % currentGallery.images.length;
+      currentZoom = 1;
+      renderMainImage();
+      renderThumbs();
+    }
+
+    function nextImage(){
+      if(!currentGallery) return;
+      currentIndex = (currentIndex + 1) % currentGallery.images.length;
+      currentZoom = 1;
+      renderMainImage();
+      renderThumbs();
+    }
+
+    function zoomInImage(){
+      currentZoom = Math.min(currentZoom + .2, 3);
+      renderMainImage();
+    }
+
+    function zoomOutImage(){
+      currentZoom = Math.max(currentZoom - .2, 1);
+      renderMainImage();
+    }
+
+    document.addEventListener("keydown", function(e){
+      const modalOpen = document.getElementById("galleryModal").classList.contains("active");
+      if(!modalOpen) return;
+
+      if(e.key === "Escape") closeGallery();
+      if(e.key === "ArrowRight") nextImage();
+      if(e.key === "ArrowLeft") prevImage();
+    });
+
+    if(!modules[moduleIndex] || !modules[moduleIndex].lessons[lessonIndex]){
+      window.location.href = "area.html#modules";
+    } else if(!isUnlocked(moduleIndex, lessonIndex)){
+      renderBlocked();
+    } else {
+      renderPage();
+    }
+  </script>
+<style id="locked-module-lesson-css">
+  .locked-module-page {
+    background: rgba(255,255,255,.88);
+    border: 1px solid #ead7ce;
+    border-radius: 34px;
+    padding: 42px;
+    box-shadow: 0 24px 70px rgba(83,54,42,.11);
+    text-align: center;
+  }
+
+  .locked-module-page h1 {
+    max-width: 760px;
+    margin: 14px auto;
+    font-size: clamp(36px, 5vw, 58px);
+    line-height: 1.05;
+    letter-spacing: -0.055em;
+    color: #3f2d26;
+  }
+
+  .locked-module-page p {
+    max-width: 680px;
+    margin: 0 auto 24px;
+    color: #8a7166;
+    line-height: 1.75;
+    font-size: 18px;
+  }
+</style>
+
+<script id="dynamic-gallery-by-lesson">
+(function(){
+  const ACTIVE_MODULES = 5;
+
+  function pad2(n){
+    return String(n).padStart(2, "0");
+  }
+
+  function lessonFolder(){
+    const modulo = `modulo${pad2(moduleIndex + 1)}`;
+    const aula = `aula${pad2(lessonIndex + 1)}`;
+    return `assets/prints/${modulo}/${aula}`;
+  }
+
+  const galleryInfo = {
+    instagram: {
+      category: "INSTAGRAM",
+      title: "Instagram - aplicação prática",
+      subtitle: "Perfil, Reels, stories e métricas aplicados ao tema da aula."
+    },
+    canva: {
+      category: "CANVA",
+      title: "Canva - modelo visual",
+      subtitle: "Templates, identidade visual, carrosséis e materiais de apoio."
+    },
+    capcut: {
+      category: "CAPCUT",
+      title: "CapCut - vídeo passo a passo",
+      subtitle: "Cortes, ritmo, legendas, efeitos e exportação."
+    },
+    ia: {
+      category: "IA PROMPT",
+      title: "IA - prompt da aula",
+      subtitle: "Prompts para transformar a aula em roteiro, ideias e plano de ação."
+    }
+  };
+
+  window.openGallery = function(key, startIndex = 0){
+    const info = galleryInfo[key];
+    const folder = lessonFolder();
+
+    currentGallery = {
+      category: info.category,
+      title: info.title,
+      subtitle: info.subtitle,
+      images: [
+        `${folder}/${key}-1.png`,
+        `${folder}/${key}-2.png`,
+        `${folder}/${key}-3.png`,
+        `${folder}/${key}-4.png`
+      ]
+    };
+
+    currentIndex = startIndex;
+    currentZoom = 1;
+
+    document.getElementById("galleryModal").classList.add("active");
+    document.body.style.overflow = "hidden";
+    document.getElementById("galleryCategory").textContent = currentGallery.category;
+    document.getElementById("galleryTitle").textContent = currentGallery.title;
+
+    renderMainImage();
+    renderThumbs();
+  };
+
+  const oldRenderPage = window.renderPage;
+
+  if(moduleIndex >= ACTIVE_MODULES){
+    document.getElementById("app").innerHTML = `
+      <section class="locked-module-page">
+        <span class="eyebrow">Conteúdo em breve</span>
+        <h1>Este módulo ainda está sendo preparado.</h1>
+        <p>
+          Os cinco primeiros módulos já formam a trilha principal da Influencer Academy.
+          As próximas etapas ficarão bloqueadas por enquanto e poderão ser liberadas depois.
+        </p>
+        <a class="btn primary" href="area.html#modules">Voltar para os módulos</a>
+      </section>
+    `;
+  }
+})();
+</script>
+  <script src="assets/premium-gallery/premium-gallery.js"></script>
+</body>
+</html>
+
+
+
+
+
+

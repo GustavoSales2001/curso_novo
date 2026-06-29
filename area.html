@@ -8,7 +8,6 @@
   <style>
     :root{
       --bg:#f7f1eb;
-      --paper:#fffaf7;
       --white:#fff;
       --text:#3f2d26;
       --muted:#8a7166;
@@ -17,10 +16,12 @@
       --rose-dark:#c87465;
       --rose-soft:#f8dfd8;
       --brown:#563b31;
+      --green:#2e8b4d;
       --shadow:0 24px 70px rgba(83,54,42,.11);
     }
 
     *{box-sizing:border-box}
+
     body{
       margin:0;
       font-family:"Segoe UI",Arial,sans-serif;
@@ -35,11 +36,11 @@
     a{text-decoration:none;color:inherit}
 
     .app{
-      max-width:1540px;
+      max-width:1500px;
       margin:0 auto;
       padding:24px;
       display:grid;
-      grid-template-columns:320px 1fr;
+      grid-template-columns:310px 1fr;
       gap:24px;
       min-height:100vh;
     }
@@ -50,197 +51,604 @@
       height:calc(100vh - 48px);
       overflow:auto;
       padding:24px;
-      background:rgba(255,255,255,.72);
+      background:rgba(255,255,255,.74);
       border:1px solid var(--line);
       border-radius:34px;
       box-shadow:var(--shadow);
       backdrop-filter:blur(14px);
     }
 
-    .brand{display:flex;align-items:center;gap:14px;margin-bottom:24px}
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      margin-bottom:24px;
+    }
+
     .logo{
-      width:56px;height:56px;border-radius:20px;
-      display:grid;place-items:center;
+      width:56px;
+      height:56px;
+      border-radius:20px;
       background:linear-gradient(135deg,var(--rose),#e8aa9d);
-      color:#fff;font-weight:950;font-size:20px;
-      box-shadow:0 16px 34px rgba(217,143,130,.25);
+      color:#fff;
+      display:grid;
+      place-items:center;
+      font-weight:950;
+      font-size:20px;
       flex-shrink:0;
     }
-    .brand h1{margin:0;font-size:26px;line-height:1.05;letter-spacing:-.04em}
-    .brand p{margin:5px 0 0;color:var(--muted);font-size:13px;font-weight:800;text-transform:uppercase}
+
+    .brand h1{
+      margin:0;
+      font-size:25px;
+      line-height:1.05;
+      letter-spacing:-.04em;
+    }
+
+    .brand p{
+      margin:5px 0 0;
+      color:var(--muted);
+      font-size:12px;
+      font-weight:850;
+      text-transform:uppercase;
+    }
 
     .language-box{
-      display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
-      padding:8px;border:1px solid var(--line);background:#fff;border-radius:18px;margin-bottom:18px;
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:8px;
+      padding:8px;
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:18px;
+      margin-bottom:18px;
     }
 
     .lang-btn{
-      border:none;border-radius:13px;padding:10px 8px;cursor:pointer;
-      background:transparent;color:var(--muted);font-weight:900;
+      border:none;
+      border-radius:13px;
+      padding:10px 8px;
+      cursor:pointer;
+      background:transparent;
+      color:var(--muted);
+      font-weight:900;
     }
 
-    .lang-btn.active{background:var(--rose-soft);color:var(--rose-dark)}
+    .lang-btn.active{
+      background:var(--rose-soft);
+      color:var(--rose-dark);
+    }
 
-    .nav{display:grid;gap:12px;margin-top:18px}
+    .nav{
+      display:grid;
+      gap:12px;
+    }
+
     .nav button{
-      border:1px solid var(--line);background:#fff;border-radius:20px;
-      padding:15px 16px;display:flex;align-items:center;gap:13px;
-      color:var(--brown);cursor:pointer;font-weight:850;transition:.2s ease;text-align:left;
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:20px;
+      padding:15px 16px;
+      display:flex;
+      align-items:center;
+      gap:13px;
+      color:var(--brown);
+      cursor:pointer;
+      font-weight:850;
+      transition:.2s ease;
+      text-align:left;
     }
 
-    .nav button:hover,.nav button.active{
-      transform:translateY(-2px);border-color:#e4afa3;
+    .nav button:hover,
+    .nav button.active{
+      transform:translateY(-2px);
+      border-color:#e4afa3;
       background:linear-gradient(135deg,#fff,#fff4ef);
       box-shadow:0 14px 34px rgba(83,54,42,.08);
     }
 
     .nav-icon{
-      width:40px;height:40px;display:grid;place-items:center;border-radius:14px;
-      background:var(--rose-soft);color:var(--rose-dark);font-size:18px;flex-shrink:0;
+      width:40px;
+      height:40px;
+      display:grid;
+      place-items:center;
+      border-radius:14px;
+      background:var(--rose-soft);
+      color:var(--rose-dark);
+      font-size:18px;
+      flex-shrink:0;
     }
 
     .user-card{
-      margin-top:22px;padding:18px;border-radius:24px;background:#fff;border:1px solid var(--line);
+      margin-top:22px;
+      padding:18px;
+      border-radius:24px;
+      background:#fff;
+      border:1px solid var(--line);
     }
 
-    .user-head{display:flex;gap:12px;align-items:center;margin-bottom:14px}
+    .user-head{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-bottom:14px;
+    }
+
     .avatar{
-      width:50px;height:50px;border-radius:18px;background:linear-gradient(135deg,var(--rose),#e8aa9d);
-      color:#fff;display:grid;place-items:center;font-weight:950;
+      width:50px;
+      height:50px;
+      border-radius:18px;
+      background:linear-gradient(135deg,var(--rose),#e8aa9d);
+      color:#fff;
+      display:grid;
+      place-items:center;
+      font-weight:950;
     }
 
     .user-head strong{display:block;font-size:16px}
     .user-head span{display:block;margin-top:4px;color:var(--muted);font-size:12px;word-break:break-word}
+
     .access{
-      display:inline-flex;gap:8px;align-items:center;padding:8px 12px;border-radius:999px;
-      background:#eefaf1;color:#2e8b4d;font-weight:850;font-size:12px;
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:8px 12px;
+      border-radius:999px;
+      background:#eefaf1;
+      color:var(--green);
+      font-weight:850;
+      font-size:12px;
     }
+
     .logout{
-      width:100%;border:none;margin-top:14px;padding:13px;border-radius:16px;
-      background:linear-gradient(135deg,var(--rose),var(--rose-dark));color:#fff;cursor:pointer;font-weight:950;
+      width:100%;
+      border:none;
+      margin-top:14px;
+      padding:13px;
+      border-radius:16px;
+      background:linear-gradient(135deg,var(--rose),var(--rose-dark));
+      color:#fff;
+      cursor:pointer;
+      font-weight:950;
     }
 
     .view{display:none;animation:fade .25s ease both}
     .view.active{display:block}
-    @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+    @keyframes fade{
+      from{opacity:0;transform:translateY(8px)}
+      to{opacity:1;transform:translateY(0)}
+    }
 
     .hero{
-      padding:34px;border-radius:38px;border:1px solid var(--line);
+      padding:34px;
+      border-radius:38px;
+      border:1px solid var(--line);
       background:
         radial-gradient(circle at 95% 5%,rgba(217,143,130,.20),transparent 26%),
         linear-gradient(135deg,rgba(255,255,255,.92),rgba(255,248,244,.92));
-      box-shadow:var(--shadow);margin-bottom:24px;overflow:hidden;
+      box-shadow:var(--shadow);
+      margin-bottom:24px;
+      overflow:hidden;
     }
 
     .eyebrow{
-      display:inline-flex;padding:10px 14px;border-radius:999px;background:var(--rose-soft);
-      color:var(--rose-dark);font-weight:950;font-size:12px;text-transform:uppercase;letter-spacing:.06em;
+      display:inline-flex;
+      padding:10px 14px;
+      border-radius:999px;
+      background:var(--rose-soft);
+      color:var(--rose-dark);
+      font-weight:950;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      margin-bottom:18px;
     }
 
-    .hero h2{margin:18px 0 14px;max-width:980px;font-size:52px;line-height:1.03;letter-spacing:-.055em}
+    .hero h2{
+      margin:0 0 14px;
+      max-width:960px;
+      font-size:52px;
+      line-height:1.03;
+      letter-spacing:-.055em;
+    }
+
     .hero h2 span{color:var(--rose-dark)}
-    .hero p{margin:0;max-width:880px;color:var(--muted);line-height:1.75;font-size:18px}
+
+    .hero p{
+      margin:0;
+      max-width:850px;
+      color:var(--muted);
+      line-height:1.75;
+      font-size:18px;
+    }
 
     .btn{
-      display:inline-flex;align-items:center;justify-content:center;gap:9px;
-      min-height:52px;padding:0 22px;border-radius:17px;border:1px solid transparent;
-      font-weight:950;transition:.2s ease;cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:52px;
+      padding:0 22px;
+      border-radius:17px;
+      border:1px solid transparent;
+      font-weight:950;
+      transition:.2s ease;
+      cursor:pointer;
     }
-    .btn.primary{background:linear-gradient(135deg,var(--rose),var(--rose-dark));color:#fff;box-shadow:0 15px 30px rgba(217,143,130,.26)}
-    .btn.light{background:#fff;color:var(--brown);border-color:var(--line)}
+
+    .btn.primary{
+      background:linear-gradient(135deg,var(--rose),var(--rose-dark));
+      color:#fff;
+      box-shadow:0 15px 30px rgba(217,143,130,.26);
+    }
+
+    .btn.light{
+      background:#fff;
+      color:var(--brown);
+      border-color:var(--line);
+    }
+
     .btn:hover{transform:translateY(-2px)}
 
     .panel{
-      padding:28px;border-radius:34px;border:1px solid var(--line);
-      background:rgba(255,255,255,.88);box-shadow:var(--shadow);margin-bottom:24px;
+      padding:28px;
+      border-radius:34px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.88);
+      box-shadow:var(--shadow);
+      margin-bottom:24px;
     }
 
-    .section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:22px}
-    .section-head h3{margin:0 0 8px;font-size:34px;line-height:1.1;letter-spacing:-.04em}
-    .section-head p{margin:0;color:var(--muted);line-height:1.65}
-    .pill{display:inline-flex;padding:9px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);color:var(--rose-dark);font-weight:850;font-size:12px;white-space:nowrap}
+    .section-head{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:18px;
+      margin-bottom:22px;
+    }
+
+    .section-head h3{
+      margin:0 0 8px;
+      font-size:34px;
+      line-height:1.1;
+      letter-spacing:-.04em;
+    }
+
+    .section-head p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.65;
+    }
+
+    .pill{
+      display:inline-flex;
+      padding:9px 12px;
+      border-radius:999px;
+      background:#fff;
+      border:1px solid var(--line);
+      color:var(--rose-dark);
+      font-weight:850;
+      font-size:12px;
+      white-space:nowrap;
+    }
 
     .progress-card{
-      display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;
-      padding:22px;border:1px solid var(--line);border-radius:28px;background:#fff;margin-bottom:24px;
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:18px;
+      align-items:center;
+      padding:22px;
+      border:1px solid var(--line);
+      border-radius:28px;
+      background:#fff;
+      margin-bottom:24px;
+      box-shadow:var(--shadow);
     }
 
     .progress-card h3{margin:0 0 8px;font-size:26px}
     .progress-card p{margin:0;color:var(--muted)}
-    .progress-bar{height:16px;background:#f0e0d8;border-radius:999px;overflow:hidden;margin-top:14px}
-    .progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--rose),var(--rose-dark));border-radius:999px;transition:.35s ease}
-    .progress-number{font-size:34px;font-weight:950;color:var(--rose-dark);letter-spacing:-.04em}
 
-    .module-layout{display:grid;grid-template-columns:330px 1fr;gap:22px}
-    .module-list{display:grid;gap:12px;align-content:start}
-    .module-btn{
-      border:1px solid var(--line);background:#fff;border-radius:20px;padding:14px;
-      text-align:left;cursor:pointer;transition:.2s ease;
-    }
-    .module-btn.active,.module-btn:hover{border-color:#e4afa3;background:#fff6f1;transform:translateY(-2px)}
-    .module-btn small{display:block;color:var(--rose-dark);font-weight:950;margin-bottom:5px}
-    .module-btn strong{display:block;font-size:16px;color:var(--brown)}
-
-    .module-content{
-      border:1px solid var(--line);border-radius:28px;background:#fff;padding:24px;min-height:560px;
+    .progress-bar{
+      height:16px;
+      background:#f0e0d8;
+      border-radius:999px;
+      overflow:hidden;
+      margin-top:14px;
     }
 
-    .module-content h3{margin:0 0 8px;font-size:34px;letter-spacing:-.04em}
-    .module-content p{color:var(--muted);line-height:1.7}
-
-    .lesson-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:18px}
-    .lesson-btn{
-      border:1px solid var(--line);background:#fffaf7;border-radius:18px;padding:14px;text-align:left;cursor:pointer;
+    .progress-fill{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg,var(--rose),var(--rose-dark));
+      border-radius:999px;
+      transition:.35s ease;
     }
-    .lesson-btn.active{border-color:var(--rose);background:#fff0eb}
-    .lesson-btn b{display:block;color:var(--rose-dark);margin-bottom:5px}
-    .lesson-detail{
-      margin-top:20px;padding:20px;border:1px solid var(--line);border-radius:22px;background:#fff7f3;
-    }
-    .lesson-detail h4{margin:0 0 10px;font-size:24px}
-    .lesson-detail ul{color:var(--muted);line-height:1.8}
 
-    .print-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+    .progress-number{
+      font-size:34px;
+      font-weight:950;
+      color:var(--rose-dark);
+      letter-spacing:-.04em;
+    }
+
+    .cards-4{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:18px;
+      margin-bottom:24px;
+    }
+
+    .metric{
+      padding:22px;
+      border-radius:28px;
+      border:1px solid var(--line);
+      background:#fff;
+      box-shadow:var(--shadow);
+    }
+
+    .metric small{
+      display:block;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.05em;
+      font-size:12px;
+      font-weight:900;
+      margin-bottom:10px;
+    }
+
+    .metric strong{
+      display:block;
+      font-size:34px;
+      color:var(--brown);
+      letter-spacing:-.04em;
+      margin-bottom:7px;
+    }
+
+    .metric p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.55;
+      font-size:14px;
+    }
+
+    .module-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:18px;
+    }
+
+    .module-card{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:30px;
+      padding:24px;
+      transition:.2s ease;
+      cursor:pointer;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .module-card:hover,
+    .module-card.active{
+      transform:translateY(-4px);
+      border-color:#e4afa3;
+      box-shadow:0 18px 40px rgba(83,54,42,.08);
+      background:linear-gradient(135deg,#fff,#fff6f1);
+    }
+
+    .module-card small{
+      color:var(--rose-dark);
+      font-weight:950;
+      text-transform:uppercase;
+      letter-spacing:.05em;
+    }
+
+    .module-card h4{
+      margin:12px 0 10px;
+      font-size:28px;
+      letter-spacing:-.04em;
+      line-height:1.1;
+    }
+
+    .module-card p{
+      color:var(--muted);
+      line-height:1.65;
+      margin:0 0 16px;
+    }
+
+    .module-progress{
+      height:10px;
+      background:#f0e0d8;
+      border-radius:999px;
+      overflow:hidden;
+    }
+
+    .module-progress span{
+      display:block;
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg,var(--rose),var(--rose-dark));
+      border-radius:999px;
+    }
+
+    .module-detail{
+      margin-top:22px;
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:30px;
+      padding:24px;
+    }
+
+    .lesson-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:14px;
+      margin-top:18px;
+    }
+
+    .lesson-card{
+      border:1px solid var(--line);
+      background:#fffaf7;
+      border-radius:22px;
+      padding:18px;
+      transition:.2s ease;
+    }
+
+    .lesson-card.locked{
+      opacity:.55;
+      filter:grayscale(.25);
+    }
+
+    .lesson-card.done{
+      background:#eefaf1;
+      border-color:#bce8cb;
+    }
+
+    .lesson-card strong{
+      display:block;
+      font-size:18px;
+      color:var(--brown);
+      margin-bottom:8px;
+    }
+
+    .lesson-card p{
+      color:var(--muted);
+      margin:0 0 14px;
+      line-height:1.55;
+    }
+
+    .status{
+      display:inline-flex;
+      padding:7px 10px;
+      border-radius:999px;
+      background:#fff;
+      border:1px solid var(--line);
+      color:var(--rose-dark);
+      font-weight:900;
+      font-size:12px;
+      margin-bottom:12px;
+    }
+
+    .lesson-card.done .status{
+      color:var(--green);
+      border-color:#bce8cb;
+    }
+
+    .prints-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:16px;
+      margin-top:18px;
+    }
+
     .print-card{
-      border:1px solid var(--line);border-radius:20px;overflow:hidden;background:#fff;cursor:zoom-in;
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:24px;
+      overflow:hidden;
       box-shadow:0 12px 24px rgba(83,54,42,.06);
+      cursor:zoom-in;
     }
-    .print-card img{width:100%;display:block;aspect-ratio:4/5;object-fit:cover}
-    .print-card span{display:block;padding:12px;font-weight:850;color:var(--brown)}
 
-    .cards-4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:24px}
-    .metric{padding:22px;border-radius:28px;border:1px solid var(--line);background:#fff;box-shadow:var(--shadow)}
-    .metric small{display:block;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;font-size:12px;font-weight:900;margin-bottom:10px}
-    .metric strong{display:block;font-size:34px;color:var(--brown);letter-spacing:-.04em;margin-bottom:7px}
-    .metric p{margin:0;color:var(--muted);line-height:1.55;font-size:14px}
+    .print-card img{
+      width:100%;
+      display:block;
+      aspect-ratio:4/5;
+      object-fit:cover;
+    }
 
-    .tool-grid,.class-grid,.material-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-    .simple-card{border:1px solid var(--line);border-radius:26px;background:#fff;padding:22px;box-shadow:0 14px 30px rgba(83,54,42,.06)}
-    .simple-card h4{margin:0 0 10px;font-size:24px}
-    .simple-card p{margin:0;color:var(--muted);line-height:1.65}
-    .simple-card .tag{display:inline-flex;margin-bottom:14px;padding:8px 12px;border-radius:999px;background:var(--rose-soft);color:var(--rose-dark);font-weight:950;font-size:12px}
+    .print-card span{
+      display:block;
+      padding:13px;
+      color:var(--brown);
+      font-weight:900;
+      font-size:14px;
+    }
+
+    .simple-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
+    }
+
+    .simple-card{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:26px;
+      padding:22px;
+      box-shadow:0 14px 30px rgba(83,54,42,.06);
+    }
+
+    .simple-card h4{
+      margin:0 0 10px;
+      font-size:24px;
+      letter-spacing:-.03em;
+    }
+
+    .simple-card p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.65;
+    }
+
+    .tag{
+      display:inline-flex;
+      margin-bottom:14px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:var(--rose-soft);
+      color:var(--rose-dark);
+      font-weight:950;
+      font-size:12px;
+      text-transform:uppercase;
+    }
 
     .modal{
-      position:fixed;inset:0;background:rgba(26,18,15,.82);display:none;align-items:center;justify-content:center;
-      z-index:9999;padding:28px;
+      position:fixed;
+      inset:0;
+      background:rgba(26,18,15,.82);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:9999;
+      padding:28px;
     }
-    .modal.show{display:flex}
-    .modal img{max-width:min(92vw,760px);max-height:88vh;border-radius:24px;box-shadow:0 30px 80px rgba(0,0,0,.35)}
-    .modal button{position:absolute;top:24px;right:24px;border:none;background:#fff;color:var(--brown);border-radius:999px;padding:12px 16px;font-weight:950;cursor:pointer}
 
-    @media(max-width:1200px){
+    .modal.show{display:flex}
+
+    .modal img{
+      max-width:min(92vw,760px);
+      max-height:88vh;
+      border-radius:24px;
+      box-shadow:0 30px 80px rgba(0,0,0,.35);
+    }
+
+    .modal button{
+      position:absolute;
+      top:24px;
+      right:24px;
+      border:none;
+      background:#fff;
+      color:var(--brown);
+      border-radius:999px;
+      padding:12px 16px;
+      font-weight:950;
+      cursor:pointer;
+    }
+
+    @media(max-width:1180px){
       .app{grid-template-columns:1fr}
       .sidebar{position:relative;height:auto;top:0}
-      .module-layout{grid-template-columns:1fr}
-      .cards-4{grid-template-columns:repeat(2,1fr)}
-      .tool-grid,.class-grid,.material-grid,.print-grid{grid-template-columns:repeat(2,1fr)}
+      .cards-4,.prints-grid{grid-template-columns:repeat(2,1fr)}
+      .module-grid,.simple-grid{grid-template-columns:1fr}
     }
-    @media(max-width:760px){
+
+    @media(max-width:700px){
       .app{padding:14px}
       .hero{padding:24px}
       .hero h2{font-size:36px}
       .panel{padding:20px}
-      .cards-4,.tool-grid,.class-grid,.material-grid,.print-grid,.lesson-grid{grid-template-columns:1fr}
+      .cards-4,.prints-grid,.lesson-grid{grid-template-columns:1fr}
       .section-head,.progress-card{grid-template-columns:1fr;align-items:flex-start}
     }
   </style>
@@ -253,7 +661,7 @@
         <div class="logo">IA</div>
         <div>
           <h1>Influencer Academy</h1>
-          <p data-i18n="sub">Área internacional</p>
+          <p data-i18n="sub">Área premium</p>
         </div>
       </div>
 
@@ -266,7 +674,7 @@
       <nav class="nav">
         <button class="nav-btn active" data-view="home"><span class="nav-icon">🏠</span><span data-i18n="home">Início</span></button>
         <button class="nav-btn" data-view="modules"><span class="nav-icon">📚</span><span data-i18n="modules">Módulos</span></button>
-        <button class="nav-btn" data-view="tools"><span class="nav-icon">🛠️</span><span data-i18n="tools">Ferramentas</span></button>
+        <button class="nav-btn" data-view="tools"><span class="nav-icon">🖼️</span><span data-i18n="tools">Prints</span></button>
         <button class="nav-btn" data-view="classes"><span class="nav-icon">🎬</span><span data-i18n="classes">Aulas</span></button>
         <button class="nav-btn" data-view="materials"><span class="nav-icon">🧾</span><span data-i18n="materials">Materiais</span></button>
         <button class="nav-btn" data-view="profile"><span class="nav-icon">👩</span><span data-i18n="profile">Perfil</span></button>
@@ -280,6 +688,7 @@
             <span id="sidebarEmail">email@exemplo.com</span>
           </div>
         </div>
+
         <div class="access" data-i18n="access">● acesso liberado</div>
         <button class="logout" id="logoutBtn" data-i18n="logout">Sair</button>
       </div>
@@ -288,11 +697,11 @@
     <main>
       <section class="view active" id="view-home">
         <div class="hero">
-          <span class="eyebrow">Creator Studio</span>
+          <span class="eyebrow">Creator Journey</span>
           <h2 data-i18n="homeTitle">Sua jornada para crescer como <span>criadora estratégica</span> começa agora.</h2>
-          <p data-i18n="homeText">Aprenda a criar com clareza, gravar melhor, editar com estética, entender métricas e usar Instagram, Canva, CapCut e IA para produzir com mais estratégia.</p>
+          <p data-i18n="homeText">Uma trilha enxuta, profissional e prática para aprender a se posicionar, criar conteúdo, produzir com celular e crescer com mais clareza.</p>
           <div style="margin-top:26px">
-            <button class="btn primary go-view" data-view="modules" data-i18n="startModules">Começar minha trilha</button>
+            <button class="btn primary go-view" data-view="modules" data-i18n="start">Começar minha trilha</button>
           </div>
         </div>
 
@@ -306,77 +715,75 @@
         </div>
 
         <div class="cards-4">
-          <div class="metric"><small>Módulos</small><strong>10</strong><p>Todos com conteúdo clicável e passo a passo.</p></div>
-          <div class="metric"><small>Conteúdos</small><strong>80</strong><p>8 conteúdos práticos para cada módulo.</p></div>
-          <div class="metric"><small>Prints</small><strong>12</strong><p>Imagens explicativas de Instagram, Canva, CapCut e IA.</p></div>
-          <div class="metric"><small>Idiomas</small><strong>03</strong><p>Interface em português, inglês e espanhol.</p></div>
+          <div class="metric"><small data-i18n="m1">Módulos</small><strong>04</strong><p data-i18n="m1t">Uma trilha mais objetiva, leve e fácil de concluir.</p></div>
+          <div class="metric"><small data-i18n="m2">Aulas</small><strong>16</strong><p data-i18n="m2t">4 aulas por módulo com conteúdo direto e aplicável.</p></div>
+          <div class="metric"><small data-i18n="m3">Prints</small><strong>04</strong><p data-i18n="m3t">Instagram, Canva, CapCut e IA como apoio visual.</p></div>
+          <div class="metric"><small data-i18n="m4">Idiomas</small><strong>03</strong><p data-i18n="m4t">Interface em português, inglês e espanhol.</p></div>
         </div>
       </section>
 
       <section class="view" id="view-modules">
         <div class="hero">
-          <span class="eyebrow">Professional Creator Curriculum</span>
-          <h2 data-i18n="modulesTitle">Módulos organizados, aulas práticas e guias visuais para aplicar no seu perfil.</h2>
-          <p data-i18n="modulesText">Escolha um módulo, abra a aula e acompanhe o conteúdo com explicação, passo a passo, exemplos e imagens de apoio.</p>
+          <span class="eyebrow">Course Path</span>
+          <h2 data-i18n="modulesTitle">4 módulos para sair do zero e evoluir com estratégia.</h2>
+          <p data-i18n="modulesText">A estrutura foi reduzida para deixar a experiência mais clara, premium e objetiva.</p>
         </div>
 
         <div class="panel">
           <div class="section-head">
             <div>
-              <h3 data-i18n="moduleArea">Sua trilha de crescimento</h3>
-              <p data-i18n="moduleAreaText">Clique em cada módulo para acessar os conteúdos e avançar no seu ritmo.</p>
+              <h3 data-i18n="moduleArea">Trilha principal</h3>
+              <p data-i18n="moduleAreaText">Escolha um módulo e avance aula por aula.</p>
             </div>
-            <span class="pill">10 módulos · 80 conteúdos</span>
+            <span class="pill">4 módulos · 16 aulas</span>
           </div>
 
-          <div class="module-layout">
-            <div class="module-list" id="moduleList"></div>
-            <div class="module-content" id="moduleContent"></div>
-          </div>
+          <div class="module-grid" id="moduleGrid"></div>
+          <div class="module-detail" id="moduleDetail"></div>
         </div>
       </section>
 
       <section class="view" id="view-tools">
         <div class="hero">
-          <span class="eyebrow">Visual Playbooks</span>
-          <h2 data-i18n="toolsTitle">Guias visuais para estudar e aplicar.</h2>
-          <p data-i18n="toolsText">Clique nas imagens para ampliar e usar como referência durante os estudos.</p>
+          <span class="eyebrow">Visual Support</span>
+          <h2 data-i18n="printsTitle">4 prints principais para apoiar toda a trilha.</h2>
+          <p data-i18n="printsText">As imagens foram reduzidas para deixar o curso mais leve, bonito e organizado.</p>
         </div>
 
         <div class="panel">
-          <div class="print-grid" id="allPrints"></div>
+          <div class="prints-grid" id="printsGrid"></div>
         </div>
       </section>
 
       <section class="view" id="view-classes">
         <div class="hero">
-          <span class="eyebrow">Masterclasses</span>
-          <h2 data-i18n="classesTitle">6 aulas principais para acelerar sua evolução.</h2>
-          <p data-i18n="classesText">Aulas pensadas para te ajudar com estratégia, Reels, Canva, CapCut, IA e monetização.</p>
+          <span class="eyebrow">Classes</span>
+          <h2 data-i18n="classesTitle">16 aulas organizadas por fase.</h2>
+          <p data-i18n="classesText">Do posicionamento até crescimento, rotina, IA e monetização.</p>
         </div>
 
         <div class="panel">
-          <div class="class-grid" id="classGrid"></div>
+          <div class="simple-grid" id="classesGrid"></div>
         </div>
       </section>
 
       <section class="view" id="view-materials">
         <div class="hero">
-          <span class="eyebrow">Resources Library</span>
-          <h2 data-i18n="materialsTitle">Materiais para colocar tudo em prática.</h2>
-          <p data-i18n="materialsText">Checklists, planners, roteiros e guias para você sair da teoria e aplicar no perfil.</p>
+          <span class="eyebrow">Resources</span>
+          <h2 data-i18n="materialsTitle">Materiais de apoio para executar melhor.</h2>
+          <p data-i18n="materialsText">Checklists, planners e guias para transformar aprendizado em prática.</p>
         </div>
 
         <div class="panel">
-          <div class="material-grid" id="materialsGrid"></div>
+          <div class="simple-grid" id="materialsGrid"></div>
         </div>
       </section>
 
       <section class="view" id="view-profile">
         <div class="hero">
           <span class="eyebrow">Student Profile</span>
-          <h2 data-i18n="profileTitle">Seu espaço dentro da Influencer Academy.</h2>
-          <p data-i18n="profileText">Acompanhe seu acesso, evolução e próximos passos.</p>
+          <h2 data-i18n="profileTitle">Seu perfil dentro da Influencer Academy.</h2>
+          <p data-i18n="profileText">Acompanhe seus dados, acesso e evolução.</p>
         </div>
 
         <div class="panel">
@@ -399,111 +806,147 @@
   </div>
 
   <script>
-    const t = {
+    const translations = {
       pt:{
-        sub:"Área internacional",home:"Início",modules:"Módulos",tools:"Ferramentas",classes:"Aulas",materials:"Materiais",profile:"Perfil",access:"● acesso liberado",logout:"Sair",
+        sub:"Área premium",home:"Início",modules:"Módulos",tools:"Prints",classes:"Aulas",materials:"Materiais",profile:"Perfil",access:"● acesso liberado",logout:"Sair",
         homeTitle:"Sua jornada para crescer como <span>criadora estratégica</span> começa agora.",
-        homeText:"Aprenda a criar com clareza, gravar melhor, editar com estética, entender métricas e usar Instagram, Canva, CapCut e IA para produzir com mais estratégia.",
-        startModules:"Começar minha trilha",progressTitle:"Seu progresso",progressText:"Cada aula concluída atualiza sua evolução dentro da trilha.",
-        modulesTitle:"Módulos organizados, aulas práticas e guias visuais para aplicar no seu perfil.",modulesText:"Escolha um módulo, abra a aula e acompanhe o conteúdo com explicação, passo a passo, exemplos e imagens de apoio.",
-        moduleArea:"Sua trilha de crescimento",moduleAreaText:"Clique em cada módulo para acessar os conteúdos e avançar no seu ritmo.",
-        toolsTitle:"Guias visuais para estudar e aplicar.",toolsText:"Clique nas imagens para ampliar e usar como referência durante os estudos.",
-        classesTitle:"6 aulas principais para acelerar sua evolução.",classesText:"Aulas pensadas para te ajudar com estratégia, Reels, Canva, CapCut, IA e monetização.",
-        materialsTitle:"Materiais para colocar tudo em prática.",materialsText:"Checklists, planners, roteiros e guias para você sair da teoria e aplicar no perfil.",
-        profileTitle:"Seu espaço dentro da Influencer Academy.",profileText:"Acompanhe seu acesso, evolução e próximos passos."
+        homeText:"Uma trilha enxuta, profissional e prática para aprender a se posicionar, criar conteúdo, produzir com celular e crescer com mais clareza.",
+        start:"Começar minha trilha",progressTitle:"Seu progresso",progressText:"Cada aula concluída atualiza sua evolução dentro da trilha.",
+        m1:"Módulos",m1t:"Uma trilha mais objetiva, leve e fácil de concluir.",m2:"Aulas",m2t:"4 aulas por módulo com conteúdo direto e aplicável.",m3:"Prints",m3t:"Instagram, Canva, CapCut e IA como apoio visual.",m4:"Idiomas",m4t:"Interface em português, inglês e espanhol.",
+        modulesTitle:"4 módulos para sair do zero e evoluir com estratégia.",modulesText:"A estrutura foi reduzida para deixar a experiência mais clara, premium e objetiva.",
+        moduleArea:"Trilha principal",moduleAreaText:"Escolha um módulo e avance aula por aula.",
+        printsTitle:"4 prints principais para apoiar toda a trilha.",printsText:"As imagens foram reduzidas para deixar o curso mais leve, bonito e organizado.",
+        classesTitle:"16 aulas organizadas por fase.",classesText:"Do posicionamento até crescimento, rotina, IA e monetização.",
+        materialsTitle:"Materiais de apoio para executar melhor.",materialsText:"Checklists, planners e guias para transformar aprendizado em prática.",
+        profileTitle:"Seu perfil dentro da Influencer Academy.",profileText:"Acompanhe seus dados, acesso e evolução."
       },
       en:{
-        sub:"International area",home:"Home",modules:"Modules",tools:"Tools",classes:"Classes",materials:"Resources",profile:"Profile",access:"● access granted",logout:"Log out",
-        homeTitle:"Your journey to becoming a <span>strategic influencer</span> starts here.",
-        homeText:"Learn to create with clarity, record with quality, edit with aesthetics, read metrics and use Instagram, Canva, CapCut and AI to speed up your production.",
-        startModules:"Start modules",progressTitle:"Student progress",progressText:"Each completed lesson increases your progress bar.",
-        modulesTitle:"Clickable modules with lessons, tasks and visual guides.",modulesText:"Choose a module, click a lesson and view objectives, practical steps, task and support images.",
-        moduleArea:"Module area",moduleAreaText:"Click each module to open its 8 internal lessons.",
-        toolsTitle:"Visual guides to study and zoom.",toolsText:"Click any image to open it in full screen.",
-        classesTitle:"6 main classes to guide your evolution.",classesText:"Classes organized by stage: strategy, Reels, Canva, CapCut, AI and monetization.",
-        materialsTitle:"Support resources to apply the content.",materialsText:"Checklists, planners, scripts and guides to turn lessons into action.",
-        profileTitle:"Your profile inside Influencer Academy.",profileText:"Track your data, access and course evolution."
+        sub:"Premium area",home:"Home",modules:"Modules",tools:"Prints",classes:"Classes",materials:"Resources",profile:"Profile",access:"● access granted",logout:"Log out",
+        homeTitle:"Your journey to grow as a <span>strategic creator</span> starts now.",
+        homeText:"A lean, professional and practical path to learn positioning, content creation, mobile production and growth with clarity.",
+        start:"Start my path",progressTitle:"Your progress",progressText:"Each completed class updates your course evolution.",
+        m1:"Modules",m1t:"A clearer, lighter and easier path to complete.",m2:"Classes",m2t:"4 classes per module with direct, practical content.",m3:"Prints",m3t:"Instagram, Canva, CapCut and AI as visual support.",m4:"Languages",m4t:"Interface in Portuguese, English and Spanish.",
+        modulesTitle:"4 modules to start from zero and grow strategically.",modulesText:"The structure was reduced to make the experience clearer, premium and objective.",
+        moduleArea:"Main path",moduleAreaText:"Choose a module and move class by class.",
+        printsTitle:"4 main visuals to support the full path.",printsText:"Images were reduced to keep the course lighter and better organized.",
+        classesTitle:"16 classes organized by stage.",classesText:"From positioning to growth, routine, AI and monetization.",
+        materialsTitle:"Support resources for better execution.",materialsText:"Checklists, planners and guides to turn learning into action.",
+        profileTitle:"Your profile inside Influencer Academy.",profileText:"Track your data, access and evolution."
       },
       es:{
-        sub:"Área internacional",home:"Inicio",modules:"Módulos",tools:"Herramientas",classes:"Clases",materials:"Materiales",profile:"Perfil",access:"● acceso liberado",logout:"Salir",
-        homeTitle:"Tu camino para convertirte en una <span>criadora estratégica</span> empieza aquí.",
-        homeText:"Aprende a crear con claridad, grabar con calidad, editar con estética, leer métricas y usar Instagram, Canva, CapCut e IA para acelerar tu producción.",
-        startModules:"Empezar módulos",progressTitle:"Progreso de la alumna",progressText:"Cada clase marcada como concluida aumenta tu barra de progreso.",
-        modulesTitle:"Módulos clicables con clase, tarea y guías visuales.",modulesText:"Elige un módulo, haz clic en una clase y mira objetivos, pasos prácticos, tarea e imágenes de apoyo.",
-        moduleArea:"Sua trilha de crescimento",moduleAreaText:"Haz clic en cada módulo para abrir sus 8 contenidos internos.",
-        toolsTitle:"Guías visuales para estudiar y ampliar.",toolsText:"Haz clic en cualquier imagen para abrirla en pantalla grande.",
-        classesTitle:"6 clases principales para acompañar tu evolución.",classesText:"Clases organizadas por etapa: estrategia, Reels, Canva, CapCut, IA y monetización.",
-        materialsTitle:"Materiales de apoyo para aplicar el contenido.",materialsText:"Checklists, planners, guiones y guías para convertir la clase en acción.",
-        profileTitle:"Tu perfil dentro de Influencer Academy.",profileText:"Acompaña tus datos, acceso y evolución del curso."
+        sub:"Área premium",home:"Inicio",modules:"Módulos",tools:"Prints",classes:"Clases",materials:"Materiales",profile:"Perfil",access:"● acceso liberado",logout:"Salir",
+        homeTitle:"Tu camino para crecer como <span>creadora estratégica</span> empieza ahora.",
+        homeText:"Una ruta simple, profesional y práctica para aprender posicionamiento, contenido, producción con celular y crecimiento con claridad.",
+        start:"Empezar mi ruta",progressTitle:"Tu progreso",progressText:"Cada clase completada actualiza tu evolución.",
+        m1:"Módulos",m1t:"Una ruta más objetiva, ligera y fácil de completar.",m2:"Clases",m2t:"4 clases por módulo con contenido directo y aplicable.",m3:"Prints",m3t:"Instagram, Canva, CapCut e IA como apoyo visual.",m4:"Idiomas",m4t:"Interfaz en portugués, inglés y español.",
+        modulesTitle:"4 módulos para empezar desde cero y crecer con estrategia.",modulesText:"La estructura fue reducida para una experiencia más clara, premium y objetiva.",
+        moduleArea:"Ruta principal",moduleAreaText:"Elige un módulo y avanza clase por clase.",
+        printsTitle:"4 imágenes principales para apoyar toda la ruta.",printsText:"Las imágenes fueron reducidas para dejar el curso más ligero y organizado.",
+        classesTitle:"16 clases organizadas por etapa.",classesText:"Del posicionamiento al crecimiento, rutina, IA y monetización.",
+        materialsTitle:"Materiales de apoyo para ejecutar mejor.",materialsText:"Checklists, planners y guías para llevar el aprendizaje a la práctica.",
+        profileTitle:"Tu perfil dentro de Influencer Academy.",profileText:"Acompaña tus datos, acceso y evolución."
       }
     };
 
-    const printFiles = [
-      ["Instagram Profile","assets/prints/instagram-profile.png"],
-      ["Instagram Reels","assets/prints/instagram-reels.png"],
-      ["Instagram Insights","assets/prints/instagram-insights.png"],
-      ["Canva Brand Kit","assets/prints/canva-brand.png"],
-      ["Canva Carousel","assets/prints/canva-carousel.png"],
-      ["Canva Stories","assets/prints/canva-stories.png"],
-      ["CapCut Timeline","assets/prints/capcut-timeline.png"],
-      ["CapCut Captions","assets/prints/capcut-captions.png"],
-      ["CapCut Export","assets/prints/capcut-export.png"],
-      ["AI Script","assets/prints/ai-script.png"],
-      ["AI Video","assets/prints/ai-video.png"],
-      ["Workflow Calendar","assets/prints/workflow-calendar.png"]
-    ];
-
     const modules = [
-      {tag:"01",title:"Posicionamento e nicho",desc:"Defina o espaço que você quer ocupar e para quem deseja comunicar.",prints:[0,1,3],lessons:["Escolha do nicho principal","Público ideal e dores reais","Promessa clara do perfil","Tom de voz da criadora","Diferenciação no mercado","Conteúdos de autoridade","Linha editorial inicial","Tarefa final do posicionamento"]},
-      {tag:"02",title:"Bio, estética e primeira impressão",desc:"Transforme seu perfil em uma vitrine clara, bonita e confiável.",prints:[0,3,4],lessons:["Foto de perfil profissional","Nome pesquisável","Bio com proposta clara","Destaques organizados","Capas e identidade visual","Paleta e fontes","Feed com coerência","Checklist final do perfil"]},
-      {tag:"03",title:"Ideias e pilares de conteúdo",desc:"Organize temas para não depender só de inspiração.",prints:[1,4,11],lessons:["3 pilares principais","Ideias por etapa do funil","Conteúdo de conexão","Conteúdo educativo","Conteúdo de autoridade","Conteúdo de venda leve","Banco de ideias","Calendário semanal"]},
-      {tag:"04",title:"Reels com gancho e retenção",desc:"Crie vídeos curtos com começo forte e estrutura clara.",prints:[1,6,7],lessons:["Gancho nos 3 segundos","Promessa do vídeo","Roteiro curto","Cortes dinâmicos","Legendas estratégicas","CTA natural","Análise de retenção","Repetição de formatos"]},
-      {tag:"05",title:"Stories para conexão",desc:"Use stories para relacionamento, desejo e confiança.",prints:[5,0,11],lessons:["Bastidores reais","Enquetes e caixinhas","Prova social","Sequência de storytelling","Stories de rotina","CTA sem forçar","Oferta leve","Calendário de stories"]},
-      {tag:"06",title:"Canva para identidade visual",desc:"Crie posts, capas e carrosséis com aparência profissional.",prints:[3,4,5],lessons:["Brand Kit simples","Templates 4:5","Capas de Reels","Carrossel educativo","Stories com CTA","Organização em pastas","Exportação correta","Revisão visual"]},
-      {tag:"07",title:"CapCut para edição dinâmica",desc:"Edite vídeos com ritmo, legendas e acabamento limpo.",prints:[6,7,8],lessons:["Timeline organizada","Cortes de pausa","Zooms e movimentos","Legenda automática","Destaque de palavras","Áudio e ruído","Exportação ideal","Checklist final"]},
-      {tag:"08",title:"IA para roteiro e vídeo",desc:"Use IA para destravar criatividade e produção.",prints:[9,10,11],lessons:["Prompt de ideias","Roteiro com IA","Ganchos alternativos","Cenas de apoio","Descrição para vídeo IA","Legendas com IA","Calendário com IA","Humanização do resultado"]},
-      {tag:"09",title:"Métricas e crescimento",desc:"Leia dados e transforme insight em decisão.",prints:[2,1,11],lessons:["Alcance e impressões","Retenção dos Reels","Salvamentos","Compartilhamentos","Novos seguidores","Formatos vencedores","Ajuste semanal","Relatório simples"]},
-      {tag:"10",title:"Monetização e parcerias",desc:"Prepare sua imagem para atrair oportunidades.",prints:[0,3,11],lessons:["Mídia kit inicial","Proposta para marcas","Valores e entregáveis","Prova social","Abordagem profissional","Organização de collabs","Pós-venda","Plano de monetização"]}
+      {
+        title:"Começando do zero",
+        subtitle:"Base, nicho, bio e identidade",
+        desc:"Construa a base do seu perfil para que as pessoas entendam quem você é, o que você entrega e por que devem te acompanhar.",
+        lessons:[
+          "Entendendo sua fase atual",
+          "Nicho, público e posicionamento",
+          "Bio, perfil e primeira impressão",
+          "Identidade visual simples"
+        ]
+      },
+      {
+        title:"Conteúdo que atrai seguidores",
+        subtitle:"Ideias, Reels, stories e conexão",
+        desc:"Aprenda a criar conteúdo com intenção, atrair as pessoas certas e transformar visualizações em relacionamento.",
+        lessons:[
+          "Pilares de conteúdo",
+          "Ideias de posts e stories",
+          "Reels com gancho",
+          "Conteúdo que gera conexão"
+        ]
+      },
+      {
+        title:"Produção com celular",
+        subtitle:"Gravação, cenário, Canva e CapCut",
+        desc:"Melhore a qualidade dos seus vídeos e materiais usando recursos simples, acessíveis e profissionais.",
+        lessons:[
+          "Como gravar melhor",
+          "Iluminação, cenário e áudio",
+          "Edição no CapCut",
+          "Design no Canva"
+        ]
+      },
+      {
+        title:"Crescimento e profissionalização",
+        subtitle:"Métricas, rotina, IA e parcerias",
+        desc:"Organize sua evolução com análise de dados, rotina de postagem, inteligência artificial e oportunidades comerciais.",
+        lessons:[
+          "Métricas e insights",
+          "Rotina de postagem",
+          "IA para ideias e roteiros",
+          "Parcerias, mídia kit e monetização"
+        ]
+      }
     ];
 
-    const classes = [
-      ["Do zero aos primeiros 1.000","Como construir uma base sólida sem se perder em tendências vazias.","42 min"],
-      ["Reels que seguram atenção","Estrutura de gancho, promessa, desenvolvimento e CTA para vídeos curtos.","38 min"],
-      ["Canva visual premium","Como criar capas, stories e carrosséis com estética de marca.","31 min"],
-      ["CapCut profissional no celular","Cortes, ritmo, legenda, zoom e exportação para redes sociais.","36 min"],
-      ["IA para acelerar produção","Prompts para ideias, roteiros, cenas, legendas e planejamento.","29 min"],
-      ["Mídia kit e parcerias","Como começar a se apresentar para marcas com organização e valor.","44 min"]
+    const prints = [
+      ["Instagram","assets/curso/print-instagram.png"],
+      ["Canva","assets/curso/print-canva.png"],
+      ["CapCut","assets/curso/print-capcut.png"],
+      ["IA","assets/curso/print-ia.png"]
     ];
 
     const materials = [
-      ["Checklist de perfil estratégico","Bio, nome, foto, destaques e proposta do perfil."],
-      ["Roteiro de Reels com retenção","Modelo de gancho, desenvolvimento e CTA."],
-      ["Planner de 30 dias","Organização semanal de posts, stories e Reels."],
-      ["Guia Canva + CapCut","Atalhos para visual, edição e exportação."],
-      ["Prompts de IA","Ideias, roteiros, descrições e cenas."],
-      ["Mini mídia kit","Estrutura para apresentar seu perfil para marcas."]
+      ["Checklist de perfil estratégico","Bio, nome, foto, destaques, promessa e primeira impressão."],
+      ["Planner de conteúdo","Organização simples para posts, stories, Reels e rotina semanal."],
+      ["Roteiro de Reels","Modelo com gancho, desenvolvimento, CTA e estrutura de retenção."],
+      ["Guia Canva + CapCut","Apoio rápido para design, edição, legenda e exportação."],
+      ["Prompts de IA","Comandos para ideias, roteiros, legendas e planejamento."],
+      ["Mini mídia kit","Estrutura inicial para apresentar seu perfil para marcas."]
     ];
 
     let selectedModule = 0;
-    let selectedLesson = 0;
 
-    function getCompleted(){
-      return JSON.parse(localStorage.getItem("ia_completed_lessons") || "[]");
-    }
-
-    function saveCompleted(arr){
-      localStorage.setItem("ia_completed_lessons", JSON.stringify(arr));
-      updateProgress();
-    }
-
-    function lessonKey(m,l){
+    function key(m,l){
       return `m${m}-l${l}`;
     }
 
+    function getCompleted(){
+      try { return JSON.parse(localStorage.getItem("ia_completed_lessons") || "[]"); }
+      catch(e){ return []; }
+    }
+
+    function linearIndex(m,l){
+      return m * 4 + l;
+    }
+
+    function isUnlocked(m,l){
+      if(m === 0 && l === 0) return true;
+      const previous = linearIndex(m,l) - 1;
+      const pm = Math.floor(previous / 4);
+      const pl = previous % 4;
+      return getCompleted().includes(key(pm,pl));
+    }
+
+    function isDone(m,l){
+      return getCompleted().includes(key(m,l));
+    }
+
     function updateProgress(){
-      const completed = getCompleted();
-      const total = modules.length * 8;
-      const percent = Math.round((completed.length / total) * 100);
+      const total = 16;
+      const completed = getCompleted().filter(item => {
+        const match = item.match(/^m(\d+)-l(\d+)$/);
+        if(!match) return false;
+        return Number(match[1]) < 4 && Number(match[2]) < 4;
+      }).length;
+
+      const percent = Math.round((completed / total) * 100);
       document.getElementById("progressFill").style.width = percent + "%";
       document.getElementById("progressNumber").textContent = percent + "%";
     }
@@ -517,82 +960,61 @@
     }
 
     function renderModules(){
-      const list = document.getElementById("moduleList");
-      list.innerHTML = modules.map((m,i)=>`
-        <button class="module-btn ${i===selectedModule?'active':''}" onclick="openModule(${i})">
-          <small>Módulo ${m.tag}</small>
-          <strong>${m.title}</strong>
-        </button>
-      `).join("");
-      renderModuleContent();
+      const grid = document.getElementById("moduleGrid");
+      grid.innerHTML = modules.map((m,i)=>{
+        const doneCount = m.lessons.filter((_,l)=>isDone(i,l)).length;
+        const width = (doneCount / 4) * 100;
+
+        return `
+          <div class="module-card ${i === selectedModule ? "active" : ""}" onclick="selectModule(${i})">
+            <small>Módulo ${i + 1} · ${doneCount}/4 concluídas</small>
+            <h4>${m.title}</h4>
+            <p>${m.subtitle}</p>
+            <div class="module-progress"><span style="width:${width}%"></span></div>
+          </div>
+        `;
+      }).join("");
+
+      renderModuleDetail();
     }
 
-    function openModule(i){
+    function selectModule(i){
       selectedModule = i;
-      selectedLesson = 0;
       renderModules();
     }
 
-    function openLesson(i){
-      selectedLesson = i;
-      renderModuleContent();
-    }
-
-    function completeLesson(){
-      const key = lessonKey(selectedModule, selectedLesson);
-      const arr = getCompleted();
-      if(!arr.includes(key)) arr.push(key);
-      saveCompleted(arr);
-      renderModuleContent();
-    }
-
-    function renderModuleContent(){
+    function renderModuleDetail(){
       const m = modules[selectedModule];
-      const completed = getCompleted();
-      const key = lessonKey(selectedModule, selectedLesson);
-      const isDone = completed.includes(key);
 
-      document.getElementById("moduleContent").innerHTML = `
-        <span class="eyebrow">Módulo ${m.tag}</span>
-        <h3>${m.title}</h3>
-        <p>${m.desc}</p>
+      document.getElementById("moduleDetail").innerHTML = `
+        <span class="eyebrow">Módulo ${selectedModule + 1}</span>
+        <h3 style="font-size:34px;margin:0 0 8px;letter-spacing:-.04em">${m.title}</h3>
+        <p style="color:var(--muted);line-height:1.7">${m.desc}</p>
 
         <div class="lesson-grid">
-          ${m.lessons.map((l,i)=>`
-            <button class="lesson-btn ${i===selectedLesson?'active':''}" onclick="openLesson(${i})">
-              <b>${i+1}. ${l}</b>
-              <span>${completed.includes(lessonKey(selectedModule,i)) ? "Concluída" : "Clique para abrir o conteúdo"}</span>
-            </button>
-          `).join("")}
-        </div>
+          ${m.lessons.map((lesson,l)=>{
+            const done = isDone(selectedModule,l);
+            const unlocked = isUnlocked(selectedModule,l);
 
-        <div class="lesson-detail">
-          <h4>${m.lessons[selectedLesson]}</h4>
-          <p><strong>Objetivo:</strong> aplicar ${m.lessons[selectedLesson].toLowerCase()} dentro da sua construção como influenciadora.</p>
-          <ul>
-            <li>Entenda o conceito central da aula e por que ele influencia seu crescimento.</li>
-            <li>Veja os exemplos visuais abaixo e adapte para o seu nicho.</li>
-            <li>Execute uma pequena tarefa prática antes de avançar.</li>
-            <li>Revise o resultado e marque como concluído para atualizar seu progresso.</li>
-          </ul>
-          <p><strong>Tarefa prática:</strong> aplique essa aula no seu perfil hoje e anote o que mudou na clareza, estética ou estratégia.</p>
+            let status = "🔒 Bloqueada";
+            if(done) status = "✅ Concluída";
+            else if(unlocked) status = "▶️ Liberada";
 
-          <button class="btn primary" onclick="completeLesson()">${isDone ? "Aula concluída ✓" : "Marcar como concluída"}</button>
-
-          <div class="print-grid">
-            ${m.prints.map(idx => `
-              <div class="print-card" onclick="openImage('${printFiles[idx][1]}')">
-                <img src="${printFiles[idx][1]}" alt="${printFiles[idx][0]}">
-                <span>${printFiles[idx][0]}</span>
+            return `
+              <div class="lesson-card ${done ? "done" : ""} ${!unlocked ? "locked" : ""}">
+                <span class="status">${status}</span>
+                <strong>${l + 1}. ${lesson}</strong>
+                <p>${unlocked ? "Abra a aula completa com explicação, exemplos e tarefa de casa." : "Siga a sequência da trilha para manter sua evolução organizada."}</p>
+                ${unlocked ? `<a class="btn primary" href="aula.html?m=${selectedModule}&l=${l}">Abrir aula</a>` : `<button class="btn light" disabled>Bloqueada</button>`}
               </div>
-            `).join("")}
-          </div>
+            `;
+          }).join("")}
         </div>
       `;
     }
 
     function renderPrints(){
-      document.getElementById("allPrints").innerHTML = printFiles.map(p=>`
+      document.getElementById("printsGrid").innerHTML = prints.map(p => `
         <div class="print-card" onclick="openImage('${p[1]}')">
           <img src="${p[1]}" alt="${p[0]}">
           <span>${p[0]}</span>
@@ -601,13 +1023,18 @@
     }
 
     function renderClasses(){
-      document.getElementById("classGrid").innerHTML = classes.map((c,i)=>`
+      const all = [];
+      modules.forEach((m,mi)=>{
+        m.lessons.forEach((lesson,li)=>{
+          all.push([`Módulo ${mi + 1}`, lesson, m.title]);
+        });
+      });
+
+      document.getElementById("classesGrid").innerHTML = all.map((c,i)=>`
         <div class="simple-card">
-          <span class="tag">Aula ${i+1}</span>
-          <h4>${c[0]}</h4>
-          <p>${c[1]}</p>
-          <br>
-          <p><strong>${c[2]}</strong></p>
+          <span class="tag">Aula ${i + 1}</span>
+          <h4>${c[1]}</h4>
+          <p><strong>${c[0]}:</strong> ${c[2]}</p>
         </div>
       `).join("");
     }
@@ -615,7 +1042,7 @@
     function renderMaterials(){
       document.getElementById("materialsGrid").innerHTML = materials.map((m,i)=>`
         <div class="simple-card">
-          <span class="tag">Material ${i+1}</span>
+          <span class="tag">Material ${i + 1}</span>
           <h4>${m[0]}</h4>
           <p>${m[1]}</p>
         </div>
@@ -627,23 +1054,22 @@
       document.getElementById("imageModal").classList.add("show");
     }
 
-    document.getElementById("closeModal").addEventListener("click",()=>document.getElementById("imageModal").classList.remove("show"));
-    document.getElementById("imageModal").addEventListener("click",(e)=>{if(e.target.id==="imageModal") e.currentTarget.classList.remove("show")});
-
     function setLanguage(lang){
-      document.querySelectorAll(".lang-btn").forEach(b=>b.classList.toggle("active",b.dataset.lang===lang));
-      document.querySelectorAll("[data-i18n]").forEach(el=>{
+      document.querySelectorAll(".lang-btn").forEach(b => b.classList.toggle("active", b.dataset.lang === lang));
+      document.querySelectorAll("[data-i18n]").forEach(el => {
         const key = el.dataset.i18n;
-        if(t[lang] && t[lang][key]) el.innerHTML = t[lang][key];
+        if(translations[lang] && translations[lang][key]) {
+          el.innerHTML = translations[lang][key];
+        }
       });
-      localStorage.setItem("ia_lang",lang);
+      localStorage.setItem("ia_lang", lang);
     }
 
     function getUser(){
       for(const k of ["ia_user","usuario","currentUser","loggedUser","userData","user"]){
         const raw = localStorage.getItem(k);
         if(!raw) continue;
-        try{return JSON.parse(raw)}catch(e){}
+        try { return JSON.parse(raw); } catch(e){}
       }
       return {};
     }
@@ -653,8 +1079,21 @@
       return String(name).trim().split(" ").filter(Boolean).slice(0,2).map(x=>x[0].toUpperCase()).join("");
     }
 
-    document.querySelectorAll(".nav-btn,.go-view").forEach(btn=>btn.addEventListener("click",()=>setView(btn.dataset.view)));
-    document.querySelectorAll(".lang-btn").forEach(btn=>btn.addEventListener("click",()=>setLanguage(btn.dataset.lang)));
+    document.querySelectorAll(".nav-btn,.go-view").forEach(btn => {
+      btn.addEventListener("click", () => setView(btn.dataset.view));
+    });
+
+    document.querySelectorAll(".lang-btn").forEach(btn => {
+      btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
+    });
+
+    document.getElementById("closeModal").addEventListener("click", () => {
+      document.getElementById("imageModal").classList.remove("show");
+    });
+
+    document.getElementById("imageModal").addEventListener("click", (e) => {
+      if(e.target.id === "imageModal") e.currentTarget.classList.remove("show");
+    });
 
     const user = getUser();
     const name = user.name || user.nome || "Aluna Premium";
@@ -666,8 +1105,8 @@
     document.getElementById("profileEmail").textContent = email;
     document.getElementById("avatarInitials").textContent = initials(name);
 
-    document.getElementById("logoutBtn").addEventListener("click",()=>{
-      ["ia_user","usuario","currentUser","loggedUser","userData","user"].forEach(k=>localStorage.removeItem(k));
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      ["ia_user","usuario","currentUser","loggedUser","userData","user"].forEach(k => localStorage.removeItem(k));
       window.location.href = "login.html";
     });
 
@@ -681,432 +1120,5 @@
     const initial = location.hash ? location.hash.replace("#","") : "home";
     if(document.getElementById("view-" + initial)) setView(initial);
   </script>
-<!-- IA PAID UNLOCK PATCH START -->
-<style>
-  .lesson-btn.locked,
-  .class-card-click.locked {
-    opacity: .62 !important;
-    background: #f5eee9 !important;
-    cursor: pointer !important;
-    filter: grayscale(.15);
-  }
-
-  .lesson-btn.done,
-  .class-card-click.done {
-    background: #eefaf1 !important;
-    border-color: #bce8cb !important;
-  }
-
-  .lesson-status,
-  .class-status {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 10px;
-    padding: 8px 11px;
-    border-radius: 999px;
-    font-size: 12px;
-    font-weight: 950;
-    border: 1px solid #ead7ce;
-    background: #fff;
-    color: #c87465;
-  }
-
-  .unlock-price {
-    display: inline-flex;
-    margin-top: 12px;
-    padding: 9px 12px;
-    border-radius: 999px;
-    background: #3f2d26;
-    color: #fff;
-    font-size: 12px;
-    font-weight: 950;
-  }
-
-  .module-alert {
-    margin-top: 18px;
-    padding: 16px 18px;
-    border-radius: 20px;
-    background: #fff7f3;
-    border: 1px solid #ead7ce;
-    color: #8a7166;
-    line-height: 1.6;
-    font-weight: 600;
-  }
-
-  .class-card-click {
-    width: 100%;
-    text-align: left;
-    cursor: pointer;
-    transition: .22s ease;
-  }
-
-  .class-card-click:hover {
-    transform: translateY(-4px);
-    border-color: #e4afa3;
-    box-shadow: 0 20px 42px rgba(83,54,42,.10);
-  }
-
-  .class-card-click.locked:hover {
-    transform: translateY(-2px);
-  }
-
-  .class-arrow {
-    margin-top: 18px;
-    display: inline-flex;
-    color: #c87465;
-    font-weight: 950;
-    font-size: 14px;
-  }
-</style>
-
-<script>
-(function(){
-  const classLessons = [
-    {title:"Do zero aos primeiros 1.000", desc:"Como construir uma base sólida sem se perder em tendências vazias.", time:"42 min", module:0, lesson:0},
-    {title:"Reels que seguram atenção", desc:"Estrutura de gancho, promessa, desenvolvimento e CTA para vídeos curtos.", time:"38 min", module:3, lesson:0},
-    {title:"Canva visual premium", desc:"Como criar capas, stories e carrosséis com estética de marca.", time:"31 min", module:5, lesson:0},
-    {title:"CapCut profissional no celular", desc:"Cortes, ritmo, legenda, zoom e exportação para redes sociais.", time:"36 min", module:6, lesson:0},
-    {title:"IA para acelerar produção", desc:"Prompts para ideias, roteiros, cenas, legendas e planejamento.", time:"29 min", module:7, lesson:0},
-    {title:"Mídia kit e parcerias", desc:"Como começar a se apresentar para marcas com organização e valor.", time:"44 min", module:9, lesson:0}
-  ];
-
-  function key(m,l){ return `m${m}-l${l}`; }
-
-  function getCompleted(){
-    try { return JSON.parse(localStorage.getItem("ia_completed_lessons") || "[]"); }
-    catch(e){ return []; }
-  }
-
-  function getPaid(){
-    try { return JSON.parse(localStorage.getItem("ia_paid_unlocks") || "[]"); }
-    catch(e){ return []; }
-  }
-
-  function savePaid(arr){
-    localStorage.setItem("ia_paid_unlocks", JSON.stringify([...new Set(arr)]));
-  }
-
-  function getEmail(){
-    const keys = ["ia_user","usuario","currentUser","loggedUser","userData","user"];
-
-    for (const storageKey of keys) {
-      const raw = localStorage.getItem(storageKey);
-      if (!raw) continue;
-
-      try {
-        const user = JSON.parse(raw);
-        if (user && user.email) return String(user.email).trim().toLowerCase();
-      } catch(e) {}
-    }
-
-    return localStorage.getItem("ia_user_email") || "";
-  }
-
-  function linearIndex(m,l){ return (m * 8) + l; }
-
-  function isSequentialUnlocked(m,l){
-    if (m === 0 && l === 0) return true;
-
-    const previous = linearIndex(m,l) - 1;
-    const previousModule = Math.floor(previous / 8);
-    const previousLesson = previous % 8;
-
-    return getCompleted().includes(key(previousModule, previousLesson));
-  }
-
-  function isPaidUnlocked(m,l){
-    return getPaid().includes(key(m,l));
-  }
-
-  function isDone(m,l){
-    return getCompleted().includes(key(m,l));
-  }
-
-  function isAvailable(m,l){
-    return isSequentialUnlocked(m,l) || isPaidUnlocked(m,l) || isDone(m,l);
-  }
-
-  function goUnlock(m,l){
-    window.location.href = `desbloqueio.html?m=${m}&l=${l}`;
-  }
-
-  async function syncPaidUnlocks(){
-    const email = getEmail();
-
-    if (!email) return;
-
-    try {
-      const response = await fetch(`https://cursonovo-production.up.railway.app/api/lesson-unlocks?email=${encodeURIComponent(email)}`);
-      const data = await response.json();
-
-      if (!response.ok || !Array.isArray(data.unlocks)) return;
-
-      const current = getPaid();
-
-      data.unlocks.forEach(item => {
-        current.push(key(Number(item.module_index), Number(item.lesson_index)));
-      });
-
-      savePaid(current);
-
-      if (typeof renderModules === "function") renderModules();
-      if (typeof renderClasses === "function") renderClasses();
-      if (typeof updateProgress === "function") updateProgress();
-    } catch(e) {}
-  }
-
-  window.openLesson = function(i){
-    selectedLesson = i;
-
-    if (!isAvailable(selectedModule, selectedLesson)) {
-      goUnlock(selectedModule, selectedLesson);
-      return;
-    }
-
-    window.location.href = `aula.html?m=${selectedModule}&l=${selectedLesson}`;
-  };
-
-  window.renderModuleContent = function(){
-    const m = modules[selectedModule];
-
-    document.getElementById("moduleContent").innerHTML = `
-      <span class="eyebrow">Módulo ${m.tag}</span>
-      <h3>${m.title}</h3>
-      <p>${m.desc}</p>
-
-      <div class="module-alert">
-        As aulas seguem uma trilha organizada. Quando uma aula ainda estiver bloqueada, você pode seguir a sequência normalmente ou desbloquear somente aquele conteúdo por R$ 14,99.
-      </div>
-
-      <div class="lesson-grid">
-        ${m.lessons.map((lesson, i) => {
-          const available = isAvailable(selectedModule, i);
-          const done = isDone(selectedModule, i);
-          const paid = isPaidUnlocked(selectedModule, i);
-
-          let status = "🔒 Bloqueada";
-          let statusClass = "locked";
-
-          if (done) {
-            status = "✅ Concluída";
-            statusClass = "done";
-          } else if (paid) {
-            status = "💎 Liberada avulsa";
-            statusClass = "unlocked";
-          } else if (available) {
-            status = "▶️ Liberada";
-            statusClass = "unlocked";
-          }
-
-          return `
-            <button class="lesson-btn ${statusClass}" onclick="openLesson(${i})">
-              <b>${i + 1}. ${lesson}</b>
-              <span>${available ? "Clique para abrir a aula completa" : "Você pode desbloquear esta aula individualmente."}</span>
-              <em class="lesson-status">${status}</em>
-              ${available ? "" : `<strong class="unlock-price">Desbloquear por R$ 14,99</strong>`}
-            </button>
-          `;
-        }).join("")}
-      </div>
-    `;
-  };
-
-  window.renderModules = function(){
-    const list = document.getElementById("moduleList");
-    if (!list) return;
-
-    list.innerHTML = modules.map((m,i)=>{
-      const moduleDoneCount = m.lessons.filter((_,lessonIndex)=>isDone(i,lessonIndex)).length;
-
-      return `
-        <button class="module-btn ${i===selectedModule ? "active" : ""}" onclick="openModule(${i})">
-          <small>Módulo ${m.tag} · ${moduleDoneCount}/8 concluídas</small>
-          <strong>${m.title}</strong>
-        </button>
-      `;
-    }).join("");
-
-    renderModuleContent();
-  };
-
-  window.openModule = function(i){
-    selectedModule = i;
-    selectedLesson = 0;
-    renderModules();
-  };
-
-  window.openClassLesson = function(index){
-    const item = classLessons[index];
-
-    if (!isAvailable(item.module, item.lesson)) {
-      goUnlock(item.module, item.lesson);
-      return;
-    }
-
-    window.location.href = `aula.html?m=${item.module}&l=${item.lesson}`;
-  };
-
-  window.renderClasses = function(){
-    const grid = document.getElementById("classGrid");
-    if (!grid) return;
-
-    grid.innerHTML = classLessons.map((item, index) => {
-      const available = isAvailable(item.module, item.lesson);
-      const done = isDone(item.module, item.lesson);
-      const paid = isPaidUnlocked(item.module, item.lesson);
-
-      let state = "locked";
-      let status = "🔒 Bloqueada";
-
-      if (done) {
-        state = "done";
-        status = "✅ Concluída";
-      } else if (paid) {
-        state = "unlocked";
-        status = "💎 Liberada avulsa";
-      } else if (available) {
-        state = "unlocked";
-        status = "▶️ Liberada";
-      }
-
-      return `
-        <button type="button" class="simple-card class-card-click ${state}" onclick="openClassLesson(${index})">
-          <span class="tag">Aula ${index + 1}</span>
-          <span class="class-status">${status}</span>
-          <h4>${item.title}</h4>
-          <p>${item.desc}</p>
-          <br>
-          <p><strong>${item.time}</strong></p>
-          ${available ? `<span class="class-arrow">Abrir aula →</span>` : `<span class="unlock-price">Desbloquear por R$ 14,99</span>`}
-        </button>
-      `;
-    }).join("");
-  };
-
-  renderModules();
-  renderClasses();
-  syncPaidUnlocks();
-})();
-</script>
-<!-- IA PAID UNLOCK PATCH END -->
-<style id="five-modules-css">
-  .module-btn.locked-module {
-    opacity: .58 !important;
-    cursor: not-allowed !important;
-    filter: grayscale(.25);
-    background: #f5eee9 !important;
-  }
-
-  .module-btn.locked-module:hover {
-    transform: none !important;
-    box-shadow: none !important;
-  }
-
-  .module-lock-badge {
-    display: inline-flex;
-    margin-top: 8px;
-    padding: 7px 10px;
-    border-radius: 999px;
-    background: #fff;
-    border: 1px solid #ead7ce;
-    color: #8a7166;
-    font-size: 12px;
-    font-weight: 900;
-  }
-</style>
-
-<script id="five-modules-patch">
-(function(){
-  const ACTIVE_MODULES = 5;
-
-  function getCompletedLessons(){
-    try {
-      return JSON.parse(localStorage.getItem("ia_completed_lessons") || "[]");
-    } catch(e) {
-      return [];
-    }
-  }
-
-  function lessonKey(m,l){
-    return `m${m}-l${l}`;
-  }
-
-  function moduleDoneCount(moduleIndex){
-    const completed = getCompletedLessons();
-    let total = 0;
-
-    for(let i = 0; i < 8; i++){
-      if(completed.includes(lessonKey(moduleIndex, i))) total++;
-    }
-
-    return total;
-  }
-
-  window.openModule = function(i){
-    if(i >= ACTIVE_MODULES){
-      alert("Esse módulo será liberado em breve.");
-      return;
-    }
-
-    selectedModule = i;
-    selectedLesson = 0;
-    renderModules();
-  };
-
-  window.renderModules = function(){
-    const list = document.getElementById("moduleList");
-
-    if (!list || !window.modules && typeof modules === "undefined") return;
-
-    if(selectedModule >= ACTIVE_MODULES){
-      selectedModule = 0;
-      selectedLesson = 0;
-    }
-
-    list.innerHTML = modules.map((m,i)=>{
-      const locked = i >= ACTIVE_MODULES;
-      const done = moduleDoneCount(i);
-
-      return `
-        <button class="module-btn ${i === selectedModule ? "active" : ""} ${locked ? "locked-module" : ""}" onclick="openModule(${i})">
-          <small>Módulo ${m.tag} · ${locked ? "em breve" : `${done}/8 concluídas`}</small>
-          <strong>${m.title}</strong>
-          ${locked ? `<span class="module-lock-badge">🔒 Em breve novas aulas</span>` : ""}
-        </button>
-      `;
-    }).join("");
-
-    renderModuleContent();
-  };
-
-  if(typeof renderModules === "function"){
-    renderModules();
-  }
-})();
-</script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

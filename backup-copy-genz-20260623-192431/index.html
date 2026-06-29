@@ -1,0 +1,1302 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR$ 39,99">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Influencer Academy | Cresça do 0 aos 5 mil seguidores</title>
+  <meta name="description" content="Aprenda a crescer como influenciadora do zero aos primeiros 5 mil seguidores com posicionamento, conteúdo e estratégia." />
+  <style>
+    :root{
+      --bg:#f7f1eb;
+      --bg-soft:#fcf8f4;
+      --card:#fffaf6;
+      --card-2:#fff;
+      --text:#3d3028;
+      --muted:#7b6a60;
+      --line:#eaded4;
+      --primary:#d9877d;
+      --primary-dark:#c46d63;
+      --accent:#b98c74;
+      --shadow:0 18px 50px rgba(92, 63, 45, 0.10);
+      --radius:24px;
+      --max:1200px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family: "Inter", "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(217,135,125,.10), transparent 25%),
+        radial-gradient(circle at top right, rgba(185,140,116,.10), transparent 24%),
+        linear-gradient(180deg, #faf5f0 0%, #f7f1eb 100%);
+      color:var(--text);
+      line-height:1.6;
+    }
+
+    a{text-decoration:none;color:inherit}
+    img{max-width:100%;display:block}
+    .container{width:min(var(--max), calc(100% - 40px));margin:0 auto}
+    .section{padding:90px 0}
+
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 16px;
+      border-radius:999px;
+      background:#fff6f1;
+      border:1px solid #f0ddd4;
+      color:var(--primary-dark);
+      font-size:13px;
+      font-weight:800;
+      letter-spacing:.3px;
+      text-transform:uppercase;
+    }
+
+    .nav{
+      position:sticky;
+      top:0;
+      z-index:50;
+      background:rgba(250,245,240,.85);
+      backdrop-filter: blur(12px);
+      border-bottom:1px solid rgba(185,140,116,.12);
+    }
+
+    .nav-wrap{
+      min-height:80px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-weight:800;
+      font-size:22px;
+      color:#543e34;
+    }
+
+    .brand-mark{
+      width:44px;
+      height:44px;
+      border-radius:16px;
+      display:grid;
+      place-items:center;
+      font-weight:900;
+      color:white;
+      background:linear-gradient(135deg, var(--primary), #e6b2a3);
+      box-shadow:0 10px 24px rgba(217,135,125,.25);
+    }
+
+    .nav-links{
+      display:flex;
+      gap:24px;
+      color:var(--muted);
+      font-size:15px;
+      font-weight:600;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:15px 24px;
+      border-radius:16px;
+      font-weight:800;
+      transition:.25s ease;
+      border:1px solid transparent;
+      cursor:pointer;
+    }
+
+    .btn:hover{transform:translateY(-2px)}
+    .btn-primary{
+      background:linear-gradient(135deg, var(--primary), #e5a193);
+      color:white;
+      box-shadow:0 14px 30px rgba(217,135,125,.28);
+    }
+    .btn-secondary{
+      background:#fff;
+      color:var(--text);
+      border-color:var(--line);
+    }
+
+    .hero{
+      padding:70px 0 40px;
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.05fr .95fr;
+      gap:40px;
+      align-items:center;
+    }
+
+    .hero h1{
+      margin:18px 0 18px;
+      font-size:clamp(38px, 6vw, 68px);
+      line-height:1.02;
+      letter-spacing:-1.8px;
+      color:#402f26;
+    }
+
+    .hero h1 span{
+      color:var(--primary-dark);
+    }
+
+    .hero p{
+      margin:0 0 28px;
+      color:var(--muted);
+      font-size:18px;
+      max-width:640px;
+    }
+
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px;
+      margin-bottom:28px;
+    }
+
+    .hero-points{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:14px;
+      margin-top:8px;
+    }
+
+    .mini-box{
+      background:rgba(255,255,255,.78);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:16px;
+      font-size:14px;
+      color:#6e5f56;
+      box-shadow:var(--shadow);
+    }
+
+    .hero-visual{
+      position:relative;
+      min-height:680px;
+    }
+
+    .hero-main-card{
+      position:absolute;
+      right:0;
+      top:0;
+      width:min(100%, 480px);
+      background:var(--card-2);
+      border-radius:34px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      border:1px solid rgba(185,140,116,.12);
+    }
+
+    .hero-main-card img{
+      width:100%;
+      height:640px;
+      object-fit:cover;
+      object-position:center top;
+      background:#efe4dc;
+    }
+
+    .hero-floating{
+      position:absolute;
+      left:0;
+      bottom:30px;
+      width:250px;
+      background:rgba(255,255,255,.96);
+      border:1px solid var(--line);
+      border-radius:26px;
+      padding:22px;
+      box-shadow:var(--shadow);
+    }
+
+    .hero-floating h3{
+      margin:0 0 8px;
+      font-size:18px;
+      line-height:1.2;
+    }
+
+    .hero-floating p{
+      margin:0;
+      font-size:14px;
+      color:var(--muted);
+    }
+
+    .stats{
+      margin-top:40px;
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:18px;
+    }
+
+    .stat{
+      padding:26px 20px;
+      background:rgba(255,255,255,.85);
+      border:1px solid var(--line);
+      border-radius:22px;
+      text-align:center;
+      box-shadow:var(--shadow);
+    }
+
+    .stat h3{
+      margin:0 0 8px;
+      font-size:34px;
+      line-height:1;
+      color:#503b31;
+    }
+
+    .stat p{
+      margin:0;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .heading{
+      max-width:760px;
+      margin:0 auto 44px;
+      text-align:center;
+    }
+
+    .heading h2{
+      margin:16px 0 12px;
+      font-size:clamp(30px, 4vw, 48px);
+      line-height:1.06;
+      letter-spacing:-1px;
+      color:#443229;
+    }
+
+    .heading p{
+      margin:0;
+      color:var(--muted);
+      font-size:17px;
+    }
+
+    .grid-3{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:22px;
+    }
+
+    .card{
+      padding:28px;
+      border-radius:24px;
+      background:rgba(255,255,255,.84);
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+    }
+
+    .card h3{
+      margin:0 0 10px;
+      font-size:26px;
+      color:#4a372d;
+    }
+
+    .card p{
+      margin:0 0 16px;
+      color:var(--muted);
+    }
+
+    .list{
+      list-style:none;
+      margin:0;
+      padding:0;
+      display:grid;
+      gap:10px;
+    }
+
+    .list li{
+      position:relative;
+      padding-left:24px;
+      color:#5b4a41;
+    }
+
+    .list li::before{
+      content:"•";
+      position:absolute;
+      left:6px;
+      top:-1px;
+      font-size:18px;
+      color:var(--primary);
+      font-weight:900;
+    }
+
+    .highlight{
+      background:linear-gradient(180deg, #fff4ef 0%, #fffaf6 100%);
+      border-color:#efd8cf;
+    }
+
+    .editorial{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:24px;
+      align-items:center;
+    }
+
+    .editorial-copy{
+      padding-right:18px;
+    }
+
+    .editorial-copy h2{
+      margin:16px 0 12px;
+      font-size:clamp(30px, 4vw, 46px);
+      line-height:1.08;
+      letter-spacing:-1.1px;
+      color:#433127;
+    }
+
+    .editorial-copy p{
+      color:var(--muted);
+      margin:0 0 18px;
+      font-size:17px;
+    }
+
+    .editorial-images{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+    }
+
+    .editorial-images img{
+      width:100%;
+      height:260px;
+      object-fit:cover;
+      border-radius:24px;
+      background:#ecdfd7;
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+    }
+
+    .editorial-images img:first-child{
+      height:540px;
+      grid-row:span 2;
+    }
+
+    .modules{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:22px;
+    }
+
+    .module{
+      padding:24px;
+      border-radius:24px;
+      background:rgba(255,255,255,.84);
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+    }
+
+    .module-top{
+      display:flex;
+      align-items:center;
+      gap:16px;
+      margin-bottom:14px;
+    }
+
+    .module-number{
+      width:50px;
+      height:50px;
+      border-radius:16px;
+      background:linear-gradient(135deg, var(--primary), #e5a193);
+      color:#fff;
+      display:grid;
+      place-items:center;
+      font-weight:900;
+      flex-shrink:0;
+    }
+
+    .module h3{
+      margin:0;
+      font-size:22px;
+      color:#4a382e;
+    }
+
+    .module p{
+      margin:0 0 14px;
+      color:var(--muted);
+    }
+
+    .gallery{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:18px;
+    }
+
+    .gallery-card{
+      background:rgba(255,255,255,.84);
+      border:1px solid var(--line);
+      border-radius:24px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+    }
+
+    .gallery-card img{
+      width:100%;
+      height:280px;
+      object-fit:cover;
+      background:#eee1d9;
+    }
+
+    .gallery-card .caption{
+      padding:18px;
+    }
+
+    .gallery-card strong{
+      display:block;
+      margin-bottom:6px;
+      font-size:16px;
+      color:#48352b;
+    }
+
+    .gallery-card span{
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .pricing{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:24px;
+    }
+
+    .pricing-box{
+      padding:34px;
+      border-radius:28px;
+      background:linear-gradient(180deg, #fff4ef 0%, #fffdfb 100%);
+      border:1px solid #efd8cf;
+      box-shadow:var(--shadow);
+    }
+
+    .pricing-box h3{
+      margin:0 0 12px;
+      font-size:34px;
+      line-height:1.04;
+      color:#433127;
+    }
+
+    .price{
+      display:flex;
+      align-items:flex-end;
+      gap:10px;
+      margin:22px 0 14px;
+    }
+
+    .price strong{
+      font-size:54px;
+      line-height:1;
+      color:#4a372d;
+      letter-spacing:-1.8px;
+    }
+
+    .price span{
+      color:var(--muted);
+      font-size:16px;
+      padding-bottom:8px;
+    }
+
+    .price-note{
+      color:var(--muted);
+      margin-bottom:24px;
+    }
+
+    .faq{
+      display:grid;
+      gap:16px;
+    }
+
+    details{
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:18px 20px;
+      background:rgba(255,255,255,.84);
+      box-shadow:var(--shadow);
+    }
+
+    summary{
+      cursor:pointer;
+      font-weight:800;
+      list-style:none;
+      color:#49362d;
+    }
+
+    summary::-webkit-details-marker{display:none}
+
+    details p{
+      margin:14px 0 0;
+      color:var(--muted);
+    }
+
+    .final-cta{
+      padding:46px 26px;
+      border-radius:32px;
+      background:linear-gradient(180deg, #fff4ef 0%, #fffaf6 100%);
+      border:1px solid #efd8cf;
+      box-shadow:var(--shadow);
+      text-align:center;
+    }
+
+    .final-cta h2{
+      margin:16px 0 12px;
+      font-size:clamp(30px, 4vw, 46px);
+      line-height:1.06;
+      color:#433127;
+      letter-spacing:-1px;
+    }
+
+    .final-cta p{
+      max-width:760px;
+      margin:0 auto 24px;
+      color:var(--muted);
+      font-size:17px;
+    }
+
+    .footer{
+      padding:34px 0 50px;
+      text-align:center;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    @media (max-width: 1100px){
+      .hero-grid,
+      .editorial,
+      .pricing{
+        grid-template-columns:1fr;
+      }
+
+      .hero-main-card{
+        position:relative;
+        margin:0 auto;
+      }
+
+      .hero-floating{
+        position:relative;
+        width:100%;
+        max-width:480px;
+        margin:18px auto 0;
+        bottom:auto;
+        left:auto;
+      }
+
+      .hero-visual{
+        min-height:auto;
+      }
+
+      .gallery{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+      }
+
+      .modules{
+        grid-template-columns:1fr;
+      }
+
+      .grid-3{
+        grid-template-columns:1fr;
+      }
+
+      .stats{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+      }
+    }
+
+    @media (max-width: 760px){
+      .nav-wrap{
+        flex-wrap:wrap;
+        justify-content:center;
+        padding:14px 0;
+      }
+
+      .nav-links{
+        flex-wrap:wrap;
+        justify-content:center;
+      }
+
+      .hero-points{
+        grid-template-columns:1fr;
+      }
+
+      .hero-actions{
+        flex-direction:column;
+      }
+
+      .btn{width:100%}
+
+      .stats,
+      .gallery{
+        grid-template-columns:1fr;
+      }
+
+      .editorial-images{
+        grid-template-columns:1fr;
+      }
+
+      .editorial-images img:first-child{
+        height:320px;
+        grid-row:auto;
+      }
+
+      .editorial-images img{
+        height:240px;
+      }
+
+      .hero-main-card img{
+        height:520px;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="assets/css/theme-premium.css" />
+<style id="remove-hero-stickers">
+  .sticker,
+  .stickers,
+  .hero-sticker,
+  .hero-stickers,
+  .floating-sticker,
+  .floating-card,
+  .floating-img,
+  .decor-sticker,
+  .decor-image,
+  .visual-sticker,
+  .social-sticker,
+  .hero-decor,
+  .hero-floating,
+  .floating-print,
+  .print-sticker {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+</style>
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav-wrap">
+      <div class="brand">
+        <div class="brand-mark">IA</div>
+        <div>Influencer Academy</div>
+      </div>
+
+      <nav class="nav-links">
+        <a href="#trilha">Trilha</a>
+        <a href="#modulos">Módulos</a>
+        <a href="#galeria">Estilo</a>
+        
+        <a href="Chatbot.html">FAQ</a>
+      </nav>
+
+      <div style="display:flex; gap:12px; flex-wrap:wrap;">
+        <a class="btn btn-secondary" href="Chatbot.html">Tirar dúvidas</a>
+        <a class="btn btn-primary" href="cadastro.html">Quero entrar</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+  <section class="promo-countdown">
+  <div class="promo-countdown__text">
+    <strong>Oferta especial de lançamento: de R$ 69,99 por R$ 39,99</strong>
+    <span>Essa condição fica disponível por tempo limitado para as primeiras alunas.</span>
+  </div>
+
+  <div class="promo-countdown__timer" aria-label="Contador regressivo da oferta">
+    <div class="promo-countdown__box">
+      <strong id="cd-days">00</strong>
+      <span>dias</span>
+    </div>
+    <div class="promo-countdown__box">
+      <strong id="cd-hours">00</strong>
+      <span>horas</span>
+    </div>
+    <div class="promo-countdown__box">
+      <strong id="cd-minutes">00</strong>
+      <span>min</span>
+    </div>
+    <div class="promo-countdown__box">
+      <strong id="cd-seconds">00</strong>
+      <span>seg</span>
+    </div>
+  </div>
+</section>
+    <section class="hero sticker-zone">
+      <img class="floating-sticker sticker-hero-social" src="assets/img/sticker-engajamento.jpg" alt="Figurinha de engajamento nas redes sociais" />
+      <img class="floating-sticker sticker-hero-metrics" src="assets/img/sticker-metricas.jpg" alt="Figurinha de métricas de visualizações" />
+      <div class="container hero-grid">
+        <div>
+          
+          <h1>Aprenda a sair do <span>zero</span>, conquistar seus primeiros seguidores e construir uma presença digital forte e estratégica.</h1>
+          <p>
+            Um curso pensado para mulheres que querem crescer como criadoras de conteúdo e influenciadoras,
+            com mais posicionamento, consistência, estética e clareza sobre o que postar em cada fase do crescimento.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="cadastro.html">Quero começar agora</a>
+            <a class="btn btn-secondary" href="#trilha">Ver a trilha do curso</a>
+          </div>
+
+          <div class="hero-points">
+            <div class="mini-box">Saia do improviso e aprenda a criar conteúdo com mais intenção.</div>
+            <div class="mini-box">Entenda como crescer do 0 aos primeiros 5 mil seguidores com estratégia.</div>
+            <div class="mini-box">Crie uma marca pessoal que transmita mais valor e autoridade.</div>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="hero-main-card">
+            <img src="assets/img/hero-selfie.jpg" alt="Mulher influenciadora segurando celular e tirando selfie" />
+          </div>
+
+          <div class="hero-floating">
+            <h3>Do 0 ao posicionamento certo</h3>
+            <p>
+              Descubra como construir um perfil mais bonito, profissional e atrativo sem parecer genérico ou perdido.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="container stats">
+        <div class="stat">
+          <h3>0 → 1k</h3>
+          <p>Construa base, identidade e presença digital.</p>
+        </div>
+        <div class="stat">
+          <h3>1k → 5k</h3>
+          <p>Cresça com mais consistência e conexão com a audiência.</p>
+        </div>
+        <div class="stat">
+          <h3>+6</h3>
+          <p>Módulos pensados para evolução real e estratégica.</p>
+        </div>
+        <div class="stat">
+          <h3>100%</h3>
+          <p>Foco em branding, conteúdo, estética e crescimento.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section sticker-zone" id="trilha">
+      <img class="floating-sticker sticker-trilha-content" src="assets/img/sticker-conteudo.jpg" alt="Figurinha de conteúdo e curtidas" />
+      <div class="container">
+        <div class="heading">
+          
+          <h2>O que fazer em cada fase para crescer sem se sentir perdida.</h2>
+          <p>
+            Em vez de postar no escuro, você vai entender o que priorizar em cada etapa e como evoluir com mais estratégia.
+          </p>
+        </div>
+
+        <div class="grid-3">
+          <div class="card">
+            <h3>Fase 1 · 0 a 1.000</h3>
+            <p>Primeiros passos para construir uma base sólida.</p>
+            <ul class="list">
+              <li>Escolha de nicho e identidade</li>
+              <li>Perfil mais alinhado e profissional</li>
+              <li>Primeiros conteúdos estratégicos</li>
+              <li>Mais clareza sobre o que postar</li>
+            </ul>
+          </div>
+
+          <div class="card highlight">
+            <h3>Fase 2 · 1.000 a 5.000</h3>
+            <p>Entenda o que realmente ajuda a crescer e se destacar.</p>
+            <ul class="list">
+              <li>Conteúdo que gera retenção</li>
+              <li>R$ 39,99eels mais atrativos</li>
+              <li>Storytelling e conexão</li>
+              <li>Construção de comunidade</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3>Fase 3 · 5.000+</h3>
+            <p>Chegue em um nível de presença mais forte e comercial.</p>
+            <ul class="list">
+              <li>Autoridade e percepção de valor</li>
+              <li>Imagem mais profissional</li>
+              <li>Primeiras parcerias</li>
+              <li>Preparação para monetização</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container editorial">
+        <div class="editorial-copy">
+          <span class="tag">ESTILO + POSICIONAMENTO</span>
+          <h2>Mais do que seguidores: estrutura, conteúdo e presença para crescer de verdade.</h2>
+          <p>
+            O crescimento de uma influenciadora não depende só de postar muito. Ele também passa por imagem,
+            presença, coerência visual e narrativa.
+          </p>
+          <p>
+            Por isso, o curso também te ajuda a pensar sua presença digital com um olhar mais estratégico,
+            feminino, elegante e forte — sem perder autenticidade.
+          </p>
+          <a class="btn btn-primary" href="cadastro.html">Quero essa transformação</a>
+        </div>
+
+        <div class="editorial-images">
+          <img src="assets/img/gallery-1.jpg" alt="Criadora de conteúdo feminina com celular" />
+          <img src="assets/img/gallery-2.jpg" alt="Mulher produzindo conteúdo para redes sociais" />
+          <img src="assets/img/gallery-3.jpg" alt="Influenciadora em pose para criação de conteúdo" />
+        </div>
+      </div>
+    </section>
+
+    <section class="section sticker-zone" id="modulos">
+      <img class="floating-sticker sticker-modulos-megafone" src="assets/img/sticker-megafone.jpg" alt="Figurinha de megafone e divulgação" />
+      <div class="container">
+        <div class="heading">
+          
+          <h2>Um curso pensado para te levar da insegurança à clareza.</h2>
+          <p>
+            Cada módulo foi estruturado para fazer você entender o processo, aplicar no seu perfil e crescer com muito mais consciência.
+          </p>
+        </div>
+
+        <div class="modules">
+          <div class="module">
+            <div class="module-top">
+              <div class="module-number">01</div>
+              <h3>Fundamentos da Influenciadora</h3>
+            </div>
+            <p>Entenda o que realmente sustenta o crescimento de uma criadora digital.</p>
+            <ul class="list">
+              <li>Mentalidade e visão de marca pessoal</li>
+              <li>Como sair do conteúdo solto</li>
+              <li>Os pilares de um perfil forte</li>
+            </ul>
+          </div>
+
+          <div class="module">
+            <div class="module-top">
+              <div class="module-number">02</div>
+              <h3>Nicho e Posicionamento</h3>
+            </div>
+            <p>Encontre uma comunicação mais clara e atraente para o seu público.</p>
+            <ul class="list">
+              <li>Nicho e diferencial</li>
+              <li>Tom de voz</li>
+              <li>Imagem e coerência</li>
+            </ul>
+          </div>
+
+          <div class="module">
+            <div class="module-top">
+              <div class="module-number">03</div>
+              <h3>Conteúdo que Cresce</h3>
+            </div>
+            <p>Aprenda a criar conteúdo com mais estratégia e menos dúvida.</p>
+            <ul class="list">
+              <li>R$ 39,99eels, stories e posts</li>
+              <li>Ideias de conteúdo</li>
+              <li>Ganchos e retenção</li>
+            </ul>
+          </div>
+
+          <div class="module">
+            <div class="module-top">
+              <div class="module-number">04</div>
+              <h3>Engajamento e Comunidade</h3>
+            </div>
+            <p>Crie conexão para que as pessoas parem, acompanhem e lembrem de você.</p>
+            <ul class="list">
+              <li>Conexão com audiência</li>
+              <li>R$ 39,99elacionamento</li>
+              <li>Comunidade</li>
+            </ul>
+          </div>
+
+          <div class="module">
+            <div class="module-top">
+              <div class="module-number">05</div>
+              <h3>Estética e Presença Digital</h3>
+            </div>
+            <p>Deixe seu perfil mais bonito, alinhado e com mais percepção de valor.</p>
+            <ul class="list">
+              <li>Identidade visual</li>
+              <li>Feed e imagem pessoal</li>
+              <li>Coerência visual</li>
+            </ul>
+          </div>
+
+          <div class="module">
+            <div class="module-top">
+              <div class="module-number">06</div>
+              <h3>Autoridade e Monetização</h3>
+            </div>
+            <p>Prepare sua imagem para crescer, atrair oportunidades e começar a monetizar.</p>
+            <ul class="list">
+              <li>Marca pessoal</li>
+              <li>Parcerias</li>
+              <li>Primeiros caminhos de monetização</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="galeria">
+      <div class="container">
+        <div class="heading">
+          
+          <h2>Crescimento, gravação, métricas e produção com mais estratégia.</h2>
+          <p>
+            A proposta é mostrar que crescer na internet envolve mais do que aparecer: envolve gravar melhor, entender métricas, cuidar da estética, usar boas referências e criar uma rotina de conteúdo possível.
+          </p>
+        </div>
+
+        <div class="gallery">
+          <div class="gallery-card">
+            <img src="assets/img/hero-selfie.jpg" alt="Mulher com celular em pose de selfie" />
+            <div class="caption">
+              <strong>Crescimento</strong>
+              <span>Entenda métricas, prova social e o que faz um perfil chamar atenção.</span>
+            </div>
+          </div>
+
+          <div class="gallery-card">
+            <img src="assets/img/gallery-1.jpg" alt="Influenciadora feminina produzindo conteúdo" />
+            <div class="caption">
+              <strong>Produção</strong>
+              <span>Aprenda a gravar conteúdos, produtos, rotina e bastidores com mais intenção.</span>
+            </div>
+          </div>
+
+          <div class="gallery-card">
+            <img src="assets/img/gallery-2.jpg" alt="Criadora de conteúdo elegante" />
+            <div class="caption">
+              <strong>Setup</strong>
+              <span>Use celular, iluminação, cenário e enquadramento de forma mais estratégica.</span>
+            </div>
+          </div>
+
+          <div class="gallery-card">
+            <img src="assets/img/gallery-3.jpg" alt="Mulher mostrando celular para criação de conteúdo" />
+            <div class="caption">
+              <strong>Equipamentos</strong>
+              <span>Veja como acessórios simples ajudam a melhorar a qualidade dos seus conteúdos.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container pricing">
+        <div class="pricing-box">
+          <h3>Comece agora a construir seu crescimento como influenciadora.</h3>
+
+          <div class="price-offer">
+            <div class="old-price">De <span class="old-price">R$ 69,99</span></div>
+            <div class="new-price">Por R$ 39,99</div>
+            <div class="price-subtitle">pagamento único</div>
+          </div>
+
+          <div class="offer-countdown">
+            <div class="offer-countdown-text">
+              <strong>Oferta especial por tempo limitado</strong>
+              <span>Essa condição encerra em:</span>
+            </div>
+
+            <div class="offer-countdown-timer">
+              <div class="offer-time-box">
+                <strong id="offer-days">00</strong>
+                <span>dias</span>
+              </div>
+              <div class="offer-time-box">
+                <strong id="offer-hours">00</strong>
+                <span>horas</span>
+              </div>
+              <div class="offer-time-box">
+                <strong id="offer-minutes">00</strong>
+                <span>min</span>
+              </div>
+              <div class="offer-time-box">
+                <strong id="offer-seconds">00</strong>
+                <span>seg</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="price-note">
+            Acesso ao curso + materiais de apoio + trilha prática para crescer com mais estratégia.
+          </div>
+
+          <div style="display:flex; gap:14px; flex-wrap:wrap;">
+            <a class="btn btn-primary" href="cadastro.html">Garantir minha vaga</a>
+            <a class="btn btn-secondary" href="Chatbot.html">Ainda tenho dúvidas</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Esse curso é ideal para você que:</h3>
+          <ul class="list">
+            <li>Quer crescer do zero de forma mais estratégica</li>
+            <li>Sente que posta e não sai do lugar</li>
+            <li>Quer uma presença digital mais bonita e forte</li>
+            <li>Deseja criar uma marca pessoal mais valorizada</li>
+            <li>Quer aprender sem depender de achismo</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+<section class="section" id="faq">
+      <div class="container">
+        <div class="heading">
+          <span class="tag">FAQ</span>
+          <h2>Dúvidas frequentes</h2>
+          <p>Algumas respostas para te ajudar a entender melhor o curso.</p>
+        </div>
+
+        <div class="faq">
+          <details open>
+            <summary>Esse curso é só para quem já tem seguidores?</summary>
+            <p>Não. Ele foi pensado principalmente para quem está começando ou ainda sente que não conseguiu crescer com consistência.</p>
+          </details>
+
+          <details>
+            <summary>O curso serve para quem quer melhorar a imagem do perfil?</summary>
+            <p>Sim. Além de conteúdo e estratégia, ele também traz uma visão de posicionamento, presença e estética.</p>
+          </details>
+
+          <details>
+            <summary>Eu preciso já saber criar conteúdo?</summary>
+            <p>Não. O curso foi estruturado para ajudar desde quem ainda está travada até quem já começou, mas quer crescer melhor.</p>
+          </details>
+
+          <details>
+            <summary>Depois do cadastro eu acesso como?</summary>
+            <p>Depois do cadastro você segue para o restante do fluxo do projeto e recebe a orientação para continuar.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="final-cta">
+          <span class="tag">ÚLTIMA CHAMADA</span>
+          <h2>O seu crescimento pode ser mais bonito, estratégico e intencional.</h2>
+          <p>
+            Chega de postar sem direção. Comece a construir uma presença digital que represente quem você é
+            e te aproxime dos resultados que você quer conquistar.
+          </p>
+          <div style="display:flex; justify-content:center; gap:14px; flex-wrap:wrap;">
+            <a class="btn btn-primary" href="cadastro.html">Quero entrar no curso</a>
+            <a class="btn btn-secondary" href="Chatbot.html">Falar com suporte</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      © 2026 Influencer Academy · Todos os direitos reservados.
+    </div>
+  </footer>
+
+<script>
+(function(){
+  const deadlineKey = "influencerCountdownDeadline";
+  let deadline = localStorage.getItem(deadlineKey);
+
+  if(!deadline){
+    deadline = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString();
+    localStorage.setItem(deadlineKey, deadline);
+  }
+
+  function pad(value){
+    return String(value).padStart(2, "0");
+  }
+
+  function updateCountdown(){
+    const end = new Date(deadline).getTime();
+    const now = Date.now();
+    const diff = Math.max(0, end - now);
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    document.getElementById("cd-days").textContent = pad(days);
+    document.getElementById("cd-hours").textContent = pad(hours);
+    document.getElementById("cd-minutes").textContent = pad(minutes);
+    document.getElementById("cd-seconds").textContent = pad(seconds);
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+})();
+</script>
+
+<script>
+(function(){
+  const deadlineKey = "offerCountdownDeadline";
+  let deadline = localStorage.getItem(deadlineKey);
+
+  if(!deadline){
+    deadline = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString();
+    localStorage.setItem(deadlineKey, deadline);
+  }
+
+  function pad(value){
+    return String(value).padStart(2, "0");
+  }
+
+  function updateOfferCountdown(){
+    const end = new Date(deadline).getTime();
+    const now = Date.now();
+    const diff = Math.max(0, end - now);
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    const d = document.getElementById("offer-days");
+    const h = document.getElementById("offer-hours");
+    const m = document.getElementById("offer-minutes");
+    const s = document.getElementById("offer-seconds");
+
+    if(d) d.textContent = pad(days);
+    if(h) h.textContent = pad(hours);
+    if(m) m.textContent = pad(minutes);
+    if(s) s.textContent = pad(seconds);
+  }
+
+  updateOfferCountdown();
+  setInterval(updateOfferCountdown, 1000);
+})();
+</script>
+<!-- FLOATING-GALLER$ 39,99Y-LIGHTBOX STAR$ 39,99T -->
+<script>
+(function () {
+  if (document.getElementById("floatingGalleryLightbox")) return;
+
+  const floatingImages = Array.from(document.querySelectorAll(".floating-sticker"));
+  if (!floatingImages.length) return;
+
+  const overlay = document.createElement("div");
+  overlay.id = "floatingGalleryLightbox";
+  overlay.className = "image-lightbox";
+  overlay.innerHTML = `
+    <div class="image-lightbox__backdrop"></div>
+    <div class="image-lightbox__panel">
+      <button class="image-lightbox__close" aria-label="Fechar">×</button>
+
+      <div class="image-lightbox__toolbar">
+        <button class="image-lightbox__btn" data-action="out">−</button>
+        <button class="image-lightbox__btn" data-action="reset">100%</button>
+        <button class="image-lightbox__btn" data-action="in">+</button>
+      </div>
+
+      <div class="image-lightbox__stage">
+        <img class="image-lightbox__img" alt="">
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+
+  const backdrop = overlay.querySelector(".image-lightbox__backdrop");
+  const closeBtn = overlay.querySelector(".image-lightbox__close");
+  const imgEl = overlay.querySelector(".image-lightbox__img");
+  const controls = overlay.querySelectorAll(".image-lightbox__btn");
+
+  let zoom = 1;
+
+  function setZoom(value) {
+    zoom = Math.max(1, Math.min(3, value));
+    imgEl.style.transform = `scale(${zoom})`;
+  }
+
+  function openLightbox(src, altText) {
+    imgEl.src = src;
+    imgEl.alt = altText || "";
+    setZoom(1);
+    overlay.classList.add("is-open");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeLightbox() {
+    overlay.classList.remove("is-open");
+    document.body.style.overflow = "";
+  }
+
+  floatingImages.forEach((img) => {
+    img.setAttribute("tabindex", "0");
+    img.setAttribute("role", "button");
+    img.setAttribute("aria-label", "Abrir imagem");
+
+    img.addEventListener("click", () => openLightbox(img.src, img.alt));
+    img.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        openLightbox(img.src, img.alt);
+      }
+    });
+  });
+
+  backdrop.addEventListener("click", closeLightbox);
+  closeBtn.addEventListener("click", closeLightbox);
+
+  controls.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const action = btn.getAttribute("data-action");
+      if (action === "in") setZoom(zoom + 0.25);
+      if (action === "out") setZoom(zoom - 0.25);
+      if (action === "reset") setZoom(1);
+    });
+  });
+
+  overlay.addEventListener("wheel", (e) => {
+    if (!overlay.classList.contains("is-open")) return;
+    e.preventDefault();
+    if (e.deltaY < 0) setZoom(zoom + 0.15);
+    else setZoom(zoom - 0.15);
+  }, { passive: false });
+
+  document.addEventListener("keydown", (e) => {
+    if (!overlay.classList.contains("is-open")) return;
+    if (e.key === "Escape") closeLightbox();
+    if (e.key === "+") setZoom(zoom + 0.15);
+    if (e.key === "-") setZoom(zoom - 0.15);
+  });
+})();
+</script>
+<!-- FLOATING-GALLER$ 39,99Y-LIGHTBOX END -->
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
