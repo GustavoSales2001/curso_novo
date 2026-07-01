@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Criar Conta - Influencer Academy</title>
+  <title>Login - Influencer Academy</title>
 
   <style>
     *{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif}
@@ -19,13 +19,45 @@
         linear-gradient(180deg,#fbf6f1 0%,#f6eee8 100%);
       color:#4d372f;
     }
-    .auth-card{
+    .login-wrapper{
       width:100%;
-      max-width:520px;
-      background:rgba(255,255,255,.82);
+      max-width:980px;
+      display:grid;
+      grid-template-columns:1fr 470px;
+      gap:36px;
+      align-items:center;
+    }
+    .info h2{
+      font-size:42px;
+      line-height:1.08;
+      color:#4d372f;
+      letter-spacing:-.04em;
+      margin-bottom:18px;
+    }
+    .info p{
+      color:#7b665d;
+      line-height:1.7;
+      font-size:17px;
+      max-width:470px;
+    }
+    .benefits{
+      margin-top:26px;
+      display:grid;
+      gap:14px;
+      color:#5c463c;
+      font-weight:700;
+    }
+    .benefits div::before{
+      content:"✓";
+      color:#d98c7d;
+      font-weight:900;
+      margin-right:10px;
+    }
+    .auth-card{
+      background:rgba(255,255,255,.84);
       border:1px solid #ead8cf;
       border-radius:32px;
-      padding:42px 44px;
+      padding:42px;
       box-shadow:0 24px 60px rgba(98,72,59,.12);
       backdrop-filter:blur(10px);
     }
@@ -42,31 +74,23 @@
     }
     h1{
       text-align:center;
-      font-size:38px;
-      line-height:1.05;
+      font-size:34px;
       color:#4d372f;
       letter-spacing:-.03em;
-      margin-bottom:12px;
+      margin-bottom:10px;
     }
     .subtitle{
       text-align:center;
       color:#8f786d;
       font-size:16px;
-      line-height:1.55;
       margin-bottom:28px;
-    }
-    .form-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:16px;
     }
     .form-group{
       display:flex;
       flex-direction:column;
       gap:8px;
-      margin-bottom:14px;
+      margin-bottom:16px;
     }
-    .full{grid-column:1/-1}
     label{
       font-size:13px;
       font-weight:900;
@@ -91,17 +115,6 @@
       box-shadow:0 0 0 4px rgba(217,140,125,.14);
       background:#fff;
     }
-    input::placeholder{color:#b29a8f}
-    .security{
-      padding:14px 16px;
-      border-radius:16px;
-      border:1px solid #d9e9f6;
-      background:#f3fbff;
-      color:#6c7c8b;
-      font-size:14px;
-      line-height:1.45;
-      margin-bottom:16px;
-    }
     button{
       width:100%;
       height:56px;
@@ -114,6 +127,7 @@
       cursor:pointer;
       box-shadow:0 16px 34px rgba(217,140,125,.25);
       transition:.2s ease;
+      margin-top:4px;
     }
     button:hover{transform:translateY(-1px)}
     button:disabled{opacity:.7;cursor:not-allowed;transform:none}
@@ -154,71 +168,62 @@
       border:1px solid #f1c0c0;
       color:#a04444;
     }
-    @media(max-width:700px){
+    @media(max-width:850px){
+      .login-wrapper{grid-template-columns:1fr;max-width:520px}
+      .info{display:none}
       .auth-card{padding:30px 22px;border-radius:24px}
-      .form-grid{grid-template-columns:1fr}
-      .full{grid-column:auto}
-      h1{font-size:32px}
     }
   </style>
-  <link rel="stylesheet" href="assets/course-polish/course-polish.css">
 </head>
 <body>
-  <main class="auth-card">
-    <div class="badge">Seu acesso começa aqui</div>
+  <main class="login-wrapper">
+    <section class="info">
+      <h2>Bem-vinda à Influencer Academy</h2>
+      <p>Acesse sua área e continue sua jornada para crescer como influenciadora, criar conteúdo com estratégia e fortalecer sua presença digital.</p>
 
-    <h1>Crie seu acesso</h1>
-    <p class="subtitle">Entre para a Influencer Academy e comece sua jornada como criadora. com mais estratégia.</p>
-
-    <form id="cadastroForm">
-      <div class="form-group full">
-        <label for="nome">Nome completo *</label>
-        <input id="nome" type="text" placeholder="Seu nome completo" autocomplete="name" required />
+      <div class="benefits">
+        <div>Construa um perfil mais bonito e estratégico</div>
+        <div>Aprenda a criar conteúdo com mais intenção</div>
+        <div>Fortaleça sua imagem pessoal e sua autoridade</div>
+        <div>Cresça com mais clareza, estética e consistência</div>
       </div>
+    </section>
 
-      <div class="form-grid">
+    <section class="auth-card">
+      <div class="badge">Área da aluna</div>
+
+      <h1>Entrar na minha área</h1>
+      <p class="subtitle">Acesse sua área e continue sua evolução..</p>
+
+      <form id="loginForm">
         <div class="form-group">
-          <label for="email">E-mail *</label>
+          <label for="email">E-mail</label>
           <input id="email" type="email" placeholder="seu.email@exemplo.com" autocomplete="email" required />
         </div>
 
         <div class="form-group">
-          <label for="celular">Celular *</label>
-          <input id="celular" type="tel" placeholder="(11) 99999-9999" autocomplete="tel" required />
+          <label for="senha">Senha</label>
+          <input id="senha" type="password" placeholder="Sua senha segura" autocomplete="current-password" required />
         </div>
-      </div>
 
-      <div class="form-group full">
-        <label for="nascimento">Data de nascimento *</label>
-        <input id="nascimento" type="date" required />
-      </div>
+        <button id="submitBtn" type="submit">Entrar na minha conta</button>
 
-      <div class="form-group full">
-        <label for="senha">Crie uma senha *</label>
-        <input id="senha" type="password" placeholder="Crie uma senha segura para acessar sua área" autocomplete="new-password" required />
-      </div>
+        <div id="formMessage" class="message"></div>
+      </form>
 
-      <div class="security">
-        Use 8+ caracteres, números e símbolos para uma senha mais segura.
-      </div>
+      <div class="divider">ou</div>
 
-      <button id="submitBtn" type="submit">Criar minha conta</button>
-
-      <div id="formMessage" class="message"></div>
-    </form>
-
-    <div class="divider">ou</div>
-
-    <p class="link">
-      Já tem uma conta?
-      <a href="login.html">Faça seu login aqui</a>
-    </p>
+      <p class="link">
+        Não tem conta?
+        <a href="cadastro.html">Criar conta agora</a>
+      </p>
+    </section>
   </main>
 
   <script>
     const API_BASE_URL = "https://cursonovo-production.up.railway.app/api";
 
-    const form = document.getElementById("cadastroForm");
+    const form = document.getElementById("loginForm");
     const submitBtn = document.getElementById("submitBtn");
     const messageBox = document.getElementById("formMessage");
 
@@ -247,7 +252,7 @@
           }
 
           if (!response.ok || data.ok === false) {
-            throw new Error(data.error || data.message || "Erro ao processar cadastro.");
+            throw new Error(data.error || data.message || "Erro ao fazer login.");
           }
 
           return data;
@@ -263,62 +268,49 @@
       event.preventDefault();
 
       const payload = {
-        name: document.getElementById("nome").value.trim(),
-        nome: document.getElementById("nome").value.trim(),
         email: document.getElementById("email").value.trim().toLowerCase(),
-        celular: document.getElementById("celular").value.trim(),
-        nascimento: document.getElementById("nascimento").value,
-        birthDate: document.getElementById("nascimento").value,
         password: document.getElementById("senha").value.trim(),
-        senha: document.getElementById("senha").value.trim(),
-        area: "Influencer Academy"
+        senha: document.getElementById("senha").value.trim()
       };
 
-      if (!payload.name || !payload.email || !payload.celular || !payload.password) {
-        showMessage("Preencha nome, e-mail, celular e senha.", "error");
-        return;
-      }
-
-      if (payload.password.length < 6) {
-        showMessage("A senha precisa ter pelo menos 6 caracteres.", "error");
+      if (!payload.email || !payload.password) {
+        showMessage("Informe e-mail e senha.", "error");
         return;
       }
 
       submitBtn.disabled = true;
-      submitBtn.textContent = "Criando conta...";
+      submitBtn.textContent = "Entrando...";
 
       try {
         const data = await postWithFallback(
-          ["/register", "/users/register", "/cadastro"],
+          ["/login", "/users/login"],
           payload
         );
 
-        const user = data.user || {
-          name: payload.name,
-          email: payload.email,
-          celular: payload.celular,
-          area: "Influencer Academy"
-        };
-
+        const user = data.user || {};
         localStorage.setItem("ia_user", JSON.stringify(user));
         localStorage.setItem("usuario", JSON.stringify(user));
         localStorage.setItem("ia_user_email", payload.email);
 
-        showMessage("Conta criada com sucesso! Redirecionando para pagamento...", "ok");
+        showMessage("Login realizado com sucesso!", "ok");
 
         setTimeout(() => {
-          window.location.href = "pagamento.html";
-        }, 900);
+          if (Number(user.access_released || 0) === 1) {
+            window.location.href = "area.html";
+          } else {
+            window.location.href = "pagamento.html";
+          }
+        }, 700);
       } catch (error) {
-        showMessage(error.message || "Erro ao criar cadastro.", "error");
+        showMessage(error.message || "Erro ao fazer login.", "error");
         submitBtn.disabled = false;
-        submitBtn.textContent = "Criar minha conta";
+        submitBtn.textContent = "Entrar na minha conta";
       }
     });
   </script>
-  <script src="assets/course-polish/course-polish.js"></script>
 </body>
 </html>
+
 
 
 
