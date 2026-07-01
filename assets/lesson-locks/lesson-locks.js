@@ -227,7 +227,7 @@
         if (next <= TOTAL_CLASSES) {
           window.location.href = lessonUrl(next);
         } else {
-          window.location.href = "area.html#classes";
+          window.dispatchEvent(new CustomEvent("iaCourseFinished", { detail: { current } }));
         }
       }, 650);
     }
@@ -262,7 +262,7 @@
     };
 
     document.getElementById("iaBackToClasses").onclick = function () {
-      window.location.href = "area.html#classes";
+      window.dispatchEvent(new CustomEvent("iaCourseFinished", { detail: { current } }));
     };
   }
 
@@ -327,3 +327,6 @@
     }
   };
 })();
+
+
+
