@@ -1,42 +1,24 @@
 ﻿(function () {
-  function normalize(text) {
-    return String(text || "")
-      .replace(/\s+/g, " ")
-      .trim()
-      .toLowerCase();
+  function norm(t) {
+    return String(t || "").replace(/\s+/g, " ").trim().toLowerCase();
   }
 
-  function removePrintsButton() {
-    const items = Array.from(document.querySelectorAll("a, button, div, li, section"));
+  function removePrints() {
+    document.querySelectorAll("a, button, div, li").forEach(function (el) {
+      const t = norm(el.innerText || el.textContent);
+      const href = el.getAttribute ? (el.getAttribute("href") || "") : "";
 
-    items.forEach(function (el) {
-      const text = normalize(el.innerText || el.textContent);
-      const href = el.getAttribute && (el.getAttribute("href") || "");
-
-      const isPrintsButton =
-        text === "prints" ||
-        text === "capturas" ||
-        href === "#tools" ||
-        href.includes("#tools");
-
-      const rect = el.getBoundingClientRect();
-
-      const looksLikeMenuItem =
-        rect.width >= 120 &&
-        rect.width <= 360 &&
-        rect.height >= 40 &&
-        rect.height <= 100;
-
-      if (isPrintsButton && looksLikeMenuItem) {
-        el.classList.add("ia-remove-prints");
-        el.style.display = "none";
+      if (t === "prints" || t === "capturas" || href === "#tools" || href.includes("#tools")) {
+        const r = el.getBoundingClientRect();
+        if (r.width >= 80 && r.width <= 380 && r.height >= 30 && r.height <= 120) {
+          el.classList.add("ia-remove-prints");
+          el.style.display = "none";
+        }
       }
     });
 
-    const toolsSection = document.querySelector("#tools, [data-section='tools']");
-    if (toolsSection) {
-      toolsSection.style.display = "none";
-    }
+    const tools = document.querySelector("#tools, section#tools, [data-section='tools']");
+    if (tools) tools.style.display = "none";
 
     if (location.hash === "#tools") {
       location.hash = "#materials";
@@ -44,15 +26,11 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    removePrintsButton();
-    setTimeout(removePrintsButton, 300);
-    setTimeout(removePrintsButton, 900);
+    removePrints();
+    setTimeout(removePrints, 300);
+    setTimeout(removePrints, 900);
+    setTimeout(removePrints, 1600);
   });
 
-  window.addEventListener("hashchange", function () {
-    if (location.hash === "#tools") {
-      location.hash = "#materials";
-    }
-    removePrintsButton();
-  });
+  window.addEventListener("hashchange", removePrints);
 })();
