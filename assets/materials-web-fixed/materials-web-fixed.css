@@ -1,0 +1,262 @@
+﻿/* ===========================
+   MATERIAIS - VISUAL WEB FIX
+=========================== */
+
+[href="#tools"],
+[href*="#tools"],
+.ia-hide-prints-webfix,
+#tools,
+section#tools,
+[data-section="tools"] {
+  display: none !important;
+}
+
+.ia-materials-webfix {
+  width: 100%;
+  padding: 28px;
+}
+
+.ia-materials-webfix-hero {
+  border: 1px solid #ead2c8;
+  border-radius: 34px;
+  padding: 42px;
+  margin-bottom: 24px;
+  background:
+    radial-gradient(circle at top right, rgba(216,135,118,.25), transparent 35%),
+    radial-gradient(circle at bottom left, rgba(67,45,39,.06), transparent 34%),
+    linear-gradient(135deg, #fffdfb, #fff2ed);
+  box-shadow: 0 24px 70px rgba(68,45,39,.10);
+}
+
+.ia-materials-webfix-hero span {
+  display: inline-flex;
+  padding: 9px 14px;
+  border-radius: 999px;
+  background: #f7d9d1;
+  color: #c76f60;
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+.ia-materials-webfix-hero h1 {
+  margin: 0 0 14px;
+  color: #432d27;
+  font-size: clamp(36px, 4.8vw, 62px);
+  line-height: .96;
+  letter-spacing: -.06em;
+  max-width: 900px;
+}
+
+.ia-materials-webfix-hero p {
+  margin: 0;
+  color: #8d6f65;
+  font-size: 17px;
+  line-height: 1.55;
+  max-width: 760px;
+}
+
+.ia-materials-webfix-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.ia-material-webfix-card {
+  position: relative;
+  min-height: 250px;
+  padding: 25px 25px 84px;
+  border-radius: 28px;
+  border: 1px solid #ead2c8;
+  background:
+    radial-gradient(circle at top right, var(--glow), transparent 35%),
+    linear-gradient(180deg, #fffdfb, #fff8f5);
+  box-shadow: 0 18px 48px rgba(68,45,39,.09);
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+}
+
+.ia-material-webfix-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(216,135,118,.78);
+  box-shadow: 0 28px 72px rgba(68,45,39,.16);
+}
+
+.ia-material-webfix-card::before {
+  content: "";
+  position: absolute;
+  right: -55px;
+  top: -55px;
+  width: 170px;
+  height: 170px;
+  border-radius: 999px;
+  background: var(--glow);
+}
+
+.ia-material-webfix-card .tag {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #f7d9d1;
+  color: #c76f60;
+  font-size: 12px;
+  font-weight: 950;
+  text-transform: uppercase;
+  margin-bottom: 26px;
+}
+
+.ia-material-webfix-card h3 {
+  position: relative;
+  z-index: 2;
+  margin: 0 0 11px;
+  color: #432d27;
+  font-size: 25px;
+  line-height: 1.05;
+  letter-spacing: -.035em;
+}
+
+.ia-material-webfix-card p {
+  position: relative;
+  z-index: 2;
+  margin: 0;
+  color: #8d6f65;
+  font-size: 14px;
+  line-height: 1.52;
+}
+
+.ia-material-webfix-card .action {
+  position: absolute;
+  left: 25px;
+  bottom: 24px;
+  z-index: 3;
+  height: 44px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: #d88776;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 950;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 16px 34px rgba(216,135,118,.28);
+}
+
+.ia-material-webfix-card .icon {
+  position: absolute;
+  right: 22px;
+  bottom: 22px;
+  width: 46px;
+  height: 46px;
+  border-radius: 16px;
+  background: rgba(255,255,255,.78);
+  display: grid;
+  place-items: center;
+  color: #d88776;
+  font-weight: 950;
+  font-size: 20px;
+  border: 1px solid #ead2c8;
+}
+
+/* Aulas clicáveis e bloqueadas */
+.ia-lesson-clickable {
+  cursor: pointer !important;
+  position: relative !important;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease, opacity .2s ease !important;
+}
+
+.ia-lesson-clickable:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 22px 54px rgba(68,45,39,.13) !important;
+  border-color: rgba(216,135,118,.76) !important;
+}
+
+.ia-lesson-locked {
+  opacity: .56 !important;
+  cursor: not-allowed !important;
+}
+
+.ia-lesson-locked::after {
+  content: "🔒 Bloqueada";
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #432d27;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 950;
+  z-index: 5;
+}
+
+.ia-lesson-done::after {
+  content: "✓ Concluída";
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #d88776;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 950;
+  z-index: 5;
+}
+
+.ia-lesson-current {
+  border-color: rgba(216,135,118,.9) !important;
+  box-shadow: 0 20px 52px rgba(216,135,118,.14) !important;
+}
+
+.ia-lock-toast-webfix {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 999999999;
+  width: min(360px, calc(100vw - 44px));
+  padding: 18px;
+  border-radius: 22px;
+  background: #fffdfb;
+  border: 1px solid #ead2c8;
+  box-shadow: 0 24px 70px rgba(68,45,39,.18);
+  color: #432d27;
+}
+
+.ia-lock-toast-webfix strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 17px;
+}
+
+.ia-lock-toast-webfix p {
+  margin: 0;
+  color: #8d6f65;
+  line-height: 1.45;
+  font-size: 14px;
+}
+
+@media (max-width: 1100px) {
+  .ia-materials-webfix-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .ia-materials-webfix {
+    padding: 18px;
+  }
+
+  .ia-materials-webfix-hero {
+    padding: 28px;
+  }
+
+  .ia-materials-webfix-grid {
+    grid-template-columns: 1fr;
+  }
+}
