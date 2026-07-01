@@ -1,0 +1,80 @@
+﻿.ia-payment-direct-box {
+  margin-top: 18px;
+  padding: 18px;
+  border-radius: 24px;
+  background: #fff8f5;
+  border: 1px solid #ead2c8;
+}
+
+.ia-payment-direct-status {
+  margin-top: 14px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  font-size: 13px;
+  font-weight: 850;
+  line-height: 1.45;
+  background: #fff7ef;
+  border: 1px solid #ead2c8;
+  color: #7b5147;
+}
+
+.ia-payment-direct-status.success {
+  background: #effff3;
+  border-color: #bde8c9;
+  color: #35764e;
+}
+
+.ia-payment-direct-status.error {
+  background: #fff0f0;
+  border-color: #efb9b9;
+  color: #a63d3d;
+}
+
+.ia-payment-direct-qr {
+  margin-top: 16px;
+  display: grid;
+  place-items: center;
+  gap: 12px;
+}
+
+.ia-payment-direct-qr img {
+  width: min(260px, 100%);
+  border-radius: 22px;
+  background: #fff;
+  padding: 14px;
+  border: 1px solid #ead2c8;
+  box-shadow: 0 18px 48px rgba(68,45,39,.12);
+}
+
+.ia-payment-direct-code {
+  width: 100%;
+  min-height: 92px;
+  resize: vertical;
+  border-radius: 16px;
+  border: 1px solid #ead2c8;
+  background: #fffdfb;
+  padding: 12px;
+  font-size: 12px;
+  color: #432d27;
+}
+
+.ia-payment-direct-actions {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.ia-payment-direct-actions button {
+  width: 100%;
+  min-height: 48px;
+  border-radius: 16px;
+  border: 0;
+  background: #d88776;
+  color: #fff;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.ia-payment-direct-actions button.secondary {
+  background: #432d27;
+}

@@ -3760,7 +3760,7 @@ async function iaGetAutoReleasePool() {
     host: process.env.MYSQLHOST || process.env.DB_HOST,
     user: process.env.MYSQLUSER || process.env.DB_USER,
     password: process.env.MYSQLPASSWORD || process.env.DB_PASS,
-    database: process.env.MYSQLDATABASE || process.env.DB_NAME,
+    database: process.env.MYSQLDATABASE || process.env.MYSQL_DATABASE || process.env.MYSQL_DB || process.env.DB_NAME || "railway",
     port: Number(process.env.MYSQLPORT || process.env.DB_PORT || 3306),
     waitForConnections: true,
     connectionLimit: 10,
@@ -3935,7 +3935,7 @@ async function iaGetPixReleasePool() {
     host: process.env.MYSQLHOST || process.env.DB_HOST,
     user: process.env.MYSQLUSER || process.env.DB_USER,
     password: process.env.MYSQLPASSWORD || process.env.DB_PASS,
-    database: process.env.MYSQLDATABASE || process.env.DB_NAME,
+    database: process.env.MYSQLDATABASE || process.env.MYSQL_DATABASE || process.env.MYSQL_DB || process.env.DB_NAME || "railway",
     port: Number(process.env.MYSQLPORT || process.env.DB_PORT || 3306),
     waitForConnections: true,
     connectionLimit: 10,
@@ -4104,6 +4104,323 @@ app.get("/api/payments/verify-release-health", async (req, res) => {
   }
 });
 // =================== FIM PIX_RELEASE_DB_FINAL_V1 ===================
+
+// ===================== PIX_WEBHOOK_AUTO_RELEASE_FINAL_V2 =====================
+app.use(express.json({ limit: "10mb" }));
+
+let iaPixAutoPool = null;
+
+function iaPixDbConfig() {
+  return {
+    host: process.env.MYSQLHOST || process.env.MYSQL_HOST || process.env.DB_HOST,
+    user: process.env.MYSQLUSER || process.env.MYSQL_USER || process.env.DB_USER,
+    password: process.env.MYSQLPASSWORD || process.env.MYSQL_PASSWORD || process.env.DB_PASS,
+    database: process.env.MYSQLDATABASE || process.env.MYSQL_DATABASE || process.env.MYSQL_DB || process.env.DB_NAME || "railway",
+    port: Number(process.env.MYSQLPORT || process.env.MYSQL_PORT || process.env.DB_PORT || 3306),
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
+  };
+}
+
+async function iaGetPixAutoPool() {
+  if (iaPixAutoPool) return iaPixAutoPool;
+
+  const mysqlModule = await import("mysql2/promise");
+  const mysql = mysqlModule.default || mysqlModule;
+
+  iaPixAutoPool = mysql.createPool(iaPixDbConfig());
+  return iaPixAutoPool;
+}
+
+function iaNormalizeEmail(email) {
+  return String(email || "").trim().toLowerCase();
+}
+
+async function iaReleaseAccessByEmailFinal(email) {
+  const cleanEmail = iaNormalizeEmail(email);
+
+  if (!cleanEmail || !cleanEmail.includes("@")) {
+    return {
+      ok: false,
+      affectedRows: 0,
+      message: "E-mail inválido para liberação."
+    };
+  }
+
+  const pool = await iaGetPixAutoPool();
+
+  let result;
+
+  try {
+    [result] = await pool.execute(
+      "UPDATE users SET access_released = 1, updated_at = NOW() WHERE LOWER(email) = LOWER(?)",
+      [cleanEmail]
+    );
+  } catch (error) {
+    console.error("Erro update com updated_at, tentando sem updated_at:", error.message);
+
+    [result] = await pool.execute(
+      "UPDATE users SET access_released = 1 WHERE LOWER(email) = LOWER(?)",
+      [cleanEmail]
+    );
+  }
+
+  return {
+    ok: true,
+    affectedRows: result.affectedRows || 0,
+    email: cleanEmail
+  };
+}
+
+async function iaGetMercadoPagoPaymentFinal(paymentId) {
+  const token = process.env.MERCADO_PAGO_ACCESS_TOKEN || process.env.MP_ACCESS_TOKEN;
+
+  if (!token) {
+    throw new Error("MERCADO_PAGO_ACCESS_TOKEN não configurado no Railway.");
+  }
+
+  if (!paymentId) {
+    throw new Error("payment_id não recebido.");
+  }
+
+  const response = await fetch("https://api.mercadopago.com/v1/payments/" + encodeURIComponent(paymentId), {
+    method: "GET",
+    headers: {
+      Authorization: "Bearer " + token
+    }
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    console.error("Erro Mercado Pago:", data);
+    throw new Error("Não foi possível consultar o pagamento no Mercado Pago.");
+  }
+
+  return data;
+}
+
+function iaExtractEmailFromPaymentFinal(payment) {
+  return iaNormalizeEmail(
+    payment?.metadata?.email ||
+    payment?.metadata?.student_email ||
+    payment?.external_reference ||
+    payment?.payer?.email ||
+    ""
+  );
+}
+
+async function iaReleaseFromPaymentFinal(paymentId) {
+  const payment = await iaGetMercadoPagoPaymentFinal(paymentId);
+
+  const email = iaExtractEmailFromPaymentFinal(payment);
+  const approved = payment.status === "approved";
+
+  if (!approved) {
+    return {
+      ok: true,
+      released: false,
+      approved: false,
+      status: payment.status,
+      status_detail: payment.status_detail,
+      email,
+      payment_id: payment.id,
+      message: "Pagamento ainda não aprovado."
+    };
+  }
+
+  if (!email) {
+    return {
+      ok: false,
+      released: false,
+      approved: true,
+      payment_id: payment.id,
+      message: "Pagamento aprovado, mas não encontrei e-mail vinculado ao pagamento."
+    };
+  }
+
+  const update = await iaReleaseAccessByEmailFinal(email);
+
+  if (!update.affectedRows) {
+    return {
+      ok: false,
+      released: false,
+      approved: true,
+      payment_id: payment.id,
+      email,
+      message: "Pagamento aprovado, mas esse e-mail não foi encontrado na tabela users."
+    };
+  }
+
+  return {
+    ok: true,
+    released: true,
+    approved: true,
+    payment_id: payment.id,
+    email,
+    message: "Pagamento aprovado e acesso liberado automaticamente."
+  };
+}
+
+app.post("/api/payments/create-pix-direct", async (req, res) => {
+  try {
+    const token = process.env.MERCADO_PAGO_ACCESS_TOKEN || process.env.MP_ACCESS_TOKEN;
+
+    if (!token) {
+      return res.status(500).json({
+        ok: false,
+        message: "MERCADO_PAGO_ACCESS_TOKEN não configurado no Railway."
+      });
+    }
+
+    const email = iaNormalizeEmail(req.body?.email || req.body?.student_email || req.body?.payer_email);
+
+    if (!email || !email.includes("@")) {
+      return res.status(400).json({
+        ok: false,
+        message: "Cadastro não identificado. Volte, crie sua conta e tente gerar o PIX novamente."
+      });
+    }
+
+    const price = Number(process.env.COURSE_PRICE || process.env.COURSE_PRICE_NUM || 39.99);
+
+    const mpBody = {
+      transaction_amount: price,
+      description: "Influencer Academy - acesso completo",
+      payment_method_id: "pix",
+      payer: {
+        email
+      },
+      external_reference: email,
+      metadata: {
+        email,
+        student_email: email,
+        course: "Influencer Academy"
+      }
+    };
+
+    const mpResponse = await fetch("https://api.mercadopago.com/v1/payments", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "application/json",
+        "X-Idempotency-Key": "ia-pix-" + Date.now() + "-" + Math.random().toString(16).slice(2)
+      },
+      body: JSON.stringify(mpBody)
+    });
+
+    const data = await mpResponse.json();
+
+    if (!mpResponse.ok) {
+      console.error("Erro ao criar PIX:", data);
+
+      return res.status(500).json({
+        ok: false,
+        message: "Erro ao gerar QR Code PIX.",
+        details: data
+      });
+    }
+
+    const transaction = data?.point_of_interaction?.transaction_data || {};
+
+    return res.json({
+      ok: true,
+      payment_id: data.id,
+      status: data.status,
+      email,
+      qr_code: transaction.qr_code,
+      qr_code_base64: transaction.qr_code_base64,
+      ticket_url: transaction.ticket_url,
+      message: "PIX gerado com sucesso."
+    });
+  } catch (error) {
+    console.error("Erro create-pix-direct:", error);
+
+    return res.status(500).json({
+      ok: false,
+      message: "Erro interno ao gerar QR Code PIX."
+    });
+  }
+});
+
+app.post("/api/payments/check-pix-direct", async (req, res) => {
+  try {
+    const paymentId = String(req.body?.payment_id || req.body?.paymentId || "").trim();
+
+    const result = await iaReleaseFromPaymentFinal(paymentId);
+
+    const statusCode = result.released ? 200 : result.approved ? 404 : 402;
+
+    return res.status(statusCode).json(result);
+  } catch (error) {
+    console.error("Erro check-pix-direct:", error);
+
+    return res.status(500).json({
+      ok: false,
+      released: false,
+      message: error.message || "Erro interno ao verificar pagamento."
+    });
+  }
+});
+
+async function iaMercadoPagoWebhookFinal(req, res) {
+  try {
+    const paymentId =
+      req.body?.data?.id ||
+      req.body?.id ||
+      req.query?.["data.id"] ||
+      req.query?.id ||
+      req.query?.payment_id;
+
+    if (!paymentId) {
+      return res.status(200).json({
+        ok: true,
+        ignored: true,
+        message: "Webhook recebido sem payment_id."
+      });
+    }
+
+    const result = await iaReleaseFromPaymentFinal(paymentId);
+
+    console.log("Webhook Mercado Pago processado:", result);
+
+    return res.status(200).json({
+      ok: true,
+      result
+    });
+  } catch (error) {
+    console.error("Erro webhook Mercado Pago:", error);
+
+    return res.status(200).json({
+      ok: false,
+      message: error.message || "Erro ao processar webhook."
+    });
+  }
+}
+
+app.post("/api/webhooks/mercadopago", iaMercadoPagoWebhookFinal);
+app.post("/webhooks/mercadopago", iaMercadoPagoWebhookFinal);
+app.get("/api/webhooks/mercadopago", iaMercadoPagoWebhookFinal);
+
+app.get("/api/payments/direct-health", async (req, res) => {
+  try {
+    const pool = await iaGetPixAutoPool();
+    await pool.query("SELECT 1");
+
+    res.json({
+      ok: true,
+      database: iaPixDbConfig().database,
+      message: "PIX automático ativo e conectado ao banco."
+    });
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      message: error.message || "Erro no PIX automático."
+    });
+  }
+});
+// =================== FIM PIX_WEBHOOK_AUTO_RELEASE_FINAL_V2 ===================
 app.listen(port, () => {
       console.log(`Servidor rodando na porta ${port}`);
     });
@@ -4125,6 +4442,7 @@ app.listen(port, () => {
 }
 
 start();
+
 
 
 

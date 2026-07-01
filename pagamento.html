@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pagamento - Influencer Academy</title>
   <link rel="stylesheet" href="pagamento.css">
+  <link rel="stylesheet" href="assets/payment-direct-flow/payment-direct-flow.css">
 </head>
 <body>
   <main class="pay-page">
@@ -35,13 +36,7 @@
           </div>
         </div>
 
-        <div class="pix-buyer-box">
-  <label for="iaBuyerEmail">E-mail para liberar o acesso *</label>
-  <input id="iaBuyerEmail" type="email" placeholder="Digite o e-mail do aluno" autocomplete="email">
-  <small>Esse e-mail será usado apenas para identificar o pagamento e liberar a área do aluno.</small>
-</div>
-
-<button id="generatePixBtn" class="main-btn" type="button">
+        <button id="generatePixBtn" class="main-btn" type="button">
           Gerar QR Code PIX
         </button>
 
@@ -88,7 +83,10 @@
   </main>
 
   <script src="pagamento.js"></script>
+  <script src="assets/payment-direct-flow/payment-direct-flow.js"></script>
 </body>
 </html>
+
+
 
 
