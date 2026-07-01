@@ -372,58 +372,7 @@
   <link rel="stylesheet" href="assets/lesson-locks/lesson-locks.css">
   <link rel="stylesheet" href="assets/course-polish/course-polish.css">
 <link rel="stylesheet" href="assets/course-finish/course-finish.css">
-<style id="iaFinalAulaFixCss">
-.ia-floating-complete-card {
-  width: 58px !important;
-  height: 58px !important;
-  min-height: 58px !important;
-  max-height: 58px !important;
-  padding: 0 !important;
-  overflow: hidden !important;
-  border-radius: 999px !important;
-  opacity: .34 !important;
-  right: 20px !important;
-  bottom: 20px !important;
-  transition: all .22s ease !important;
-}
-
-.ia-floating-complete-card::before {
-  content: "✓";
-  width: 58px;
-  height: 58px;
-  display: grid;
-  place-items: center;
-  color: #fff;
-  background: #d88776;
-  font-size: 24px;
-  font-weight: 950;
-}
-
-.ia-floating-complete-card > * {
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
-
-.ia-floating-complete-card:hover {
-  width: min(360px, calc(100vw - 44px)) !important;
-  height: auto !important;
-  min-height: 0 !important;
-  max-height: none !important;
-  padding: 18px !important;
-  border-radius: 24px !important;
-  opacity: 1 !important;
-  transform: translateY(-4px) !important;
-}
-
-.ia-floating-complete-card:hover::before {
-  display: none !important;
-}
-
-.ia-floating-complete-card:hover > * {
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
-</style>
+  <link rel="stylesheet" href="assets/ia-force-v6/ia-aula-force-v6.css?v=20260701-175355">
 </head>
 
 <body>
@@ -842,74 +791,11 @@
     <script src="assets/course-finish/course-finish.js"></script>
 <script src="assets/lesson-locks/lesson-locks.js"></script>
   <script src="assets/course-polish/course-polish.js"></script>
-<script id="iaFinalAulaFixJs">
-(function () {
-  const MODULE4_UNLOCK_DATE = new Date("2026-07-10T00:00:00-03:00");
-
-  function norm(text) {
-    return String(text || "")
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/\s+/g, " ")
-      .trim()
-      .toLowerCase();
-  }
-
-  function blockModule4DirectAccess() {
-    const isLocked = new Date() < MODULE4_UNLOCK_DATE;
-    if (!isLocked) return;
-
-    const params = new URLSearchParams(location.search);
-    const m = Number(params.get("m"));
-
-    if (m === 3) {
-      alert("O Módulo 4 será liberado automaticamente em 10/07/2026.");
-      location.href = "area.html#classes";
-    }
-  }
-
-  function hideFloatingCompleteCard() {
-    document.querySelectorAll("div, section, article").forEach(el => {
-      const txt = norm(el.innerText || el.textContent);
-
-      const isCard =
-        txt.includes("aula ja concluida") ||
-        txt.includes("aula já concluída") ||
-        txt.includes("esta etapa ja esta salva") ||
-        txt.includes("esta etapa já está salva");
-
-      if (!isCard) return;
-
-      const style = getComputedStyle(el);
-      const r = el.getBoundingClientRect();
-
-      const floating =
-        style.position === "fixed" ||
-        r.right > window.innerWidth - 420 ||
-        r.bottom > window.innerHeight - 260;
-
-      if (floating) {
-        el.classList.add("ia-floating-complete-card");
-      }
-    });
-  }
-
-  document.addEventListener("DOMContentLoaded", function () {
-    blockModule4DirectAccess();
-    hideFloatingCompleteCard();
-
-    setTimeout(hideFloatingCompleteCard, 500);
-    setTimeout(hideFloatingCompleteCard, 1200);
-  });
-
-  if (document.readyState !== "loading") {
-    blockModule4DirectAccess();
-    hideFloatingCompleteCard();
-  }
-})();
-</script>
+  <script src="assets/ia-force-v6/ia-aula-force-v6.js?v=20260701-175355"></script>
 </body>
 </html>
+
+
 
 
 
