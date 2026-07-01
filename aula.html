@@ -855,12 +855,9 @@
       .toLowerCase();
   }
 
-  function module4Locked() {
-    return new Date() < MODULE4_UNLOCK_DATE;
-  }
-
   function blockModule4DirectAccess() {
-    if (!module4Locked()) return;
+    const isLocked = new Date() < MODULE4_UNLOCK_DATE;
+    if (!isLocked) return;
 
     const params = new URLSearchParams(location.search);
     const m = Number(params.get("m"));
@@ -872,7 +869,7 @@
   }
 
   function hideFloatingCompleteCard() {
-    document.querySelectorAll("div, section, article").forEach(function (el) {
+    document.querySelectorAll("div, section, article").forEach(el => {
       const txt = norm(el.innerText || el.textContent);
 
       const isCard =
@@ -886,12 +883,12 @@
       const style = getComputedStyle(el);
       const r = el.getBoundingClientRect();
 
-      const looksFloating =
+      const floating =
         style.position === "fixed" ||
         r.right > window.innerWidth - 420 ||
         r.bottom > window.innerHeight - 260;
 
-      if (looksFloating) {
+      if (floating) {
         el.classList.add("ia-floating-complete-card");
       }
     });
@@ -913,6 +910,8 @@
 </script>
 </body>
 </html>
+
+
 
 
 

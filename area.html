@@ -687,33 +687,41 @@
   </style>
   <link rel="stylesheet" href="assets/lesson-locks/lesson-locks.css">
   <link rel="stylesheet" href="assets/course-polish/course-polish.css">
-<style id="iaMenuMaterialModuloFixCss">
+<style id="iaHardRouteFixCss">
 html {
   scroll-behavior: smooth;
 }
 
 [href="#tools"],
 [href*="#tools"],
-.ia-hide-prints-menu,
+.ia-hide-prints-hard,
 #tools,
 section#tools,
 [data-section="tools"] {
   display: none !important;
 }
 
-.ia-material-card-ok {
+.ia-section-force-hidden {
+  display: none !important;
+}
+
+.ia-section-force-active {
+  display: block !important;
+}
+
+.ia-material-card-hard {
   cursor: pointer !important;
   position: relative !important;
   transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease !important;
 }
 
-.ia-material-card-ok:hover {
+.ia-material-card-hard:hover {
   transform: translateY(-5px) !important;
   border-color: rgba(216,135,118,.85) !important;
   box-shadow: 0 24px 64px rgba(68,45,39,.15) !important;
 }
 
-.ia-material-card-ok::after {
+.ia-material-card-hard::after {
   content: "Abrir PDF →";
   position: absolute;
   left: 22px;
@@ -732,28 +740,18 @@ section#tools,
   box-shadow: 0 14px 28px rgba(216,135,118,.24);
 }
 
-.ia-material-card-ok {
+.ia-material-card-hard {
   padding-bottom: 78px !important;
 }
 
-.ia-module4-locked-ok {
+.ia-module4-locked-hard {
   opacity: .52 !important;
   cursor: not-allowed !important;
   position: relative !important;
   filter: grayscale(.12) !important;
 }
 
-.ia-module4-locked-ok::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: rgba(255,255,255,.48);
-  z-index: 8;
-  pointer-events: none;
-}
-
-.ia-module4-locked-ok::after {
+.ia-module4-locked-hard::after {
   content: "🔒 Libera em 10/07/2026";
   position: absolute;
   top: 16px;
@@ -768,7 +766,7 @@ section#tools,
   box-shadow: 0 14px 34px rgba(67,45,39,.18);
 }
 
-.ia-toast-ok {
+.ia-toast-hard {
   position: fixed;
   right: 24px;
   bottom: 24px;
@@ -782,13 +780,13 @@ section#tools,
   color: #432d27;
 }
 
-.ia-toast-ok strong {
+.ia-toast-hard strong {
   display: block;
   margin-bottom: 6px;
   font-size: 17px;
 }
 
-.ia-toast-ok p {
+.ia-toast-hard p {
   margin: 0;
   color: #8d6f65;
   line-height: 1.45;
@@ -1284,49 +1282,45 @@ section#tools,
   </script>
   <script src="assets/lesson-locks/lesson-locks.js"></script>
   <script src="assets/course-polish/course-polish.js"></script>
-<script id="iaMenuMaterialModuloFixJs">
+<script id="iaHardRouteFixJs">
 (function () {
   const MODULE4_UNLOCK_DATE = new Date("2026-07-10T00:00:00-03:00");
 
+  const sections = ["home", "modules", "classes", "materials", "profile"];
+
+  const routeMap = [
+    { labels: ["inicio", "início", "home"], hash: "#home" },
+    { labels: ["modulos", "módulos", "modules"], hash: "#modules" },
+    { labels: ["aulas", "classes"], hash: "#classes" },
+    { labels: ["materiais", "materials"], hash: "#materials" },
+    { labels: ["perfil", "profile"], hash: "#profile" }
+  ];
+
   const materials = [
     {
-      n: 1,
       keys: ["material 1", "checklist", "perfil estrategico", "perfil estratégico"],
       file: "assets/materiais/01_checklist_perfil_estrategico.pdf"
     },
     {
-      n: 2,
       keys: ["material 2", "planner", "conteudo", "conteúdo", "30 dias"],
       file: "assets/materiais/02_planner_conteudo_30_dias.pdf"
     },
     {
-      n: 3,
       keys: ["material 3", "roteiro", "reels", "gancho"],
       file: "assets/materiais/03_roteiro_reels_com_gancho.pdf"
     },
     {
-      n: 4,
       keys: ["material 4", "canva", "capcut", "guia"],
       file: "assets/materiais/04_guia_canva_capcut.pdf"
     },
     {
-      n: 5,
       keys: ["material 5", "prompts", "prompt", "ia"],
       file: "assets/materiais/05_prompts_ia_para_criadoras.pdf"
     },
     {
-      n: 6,
-      keys: ["material 6", "media kit", "parcerias"],
+      keys: ["material 6", "media kit", "midia kit", "parcerias"],
       file: "assets/materiais/06_mini_midia_kit_parcerias.pdf"
     }
-  ];
-
-  const menu = [
-    { labels: ["inicio", "início"], hash: "#home" },
-    { labels: ["modulos", "módulos"], hash: "#modules" },
-    { labels: ["aulas"], hash: "#classes" },
-    { labels: ["materiais"], hash: "#materials" },
-    { labels: ["perfil"], hash: "#profile" }
   ];
 
   function norm(text) {
@@ -1338,85 +1332,97 @@ section#tools,
       .toLowerCase();
   }
 
+  function toast(title, message) {
+    document.querySelectorAll(".ia-toast-hard").forEach(el => el.remove());
+
+    const box = document.createElement("div");
+    box.className = "ia-toast-hard";
+    box.innerHTML = `<strong>${title}</strong><p>${message}</p>`;
+    document.body.appendChild(box);
+
+    setTimeout(() => box.remove(), 3500);
+  }
+
   function module4Locked() {
     return new Date() < MODULE4_UNLOCK_DATE;
   }
 
-  function toast(title, message) {
-    document.querySelectorAll(".ia-toast-ok").forEach(el => el.remove());
-
-    const box = document.createElement("div");
-    box.className = "ia-toast-ok";
-    box.innerHTML = `<strong>${title}</strong><p>${message}</p>`;
-    document.body.appendChild(box);
-
-    setTimeout(function () {
-      box.remove();
-    }, 3500);
+  function getSection(id) {
+    return document.getElementById(id) || document.querySelector(`[data-section="${id}"]`);
   }
 
-  function showSection(hash) {
-    const id = hash.replace("#", "");
-    const ids = ["home", "modules", "classes", "materials", "profile"];
+  function forceShow(hash) {
+    const cleanHash = hash && hash.startsWith("#") ? hash : "#home";
+    const id = cleanHash.replace("#", "");
 
-    ids.forEach(function (sectionId) {
-      const el = document.getElementById(sectionId);
-
+    sections.forEach(sectionId => {
+      const el = getSection(sectionId);
       if (!el) return;
 
       if (sectionId === id) {
-        el.style.display = "";
+        el.classList.remove("ia-section-force-hidden");
+        el.classList.add("ia-section-force-active");
         el.hidden = false;
+        el.style.display = "";
       } else {
+        el.classList.remove("ia-section-force-active");
+        el.classList.add("ia-section-force-hidden");
+        el.hidden = true;
         el.style.display = "none";
       }
     });
 
-    const section = document.getElementById(id);
+    const active = getSection(id);
 
-    if (section) {
-      setTimeout(function () {
-        section.scrollIntoView({
+    if (active) {
+      setTimeout(() => {
+        active.scrollIntoView({
           behavior: "smooth",
           block: "start"
         });
-      }, 60);
+      }, 40);
     }
+
+    bindMaterials();
+    lockModule4OnlyInLessons();
+    hidePrints();
   }
 
   function go(hash) {
-    if (location.hash !== hash) {
-      history.pushState(null, "", hash);
+    const targetHash = hash || "#home";
+
+    if (location.hash !== targetHash) {
+      history.pushState(null, "", targetHash);
     }
 
-    showSection(hash);
+    forceShow(targetHash);
 
-    setTimeout(bindAll, 100);
-    setTimeout(bindAll, 500);
+    setTimeout(() => forceShow(targetHash), 80);
+    setTimeout(() => forceShow(targetHash), 300);
   }
 
   function routeFromText(text) {
     const t = norm(text);
 
-    return menu.find(function (item) {
-      return item.labels.some(function (label) {
+    return routeMap.find(route => {
+      return route.labels.some(label => {
         const l = norm(label);
         return t === l || t.includes(l);
       });
     });
   }
 
-  function isSidebarElement(el) {
+  function isMenuArea(el) {
     let node = el;
 
     for (let i = 0; i < 8 && node; i++) {
-      const rect = node.getBoundingClientRect && node.getBoundingClientRect();
       const tag = String(node.tagName || "").toLowerCase();
       const cls = String(node.className || "").toLowerCase();
+      const r = node.getBoundingClientRect && node.getBoundingClientRect();
 
       if (tag === "aside" || tag === "nav") return true;
       if (cls.includes("sidebar") || cls.includes("side") || cls.includes("menu")) return true;
-      if (rect && rect.left < 380 && rect.width < 420) return true;
+      if (r && r.left < 430 && r.width < 480) return true;
 
       node = node.parentElement;
     }
@@ -1427,13 +1433,17 @@ section#tools,
   function findMenuRoute(target) {
     let node = target;
 
-    for (let i = 0; i < 8 && node; i++) {
+    for (let i = 0; i < 9 && node; i++) {
+      const href = node.getAttribute && node.getAttribute("href");
+      if (href && href.startsWith("#")) {
+        const allowed = routeMap.find(r => r.hash === href);
+        if (allowed) return allowed;
+      }
+
       const text = node.innerText || node.textContent || "";
       const route = routeFromText(text);
 
-      if (route && isSidebarElement(node)) {
-        return route;
-      }
+      if (route && isMenuArea(node)) return route;
 
       node = node.parentElement;
     }
@@ -1441,9 +1451,9 @@ section#tools,
     return null;
   }
 
-  function bindMenu() {
-    if (window.__iaMenuGlobalOk) return;
-    window.__iaMenuGlobalOk = true;
+  function bindMenuOnce() {
+    if (window.__iaHardMenuBound) return;
+    window.__iaHardMenuBound = true;
 
     document.addEventListener("click", function (event) {
       const route = findMenuRoute(event.target);
@@ -1458,7 +1468,11 @@ section#tools,
     }, true);
 
     window.addEventListener("popstate", function () {
-      showSection(location.hash || "#home");
+      forceShow(location.hash || "#home");
+    });
+
+    window.addEventListener("hashchange", function () {
+      forceShow(location.hash || "#home");
     });
   }
 
@@ -1477,12 +1491,12 @@ section#tools,
 
         const r = parent.getBoundingClientRect();
 
-        if (r.left < 390 && r.width >= 90 && r.width <= 420 && r.height >= 35 && r.height <= 160) {
+        if (r.left < 430 && r.width >= 80 && r.width <= 460 && r.height >= 35 && r.height <= 170) {
           target = parent;
         }
       }
 
-      target.classList.add("ia-hide-prints-menu");
+      target.classList.add("ia-hide-prints-hard");
       target.style.display = "none";
     });
 
@@ -1490,90 +1504,45 @@ section#tools,
     if (tools) tools.style.display = "none";
   }
 
-  function materialMatchFromText(text) {
+  function materialByText(text) {
     const t = norm(text);
 
-    const found = materials.filter(function (item) {
-      return item.keys.some(function (key) {
-        return t.includes(norm(key));
-      });
+    return materials.find(item => {
+      return item.keys.some(key => t.includes(norm(key)));
     });
-
-    if (found.length === 1) return found[0];
-
-    return null;
-  }
-
-  function closestMaterialCard(target) {
-    const section =
-      target.closest("#materials") ||
-      document.querySelector("#materials");
-
-    if (!section) return null;
-
-    let node = target;
-
-    for (let i = 0; i < 10 && node && node !== section; i++) {
-      const text = node.innerText || node.textContent || "";
-      const material = materialMatchFromText(text);
-
-      if (material) {
-        return {
-          el: node,
-          material
-        };
-      }
-
-      node = node.parentElement;
-    }
-
-    return null;
   }
 
   function bindMaterials() {
-    const section = document.querySelector("#materials");
+    const section = getSection("materials");
     if (!section) return;
 
-    section.querySelectorAll("article, section, div, a, button").forEach(function (card) {
+    section.querySelectorAll("article, section, div, a, button").forEach(card => {
       const text = card.innerText || card.textContent || "";
-      const material = materialMatchFromText(text);
-
+      const material = materialByText(text);
       if (!material) return;
 
-      const allText = norm(text);
-      const materialCount = materials.filter(function (item) {
-        return item.keys.some(function (key) {
-          return allText.includes(norm(key));
-        });
-      }).length;
-
-      if (materialCount !== 1) return;
-
       const r = card.getBoundingClientRect();
+      if (r.width < 140 || r.height < 60 || r.width > 620 || r.height > 460) return;
 
-      if (r.width < 150 || r.height < 70) return;
-      if (r.width > 560 || r.height > 420) return;
+      const textAll = norm(text);
+      const matches = materials.filter(m => m.keys.some(k => textAll.includes(norm(k))));
 
-      card.classList.add("ia-material-card-ok");
+      if (matches.length !== 1) return;
+
+      card.classList.add("ia-material-card-hard");
       card.dataset.materialFile = material.file;
+
+      if (card.dataset.iaMaterialHardBound === "1") return;
+      card.dataset.iaMaterialHardBound = "1";
+
+      card.addEventListener("click", function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+
+        window.open(material.file, "_blank");
+      }, true);
     });
-
-    if (window.__iaMaterialClickOk) return;
-    window.__iaMaterialClickOk = true;
-
-    document.addEventListener("click", function (event) {
-      const inMaterials = event.target.closest && event.target.closest("#materials");
-      if (!inMaterials) return;
-
-      const match = closestMaterialCard(event.target);
-      if (!match) return;
-
-      event.preventDefault();
-      event.stopPropagation();
-      event.stopImmediatePropagation();
-
-      window.open(match.material.file, "_blank");
-    }, true);
   }
 
   function getLessonNumber(text) {
@@ -1587,21 +1556,20 @@ section#tools,
   function lockModule4OnlyInLessons() {
     if (!module4Locked()) return;
 
-    const scopes = [
-      document.querySelector("#classes"),
-      document.querySelector("#modules")
+    const lessonAreas = [
+      getSection("classes"),
+      getSection("modules")
     ].filter(Boolean);
 
-    scopes.forEach(function (scope) {
-      scope.querySelectorAll("article, section, div, a, button").forEach(function (card) {
-        const textRaw = card.innerText || card.textContent || "";
-        const text = norm(textRaw);
+    lessonAreas.forEach(area => {
+      area.querySelectorAll("article, section, div, a, button").forEach(card => {
+        const raw = card.innerText || card.textContent || "";
+        const text = norm(raw);
 
         const r = card.getBoundingClientRect();
-        if (r.width < 150 || r.height < 65) return;
-        if (r.width > 780 || r.height > 420) return;
+        if (r.width < 140 || r.height < 60 || r.width > 820 || r.height > 450) return;
 
-        const n = getLessonNumber(textRaw);
+        const n = getLessonNumber(raw);
 
         const isModule4 =
           text.includes("modulo 4") ||
@@ -1612,10 +1580,10 @@ section#tools,
 
         if (!isModule4) return;
 
-        card.classList.add("ia-module4-locked-ok");
+        card.classList.add("ia-module4-locked-hard");
 
-        if (card.dataset.iaModule4ClickOk === "1") return;
-        card.dataset.iaModule4ClickOk = "1";
+        if (card.dataset.iaModule4HardBound === "1") return;
+        card.dataset.iaModule4HardBound = "1";
 
         card.addEventListener("click", function (event) {
           if (!module4Locked()) return;
@@ -1629,35 +1597,32 @@ section#tools,
       });
     });
 
-    const materialsSection = document.querySelector("#materials");
+    const materialsSection = getSection("materials");
+
     if (materialsSection) {
-      materialsSection.querySelectorAll(".ia-module4-locked-ok").forEach(function (el) {
-        el.classList.remove("ia-module4-locked-ok");
+      materialsSection.querySelectorAll(".ia-module4-locked-hard").forEach(el => {
+        el.classList.remove("ia-module4-locked-hard");
       });
     }
   }
 
-  function bindAll() {
+  function boot() {
+    bindMenuOnce();
     hidePrints();
-    bindMaterials();
-    lockModule4OnlyInLessons();
 
     const current = location.hash || "#home";
-    showSection(current);
+    forceShow(current);
+
+    setTimeout(() => forceShow(location.hash || "#home"), 150);
+    setTimeout(() => forceShow(location.hash || "#home"), 600);
+    setTimeout(() => forceShow(location.hash || "#home"), 1200);
   }
 
-  bindMenu();
+  document.addEventListener("DOMContentLoaded", boot);
 
-  document.addEventListener("DOMContentLoaded", function () {
-    bindAll();
-    setTimeout(bindAll, 300);
-    setTimeout(bindAll, 900);
-    setTimeout(bindAll, 1600);
-  });
-
-  window.addEventListener("hashchange", function () {
-    setTimeout(bindAll, 100);
-  });
+  if (document.readyState !== "loading") {
+    boot();
+  }
 
   const observer = new MutationObserver(function () {
     hidePrints();
@@ -1669,14 +1634,12 @@ section#tools,
     childList: true,
     subtree: true
   });
-
-  if (document.readyState !== "loading") {
-    bindAll();
-  }
 })();
 </script>
 </body>
 </html>
+
+
 
 
 
