@@ -1,0 +1,218 @@
+﻿html {
+  scroll-behavior: smooth;
+}
+
+[href="#tools"],
+[href*="#tools"],
+.ia-hide-prints-v7,
+#tools,
+section#tools,
+[data-section="tools"] {
+  display: none !important;
+}
+
+.ia-tab-hidden-v7 {
+  display: none !important;
+}
+
+.ia-tab-active-v7 {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.ia-materials-premium-v7 {
+  padding: 8px 0 30px;
+}
+
+.ia-materials-premium-hero-v7 {
+  margin-bottom: 26px;
+  padding: 26px;
+  border-radius: 28px;
+  background: linear-gradient(135deg, #fff8f5, #fffdfb);
+  border: 1px solid #ead2c8;
+  box-shadow: 0 24px 70px rgba(68,45,39,.08);
+}
+
+.ia-materials-premium-badge-v7 {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 13px;
+  border-radius: 999px;
+  background: #432d27;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 950;
+  margin-bottom: 14px;
+}
+
+.ia-materials-premium-hero-v7 h2 {
+  margin: 0 0 10px;
+  color: #432d27;
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1.05;
+  letter-spacing: -.04em;
+}
+
+.ia-materials-premium-hero-v7 p {
+  margin: 0;
+  max-width: 780px;
+  color: #8d6f65;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.ia-material-grid-v7 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.ia-material-card-v7 {
+  position: relative;
+  min-height: 235px;
+  padding: 24px;
+  border-radius: 28px;
+  background: #fffdfb;
+  border: 1px solid #ead2c8;
+  color: inherit;
+  text-decoration: none;
+  overflow: hidden;
+  box-shadow: 0 18px 52px rgba(68,45,39,.07);
+  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+}
+
+.ia-material-card-v7:hover {
+  transform: translateY(-6px);
+  border-color: rgba(216,135,118,.9);
+  box-shadow: 0 28px 72px rgba(68,45,39,.14);
+}
+
+.ia-material-card-v7::before {
+  content: "";
+  position: absolute;
+  width: 155px;
+  height: 155px;
+  border-radius: 999px;
+  right: -48px;
+  top: -48px;
+  background: rgba(216,135,118,.14);
+}
+
+.ia-material-number-v7 {
+  position: relative;
+  z-index: 2;
+  width: 46px;
+  height: 46px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  background: #fff3ee;
+  color: #d88776;
+  font-size: 14px;
+  font-weight: 950;
+  margin-bottom: 18px;
+}
+
+.ia-material-card-v7 h3 {
+  position: relative;
+  z-index: 2;
+  margin: 0 0 10px;
+  color: #432d27;
+  font-size: 20px;
+  line-height: 1.15;
+  letter-spacing: -.02em;
+}
+
+.ia-material-card-v7 p {
+  position: relative;
+  z-index: 2;
+  margin: 0 0 22px;
+  color: #8d6f65;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.ia-material-btn-v7 {
+  position: absolute;
+  left: 24px;
+  bottom: 22px;
+  z-index: 3;
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: #d88776;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 950;
+  box-shadow: 0 14px 28px rgba(216,135,118,.24);
+}
+
+.ia-module4-locked-v7 {
+  opacity: .52 !important;
+  cursor: not-allowed !important;
+  position: relative !important;
+  filter: grayscale(.12) !important;
+}
+
+.ia-module4-locked-v7::after {
+  content: "🔒 Libera em 10/07/2026";
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 30;
+  padding: 9px 13px;
+  border-radius: 999px;
+  background: #432d27;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 950;
+  box-shadow: 0 14px 34px rgba(67,45,39,.18);
+}
+
+.ia-toast-v7 {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 999999999;
+  width: min(390px, calc(100vw - 42px));
+  padding: 18px;
+  border-radius: 22px;
+  background: #fffdfb;
+  border: 1px solid #ead2c8;
+  box-shadow: 0 24px 70px rgba(68,45,39,.18);
+  color: #432d27;
+}
+
+.ia-toast-v7 strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 17px;
+}
+
+.ia-toast-v7 p {
+  margin: 0;
+  color: #8d6f65;
+  line-height: 1.45;
+  font-size: 14px;
+}
+
+@media (max-width: 980px) {
+  .ia-material-grid-v7 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .ia-material-grid-v7 {
+    grid-template-columns: 1fr;
+  }
+
+  .ia-materials-premium-hero-v7 {
+    padding: 22px;
+  }
+}
