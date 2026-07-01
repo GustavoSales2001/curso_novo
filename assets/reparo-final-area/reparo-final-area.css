@@ -1,0 +1,334 @@
+﻿/* =====================================================
+   REPARO FINAL - MENU, MATERIAIS, AULAS E CARD FLUTUANTE
+===================================================== */
+
+/* Esconde Prints do menu sem quebrar o restante */
+.ia-hide-prints-final,
+[href="#tools"],
+[href*="#tools"],
+#tools,
+section#tools,
+[data-section="tools"] {
+  display: none !important;
+}
+
+/* Card flutuante de aula concluída: discreto e aparece no hover */
+.ia-floating-complete-card {
+  width: 58px !important;
+  height: 58px !important;
+  min-height: 58px !important;
+  max-height: 58px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border-radius: 999px !important;
+  opacity: .34 !important;
+  right: 20px !important;
+  bottom: 20px !important;
+  transform: none !important;
+  transition: all .22s ease !important;
+}
+
+.ia-floating-complete-card::before {
+  content: "✓";
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: #d88776;
+  font-size: 24px;
+  font-weight: 950;
+}
+
+.ia-floating-complete-card > * {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.ia-floating-complete-card:hover {
+  width: min(360px, calc(100vw - 44px)) !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  padding: 18px !important;
+  border-radius: 24px !important;
+  opacity: 1 !important;
+  transform: translateY(-4px) !important;
+}
+
+.ia-floating-complete-card:hover::before {
+  display: none !important;
+}
+
+.ia-floating-complete-card:hover > * {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+/* Materiais premium */
+.ia-materials-premium-wrap {
+  width: 100%;
+  padding: 28px;
+}
+
+.ia-materials-premium-hero {
+  border: 1px solid #ead2c8;
+  border-radius: 34px;
+  padding: 42px;
+  margin-bottom: 24px;
+  background:
+    radial-gradient(circle at top right, rgba(216,135,118,.22), transparent 35%),
+    radial-gradient(circle at bottom left, rgba(67,45,39,.06), transparent 34%),
+    linear-gradient(135deg, #fffdfb, #fff2ed);
+  box-shadow: 0 24px 70px rgba(68,45,39,.10);
+}
+
+.ia-materials-premium-hero span {
+  display: inline-flex;
+  padding: 9px 14px;
+  border-radius: 999px;
+  background: #f7d9d1;
+  color: #c76f60;
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+.ia-materials-premium-hero h1 {
+  margin: 0 0 14px;
+  color: #432d27;
+  font-size: clamp(36px, 4.8vw, 62px);
+  line-height: .96;
+  letter-spacing: -.06em;
+  max-width: 900px;
+}
+
+.ia-materials-premium-hero p {
+  margin: 0;
+  color: #8d6f65;
+  font-size: 17px;
+  line-height: 1.55;
+  max-width: 760px;
+}
+
+.ia-materials-premium-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.ia-material-card-final {
+  position: relative;
+  min-height: 250px;
+  padding: 25px 25px 84px;
+  border-radius: 28px;
+  border: 1px solid #ead2c8;
+  background:
+    radial-gradient(circle at top right, var(--glow), transparent 35%),
+    linear-gradient(180deg, #fffdfb, #fff8f5);
+  box-shadow: 0 18px 48px rgba(68,45,39,.09);
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+}
+
+.ia-material-card-final:hover {
+  transform: translateY(-5px);
+  border-color: rgba(216,135,118,.78);
+  box-shadow: 0 28px 72px rgba(68,45,39,.16);
+}
+
+.ia-material-card-final::before {
+  content: "";
+  position: absolute;
+  right: -55px;
+  top: -55px;
+  width: 170px;
+  height: 170px;
+  border-radius: 999px;
+  background: var(--glow);
+}
+
+.ia-material-card-final .tag {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #f7d9d1;
+  color: #c76f60;
+  font-size: 12px;
+  font-weight: 950;
+  text-transform: uppercase;
+  margin-bottom: 26px;
+}
+
+.ia-material-card-final h3 {
+  position: relative;
+  z-index: 2;
+  margin: 0 0 11px;
+  color: #432d27;
+  font-size: 25px;
+  line-height: 1.05;
+  letter-spacing: -.035em;
+}
+
+.ia-material-card-final p {
+  position: relative;
+  z-index: 2;
+  margin: 0;
+  color: #8d6f65;
+  font-size: 14px;
+  line-height: 1.52;
+}
+
+.ia-material-card-final .action {
+  position: absolute;
+  left: 25px;
+  bottom: 24px;
+  z-index: 3;
+  height: 44px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: #d88776;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 950;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 16px 34px rgba(216,135,118,.28);
+}
+
+.ia-material-card-final .icon {
+  position: absolute;
+  right: 22px;
+  bottom: 22px;
+  width: 46px;
+  height: 46px;
+  border-radius: 16px;
+  background: rgba(255,255,255,.78);
+  display: grid;
+  place-items: center;
+  color: #d88776;
+  font-weight: 950;
+  font-size: 20px;
+  border: 1px solid #ead2c8;
+}
+
+/* Cards das aulas com bloqueio */
+.ia-lesson-clickable {
+  cursor: pointer !important;
+  position: relative !important;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease, opacity .2s ease !important;
+}
+
+.ia-lesson-clickable:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 22px 54px rgba(68,45,39,.13) !important;
+  border-color: rgba(216,135,118,.76) !important;
+}
+
+.ia-lesson-locked {
+  opacity: .58 !important;
+  cursor: not-allowed !important;
+  filter: grayscale(.15) !important;
+}
+
+.ia-lesson-locked:hover {
+  transform: none !important;
+}
+
+.ia-lesson-locked::after {
+  content: "🔒 Bloqueada";
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #432d27;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 950;
+  z-index: 5;
+}
+
+.ia-lesson-done::after {
+  content: "✓ Concluída";
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #d88776;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 950;
+  z-index: 5;
+}
+
+.ia-lesson-current {
+  border-color: rgba(216,135,118,.9) !important;
+  box-shadow: 0 20px 52px rgba(216,135,118,.14) !important;
+}
+
+.ia-lock-toast {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 999999999;
+  width: min(360px, calc(100vw - 44px));
+  padding: 18px;
+  border-radius: 22px;
+  background: #fffdfb;
+  border: 1px solid #ead2c8;
+  box-shadow: 0 24px 70px rgba(68,45,39,.18);
+  color: #432d27;
+  animation: iaToastIn .22s ease both;
+}
+
+.ia-lock-toast strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 17px;
+}
+
+.ia-lock-toast p {
+  margin: 0;
+  color: #8d6f65;
+  line-height: 1.45;
+  font-size: 14px;
+}
+
+@keyframes iaToastIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 1100px) {
+  .ia-materials-premium-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .ia-materials-premium-wrap {
+    padding: 18px;
+  }
+
+  .ia-materials-premium-hero {
+    padding: 28px;
+  }
+
+  .ia-materials-premium-grid {
+    grid-template-columns: 1fr;
+  }
+}
