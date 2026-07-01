@@ -433,6 +433,20 @@
       ["IA","assets/curso/print-ia.png"]
     ];
 
+    function getLessonPrints(){
+      const customPrints = {
+        "m0-l0": [
+          ["Instagram - diagnóstico do perfil", "assets/aulas/modulo-01/aula-01/print-01-instagram.png"],
+          ["Canva - identidade visual", "assets/aulas/modulo-01/aula-01/print-02-canva.png"],
+          ["CapCut - análise de vídeo", "assets/aulas/modulo-01/aula-01/print-03-capcut.png"],
+          ["IA - prompt de diagnóstico", "assets/aulas/modulo-01/aula-01/print-04-ia.png"]
+        ]
+      };
+
+      return customPrints[key(moduleIndex, lessonIndex)] || prints;
+    }
+
+
     const params = new URLSearchParams(window.location.search);
     const moduleIndex = Number(params.get("m") || 0);
     const lessonIndex = Number(params.get("l") || 0);
@@ -624,11 +638,11 @@
 
             ${buildTeachingContent(module, lesson)}
 
-            <h2>Prints de apoio do curso</h2>
-            <p>Use as imagens abaixo como referência visual para aplicar a aula com apoio dos principais apps.</p>
+            <h2>Prints explicativos desta aula</h2>
+            <p>Use estes 4 prints para estudar a aula com exemplos visuais: Instagram, Canva, CapCut e IA.</p>
 
             <div class="prints-grid">
-              ${prints.map(p => `
+              ${getLessonPrints().map(p => `
                 <div class="print-card" onclick="openImage('${p[1]}')">
                   <img src="${p[1]}" alt="${p[0]}">
                   <span>${p[0]}</span>
@@ -680,3 +694,4 @@
   </script>
 </body>
 </html>
+
