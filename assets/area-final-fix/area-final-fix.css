@@ -1,0 +1,107 @@
+﻿html {
+  scroll-behavior: smooth;
+}
+
+.ia-material-clickable {
+  cursor: pointer !important;
+  position: relative !important;
+  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease !important;
+}
+
+.ia-material-clickable:hover {
+  transform: translateY(-5px) !important;
+  border-color: rgba(216,135,118,.85) !important;
+  box-shadow: 0 24px 64px rgba(68,45,39,.15) !important;
+}
+
+.ia-material-open-btn {
+  margin-top: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: #d88776;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 950;
+  box-shadow: 0 14px 30px rgba(216,135,118,.24);
+}
+
+.ia-module4-locked {
+  opacity: .55 !important;
+  cursor: not-allowed !important;
+  filter: grayscale(.12) !important;
+  position: relative !important;
+}
+
+.ia-module4-locked::after {
+  content: "🔒 Libera em 10/07/2026";
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 20;
+  padding: 9px 13px;
+  border-radius: 999px;
+  background: #432d27;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 950;
+  box-shadow: 0 14px 34px rgba(67,45,39,.18);
+}
+
+.ia-course-toast {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 999999999;
+  width: min(380px, calc(100vw - 42px));
+  padding: 18px;
+  border-radius: 22px;
+  background: #fffdfb;
+  border: 1px solid #ead2c8;
+  box-shadow: 0 24px 70px rgba(68,45,39,.18);
+  color: #432d27;
+  animation: iaToastIn .2s ease both;
+}
+
+.ia-course-toast strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 17px;
+}
+
+.ia-course-toast p {
+  margin: 0;
+  color: #8d6f65;
+  line-height: 1.45;
+  font-size: 14px;
+}
+
+@keyframes iaToastIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 780px) {
+  aside,
+  nav,
+  .sidebar,
+  [class*="sidebar"],
+  [class*="menu"] {
+    scroll-behavior: smooth;
+  }
+
+  .ia-course-toast {
+    right: 16px;
+    bottom: 16px;
+  }
+}
