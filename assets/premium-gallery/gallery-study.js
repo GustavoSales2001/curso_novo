@@ -496,3 +496,5 @@
   window.openPrintGallery = window.openGallery;
   window.openLessonGallery = window.openGallery;
 })();
+
+

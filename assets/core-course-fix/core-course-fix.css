@@ -1,0 +1,136 @@
+﻿[href="#tools"],
+[href*="#tools"],
+.ia-hide-prints-core,
+#tools,
+section#tools,
+[data-section="tools"] {
+  display: none !important;
+}
+
+.ia-lesson-clickable {
+  cursor: pointer !important;
+  position: relative !important;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease, opacity .2s ease !important;
+}
+
+.ia-lesson-clickable:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 22px 54px rgba(68,45,39,.13) !important;
+  border-color: rgba(216,135,118,.76) !important;
+}
+
+.ia-lesson-locked {
+  opacity: .56 !important;
+  cursor: not-allowed !important;
+}
+
+.ia-lesson-locked::after {
+  content: "🔒 Bloqueada";
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #432d27;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 950;
+  z-index: 5;
+}
+
+.ia-lesson-done::after {
+  content: "✓ Concluída";
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #d88776;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 950;
+  z-index: 5;
+}
+
+.ia-lesson-current {
+  border-color: rgba(216,135,118,.9) !important;
+  box-shadow: 0 20px 52px rgba(216,135,118,.14) !important;
+}
+
+.ia-lock-toast-core {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 999999999;
+  width: min(360px, calc(100vw - 44px));
+  padding: 18px;
+  border-radius: 22px;
+  background: #fffdfb;
+  border: 1px solid #ead2c8;
+  box-shadow: 0 24px 70px rgba(68,45,39,.18);
+  color: #432d27;
+}
+
+.ia-lock-toast-core strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 17px;
+}
+
+.ia-lock-toast-core p {
+  margin: 0;
+  color: #8d6f65;
+  line-height: 1.45;
+  font-size: 14px;
+}
+
+.ia-floating-complete-card {
+  width: 58px !important;
+  height: 58px !important;
+  min-height: 58px !important;
+  max-height: 58px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border-radius: 999px !important;
+  opacity: .34 !important;
+  right: 20px !important;
+  bottom: 20px !important;
+  transition: all .22s ease !important;
+}
+
+.ia-floating-complete-card::before {
+  content: "✓";
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: #d88776;
+  font-size: 24px;
+  font-weight: 950;
+}
+
+.ia-floating-complete-card > * {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.ia-floating-complete-card:hover {
+  width: min(360px, calc(100vw - 44px)) !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  padding: 18px !important;
+  border-radius: 24px !important;
+  opacity: 1 !important;
+  transform: translateY(-4px) !important;
+}
+
+.ia-floating-complete-card:hover::before {
+  display: none !important;
+}
+
+.ia-floating-complete-card:hover > * {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}

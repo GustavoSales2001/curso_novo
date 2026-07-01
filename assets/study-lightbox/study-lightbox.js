@@ -350,3 +350,5 @@
 
   window.openStudyViewerFromImage = openFromImage;
 })();
+
+

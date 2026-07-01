@@ -1,0 +1,331 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Criar Conta - Influencer Academy</title>
+
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif}
+    body{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+      background:
+        radial-gradient(circle at top left, rgba(217,135,125,.16), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(217,135,125,.10), transparent 32%),
+        linear-gradient(180deg,#fbf6f1 0%,#f6eee8 100%);
+      color:#4d372f;
+    }
+    .auth-card{
+      width:100%;
+      max-width:520px;
+      background:rgba(255,255,255,.82);
+      border:1px solid #ead8cf;
+      border-radius:32px;
+      padding:42px 44px;
+      box-shadow:0 24px 60px rgba(98,72,59,.12);
+      backdrop-filter:blur(10px);
+    }
+    .badge{
+      width:max-content;
+      margin:0 auto 16px;
+      padding:8px 16px;
+      border-radius:999px;
+      background:#fff5ef;
+      border:1px solid #ecd7cd;
+      color:#c97969;
+      font-size:13px;
+      font-weight:800;
+    }
+    h1{
+      text-align:center;
+      font-size:38px;
+      line-height:1.05;
+      color:#4d372f;
+      letter-spacing:-.03em;
+      margin-bottom:12px;
+    }
+    .subtitle{
+      text-align:center;
+      color:#8f786d;
+      font-size:16px;
+      line-height:1.55;
+      margin-bottom:28px;
+    }
+    .form-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+    }
+    .form-group{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      margin-bottom:14px;
+    }
+    .full{grid-column:1/-1}
+    label{
+      font-size:13px;
+      font-weight:900;
+      color:#4d372f;
+      text-transform:uppercase;
+      letter-spacing:.02em;
+    }
+    input{
+      width:100%;
+      height:54px;
+      border:1px solid #e7d3c8;
+      background:#fffaf7;
+      border-radius:16px;
+      padding:0 16px;
+      font-size:16px;
+      color:#5b4338;
+      outline:none;
+      transition:.2s ease;
+    }
+    input:focus{
+      border-color:#d98c7d;
+      box-shadow:0 0 0 4px rgba(217,140,125,.14);
+      background:#fff;
+    }
+    input::placeholder{color:#b29a8f}
+    .security{
+      padding:14px 16px;
+      border-radius:16px;
+      border:1px solid #d9e9f6;
+      background:#f3fbff;
+      color:#6c7c8b;
+      font-size:14px;
+      line-height:1.45;
+      margin-bottom:16px;
+    }
+    button{
+      width:100%;
+      height:56px;
+      border:none;
+      border-radius:18px;
+      background:linear-gradient(135deg,#d98c7d,#e6a196);
+      color:#fff;
+      font-size:16px;
+      font-weight:900;
+      cursor:pointer;
+      box-shadow:0 16px 34px rgba(217,140,125,.25);
+      transition:.2s ease;
+    }
+    button:hover{transform:translateY(-1px)}
+    button:disabled{opacity:.7;cursor:not-allowed;transform:none}
+    .divider{
+      text-align:center;
+      margin:22px 0 12px;
+      color:#a88e82;
+      font-weight:700;
+    }
+    .link{
+      text-align:center;
+      color:#8c766b;
+      font-size:15px;
+    }
+    .link a{
+      color:#c97969;
+      font-weight:900;
+      text-decoration:none;
+    }
+    .message{
+      display:none;
+      margin-top:14px;
+      padding:12px 14px;
+      border-radius:14px;
+      font-size:14px;
+      font-weight:800;
+      line-height:1.4;
+    }
+    .message.ok{
+      display:block;
+      background:#f0fff6;
+      border:1px solid #bce8cb;
+      color:#2f7a4f;
+    }
+    .message.error{
+      display:block;
+      background:#fff1f1;
+      border:1px solid #f1c0c0;
+      color:#a04444;
+    }
+    @media(max-width:700px){
+      .auth-card{padding:30px 22px;border-radius:24px}
+      .form-grid{grid-template-columns:1fr}
+      .full{grid-column:auto}
+      h1{font-size:32px}
+    }
+  </style>
+  <link rel="stylesheet" href="assets/course-polish/course-polish.css">
+</head>
+<body>
+  <main class="auth-card">
+    <div class="badge">Seu acesso começa aqui</div>
+
+    <h1>Crie seu acesso</h1>
+    <p class="subtitle">Entre para a Influencer Academy e comece sua jornada como criadora. com mais estratégia.</p>
+
+    <form id="cadastroForm">
+      <div class="form-group full">
+        <label for="nome">Nome completo *</label>
+        <input id="nome" type="text" placeholder="Seu nome completo" autocomplete="name" required />
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="email">E-mail *</label>
+          <input id="email" type="email" placeholder="seu.email@exemplo.com" autocomplete="email" required />
+        </div>
+
+        <div class="form-group">
+          <label for="celular">Celular *</label>
+          <input id="celular" type="tel" placeholder="(11) 99999-9999" autocomplete="tel" required />
+        </div>
+      </div>
+
+      <div class="form-group full">
+        <label for="nascimento">Data de nascimento *</label>
+        <input id="nascimento" type="date" required />
+      </div>
+
+      <div class="form-group full">
+        <label for="senha">Crie uma senha *</label>
+        <input id="senha" type="password" placeholder="Crie uma senha segura para acessar sua área" autocomplete="new-password" required />
+      </div>
+
+      <div class="security">
+        Use 8+ caracteres, números e símbolos para uma senha mais segura.
+      </div>
+
+      <button id="submitBtn" type="submit">Criar minha conta</button>
+
+      <div id="formMessage" class="message"></div>
+    </form>
+
+    <div class="divider">ou</div>
+
+    <p class="link">
+      Já tem uma conta?
+      <a href="login.html">Faça seu login aqui</a>
+    </p>
+  </main>
+
+  <script>
+    const API_BASE_URL = "https://cursonovo-production.up.railway.app/api";
+
+    const form = document.getElementById("cadastroForm");
+    const submitBtn = document.getElementById("submitBtn");
+    const messageBox = document.getElementById("formMessage");
+
+    function showMessage(text, type = "ok") {
+      messageBox.textContent = text;
+      messageBox.className = "message " + type;
+    }
+
+    async function postWithFallback(paths, payload) {
+      let lastError = "Não foi possível conectar ao servidor.";
+
+      for (const path of paths) {
+        try {
+          const response = await fetch(API_BASE_URL + path, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+
+          let data = {};
+          try { data = await response.json(); } catch (_) {}
+
+          if (response.status === 404) {
+            lastError = "Rota não encontrada: " + path;
+            continue;
+          }
+
+          if (!response.ok || data.ok === false) {
+            throw new Error(data.error || data.message || "Erro ao processar cadastro.");
+          }
+
+          return data;
+        } catch (error) {
+          lastError = error.message;
+        }
+      }
+
+      throw new Error(lastError);
+    }
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const payload = {
+        name: document.getElementById("nome").value.trim(),
+        nome: document.getElementById("nome").value.trim(),
+        email: document.getElementById("email").value.trim().toLowerCase(),
+        celular: document.getElementById("celular").value.trim(),
+        nascimento: document.getElementById("nascimento").value,
+        birthDate: document.getElementById("nascimento").value,
+        password: document.getElementById("senha").value.trim(),
+        senha: document.getElementById("senha").value.trim(),
+        area: "Influencer Academy"
+      };
+
+      if (!payload.name || !payload.email || !payload.celular || !payload.password) {
+        showMessage("Preencha nome, e-mail, celular e senha.", "error");
+        return;
+      }
+
+      if (payload.password.length < 6) {
+        showMessage("A senha precisa ter pelo menos 6 caracteres.", "error");
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Criando conta...";
+
+      try {
+        const data = await postWithFallback(
+          ["/register", "/users/register", "/cadastro"],
+          payload
+        );
+
+        const user = data.user || {
+          name: payload.name,
+          email: payload.email,
+          celular: payload.celular,
+          area: "Influencer Academy"
+        };
+
+        localStorage.setItem("ia_user", JSON.stringify(user));
+        localStorage.setItem("usuario", JSON.stringify(user));
+        localStorage.setItem("ia_user_email", payload.email);
+
+        showMessage("Conta criada com sucesso! Redirecionando para pagamento...", "ok");
+
+        setTimeout(() => {
+          window.location.href = "pagamento.html";
+        }, 900);
+      } catch (error) {
+        showMessage(error.message || "Erro ao criar cadastro.", "error");
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Criar minha conta";
+      }
+    });
+  </script>
+  <script src="assets/course-polish/course-polish.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
