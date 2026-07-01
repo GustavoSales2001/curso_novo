@@ -5,3 +5,4 @@ node_modulesbackup-*/
 *.backup-*.js
 *.backup-*.css
 assets/prints/**/backup*/
+temp_*/
