@@ -687,33 +687,33 @@
   </style>
   <link rel="stylesheet" href="assets/lesson-locks/lesson-locks.css">
   <link rel="stylesheet" href="assets/course-polish/course-polish.css">
-<style id="iaFinalAreaFixCss">
+<style id="iaMenuMaterialModuloFixCss">
 html {
   scroll-behavior: smooth;
 }
 
 [href="#tools"],
 [href*="#tools"],
-.ia-hide-prints-final,
+.ia-hide-prints-menu,
 #tools,
 section#tools,
 [data-section="tools"] {
   display: none !important;
 }
 
-.ia-material-card-click {
+.ia-material-card-ok {
   cursor: pointer !important;
   position: relative !important;
   transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease !important;
 }
 
-.ia-material-card-click:hover {
+.ia-material-card-ok:hover {
   transform: translateY(-5px) !important;
   border-color: rgba(216,135,118,.85) !important;
   box-shadow: 0 24px 64px rgba(68,45,39,.15) !important;
 }
 
-.ia-material-card-click::after {
+.ia-material-card-ok::after {
   content: "Abrir PDF →";
   position: absolute;
   left: 22px;
@@ -732,28 +732,28 @@ section#tools,
   box-shadow: 0 14px 28px rgba(216,135,118,.24);
 }
 
-.ia-material-card-click {
+.ia-material-card-ok {
   padding-bottom: 78px !important;
 }
 
-.ia-module4-locked-final {
+.ia-module4-locked-ok {
   opacity: .52 !important;
   cursor: not-allowed !important;
   position: relative !important;
   filter: grayscale(.12) !important;
 }
 
-.ia-module4-locked-final::before {
+.ia-module4-locked-ok::before {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: rgba(255,255,255,.45);
+  background: rgba(255,255,255,.48);
   z-index: 8;
   pointer-events: none;
 }
 
-.ia-module4-locked-final::after {
+.ia-module4-locked-ok::after {
   content: "🔒 Libera em 10/07/2026";
   position: absolute;
   top: 16px;
@@ -768,7 +768,7 @@ section#tools,
   box-shadow: 0 14px 34px rgba(67,45,39,.18);
 }
 
-.ia-toast-final {
+.ia-toast-ok {
   position: fixed;
   right: 24px;
   bottom: 24px;
@@ -782,13 +782,13 @@ section#tools,
   color: #432d27;
 }
 
-.ia-toast-final strong {
+.ia-toast-ok strong {
   display: block;
   margin-bottom: 6px;
   font-size: 17px;
 }
 
-.ia-toast-final p {
+.ia-toast-ok p {
   margin: 0;
   color: #8d6f65;
   line-height: 1.45;
@@ -1033,7 +1033,7 @@ section#tools,
           "Métricas e insights",
           "Rotina de postagem",
           "IA para ideias e roteiros",
-          "Parcerias, mídia kit e monetização"
+          "Parcerias, media kit e monetização"
         ]
       }
     ];
@@ -1051,7 +1051,7 @@ section#tools,
       ["Roteiro de Reels","Modelo com gancho, desenvolvimento, CTA e estrutura de retenção."],
       ["Guia Canva + CapCut","Apoio rápido para design, edição, legenda e exportação."],
       ["Prompts de IA","Comandos para ideias, roteiros, legendas e planejamento."],
-      ["Mini mídia kit","Estrutura inicial para apresentar seu perfil para marcas."]
+      ["Mini media kit","Estrutura inicial para apresentar seu perfil para marcas."]
     ];
 
     let selectedModule = 0;
@@ -1284,43 +1284,49 @@ section#tools,
   </script>
   <script src="assets/lesson-locks/lesson-locks.js"></script>
   <script src="assets/course-polish/course-polish.js"></script>
-<script id="iaFinalAreaFixJs">
+<script id="iaMenuMaterialModuloFixJs">
 (function () {
   const MODULE4_UNLOCK_DATE = new Date("2026-07-10T00:00:00-03:00");
 
   const materials = [
     {
-      keys: ["checklist", "perfil estrategico", "perfil estratégico"],
+      n: 1,
+      keys: ["material 1", "checklist", "perfil estrategico", "perfil estratégico"],
       file: "assets/materiais/01_checklist_perfil_estrategico.pdf"
     },
     {
-      keys: ["planner", "conteudo", "conteúdo", "30 dias"],
+      n: 2,
+      keys: ["material 2", "planner", "conteudo", "conteúdo", "30 dias"],
       file: "assets/materiais/02_planner_conteudo_30_dias.pdf"
     },
     {
-      keys: ["roteiro", "reels", "gancho"],
+      n: 3,
+      keys: ["material 3", "roteiro", "reels", "gancho"],
       file: "assets/materiais/03_roteiro_reels_com_gancho.pdf"
     },
     {
-      keys: ["canva", "capcut", "guia"],
+      n: 4,
+      keys: ["material 4", "canva", "capcut", "guia"],
       file: "assets/materiais/04_guia_canva_capcut.pdf"
     },
     {
-      keys: ["prompts", "prompt", "ia"],
+      n: 5,
+      keys: ["material 5", "prompts", "prompt", "ia"],
       file: "assets/materiais/05_prompts_ia_para_criadoras.pdf"
     },
     {
-      keys: ["midia kit", "mídia kit", "parcerias"],
+      n: 6,
+      keys: ["material 6", "media kit", "parcerias"],
       file: "assets/materiais/06_mini_midia_kit_parcerias.pdf"
     }
   ];
 
-  const menuMap = [
-    { keys: ["inicio", "início"], hash: "#home" },
-    { keys: ["modulos", "módulos"], hash: "#modules" },
-    { keys: ["aulas"], hash: "#classes" },
-    { keys: ["materiais"], hash: "#materials" },
-    { keys: ["perfil"], hash: "#profile" }
+  const menu = [
+    { labels: ["inicio", "início"], hash: "#home" },
+    { labels: ["modulos", "módulos"], hash: "#modules" },
+    { labels: ["aulas"], hash: "#classes" },
+    { labels: ["materiais"], hash: "#materials" },
+    { labels: ["perfil"], hash: "#profile" }
   ];
 
   function norm(text) {
@@ -1332,64 +1338,85 @@ section#tools,
       .toLowerCase();
   }
 
-  function toast(title, message) {
-    document.querySelectorAll(".ia-toast-final").forEach(el => el.remove());
-
-    const box = document.createElement("div");
-    box.className = "ia-toast-final";
-    box.innerHTML = `<strong>${title}</strong><p>${message}</p>`;
-    document.body.appendChild(box);
-
-    setTimeout(() => box.remove(), 3500);
-  }
-
   function module4Locked() {
     return new Date() < MODULE4_UNLOCK_DATE;
   }
 
-  function go(hash) {
-    const targetHash = hash.startsWith("#") ? hash : "#" + hash;
+  function toast(title, message) {
+    document.querySelectorAll(".ia-toast-ok").forEach(el => el.remove());
 
-    if (location.hash !== targetHash) {
-      location.hash = targetHash;
-    }
+    const box = document.createElement("div");
+    box.className = "ia-toast-ok";
+    box.innerHTML = `<strong>${title}</strong><p>${message}</p>`;
+    document.body.appendChild(box);
 
     setTimeout(function () {
-      const section = document.querySelector(targetHash);
-      if (section) {
+      box.remove();
+    }, 3500);
+  }
+
+  function showSection(hash) {
+    const id = hash.replace("#", "");
+    const ids = ["home", "modules", "classes", "materials", "profile"];
+
+    ids.forEach(function (sectionId) {
+      const el = document.getElementById(sectionId);
+
+      if (!el) return;
+
+      if (sectionId === id) {
+        el.style.display = "";
+        el.hidden = false;
+      } else {
+        el.style.display = "none";
+      }
+    });
+
+    const section = document.getElementById(id);
+
+    if (section) {
+      setTimeout(function () {
         section.scrollIntoView({
           behavior: "smooth",
           block: "start"
         });
-      }
-
-      window.dispatchEvent(new Event("resize"));
-      bindEverything();
-    }, 80);
+      }, 60);
+    }
   }
 
-  function isInsideSidebar(el) {
+  function go(hash) {
+    if (location.hash !== hash) {
+      history.pushState(null, "", hash);
+    }
+
+    showSection(hash);
+
+    setTimeout(bindAll, 100);
+    setTimeout(bindAll, 500);
+  }
+
+  function routeFromText(text) {
+    const t = norm(text);
+
+    return menu.find(function (item) {
+      return item.labels.some(function (label) {
+        const l = norm(label);
+        return t === l || t.includes(l);
+      });
+    });
+  }
+
+  function isSidebarElement(el) {
     let node = el;
 
     for (let i = 0; i < 8 && node; i++) {
-      const rect = node.getBoundingClientRect?.();
-
-      if (rect && rect.left < 390 && rect.width < 420) {
-        return true;
-      }
-
+      const rect = node.getBoundingClientRect && node.getBoundingClientRect();
       const tag = String(node.tagName || "").toLowerCase();
       const cls = String(node.className || "").toLowerCase();
 
-      if (
-        tag === "aside" ||
-        tag === "nav" ||
-        cls.includes("side") ||
-        cls.includes("menu") ||
-        cls.includes("sidebar")
-      ) {
-        return true;
-      }
+      if (tag === "aside" || tag === "nav") return true;
+      if (cls.includes("sidebar") || cls.includes("side") || cls.includes("menu")) return true;
+      if (rect && rect.left < 380 && rect.width < 420) return true;
 
       node = node.parentElement;
     }
@@ -1397,15 +1424,15 @@ section#tools,
     return false;
   }
 
-  function findMenuItem(target) {
+  function findMenuRoute(target) {
     let node = target;
 
-    for (let i = 0; i < 7 && node; i++) {
-      const text = norm(node.innerText || node.textContent);
-      const item = menuMap.find(m => m.keys.some(k => text === norm(k) || text.includes(norm(k))));
+    for (let i = 0; i < 8 && node; i++) {
+      const text = node.innerText || node.textContent || "";
+      const route = routeFromText(text);
 
-      if (item && isInsideSidebar(node)) {
-        return item;
+      if (route && isSidebarElement(node)) {
+        return route;
       }
 
       node = node.parentElement;
@@ -1414,17 +1441,25 @@ section#tools,
     return null;
   }
 
-  function fixMenu() {
-    document.addEventListener("click", function (event) {
-      const item = findMenuItem(event.target);
+  function bindMenu() {
+    if (window.__iaMenuGlobalOk) return;
+    window.__iaMenuGlobalOk = true;
 
-      if (!item) return;
+    document.addEventListener("click", function (event) {
+      const route = findMenuRoute(event.target);
+
+      if (!route) return;
 
       event.preventDefault();
       event.stopPropagation();
+      event.stopImmediatePropagation();
 
-      go(item.hash);
+      go(route.hash);
     }, true);
+
+    window.addEventListener("popstate", function () {
+      showSection(location.hash || "#home");
+    });
   }
 
   function hidePrints() {
@@ -1447,56 +1482,101 @@ section#tools,
         }
       }
 
-      target.classList.add("ia-hide-prints-final");
+      target.classList.add("ia-hide-prints-menu");
       target.style.display = "none";
     });
 
     const tools = document.querySelector("#tools, section#tools, [data-section='tools']");
     if (tools) tools.style.display = "none";
-
-    if (location.hash === "#tools") location.hash = "#materials";
   }
 
-  function materialForText(text) {
+  function materialMatchFromText(text) {
     const t = norm(text);
 
-    return materials.find(item => {
-      return item.keys.some(key => t.includes(norm(key)));
+    const found = materials.filter(function (item) {
+      return item.keys.some(function (key) {
+        return t.includes(norm(key));
+      });
     });
+
+    if (found.length === 1) return found[0];
+
+    return null;
+  }
+
+  function closestMaterialCard(target) {
+    const section =
+      target.closest("#materials") ||
+      document.querySelector("#materials");
+
+    if (!section) return null;
+
+    let node = target;
+
+    for (let i = 0; i < 10 && node && node !== section; i++) {
+      const text = node.innerText || node.textContent || "";
+      const material = materialMatchFromText(text);
+
+      if (material) {
+        return {
+          el: node,
+          material
+        };
+      }
+
+      node = node.parentElement;
+    }
+
+    return null;
   }
 
   function bindMaterials() {
-    const section =
-      document.querySelector("#materials") ||
-      document.querySelector("[data-section='materials']") ||
-      document.querySelector("[data-page='materials']");
-
+    const section = document.querySelector("#materials");
     if (!section) return;
 
     section.querySelectorAll("article, section, div, a, button").forEach(function (card) {
       const text = card.innerText || card.textContent || "";
-      const material = materialForText(text);
+      const material = materialMatchFromText(text);
+
       if (!material) return;
+
+      const allText = norm(text);
+      const materialCount = materials.filter(function (item) {
+        return item.keys.some(function (key) {
+          return allText.includes(norm(key));
+        });
+      }).length;
+
+      if (materialCount !== 1) return;
 
       const r = card.getBoundingClientRect();
 
-      if (r.width < 170 || r.width > 520 || r.height < 80 || r.height > 360) return;
+      if (r.width < 150 || r.height < 70) return;
+      if (r.width > 560 || r.height > 420) return;
 
-      card.classList.add("ia-material-card-click");
-
-      if (card.dataset.iaMaterialFinalBound === "1") return;
-      card.dataset.iaMaterialFinalBound = "1";
-
-      card.addEventListener("click", function (event) {
-        event.preventDefault();
-        event.stopPropagation();
-
-        window.open(material.file, "_blank");
-      }, true);
+      card.classList.add("ia-material-card-ok");
+      card.dataset.materialFile = material.file;
     });
+
+    if (window.__iaMaterialClickOk) return;
+    window.__iaMaterialClickOk = true;
+
+    document.addEventListener("click", function (event) {
+      const inMaterials = event.target.closest && event.target.closest("#materials");
+      if (!inMaterials) return;
+
+      const match = closestMaterialCard(event.target);
+      if (!match) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+
+      window.open(match.material.file, "_blank");
+    }, true);
   }
 
-  function lessonNumber(text) {
+  function getLessonNumber(text) {
     const match = String(text || "").match(/aula\s*0?(\d{1,2})/i);
     if (!match) return null;
 
@@ -1504,83 +1584,85 @@ section#tools,
     return Number.isFinite(n) ? n : null;
   }
 
-  function lockModule4() {
+  function lockModule4OnlyInLessons() {
     if (!module4Locked()) return;
 
-    document.querySelectorAll("article, section, div, a, button").forEach(function (card) {
-      const textRaw = card.innerText || card.textContent || "";
-      const text = norm(textRaw);
-      if (!text) return;
+    const scopes = [
+      document.querySelector("#classes"),
+      document.querySelector("#modules")
+    ].filter(Boolean);
 
-      const r = card.getBoundingClientRect();
+    scopes.forEach(function (scope) {
+      scope.querySelectorAll("article, section, div, a, button").forEach(function (card) {
+        const textRaw = card.innerText || card.textContent || "";
+        const text = norm(textRaw);
 
-      if (r.width < 160 || r.width > 760 || r.height < 65 || r.height > 380) return;
+        const r = card.getBoundingClientRect();
+        if (r.width < 150 || r.height < 65) return;
+        if (r.width > 780 || r.height > 420) return;
 
-      const n = lessonNumber(textRaw);
+        const n = getLessonNumber(textRaw);
 
-      const isModule4 =
-        text.includes("modulo 4") ||
-        text.includes("crescimento e profissionalizacao") ||
-        text.includes("parcerias") ||
-        text.includes("midia kit") ||
-        text.includes("monetizacao") ||
-        (n && n >= 13);
+        const isModule4 =
+          text.includes("modulo 4") ||
+          text.includes("módulo 4") ||
+          text.includes("crescimento e profissionalizacao") ||
+          text.includes("crescimento e profissionalização") ||
+          (n && n >= 13);
 
-      if (!isModule4) return;
+        if (!isModule4) return;
 
-      card.classList.add("ia-module4-locked-final");
+        card.classList.add("ia-module4-locked-ok");
 
-      if (card.dataset.iaModule4Bound === "1") return;
-      card.dataset.iaModule4Bound = "1";
+        if (card.dataset.iaModule4ClickOk === "1") return;
+        card.dataset.iaModule4ClickOk = "1";
 
-      card.addEventListener("click", function (event) {
-        if (!module4Locked()) return;
+        card.addEventListener("click", function (event) {
+          if (!module4Locked()) return;
 
-        event.preventDefault();
-        event.stopPropagation();
+          event.preventDefault();
+          event.stopPropagation();
+          event.stopImmediatePropagation();
 
-        toast("Módulo 4 bloqueado", "Essa etapa será liberada automaticamente em 10/07/2026.");
-      }, true);
+          toast("Módulo 4 bloqueado", "Essa etapa será liberada automaticamente em 10/07/2026.");
+        }, true);
+      });
     });
-  }
 
-  function blockDirectModule4() {
-    if (!module4Locked()) return;
-
-    const params = new URLSearchParams(location.search);
-    const m = Number(params.get("m"));
-
-    if (location.pathname.includes("aula.html") && m === 3) {
-      alert("O Módulo 4 será liberado automaticamente em 10/07/2026.");
-      location.href = "area.html#classes";
+    const materialsSection = document.querySelector("#materials");
+    if (materialsSection) {
+      materialsSection.querySelectorAll(".ia-module4-locked-ok").forEach(function (el) {
+        el.classList.remove("ia-module4-locked-ok");
+      });
     }
   }
 
-  function bindEverything() {
+  function bindAll() {
     hidePrints();
     bindMaterials();
-    lockModule4();
-    blockDirectModule4();
+    lockModule4OnlyInLessons();
+
+    const current = location.hash || "#home";
+    showSection(current);
   }
 
-  if (!window.__iaFinalMenuBound) {
-    window.__iaFinalMenuBound = true;
-    fixMenu();
-  }
+  bindMenu();
 
   document.addEventListener("DOMContentLoaded", function () {
-    bindEverything();
-    setTimeout(bindEverything, 300);
-    setTimeout(bindEverything, 900);
-    setTimeout(bindEverything, 1600);
+    bindAll();
+    setTimeout(bindAll, 300);
+    setTimeout(bindAll, 900);
+    setTimeout(bindAll, 1600);
   });
 
   window.addEventListener("hashchange", function () {
-    setTimeout(bindEverything, 120);
+    setTimeout(bindAll, 100);
   });
 
   const observer = new MutationObserver(function () {
-    bindEverything();
+    hidePrints();
+    bindMaterials();
+    lockModule4OnlyInLessons();
   });
 
   observer.observe(document.documentElement, {
@@ -1589,12 +1671,14 @@ section#tools,
   });
 
   if (document.readyState !== "loading") {
-    bindEverything();
+    bindAll();
   }
 })();
 </script>
 </body>
 </html>
+
+
 
 
 
