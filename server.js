@@ -3618,7 +3618,133 @@ async function start() {
     await initDB();
     await ensureTables();
 
-    app.listen(port, () => {
+    
+// ===================== ROTA_PIX_PREMIUM_V2 =====================
+app.use(express.json({ limit: "10mb" }));
+
+const IA_PAYMENT_PRICE = Number(process.env.COURSE_PAYMENT_AMOUNT || 39.99);
+
+async function iaCreatePixPayment(req, res) {
+  try {
+    const token = process.env.MERCADO_PAGO_ACCESS_TOKEN || process.env.MP_ACCESS_TOKEN;
+
+    if (!token) {
+      return res.status(500).json({
+        ok: false,
+        message: "Configure a variável MERCADO_PAGO_ACCESS_TOKEN no Railway."
+      });
+    }
+
+    const amount = Number(req.body?.amount || IA_PAYMENT_PRICE);
+    const description = req.body?.description || "Influencer Academy - acesso completo";
+
+    const idempotencyKey =
+      globalThis.crypto && globalThis.crypto.randomUUID
+        ? globalThis.crypto.randomUUID()
+        : String(Date.now()) + "-" + Math.random();
+
+    const payerEmail = "cliente+" + Date.now() + "@influenceracademy.com.br";
+
+    const mpResponse = await fetch("https://api.mercadopago.com/v1/payments", {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer " + token,
+        "Content-Type": "application/json",
+        "X-Idempotency-Key": idempotencyKey
+      },
+      body: JSON.stringify({
+        transaction_amount: amount,
+        description,
+        payment_method_id: "pix",
+        payer: {
+          email: payerEmail,
+          first_name: "Cliente",
+          last_name: "Influencer Academy"
+        }
+      })
+    });
+
+    const data = await mpResponse.json();
+
+    if (!mpResponse.ok) {
+      console.error("Erro Mercado Pago PIX:", data);
+      return res.status(500).json({
+        ok: false,
+        message: "Mercado Pago não conseguiu gerar o PIX.",
+        details: data
+      });
+    }
+
+    const transaction = data.point_of_interaction?.transaction_data || {};
+
+    return res.json({
+      ok: true,
+      payment_id: data.id,
+      status: data.status,
+      qr_code: transaction.qr_code,
+      qr_code_base64: transaction.qr_code_base64,
+      ticket_url: transaction.ticket_url
+    });
+  } catch (error) {
+    console.error("Erro ao criar PIX:", error);
+    return res.status(500).json({
+      ok: false,
+      message: "Erro interno ao gerar PIX."
+    });
+  }
+}
+
+async function iaCheckPixPayment(req, res) {
+  try {
+    const token = process.env.MERCADO_PAGO_ACCESS_TOKEN || process.env.MP_ACCESS_TOKEN;
+
+    if (!token) {
+      return res.status(500).json({
+        ok: false,
+        message: "Configure a variável MERCADO_PAGO_ACCESS_TOKEN no Railway."
+      });
+    }
+
+    const paymentId = req.params.id;
+
+    const mpResponse = await fetch("https://api.mercadopago.com/v1/payments/" + paymentId, {
+      headers: {
+        "Authorization": "Bearer " + token
+      }
+    });
+
+    const data = await mpResponse.json();
+
+    if (!mpResponse.ok) {
+      return res.status(500).json({
+        ok: false,
+        message: "Não consegui consultar esse pagamento.",
+        details: data
+      });
+    }
+
+    return res.json({
+      ok: true,
+      payment_id: data.id,
+      status: data.status,
+      status_detail: data.status_detail
+    });
+  } catch (error) {
+    console.error("Erro ao consultar PIX:", error);
+    return res.status(500).json({
+      ok: false,
+      message: "Erro interno ao consultar pagamento."
+    });
+  }
+}
+
+app.post("/payments/create-pix", iaCreatePixPayment);
+app.post("/api/payments/create-pix", iaCreatePixPayment);
+
+app.get("/payments/status/:id", iaCheckPixPayment);
+app.get("/api/payments/status/:id", iaCheckPixPayment);
+// =================== FIM ROTA_PIX_PREMIUM_V2 ===================
+app.listen(port, () => {
       console.log(`Servidor rodando na porta ${port}`);
     });
 
@@ -3639,6 +3765,8 @@ async function start() {
 }
 
 start();
+
+
 
 
 

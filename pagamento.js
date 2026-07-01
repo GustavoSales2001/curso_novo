@@ -1,227 +1,126 @@
-﻿const radios = document.querySelectorAll('input[name="pagamento"]');
-const paymentInfo = document.getElementById("paymentInfo");
-const paymentOptions = document.querySelectorAll(".payment-option");
+﻿const RAILWAY_API = "https://cursonovo-production.up.railway.app";
 
-const API_BASE_UR$ 39,99$ 39,99L = "https://cursonovo-production.up.railway.app/api";
+const API_BASE =
+  location.protocol === "file:" ||
+  location.hostname.includes("github.io")
+    ? RAILWAY_API
+    : "";
 
-let pagamentoAtualId = null;
-let ultimoPixCode = null;
+const PRICE = 39.99;
 
-// impede pagar novamente
-const usuarioAtual = JSON.parse(localStorage.getItem("usuario")) || {};
-const jaPagou = usuarioAtual.email
-  ? localStorage.getItem(`pagamentoConfirmado_${usuarioAtual.email}`)
-  : null;
+let currentPaymentId = null;
 
-if (jaPagou === "true") {
-  // Mostrar notificação quando a página carregar
-  setTimeout(() => {
-    if (typeof notify !== 'undefined') {
-      notify.info("Seu acesso já foi liberado. Você não precisa pagar novamente.", 2000);
-    }
-    setTimeout(() => {
-      window.location.href = "area.html";
-    }, 500);
-  }, 500);
+const generatePixBtn = document.getElementById("generatePixBtn");
+const statusBox = document.getElementById("statusBox");
+const pixResult = document.getElementById("pixResult");
+const qrCodeImage = document.getElementById("qrCodeImage");
+const pixCode = document.getElementById("pixCode");
+const copyPixBtn = document.getElementById("copyPixBtn");
+const checkPaymentBtn = document.getElementById("checkPaymentBtn");
+
+function setStatus(message, type = "") {
+  statusBox.className = "status-box";
+  if (type) statusBox.classList.add(type);
+  statusBox.textContent = message;
+  statusBox.classList.remove("hidden");
 }
 
-radios.forEach(radio => {
-  radio.addEventListener("change", atualizarPagamento);
-});
-
-function atualizarEstiloOpcao() {
-  paymentOptions.forEach(option => option.classList.remove("selected-option"));
-
-  const selecionado = document.querySelector('input[name="pagamento"]:checked');
-  if (selecionado) {
-    selecionado.closest(".payment-option").classList.add("selected-option");
-  }
+function clearStatus() {
+  statusBox.classList.add("hidden");
+  statusBox.textContent = "";
 }
 
-function getUsuario() {
-  return JSON.parse(localStorage.getItem("usuario")) || {};
-}
+async function generatePix() {
+  clearStatus();
+  pixResult.classList.add("hidden");
 
-function getPrimeiroNome(nomeCompleto = "") {
-  return nomeCompleto.trim().split(" ")[0] || "Cliente";
-}
+  generatePixBtn.disabled = true;
+  generatePixBtn.textContent = "Gerando QR Code...";
 
-async function atualizarPagamento() {
-  const selecionado = document.querySelector('input[name="pagamento"]:checked');
-  if (!selecionado) return;
-
-  const metodo = selecionado.value;
-  atualizarEstiloOpcao();
-
-  if (metodo === "pix") {
-    paymentInfo.innerHTML = `
-      <div class="info-box">
-        <h4>Gerando pagamento PIX...</h4>
-        <p>Aguarde um instante.</p>
-      </div>
-    `;
-
-    await criarPix();
-  }
-
-  if (metodo === "cartao") {
-    paymentInfo.innerHTML = `
-      <div class="info-box">
-        <h4>Pagamento com cartão</h4>
-        <p>Preencha os dados abaixo para continuar:</p>
-
-        <div class="card-form">
-          <div>
-            <label for="nomeCartao">Nome no cartão</label>
-            <input type="text" id="nomeCartao" placeholder="Nome como está no cartão">
-          </div>
-
-          <div>
-            <label for="numeroCartao">Número do cartão</label>
-            <input type="text" id="numeroCartao" placeholder="0000 0000 0000 0000" maxlength="19">
-          </div>
-
-          <div class="row">
-            <div>
-              <label for="validadeCartao">Validade</label>
-              <input type="text" id="validadeCartao" placeholder="MM/AA" maxlength="5">
-            </div>
-
-            <div>
-              <label for="cvvCartao">CVV</label>
-              <input type="text" id="cvvCartao" placeholder="123" maxlength="4">
-            </div>
-          </div>
-
-          <div>
-            <label for="cpfTitular">CPF do titular</label>
-            <input type="text" id="cpfTitular" placeholder="000.000.000-00">
-          </div>
-
-          <div>
-            <label for="parcelas">Parcelamento</label>
-            <select id="parcelas">
-              <option value="1">1x de R$ 39,99$ 39,99$ 19,99</option>
-              <option value="2">2x de R$ 39,99$ 39,99$ 10,00</option>
-            </select>
-          </div>
-        </div>
-
-        <p class="note">Essa opção já aparece na tela, mas ainda depende da tokenização do Mercado Pago para funcionar de verdade. Por enquanto, finalize pelo PIX.</p>
-      </div>
-    `;
-  }
-}
-
-async function criarPix() {
   try {
-    const usuario = getUsuario();
-
-    const response = await fetch(`${API_BASE_UR$ 39,99$ 39,99L}/payments/pix`, {
+    const response = await fetch(`${API_BASE}/payments/create-pix`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        amount: 19.99,
-        description: "Acesso ao curso Influencer Academy",
-        payer: {
-          email: usuario.email || "cliente@email.com",
-          first_name: getPrimeiroNome(usuario.nome),
-          identification: usuario.cpf
-            ? {
-                type: "CPF",
-                number: usuario.cpf.replace(/\D/g, "")
-              }
-            : undefined
-        }
+        amount: PRICE,
+        description: "Influencer Academy - acesso completo"
       })
     });
 
-    const data = await response.json();
+    const data = await response.json().catch(() => ({}));
 
-    if (!response.ok) {
-      throw new Error(data.error || data.details || "Erro ao gerar PIX.");
+    if (!response.ok || !data.ok) {
+      throw new Error(data.message || data.error || "Não consegui gerar o PIX agora.");
     }
 
-    pagamentoAtualId = data.id;
-    ultimoPixCode = data.qr_code || null;
+    currentPaymentId = data.payment_id;
 
-    paymentInfo.innerHTML = `
-      <div class="info-box">
-        <h4>Pagamento via PIX</h4>
-        <p>Use o código abaixo para realizar o pagamento:</p>
+    qrCodeImage.src = `data:image/png;base64,${data.qr_code_base64}`;
+    pixCode.value = data.qr_code || "";
 
-        ${
-          data.qr_code_base64
-            ? `<img 
-                src="data:image/jpeg;base64,${data.qr_code_base64}" 
-                style="max-width:220px;width:100%;display:block;margin:12px auto;border-radius:12px;"
-              >`
-            : ""
-        }
+    pixResult.classList.remove("hidden");
 
-        <div class="pix-key" id="pixKey">${data.qr_code}</div>
-
-        <button onclick="copiarPix()">Copiar código PIX</button>
-        <button onclick="consultarStatusPagamento()">Verificar pagamento</button>
-      </div>
-    `;
+    setStatus("QR Code gerado. Agora pague pelo app do seu banco e depois clique em verificar acesso.", "success");
   } catch (error) {
-    if (typeof notify !== 'undefined') {
-      notify.error(error.message || "Erro ao gerar código PIX");
-    }
+    setStatus(error.message || "Erro ao gerar PIX. Tente novamente.", "error");
+  } finally {
+    generatePixBtn.disabled = false;
+    generatePixBtn.textContent = "Gerar novo QR Code PIX";
   }
 }
 
-function copiarPix() {
-  if (!ultimoPixCode) {
-    if (typeof notify !== 'undefined') {
-      notify.warning("Nenhum código PIX disponível.");
-    }
+async function copyPix() {
+  try {
+    await navigator.clipboard.writeText(pixCode.value);
+    setStatus("Código PIX copiado.", "success");
+  } catch (_) {
+    pixCode.select();
+    document.execCommand("copy");
+    setStatus("Código PIX copiado.", "success");
+  }
+}
+
+async function checkPayment() {
+  if (!currentPaymentId) {
+    setStatus("Gere o PIX primeiro para consultar o pagamento.", "error");
     return;
   }
 
-  navigator.clipboard.writeText(ultimoPixCode);
-  if (typeof notify !== 'undefined') {
-    notify.success("Código PIX copiado com sucesso!");
+  checkPaymentBtn.disabled = true;
+  checkPaymentBtn.textContent = "Verificando...";
+
+  try {
+    const response = await fetch(`${API_BASE}/payments/status/${currentPaymentId}`);
+    const data = await response.json().catch(() => ({}));
+
+    if (!response.ok || !data.ok) {
+      throw new Error(data.message || "Não consegui consultar o pagamento.");
+    }
+
+    if (data.status === "approved") {
+      localStorage.setItem("influencer_academy_payment_approved", "1");
+      localStorage.setItem("influencer_academy_access_released", "1");
+
+      setStatus("Pagamento aprovado. Redirecionando para criar sua conta...", "success");
+
+      setTimeout(() => {
+        window.location.href = "cadastro.html?paid=1";
+      }, 1200);
+
+      return;
+    }
+
+    setStatus("Pagamento ainda não aprovado. Aguarde alguns segundos e tente novamente.", "");
+  } catch (error) {
+    setStatus(error.message || "Erro ao verificar pagamento.", "error");
+  } finally {
+    checkPaymentBtn.disabled = false;
+    checkPaymentBtn.textContent = "Já paguei, verificar acesso";
   }
 }
 
-async function consultarStatusPagamento() {
-  if (!pagamentoAtualId) {
-    if (typeof notify !== 'undefined') {
-      notify.warning("Nenhum pagamento encontrado.");
-    }
-    return;
-  }
-
-  const response = await fetch(`${API_BASE_UR$ 39,99$ 39,99L}/payments/${pagamentoAtualId}`);
-  const data = await response.json();
-
-  if (data.status === "approved") {
-    const usuario = JSON.parse(localStorage.getItem("usuario")) || {};
-    if (usuario.email) {
-      localStorage.setItem(`pagamentoConfirmado_${usuario.email}`, "true");
-    }
-
-    if (typeof notify !== 'undefined') {
-      notify.success("Pagamento aprovado! R$ 39,99$ 39,99edirecionando para área do aluno...", 2000);
-    }
-    setTimeout(() => {
-      window.location.href = "area.html";
-    }, 500);
-  } else {
-    if (typeof notify !== 'undefined') {
-      notify.info("Pagamento ainda não foi aprovado. Tente novamente em alguns instantes.");
-    }
-  }
-}
-
-function voltar() {
-  window.location.href = "login.html";
-}
-
-atualizarPagamento();
-
-
+generatePixBtn.addEventListener("click", generatePix);
+copyPixBtn.addEventListener("click", copyPix);
+checkPaymentBtn.addEventListener("click", checkPayment);
