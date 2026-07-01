@@ -1,0 +1,43 @@
+﻿/* Remove qualquer botão ou aba de Prints */
+.ia-force-hide-prints,
+[href="#tools"],
+[href*="#tools"],
+#tools,
+section#tools,
+[data-section="tools"] {
+  display: none !important;
+}
+
+/* Remove textos antigos duplicados dos materiais */
+.ia-material-card::after,
+.ia-material-download-note {
+  display: none !important;
+  content: none !important;
+}
+
+/* Card final de materiais */
+.ia-material-premium-card {
+  padding-bottom: 78px !important;
+}
+
+.ia-material-premium-card .open {
+  position: absolute !important;
+  left: 24px !important;
+  bottom: 22px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 42px !important;
+  padding: 0 18px !important;
+  border-radius: 999px !important;
+  background: #d88776 !important;
+  color: #fff !important;
+  font-weight: 950 !important;
+  font-size: 13px !important;
+  text-decoration: none !important;
+  box-shadow: 0 14px 30px rgba(216,135,118,.25) !important;
+}
+
+.ia-material-premium-card:hover .open {
+  transform: translateY(-2px) !important;
+}
