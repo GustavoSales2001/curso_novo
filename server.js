@@ -3919,6 +3919,191 @@ app.get("/api/payments/release-health", async (req, res) => {
   }
 });
 // =================== FIM AUTO_RELEASE_AFTER_PAYMENT_V1 ===================
+
+// ===================== PIX_RELEASE_DB_FINAL_V1 =====================
+app.use(express.json({ limit: "10mb" }));
+
+let iaPixReleasePool = null;
+
+async function iaGetPixReleasePool() {
+  if (iaPixReleasePool) return iaPixReleasePool;
+
+  const mysqlModule = await import("mysql2/promise");
+  const mysql = mysqlModule.default || mysqlModule;
+
+  iaPixReleasePool = mysql.createPool({
+    host: process.env.MYSQLHOST || process.env.DB_HOST,
+    user: process.env.MYSQLUSER || process.env.DB_USER,
+    password: process.env.MYSQLPASSWORD || process.env.DB_PASS,
+    database: process.env.MYSQLDATABASE || process.env.DB_NAME,
+    port: Number(process.env.MYSQLPORT || process.env.DB_PORT || 3306),
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
+  });
+
+  return iaPixReleasePool;
+}
+
+async function iaCheckPixApproved(paymentId) {
+  const token = process.env.MERCADO_PAGO_ACCESS_TOKEN || process.env.MP_ACCESS_TOKEN;
+
+  if (!token) {
+    return {
+      ok: false,
+      approved: false,
+      message: "MERCADO_PAGO_ACCESS_TOKEN não configurado no Railway."
+    };
+  }
+
+  if (!paymentId) {
+    return {
+      ok: false,
+      approved: false,
+      message: "payment_id não recebido."
+    };
+  }
+
+  const mpResponse = await fetch("https://api.mercadopago.com/v1/payments/" + encodeURIComponent(paymentId), {
+    method: "GET",
+    headers: {
+      Authorization: "Bearer " + token
+    }
+  });
+
+  const data = await mpResponse.json();
+
+  if (!mpResponse.ok) {
+    console.error("Erro Mercado Pago release:", data);
+
+    return {
+      ok: false,
+      approved: false,
+      message: "Não foi possível consultar o pagamento no Mercado Pago.",
+      details: data
+    };
+  }
+
+  return {
+    ok: true,
+    approved: data.status === "approved",
+    status: data.status,
+    status_detail: data.status_detail,
+    payment_id: data.id
+  };
+}
+
+async function iaReleaseUserAccess(email) {
+  const pool = await iaGetPixReleasePool();
+
+  let result;
+
+  try {
+    [result] = await pool.execute(
+      "UPDATE users SET access_released = 1, updated_at = NOW() WHERE LOWER(email) = LOWER(?)",
+      [email]
+    );
+  } catch (err) {
+    [result] = await pool.execute(
+      "UPDATE users SET access_released = 1 WHERE LOWER(email) = LOWER(?)",
+      [email]
+    );
+  }
+
+  return result;
+}
+
+async function iaPixReleaseRoute(req, res) {
+  try {
+    const email = String(req.body?.email || "").trim().toLowerCase();
+    const paymentId = String(req.body?.payment_id || req.body?.paymentId || "").trim();
+
+    if (!email) {
+      return res.status(400).json({
+        ok: false,
+        released: false,
+        message: "Informe o e-mail do aluno para liberar o acesso."
+      });
+    }
+
+    if (!paymentId) {
+      return res.status(400).json({
+        ok: false,
+        released: false,
+        message: "Pagamento não identificado. Gere o PIX novamente ou clique em verificar pagamento."
+      });
+    }
+
+    const payment = await iaCheckPixApproved(paymentId);
+
+    if (!payment.ok) {
+      return res.status(500).json({
+        ok: false,
+        released: false,
+        message: payment.message || "Erro ao validar pagamento."
+      });
+    }
+
+    if (!payment.approved) {
+      return res.status(402).json({
+        ok: false,
+        released: false,
+        message: "Pagamento ainda não aprovado.",
+        status: payment.status,
+        status_detail: payment.status_detail
+      });
+    }
+
+    const update = await iaReleaseUserAccess(email);
+
+    if (!update || update.affectedRows < 1) {
+      return res.status(404).json({
+        ok: false,
+        released: false,
+        payment_approved: true,
+        message: "Pagamento aprovado, mas esse e-mail ainda não existe no cadastro. Crie a conta com esse mesmo e-mail ou ajuste o e-mail no banco.",
+        email
+      });
+    }
+
+    return res.json({
+      ok: true,
+      released: true,
+      payment_approved: true,
+      email,
+      payment_id: payment.payment_id,
+      message: "Pagamento aprovado e acesso liberado no banco."
+    });
+  } catch (error) {
+    console.error("Erro PIX_RELEASE_DB_FINAL_V1:", error);
+
+    return res.status(500).json({
+      ok: false,
+      released: false,
+      message: "Erro interno ao liberar acesso no banco."
+    });
+  }
+}
+
+app.post("/api/payments/verify-release", iaPixReleaseRoute);
+app.post("/payments/verify-release", iaPixReleaseRoute);
+
+app.get("/api/payments/verify-release-health", async (req, res) => {
+  try {
+    const pool = await iaGetPixReleasePool();
+    await pool.query("SELECT 1");
+    res.json({
+      ok: true,
+      message: "Rota verify-release ativa e conectada ao banco."
+    });
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      message: "Erro na rota verify-release."
+    });
+  }
+});
+// =================== FIM PIX_RELEASE_DB_FINAL_V1 ===================
 app.listen(port, () => {
       console.log(`Servidor rodando na porta ${port}`);
     });
@@ -3940,6 +4125,7 @@ app.listen(port, () => {
 }
 
 start();
+
 
 
 

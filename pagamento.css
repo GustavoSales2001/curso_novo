@@ -320,3 +320,46 @@ textarea {
     font-size: 46px;
   }
 }
+
+.pix-buyer-box {
+  margin: 18px 0;
+  padding: 18px;
+  border-radius: 22px;
+  background: #fff8f5;
+  border: 1px solid #ead2c8;
+}
+
+.pix-buyer-box label {
+  display: block;
+  margin-bottom: 9px;
+  color: #432d27;
+  font-size: 13px;
+  font-weight: 950;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+}
+
+.pix-buyer-box input {
+  width: 100%;
+  height: 54px;
+  border: 1px solid #ead2c8;
+  border-radius: 16px;
+  background: #fffdfb;
+  padding: 0 16px;
+  color: #432d27;
+  font-size: 15px;
+  outline: none;
+}
+
+.pix-buyer-box input:focus {
+  border-color: #d88776;
+  box-shadow: 0 0 0 4px rgba(216,135,118,.12);
+}
+
+.pix-buyer-box small {
+  display: block;
+  margin-top: 8px;
+  color: #8d6f65;
+  font-size: 12px;
+  line-height: 1.4;
+}

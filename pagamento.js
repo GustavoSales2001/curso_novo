@@ -1,4 +1,92 @@
-﻿// PAGAMENTO_DIRETO_AREA_ALUNO_V1
+﻿// VERIFY_RELEASE_DB_CLIENT_V1
+function iaGetBuyerEmailForPix() {
+  const input = document.getElementById("iaBuyerEmail");
+  const fromInput = String(input?.value || "").trim().toLowerCase();
+  const stored = String(localStorage.getItem("influencer_academy_buyer_email") || "").trim().toLowerCase();
+
+  return fromInput || stored;
+}
+
+function iaSaveBuyerEmailForPix() {
+  const email = iaGetBuyerEmailForPix();
+  if (email) {
+    localStorage.setItem("influencer_academy_buyer_email", email);
+  }
+  return email;
+}
+
+async function iaVerifyReleaseAndEnter(paymentId) {
+  const email = iaSaveBuyerEmailForPix();
+
+  if (!email) {
+    setStatus("Digite o e-mail do aluno antes de verificar o pagamento. É esse e-mail que será liberado no curso.", "error");
+    return false;
+  }
+
+  const response = await fetch(`${API_BASE}/api/payments/verify-release`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      email,
+      payment_id: paymentId
+    })
+  });
+
+  const data = await response.json().catch(() => ({}));
+
+  if (!response.ok || !data.ok || !data.released) {
+    throw new Error(data.message || "Pagamento aprovado, mas não consegui liberar o acesso no banco.");
+  }
+
+  localStorage.setItem("influencer_academy_payment_id", String(paymentId || ""));
+  localStorage.setItem("influencer_academy_payment_approved", "1");
+  localStorage.setItem("influencer_academy_access_released", "1");
+  localStorage.setItem("influencer_academy_paid_access", "1");
+  localStorage.setItem("access_released", "1");
+  localStorage.setItem("curso_novo_access", "released");
+  localStorage.setItem("student_access_granted", "1");
+  localStorage.setItem("isLoggedIn", "true");
+  localStorage.setItem("user_logged_in", "1");
+  localStorage.setItem("aluno_logado", "1");
+
+  const aluno = {
+    name: "Aluno(a)",
+    email,
+    access_released: true,
+    payment_approved: true,
+    payment_id: String(paymentId || ""),
+    created_at: new Date().toISOString()
+  };
+
+  localStorage.setItem("influencer_academy_user", JSON.stringify(aluno));
+  localStorage.setItem("influencerAcademyUser", JSON.stringify(aluno));
+  localStorage.setItem("currentUser", JSON.stringify(aluno));
+
+  setStatus("Pagamento aprovado e acesso liberado. Entrando na área do aluno...", "success");
+
+  setTimeout(function () {
+    await iaVerifyReleaseAndEnter(currentPaymentId);
+  }, 900);
+
+  return true;
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  const input = document.getElementById("iaBuyerEmail");
+  const stored = localStorage.getItem("influencer_academy_buyer_email");
+
+  if (input && stored && !input.value) {
+    input.value = stored;
+  }
+
+  if (input) {
+    input.addEventListener("input", iaSaveBuyerEmailForPix);
+  }
+});
+
+// PAGAMENTO_DIRETO_AREA_ALUNO_V1
 function iaLiberarAcessoEEntrarNaArea(paymentId) {
   const id = String(paymentId || "");
 
@@ -40,7 +128,7 @@ function iaLiberarAcessoEEntrarNaArea(paymentId) {
 
 // AUTO_PAYMENT_REDIRECT_FIX_V1
 if (localStorage.getItem("influencer_academy_access_released") === "1") {
-  iaLiberarAcessoEEntrarNaArea(currentPaymentId);
+  await iaVerifyReleaseAndEnter(currentPaymentId);
 }
 const RAILWAY_API = "https://cursonovo-production.up.railway.app";
 
@@ -75,6 +163,11 @@ function clearStatus() {
 }
 
 async function generatePix() {
+  const buyerEmailBeforePix = iaSaveBuyerEmailForPix();
+  if (!buyerEmailBeforePix) {
+    setStatus("Digite o e-mail do aluno antes de gerar o PIX. Esse e-mail será usado para liberar o acesso.", "error");
+    return;
+  }
   clearStatus();
   pixResult.classList.add("hidden");
 
@@ -89,7 +182,8 @@ async function generatePix() {
       },
       body: JSON.stringify({
         amount: PRICE,
-        description: "Influencer Academy - acesso completo"
+        description: "Influencer Academy - acesso completo",
+        email: buyerEmailBeforePix
       })
     });
 
@@ -152,7 +246,7 @@ async function checkPayment() {
       setTimeout(() => {
         localStorage.setItem("influencer_academy_payment_id", String(currentPaymentId || ""));
       localStorage.setItem("influencer_academy_payment_approved", "1");
-      iaLiberarAcessoEEntrarNaArea(currentPaymentId);
+      await iaVerifyReleaseAndEnter(currentPaymentId);
       }, 1200);
 
       return;
@@ -170,6 +264,7 @@ async function checkPayment() {
 generatePixBtn.addEventListener("click", generatePix);
 copyPixBtn.addEventListener("click", copyPix);
 checkPaymentBtn.addEventListener("click", checkPayment);
+
 
 
 

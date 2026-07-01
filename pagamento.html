@@ -35,7 +35,13 @@
           </div>
         </div>
 
-        <button id="generatePixBtn" class="main-btn" type="button">
+        <div class="pix-buyer-box">
+  <label for="iaBuyerEmail">E-mail para liberar o acesso *</label>
+  <input id="iaBuyerEmail" type="email" placeholder="Digite o e-mail do aluno" autocomplete="email">
+  <small>Esse e-mail será usado apenas para identificar o pagamento e liberar a área do aluno.</small>
+</div>
+
+<button id="generatePixBtn" class="main-btn" type="button">
           Gerar QR Code PIX
         </button>
 
@@ -84,4 +90,5 @@
   <script src="pagamento.js"></script>
 </body>
 </html>
+
 
