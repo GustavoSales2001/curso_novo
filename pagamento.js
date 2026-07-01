@@ -1,6 +1,46 @@
-﻿// AUTO_PAYMENT_REDIRECT_FIX_V1
+﻿// PAGAMENTO_DIRETO_AREA_ALUNO_V1
+function iaLiberarAcessoEEntrarNaArea(paymentId) {
+  const id = String(paymentId || "");
+
+  localStorage.setItem("influencer_academy_payment_id", id);
+  localStorage.setItem("influencer_academy_payment_approved", "1");
+  localStorage.setItem("influencer_academy_access_released", "1");
+  localStorage.setItem("influencer_academy_paid_access", "1");
+
+  localStorage.setItem("access_released", "1");
+  localStorage.setItem("curso_novo_access", "released");
+  localStorage.setItem("student_access_granted", "1");
+  localStorage.setItem("isLoggedIn", "true");
+  localStorage.setItem("user_logged_in", "1");
+  localStorage.setItem("aluno_logado", "1");
+
+  const alunoAtual = localStorage.getItem("influencer_academy_user");
+
+  if (!alunoAtual) {
+    const aluno = {
+      name: "Aluno(a)",
+      email: "",
+      access_released: true,
+      payment_approved: true,
+      payment_id: id,
+      created_at: new Date().toISOString()
+    };
+
+    localStorage.setItem("influencer_academy_user", JSON.stringify(aluno));
+    localStorage.setItem("influencerAcademyUser", JSON.stringify(aluno));
+    localStorage.setItem("currentUser", JSON.stringify(aluno));
+  }
+
+  const destino = id
+    ? "area.html?paid=1&payment_id=" + encodeURIComponent(id) + "#home"
+    : "area.html?paid=1#home";
+
+  window.location.href = destino;
+}
+
+// AUTO_PAYMENT_REDIRECT_FIX_V1
 if (localStorage.getItem("influencer_academy_access_released") === "1") {
-  window.location.href = "area.html#home";
+  iaLiberarAcessoEEntrarNaArea(currentPaymentId);
 }
 const RAILWAY_API = "https://cursonovo-production.up.railway.app";
 
@@ -112,7 +152,7 @@ async function checkPayment() {
       setTimeout(() => {
         localStorage.setItem("influencer_academy_payment_id", String(currentPaymentId || ""));
       localStorage.setItem("influencer_academy_payment_approved", "1");
-      window.location.href = "cadastro.html?paid=1&payment_id=" + encodeURIComponent(currentPaymentId || "");
+      iaLiberarAcessoEEntrarNaArea(currentPaymentId);
       }, 1200);
 
       return;
@@ -130,5 +170,6 @@ async function checkPayment() {
 generatePixBtn.addEventListener("click", generatePix);
 copyPixBtn.addEventListener("click", copyPix);
 checkPaymentBtn.addEventListener("click", checkPayment);
+
 
 
