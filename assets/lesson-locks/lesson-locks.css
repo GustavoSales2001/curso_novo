@@ -1,0 +1,217 @@
+﻿.ia-lesson-card-ready {
+  position: relative !important;
+  cursor: pointer !important;
+  transition: .18s ease !important;
+}
+
+.ia-lesson-card-ready:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 18px 46px rgba(68, 45, 39, .14) !important;
+}
+
+.ia-lesson-done {
+  border-color: rgba(73, 148, 105, .35) !important;
+  background: linear-gradient(180deg, #ffffff, #f5fff8) !important;
+}
+
+.ia-lesson-next {
+  border-color: rgba(216, 135, 118, .75) !important;
+  box-shadow: 0 14px 34px rgba(216, 135, 118, .15) !important;
+}
+
+.ia-lesson-locked {
+  opacity: .62 !important;
+  cursor: not-allowed !important;
+  filter: grayscale(.12) !important;
+}
+
+.ia-lesson-locked:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.ia-lesson-badge {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  z-index: 4;
+  border-radius: 999px;
+  padding: 8px 11px;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1;
+  background: #fff;
+  color: #4c332d;
+  border: 1px solid #ead2c8;
+  box-shadow: 0 10px 22px rgba(68,45,39,.10);
+}
+
+.ia-lesson-done .ia-lesson-badge {
+  background: #e9fff0;
+  color: #35764e;
+  border-color: #bfe8cc;
+}
+
+.ia-lesson-next .ia-lesson-badge {
+  background: #d88776;
+  color: #fff;
+  border-color: transparent;
+}
+
+.ia-lesson-locked .ia-lesson-badge {
+  background: #f3e7e1;
+  color: #8d6f65;
+}
+
+.ia-progress-panel {
+  margin: 18px 0 24px;
+  padding: 18px;
+  border: 1px solid #ead2c8;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #fffdfb, #fff4ef);
+  box-shadow: 0 14px 34px rgba(68,45,39,.08);
+}
+
+.ia-progress-panel strong {
+  display: block;
+  color: #432d27;
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.ia-progress-panel p {
+  margin: 0 0 12px;
+  color: #8d6f65;
+  font-size: 14px;
+}
+
+.ia-progress-bar {
+  width: 100%;
+  height: 12px;
+  border-radius: 999px;
+  background: #f2dfd8;
+  overflow: hidden;
+}
+
+.ia-progress-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #d88776, #5a372f);
+  transition: width .25s ease;
+}
+
+.ia-toast {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 999999999;
+  max-width: 360px;
+  padding: 16px 18px;
+  border-radius: 18px;
+  background: #432d27;
+  color: #fff;
+  font-weight: 800;
+  box-shadow: 0 22px 55px rgba(0,0,0,.28);
+  animation: iaToastIn .22s ease;
+}
+
+@keyframes iaToastIn {
+  from { transform: translateY(12px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.ia-complete-panel {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 999999;
+  width: min(360px, calc(100vw - 44px));
+  border-radius: 24px;
+  border: 1px solid #ead2c8;
+  background: linear-gradient(180deg, #fffdfb, #fff4ef);
+  box-shadow: 0 24px 70px rgba(68,45,39,.24);
+  padding: 18px;
+}
+
+.ia-complete-panel strong {
+  display: block;
+  color: #432d27;
+  font-size: 18px;
+  margin-bottom: 7px;
+}
+
+.ia-complete-panel p {
+  margin: 0 0 14px;
+  color: #8d6f65;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.ia-complete-actions {
+  display: grid;
+  gap: 10px;
+}
+
+.ia-complete-btn {
+  height: 46px;
+  border: 0;
+  border-radius: 15px;
+  background: #d88776;
+  color: #fff;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.ia-complete-btn.secondary {
+  background: #fff;
+  color: #432d27;
+  border: 1px solid #ead2c8;
+}
+
+.ia-block-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999999999;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(52,38,33,.82);
+  backdrop-filter: blur(12px);
+}
+
+.ia-block-box {
+  width: min(520px, 100%);
+  border-radius: 28px;
+  background: #fffdfb;
+  border: 1px solid #ead2c8;
+  padding: 28px;
+  text-align: center;
+  box-shadow: 0 30px 90px rgba(0,0,0,.34);
+}
+
+.ia-block-box h2 {
+  margin: 0 0 12px;
+  color: #432d27;
+  font-size: 30px;
+  line-height: 1.05;
+}
+
+.ia-block-box p {
+  margin: 0 0 20px;
+  color: #8d6f65;
+  line-height: 1.5;
+}
+
+.ia-block-box a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 46px;
+  padding: 0 20px;
+  border-radius: 15px;
+  background: #d88776;
+  color: #fff;
+  font-weight: 950;
+  text-decoration: none;
+}
