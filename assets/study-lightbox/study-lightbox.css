@@ -11,32 +11,33 @@
     rgba(38, 28, 25, .88);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  padding: 22px;
+  padding: 20px;
   box-sizing: border-box;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .study-viewer-shell {
-  width: min(1420px, calc(100vw - 44px));
-  height: min(900px, calc(100vh - 44px));
-  margin: 0 auto;
+  width: min(1320px, calc(100vw - 40px));
+  min-height: min(760px, calc(100vh - 40px));
+  margin: 0 auto 20px;
   background: linear-gradient(180deg, #fffdfb 0%, #f8eee9 100%);
-  border: 1px solid rgba(255,255,255,.65);
-  border-radius: 34px;
+  border: 1px solid rgba(255,255,255,.70);
+  border-radius: 32px;
   box-shadow: 0 34px 120px rgba(0,0,0,.40);
-  display: grid;
-  grid-template-rows: auto minmax(0,1fr) auto;
   overflow: hidden;
+  display: grid;
+  grid-template-rows: auto auto auto;
 }
 
 .study-viewer-header {
-  padding: 18px 22px;
+  padding: 18px 22px 16px;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 18px;
+  gap: 22px;
   border-bottom: 1px solid rgba(224, 190, 177, .75);
-  background: rgba(255,255,255,.68);
+  background: rgba(255,255,255,.76);
 }
 
 .study-viewer-kicker {
@@ -51,10 +52,11 @@
 .study-viewer-title {
   margin: 0;
   color: #3f2a24;
-  font-size: clamp(24px, 2.6vw, 38px);
-  line-height: 1.05;
+  font-size: clamp(24px, 2.4vw, 36px);
+  line-height: 1.04;
   font-weight: 950;
   letter-spacing: -.035em;
+  max-width: 560px;
 }
 
 .study-viewer-subtitle {
@@ -68,6 +70,8 @@
   gap: 9px;
   flex-wrap: wrap;
   justify-content: flex-end;
+  align-items: center;
+  max-width: 650px;
 }
 
 .study-btn {
@@ -82,6 +86,7 @@
   cursor: pointer;
   box-shadow: 0 10px 22px rgba(63,42,36,.08);
   transition: .16s ease;
+  white-space: nowrap;
 }
 
 .study-btn:hover {
@@ -101,43 +106,70 @@
   color: #fff;
 }
 
+.study-btn.spotlight {
+  position: relative;
+  background: linear-gradient(135deg, #fff 0%, #fff7f3 100%);
+  border-color: #d88776;
+  color: #58372f;
+  animation: studyPulse 1.7s ease-in-out infinite;
+  overflow: hidden;
+}
+
+.study-btn.spotlight::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-120%);
+  background: linear-gradient(90deg, transparent, rgba(216,135,118,.25), transparent);
+  animation: studyShine 2.4s ease-in-out infinite;
+}
+
+@keyframes studyPulse {
+  0%, 100% { box-shadow: 0 10px 22px rgba(216,135,118,.12); }
+  50% { box-shadow: 0 12px 32px rgba(216,135,118,.32); }
+}
+
+@keyframes studyShine {
+  0% { transform: translateX(-120%); }
+  45%, 100% { transform: translateX(120%); }
+}
+
 .study-viewer-body {
-  min-height: 0;
   padding: 18px;
   display: grid;
-  grid-template-columns: minmax(0,1fr) 280px;
+  grid-template-columns: minmax(0,1fr) 285px;
   gap: 18px;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .study-stage-wrap {
   min-width: 0;
   display: grid;
-  grid-template-columns: 54px minmax(0,1fr) 54px;
-  gap: 14px;
+  grid-template-columns: 50px minmax(0,1fr) 50px;
+  gap: 12px;
   align-items: center;
 }
 
 .study-arrow {
-  width: 52px;
-  height: 52px;
+  width: 50px;
+  height: 50px;
   border: 0;
   border-radius: 999px;
   background: #fff;
   color: #58372f;
-  font-size: 34px;
+  font-size: 32px;
   font-weight: 950;
   cursor: pointer;
   box-shadow: 0 16px 34px rgba(63,42,36,.13);
 }
 
 .study-stage {
-  height: 100%;
-  min-height: 600px;
+  height: min(56vh, 535px);
+  min-height: 430px;
   border-radius: 28px;
   border: 1px solid #ead2c8;
   background:
-    radial-gradient(circle at center, rgba(255,255,255,.35), transparent 40%),
+    radial-gradient(circle at center, rgba(255,255,255,.42), transparent 40%),
     linear-gradient(135deg, #f9efea, #fffaf7);
   position: relative;
   overflow: hidden;
@@ -153,8 +185,8 @@
 }
 
 .study-main-img {
-  max-width: 96%;
-  max-height: 96%;
+  max-width: 84%;
+  max-height: 84%;
   width: auto;
   height: auto;
   object-fit: contain;
@@ -180,9 +212,9 @@
 .study-pill {
   position: absolute;
   z-index: 4;
-  left: 18px;
-  bottom: 18px;
-  padding: 10px 14px;
+  left: 16px;
+  bottom: 16px;
+  padding: 9px 13px;
   border-radius: 999px;
   background: rgba(255,255,255,.96);
   border: 1px solid #ead2c8;
@@ -194,9 +226,9 @@
 .study-counter {
   position: absolute;
   z-index: 4;
-  right: 18px;
-  bottom: 18px;
-  padding: 10px 14px;
+  right: 16px;
+  bottom: 16px;
+  padding: 9px 13px;
   border-radius: 999px;
   background: rgba(255,255,255,.96);
   border: 1px solid #ead2c8;
@@ -205,21 +237,21 @@
 }
 
 .study-side {
-  min-height: 0;
+  max-height: min(56vh, 535px);
   overflow-y: auto;
-  background: rgba(255,255,255,.76);
+  background: rgba(255,255,255,.80);
   border: 1px solid #ead2c8;
   border-radius: 24px;
-  padding: 16px;
+  padding: 15px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 13px;
 }
 
 .study-side h3 {
   margin: 0;
   color: #3f2a24;
-  font-size: 20px;
+  font-size: 19px;
 }
 
 .study-side p {
@@ -264,46 +296,75 @@
   background: #fff;
   border: 1px solid #ead2c8;
   border-radius: 18px;
-  padding: 13px;
+  padding: 12px;
   color: #8b6d63;
   font-size: 13px;
   line-height: 1.45;
 }
 
 .study-side-actions {
-  margin-top: auto;
   display: grid;
   gap: 10px;
 }
 
 .study-viewer-footer {
-  padding: 12px 22px 16px;
+  padding: 11px 22px 14px;
   border-top: 1px solid rgba(224,190,177,.75);
   color: #8b6d63;
   font-size: 13px;
-  background: rgba(255,255,255,.56);
+  background: rgba(255,255,255,.62);
 }
 
 .study-viewer-footer strong {
   color: #3f2a24;
 }
 
-@media (max-width: 1020px) {
-  .study-viewer {
-    overflow: auto;
+@media (max-width: 1050px) {
+  .study-viewer-header {
+    flex-direction: column;
   }
 
-  .study-viewer-shell {
-    height: auto;
-    min-height: calc(100vh - 44px);
+  .study-viewer-toolbar {
+    justify-content: flex-start;
+    max-width: none;
   }
 
   .study-viewer-body {
     grid-template-columns: 1fr;
-    overflow: auto;
+  }
+
+  .study-side {
+    max-height: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .study-viewer {
+    padding: 10px;
+  }
+
+  .study-viewer-shell {
+    width: calc(100vw - 20px);
+    border-radius: 24px;
+  }
+
+  .study-stage-wrap {
+    grid-template-columns: 42px minmax(0,1fr) 42px;
+  }
+
+  .study-arrow {
+    width: 42px;
+    height: 42px;
+    font-size: 26px;
   }
 
   .study-stage {
-    min-height: 480px;
+    height: 52vh;
+    min-height: 360px;
+  }
+
+  .study-main-img {
+    max-width: 88%;
+    max-height: 88%;
   }
 }

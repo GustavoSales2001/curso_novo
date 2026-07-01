@@ -40,10 +40,7 @@
               <button id="studyZoomOut" class="study-btn" type="button">−</button>
               <button id="studyZoomIn" class="study-btn" type="button">+</button>
               <button id="studyFit" class="study-btn" type="button">Ajustar</button>
-              <button id="study100" class="study-btn" type="button">100%</button>
-              <button id="study200" class="study-btn" type="button">200%</button>
-              <button id="study300" class="study-btn" type="button">300%</button>
-              <button id="studyOpen" class="study-btn" type="button">Abrir original</button>
+              <button id="studyOpen" class="study-btn spotlight" type="button">🔎 Ver em alta</button>
               <button id="studyDownload" class="study-btn primary" type="button">Baixar imagem</button>
               <button id="studyClose" class="study-btn dark" type="button">Fechar</button>
             </div>
@@ -73,11 +70,11 @@
               <div id="studyThumbs" class="study-thumbs"></div>
 
               <div class="study-box">
-                <strong>Para ler melhor:</strong><br>
-                • Use 200% ou 300%.<br>
+                <strong>Como estudar melhor:</strong><br>
+                • Clique 1 vez na imagem para aproximar.<br>
+                • Duplo clique alterna zoom forte.<br>
                 • Arraste a imagem ampliada.<br>
-                • Abra o original em outra aba para máxima nitidez.<br>
-                • Baixe a imagem para consultar depois.
+                • Use “Ver em alta” para abrir o arquivo original.
               </div>
 
               <div class="study-side-actions">
@@ -103,9 +100,6 @@
     $("studyZoomIn").onclick = () => setZoom(state.scale + .25);
     $("studyZoomOut").onclick = () => setZoom(state.scale - .25);
     $("studyFit").onclick = fit;
-    $("study100").onclick = () => setZoom(1);
-    $("study200").onclick = () => setZoom(2);
-    $("study300").onclick = () => setZoom(3);
     $("studyOpen").onclick = openOriginal;
     $("studyDownload").onclick = () => download(state.index);
     $("studyDownloadAll").onclick = downloadAll;
@@ -114,11 +108,11 @@
 
     main.addEventListener("dblclick", function (e) {
       e.preventDefault();
-      state.scale <= 1 ? setZoom(2.4) : fit();
+      state.scale <= 1 ? setZoom(2.35) : fit();
     });
 
     main.addEventListener("click", function () {
-      if (state.scale <= 1) setZoom(1.8);
+      if (state.scale <= 1) setZoom(1.75);
     });
 
     $("studyPan").addEventListener("wheel", function (e) {
@@ -243,7 +237,7 @@
 
     $("studyMain").src = src;
     $("studyMain").alt = title;
-    $("studyTitle").textContent = title.split("\n")[0].slice(0, 80);
+    $("studyTitle").textContent = title.split("\n")[0].slice(0, 72);
     $("studyCounter").textContent = `${state.index + 1}/${state.images.length}`;
 
     fit();
@@ -300,7 +294,6 @@
     main.style.transform = `translate(${state.x}px, ${state.y}px) scale(${state.scale})`;
 
     $("studyZoomPill").textContent = `${Math.round(state.scale * 100)}%`;
-    $("study100").textContent = `${Math.round(state.scale * 100)}%`;
   }
 
   function close() {
