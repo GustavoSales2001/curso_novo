@@ -1,0 +1,13 @@
+﻿/* Remove a aba Prints do menu lateral */
+.ia-remove-prints,
+[href="#tools"],
+[href*="#tools"] {
+  display: none !important;
+}
+
+/* Esconde a seção antiga de prints/ferramentas caso exista */
+#tools,
+[data-section="tools"],
+section[id="tools"] {
+  display: none !important;
+}
