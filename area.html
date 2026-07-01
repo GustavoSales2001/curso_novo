@@ -651,6 +651,39 @@
       .cards-4,.prints-grid,.lesson-grid{grid-template-columns:1fr}
       .section-head,.progress-card{grid-template-columns:1fr;align-items:flex-start}
     }
+  /* MODULE SCROLL PATCH START */
+    .module-card {
+      scroll-margin-top: 24px;
+    }
+
+    .module-card::after {
+      content: "Clique para ver as aulas ↓";
+      display: inline-flex;
+      margin-top: 16px;
+      padding: 9px 13px;
+      border-radius: 999px;
+      background: var(--rose-soft);
+      color: var(--rose-dark);
+      font-size: 12px;
+      font-weight: 950;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .module-detail {
+      scroll-margin-top: 24px;
+      transition: .25s ease;
+    }
+
+    .module-detail.module-focus {
+      border-color: var(--rose);
+      box-shadow: 0 0 0 5px rgba(217,143,130,.16), var(--shadow);
+    }
+
+    .lesson-card {
+      scroll-margin-top: 24px;
+    }
+/* MODULE SCROLL PATCH END */
   </style>
 </head>
 
@@ -733,7 +766,7 @@
           <div class="section-head">
             <div>
               <h3 data-i18n="moduleArea">Trilha principal</h3>
-              <p data-i18n="moduleAreaText">Escolha um módulo e avance aula por aula.</p>
+              <p data-i18n="moduleAreaText">Clique em um módulo acima para descer direto para as aulas correspondentes.</p>
             </div>
             <span class="pill">4 módulos · 16 aulas</span>
           </div>
@@ -814,7 +847,7 @@
         start:"Começar minha trilha",progressTitle:"Seu progresso",progressText:"Cada aula concluída atualiza sua evolução dentro da trilha.",
         m1:"Módulos",m1t:"Uma trilha mais objetiva, leve e fácil de concluir.",m2:"Aulas",m2t:"4 aulas por módulo com conteúdo direto e aplicável.",m3:"Prints",m3t:"Instagram, Canva, CapCut e IA como apoio visual.",m4:"Idiomas",m4t:"Interface em português, inglês e espanhol.",
         modulesTitle:"4 módulos para sair do zero e evoluir com estratégia.",modulesText:"A estrutura foi reduzida para deixar a experiência mais clara, premium e objetiva.",
-        moduleArea:"Trilha principal",moduleAreaText:"Escolha um módulo e avance aula por aula.",
+        moduleArea:"Trilha principal",moduleAreaText:"Clique em um módulo acima para descer direto para as aulas correspondentes.",
         printsTitle:"4 prints principais para apoiar toda a trilha.",printsText:"As imagens foram reduzidas para deixar o curso mais leve, bonito e organizado.",
         classesTitle:"16 aulas organizadas por fase.",classesText:"Do posicionamento até crescimento, rotina, IA e monetização.",
         materialsTitle:"Materiais de apoio para executar melhor.",materialsText:"Checklists, planners e guias para transformar aprendizado em prática.",
@@ -981,6 +1014,25 @@
     function selectModule(i){
       selectedModule = i;
       renderModules();
+
+      setTimeout(() => {
+        const detail = document.getElementById("moduleDetail");
+
+        if(detail){
+          detail.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+          });
+
+          detail.classList.remove("module-focus");
+          void detail.offsetWidth;
+          detail.classList.add("module-focus");
+
+          setTimeout(() => {
+            detail.classList.remove("module-focus");
+          }, 1600);
+        }
+      }, 120);
     }
 
     function renderModuleDetail(){
@@ -989,7 +1041,7 @@
       document.getElementById("moduleDetail").innerHTML = `
         <span class="eyebrow">Módulo ${selectedModule + 1}</span>
         <h3 style="font-size:34px;margin:0 0 8px;letter-spacing:-.04em">${m.title}</h3>
-        <p style="color:var(--muted);line-height:1.7">${m.desc}</p>
+        <p style="color:var(--muted);line-height:1.7">${m.desc}</p><p style="margin-top:10px;color:var(--rose-dark);font-weight:900">Agora escolha a próxima aula liberada para continuar sua trilha.</p>
 
         <div class="lesson-grid">
           ${m.lessons.map((lesson,l)=>{
@@ -1122,3 +1174,4 @@
   </script>
 </body>
 </html>
+
