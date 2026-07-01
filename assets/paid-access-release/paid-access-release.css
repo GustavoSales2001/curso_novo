@@ -1,0 +1,23 @@
+﻿.ia-paid-release-banner {
+  margin: 14px 0 18px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: #effff3;
+  border: 1px solid #bde8c9;
+  color: #35764e;
+  font-weight: 850;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.ia-paid-release-banner.error {
+  background: #fff0f0;
+  border-color: #efb9b9;
+  color: #a63d3d;
+}
+
+.ia-paid-release-banner.loading {
+  background: #fff7ef;
+  border-color: #ead2c8;
+  color: #7b5147;
+}
