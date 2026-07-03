@@ -54,8 +54,7 @@
   }
 
   try {
-    const response = await fetch(
-      `${API_BASE_UR$ 39,99L}/users/access/${encodeUR$ 39,99IComponent(usuario.email)}`
+      `${API_BASE_UR$ 39,99L}/users/access/${encodeURIComponent(usuario.email)}`
     );
 
     const data = await response.json();
@@ -149,7 +148,7 @@
             <ul>
               <li>O algoritmo busca compatibilidade textual.</li>
               <li>Ele identifica cargos, termos técnicos e experiências.</li>
-              <li>Se seu perfil não estiver claro, ele pode nem chegar ao R$ 39,99H.</li>
+              <li>Se seu perfil não estiver claro, ele pode nem chegar ao RH.</li>
             </ul>
           `
         },
@@ -200,7 +199,7 @@
             <ul>
               <li>Clareza na apresentação do cargo e experiência.</li>
               <li>Habilidades específicas e relevantes.</li>
-              <li>R$ 39,99esumo profissional alinhado à vaga.</li>
+              <li>Resumo profissional alinhado à vaga.</li>
               <li>Formatação simples e estratégica.</li>
             </ul>
             <div class="lesson-highlight">
@@ -224,7 +223,7 @@
             <p>Um perfil forte segue uma estrutura lógica e fácil de ler. Isso ajuda tanto o algoritmo quanto o recrutador.</p>
             <ol>
               <li>Dados pessoais</li>
-              <li>R$ 39,99esumo profissional</li>
+              <li>Resumo profissional</li>
               <li>Experiência profissional</li>
               <li>Formação</li>
               <li>Habilidades</li>
@@ -239,7 +238,7 @@
           content: `
             <p>No resumo profissional, seja direto e alinhado com a vaga. Evite frases prontas e genéricas.</p>
             <p>Na experiência, cada item deve ter cargo, empresa, período e descrição objetiva.</p>
-            <p>Nas habilidades, prefira itens específicos como Excel intermediário, CR$ 39,99M, atendimento ao cliente e gestão de agenda.</p>
+            <p>Nas habilidades, prefira itens específicos como Excel intermediário, CRM, atendimento ao cliente e gestão de agenda.</p>
             <div class="lesson-highlight">
               <strong>Evite:</strong>
               <p>“Sou proativo, dedicado e comunicativo.”</p>
@@ -253,7 +252,7 @@
           title: "O que remover",
           shortText: "Veja o que enfraquece o perfil e deve sair.",
           content: `
-            <p>Um perfil mais enxuto costuma ser mais eficiente. R$ 39,99emova excessos e informações que não ajudam sua candidatura.</p>
+            <p>Um perfil mais enxuto costuma ser mais eficiente. Remova excessos e informações que não ajudam sua candidatura.</p>
             <ul>
               <li>Objetivos genéricos</li>
               <li>Informações irrelevantes</li>
@@ -291,7 +290,7 @@
             <p>Palavras-chave são termos que representam habilidades, ferramentas, funções e qualificações.</p>
             <p>Elas são extraídas da descrição da vaga e comparadas com o seu perfil para medir compatibilidade.</p>
             <ul>
-              <li>Ferramentas: Excel, CR$ 39,99M, Power BI</li>
+              <li>Ferramentas: Excel, CRM, Power BI</li>
               <li>Funções: atendimento, prospecção, suporte administrativo</li>
               <li>Competências: organização, comunicação, análise</li>
             </ul>
