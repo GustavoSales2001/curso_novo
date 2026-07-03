@@ -1,0 +1,947 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aula - Influencer Academy</title>
+
+  <style>
+    :root{
+      --bg:#f7f1eb;
+      --white:#fff;
+      --text:#3f2d26;
+      --muted:#8a7166;
+      --line:#ead7ce;
+      --rose:#d98f82;
+      --rose-dark:#c87465;
+      --rose-soft:#f8dfd8;
+      --brown:#563b31;
+      --green:#2e8b4d;
+      --shadow:0 24px 70px rgba(83,54,42,.11);
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      font-family:"Segoe UI",Arial,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 0% 0%,rgba(217,143,130,.18),transparent 28%),
+        radial-gradient(circle at 100% 100%,rgba(217,143,130,.14),transparent 28%),
+        linear-gradient(180deg,#fbf7f3 0%,#f6efe9 100%);
+    }
+
+    a{text-decoration:none;color:inherit}
+
+    .page{
+      max-width:1180px;
+      margin:0 auto;
+      padding:28px;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      background:rgba(255,255,255,.78);
+      border:1px solid var(--line);
+      border-radius:28px;
+      padding:18px 22px;
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(12px);
+      margin-bottom:24px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+
+    .logo{
+      width:52px;
+      height:52px;
+      border-radius:18px;
+      background:linear-gradient(135deg,var(--rose),#e8aa9d);
+      display:grid;
+      place-items:center;
+      color:#fff;
+      font-weight:950;
+      font-size:18px;
+    }
+
+    .brand strong{
+      display:block;
+      font-size:22px;
+      letter-spacing:-.03em;
+    }
+
+    .brand span{
+      display:block;
+      color:var(--muted);
+      font-size:13px;
+      margin-top:3px;
+      font-weight:700;
+    }
+
+    .top-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      border:none;
+      min-height:48px;
+      padding:0 18px;
+      border-radius:16px;
+      font-weight:950;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      transition:.2s ease;
+    }
+
+    .btn.primary{
+      background:linear-gradient(135deg,var(--rose),var(--rose-dark));
+      color:#fff;
+      box-shadow:0 15px 30px rgba(217,143,130,.26);
+    }
+
+    .btn.light{
+      background:#fff;
+      color:var(--brown);
+      border:1px solid var(--line);
+    }
+
+    .btn:hover{transform:translateY(-2px)}
+
+    .hero{
+      background:
+        radial-gradient(circle at 95% 5%,rgba(217,143,130,.20),transparent 26%),
+        linear-gradient(135deg,rgba(255,255,255,.92),rgba(255,248,244,.92));
+      border:1px solid var(--line);
+      border-radius:38px;
+      padding:38px;
+      box-shadow:var(--shadow);
+      margin-bottom:24px;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      padding:10px 14px;
+      border-radius:999px;
+      background:var(--rose-soft);
+      color:var(--rose-dark);
+      font-weight:950;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      margin-bottom:18px;
+    }
+
+    h1{
+      margin:0;
+      max-width:920px;
+      font-size:54px;
+      line-height:1.03;
+      letter-spacing:-.055em;
+    }
+
+    .hero p{
+      margin:18px 0 0;
+      max-width:850px;
+      color:var(--muted);
+      line-height:1.75;
+      font-size:18px;
+    }
+
+    .progress-box{
+      margin-top:26px;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:18px;
+    }
+
+    .progress-head{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:12px;
+      color:var(--brown);
+      font-weight:900;
+    }
+
+    .progress-bar{
+      height:14px;
+      border-radius:999px;
+      overflow:hidden;
+      background:#f0e0d8;
+    }
+
+    .progress-fill{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg,var(--rose),var(--rose-dark));
+      transition:.3s ease;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 340px;
+      gap:24px;
+      align-items:start;
+    }
+
+    .panel{
+      background:rgba(255,255,255,.88);
+      border:1px solid var(--line);
+      border-radius:34px;
+      padding:30px;
+      box-shadow:var(--shadow);
+      margin-bottom:24px;
+    }
+
+    .panel h2{
+      margin:0 0 14px;
+      font-size:34px;
+      letter-spacing:-.04em;
+    }
+
+    .panel h3{
+      margin:24px 0 10px;
+      font-size:26px;
+      letter-spacing:-.03em;
+    }
+
+    .panel p{
+      color:var(--muted);
+      line-height:1.8;
+      font-size:17px;
+    }
+
+    .panel ul,
+    .panel ol{
+      color:var(--muted);
+      line-height:1.8;
+      font-size:16px;
+      padding-left:22px;
+    }
+
+    .teaching-card{
+      padding:22px;
+      border-radius:26px;
+      border:1px solid var(--line);
+      background:#fff7f3;
+      margin:18px 0;
+    }
+
+    .task-box{
+      background:linear-gradient(135deg,#fff,#fff4ef);
+      border:1px solid #e4afa3;
+      border-radius:26px;
+      padding:24px;
+      margin-top:22px;
+    }
+
+    .task-box h3{margin-top:0}
+
+    .side{
+      position:sticky;
+      top:24px;
+    }
+
+    .side-card{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:30px;
+      padding:24px;
+      box-shadow:var(--shadow);
+      margin-bottom:18px;
+    }
+
+    .side-card h3{
+      margin:0 0 12px;
+      font-size:24px;
+    }
+
+    .side-card p{
+      color:var(--muted);
+      line-height:1.65;
+    }
+
+    .prints-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:14px;
+      margin-top:18px;
+    }
+
+    .print-card{
+      border:1px solid var(--line);
+      border-radius:20px;
+      overflow:hidden;
+      background:#fff;
+      cursor:zoom-in;
+      box-shadow:0 12px 24px rgba(83,54,42,.06);
+    }
+
+    .print-card img{
+      width:100%;
+      display:block;
+      aspect-ratio:4/5;
+      object-fit:cover;
+    }
+
+    .print-card span{
+      display:block;
+      padding:12px;
+      font-weight:850;
+      color:var(--brown);
+    }
+
+    .blocked{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:34px;
+      padding:34px;
+      box-shadow:var(--shadow);
+      text-align:center;
+    }
+
+    .blocked h1{
+      font-size:42px;
+      margin:auto;
+    }
+
+    .modal{
+      position:fixed;
+      inset:0;
+      background:rgba(26,18,15,.82);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:9999;
+      padding:28px;
+    }
+
+    .modal.show{display:flex}
+
+    .modal img{
+      max-width:min(92vw,760px);
+      max-height:88vh;
+      border-radius:24px;
+      box-shadow:0 30px 80px rgba(0,0,0,.35);
+    }
+
+    .modal button{
+      position:absolute;
+      top:24px;
+      right:24px;
+      border:none;
+      background:#fff;
+      color:var(--brown);
+      border-radius:999px;
+      padding:12px 16px;
+      font-weight:950;
+      cursor:pointer;
+    }
+
+    @media(max-width:980px){
+      .grid{grid-template-columns:1fr}
+      .side{position:relative;top:0}
+      .prints-grid{grid-template-columns:repeat(2,1fr)}
+    }
+
+    @media(max-width:680px){
+      .page{padding:14px}
+      .topbar{flex-direction:column;align-items:flex-start}
+      h1{font-size:38px}
+      .hero{padding:24px}
+      .panel{padding:22px}
+      .prints-grid{grid-template-columns:1fr}
+      .top-actions{width:100%}
+      .top-actions .btn{width:100%}
+    }
+  </style>
+  <link rel="stylesheet" href="assets/study-lightbox/study-lightbox.css">
+  <link rel="stylesheet" href="assets/lesson-locks/lesson-locks.css">
+  <link rel="stylesheet" href="assets/course-polish/course-polish.css">
+<link rel="stylesheet" href="assets/course-finish/course-finish.css">
+<style id="iaFinalAulaFixCss">
+.ia-floating-complete-card {
+  width: 58px !important;
+  height: 58px !important;
+  min-height: 58px !important;
+  max-height: 58px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border-radius: 999px !important;
+  opacity: .34 !important;
+  right: 20px !important;
+  bottom: 20px !important;
+  transition: all .22s ease !important;
+}
+
+.ia-floating-complete-card::before {
+  content: "✓";
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: #d88776;
+  font-size: 24px;
+  font-weight: 950;
+}
+
+.ia-floating-complete-card > * {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.ia-floating-complete-card:hover {
+  width: min(360px, calc(100vw - 44px)) !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  padding: 18px !important;
+  border-radius: 24px !important;
+  opacity: 1 !important;
+  transform: translateY(-4px) !important;
+}
+
+.ia-floating-complete-card:hover::before {
+  display: none !important;
+}
+
+.ia-floating-complete-card:hover > * {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+</style>
+</head>
+
+<body>
+  <main class="page" id="app"></main>
+
+  <div class="modal" id="imageModal">
+    <button id="closeModal">Fechar</button>
+    <img id="modalImg" src="" alt="Print ampliado">
+  </div>
+
+  <script>
+    const modules = [
+      {
+        title:"Começando do zero",
+        subtitle:"Base, nicho, bio e identidade",
+        desc:"Construa a base do seu perfil para que as pessoas entendam quem você é, o que você entrega e por que devem te acompanhar.",
+        lessons:[
+          "Entendendo sua fase atual",
+          "Nicho, público e posicionamento",
+          "Bio, perfil e primeira impressão",
+          "Identidade visual simples"
+        ]
+      },
+      {
+        title:"Conteúdo que atrai seguidores",
+        subtitle:"Ideias, Reels, stories e conexão",
+        desc:"Aprenda a criar conteúdo com intenção, atrair as pessoas certas e transformar visualizações em relacionamento.",
+        lessons:[
+          "Pilares de conteúdo",
+          "Ideias de posts e stories",
+          "Reels com gancho",
+          "Conteúdo que gera conexão"
+        ]
+      },
+      {
+        title:"Produção com celular",
+        subtitle:"Gravação, cenário, Canva e CapCut",
+        desc:"Melhore a qualidade dos seus vídeos e materiais usando recursos simples, acessíveis e profissionais.",
+        lessons:[
+          "Como gravar melhor",
+          "Iluminação, cenário e áudio",
+          "Edição no CapCut",
+          "Design no Canva"
+        ]
+      },
+      {
+        title:"Crescimento e profissionalização",
+        subtitle:"Métricas, rotina, IA e parcerias",
+        desc:"Organize sua evolução com análise de dados, rotina de postagem, inteligência artificial e oportunidades comerciais.",
+        lessons:[
+          "Métricas e insights",
+          "Rotina de postagem",
+          "IA para ideias e roteiros",
+          "Parcerias, mídia kit e monetização"
+        ]
+      }
+    ];
+
+    const prints = [
+      ["Instagram","assets/curso/print-instagram.png"],
+      ["Canva","assets/curso/print-canva.png"],
+      ["CapCut","assets/curso/print-capcut.png"],
+      ["IA","assets/curso/print-ia.png"]
+    ];
+
+    function getLessonPrints(){
+      const customPrints = {
+        "m3-l3": [
+          ["Instagram - parcerias e posicionamento", "assets/aulas/modulo-04/aula-04/print-01-instagram.png"],
+          ["Canva - mídia kit profissional", "assets/aulas/modulo-04/aula-04/print-02-canva.png"],
+          ["CapCut - vídeo para apresentar seu trabalho", "assets/aulas/modulo-04/aula-04/print-03-capcut.png"],
+          ["IA - prompt para parcerias e monetização", "assets/aulas/modulo-04/aula-04/print-04-ia.png"]
+        ],
+        "m3-l2": [
+          ["Instagram - ideias de conteúdo com IA", "assets/aulas/modulo-04/aula-03/print-01-instagram.png"],
+          ["Canva - organização visual das ideias", "assets/aulas/modulo-04/aula-03/print-02-canva.png"],
+          ["CapCut - roteiro de vídeo com IA", "assets/aulas/modulo-04/aula-03/print-03-capcut.png"],
+          ["IA - prompts para ideias e roteiros", "assets/aulas/modulo-04/aula-03/print-04-ia.png"]
+        ],
+        "m3-l1": [
+          ["Instagram - rotina de postagem", "assets/aulas/modulo-04/aula-02/print-01-instagram.png"],
+          ["Canva - calendário visual de conteúdo", "assets/aulas/modulo-04/aula-02/print-02-canva.png"],
+          ["CapCut - organização de vídeos da semana", "assets/aulas/modulo-04/aula-02/print-03-capcut.png"],
+          ["IA - prompt para rotina de postagens", "assets/aulas/modulo-04/aula-02/print-04-ia.png"]
+        ],
+        "m3-l0": [
+          ["Instagram - métricas e insights do perfil", "assets/aulas/modulo-04/aula-01/print-01-instagram.png"],
+          ["Canva - painel visual de métricas", "assets/aulas/modulo-04/aula-01/print-02-canva.png"],
+          ["CapCut - análise de desempenho dos vídeos", "assets/aulas/modulo-04/aula-01/print-03-capcut.png"],
+          ["IA - prompt para interpretar métricas", "assets/aulas/modulo-04/aula-01/print-04-ia.png"]
+        ],
+        "m2-l3": [
+          ["Instagram - design aplicado ao perfil", "assets/aulas/modulo-03/aula-04/print-01-instagram.png"],
+          ["Canva - design passo a passo", "assets/aulas/modulo-03/aula-04/print-02-canva.png"],
+          ["CapCut - elementos visuais no vídeo", "assets/aulas/modulo-03/aula-04/print-03-capcut.png"],
+          ["IA - prompt para design no Canva", "assets/aulas/modulo-03/aula-04/print-04-ia.png"]
+        ],
+        "m2-l2": [
+          ["Instagram - vídeo editado para postar", "assets/aulas/modulo-03/aula-03/print-01-instagram.png"],
+          ["Canva - capa e elementos visuais", "assets/aulas/modulo-03/aula-03/print-02-canva.png"],
+          ["CapCut - edição passo a passo", "assets/aulas/modulo-03/aula-03/print-03-capcut.png"],
+          ["IA - prompt para roteiro e edição", "assets/aulas/modulo-03/aula-03/print-04-ia.png"]
+        ],
+        "m2-l1": [
+          ["Instagram - iluminação e cenário para conteúdo", "assets/aulas/modulo-03/aula-02/print-01-instagram.png"],
+          ["Canva - guia visual de cenário", "assets/aulas/modulo-03/aula-02/print-02-canva.png"],
+          ["CapCut - ajustes de áudio e luz", "assets/aulas/modulo-03/aula-02/print-03-capcut.png"],
+          ["IA - prompt para melhorar gravações", "assets/aulas/modulo-03/aula-02/print-04-ia.png"]
+        ],
+        "m2-l0": [
+          ["Instagram - gravação para redes sociais", "assets/aulas/modulo-03/aula-01/print-01-instagram.png"],
+          ["Canva - roteiro visual de gravação", "assets/aulas/modulo-03/aula-01/print-02-canva.png"],
+          ["CapCut - edição do vídeo gravado", "assets/aulas/modulo-03/aula-01/print-03-capcut.png"],
+          ["IA - prompt para gravar melhor", "assets/aulas/modulo-03/aula-01/print-04-ia.png"]
+        ],
+        "m1-l3": [
+          ["Instagram - conteúdo que gera conexão", "assets/aulas/modulo-02/aula-04/print-01-instagram.png"],
+          ["Canva - visual para conexão com o público", "assets/aulas/modulo-02/aula-04/print-02-canva.png"],
+          ["CapCut - vídeo com conexão emocional", "assets/aulas/modulo-02/aula-04/print-03-capcut.png"],
+          ["IA - prompt para conteúdo de conexão", "assets/aulas/modulo-02/aula-04/print-04-ia.png"]
+        ],
+        "m1-l2": [
+          ["Instagram - reels com gancho", "assets/aulas/modulo-02/aula-03/print-01-instagram.png"],
+          ["Canva - estrutura visual do gancho", "assets/aulas/modulo-02/aula-03/print-02-canva.png"],
+          ["CapCut - edição de reels com gancho", "assets/aulas/modulo-02/aula-03/print-03-capcut.png"],
+          ["IA - prompt para ganchos de reels", "assets/aulas/modulo-02/aula-03/print-04-ia.png"]
+        ],
+        "m1-l1": [
+          ["Instagram - ideias de posts e stories", "assets/aulas/modulo-02/aula-02/print-01-instagram.png"],
+          ["Canva - calendário visual de ideias", "assets/aulas/modulo-02/aula-02/print-02-canva.png"],
+          ["CapCut - ideias em formato de vídeo", "assets/aulas/modulo-02/aula-02/print-03-capcut.png"],
+          ["IA - prompt para ideias de conteúdo", "assets/aulas/modulo-02/aula-02/print-04-ia.png"]
+        ],
+        "m1-l0": [
+          ["Instagram - pilares de conteúdo", "assets/aulas/modulo-02/aula-01/print-01-instagram.png"],
+          ["Canva - mapa visual dos pilares", "assets/aulas/modulo-02/aula-01/print-02-canva.png"],
+          ["CapCut - vídeo explicando pilares", "assets/aulas/modulo-02/aula-01/print-03-capcut.png"],
+          ["IA - prompt para pilares de conteúdo", "assets/aulas/modulo-02/aula-01/print-04-ia.png"]
+        ],
+        "m0-l3": [
+          ["Instagram - identidade visual no perfil", "assets/aulas/modulo-01/aula-04/print-01-instagram.png"],
+          ["Canva - paleta, fontes e templates", "assets/aulas/modulo-01/aula-04/print-02-canva.png"],
+          ["CapCut - estética visual dos vídeos", "assets/aulas/modulo-01/aula-04/print-03-capcut.png"],
+          ["IA - prompt de identidade visual", "assets/aulas/modulo-01/aula-04/print-04-ia.png"]
+        ],
+        "m0-l2": [
+          ["Instagram - bio e primeira impressão", "assets/aulas/modulo-01/aula-03/print-01-instagram.png"],
+          ["Canva - estética do perfil", "assets/aulas/modulo-01/aula-03/print-02-canva.png"],
+          ["CapCut - vídeo de apresentação", "assets/aulas/modulo-01/aula-03/print-03-capcut.png"],
+          ["IA - prompt de bio estratégica", "assets/aulas/modulo-01/aula-03/print-04-ia.png"]
+        ],
+        "m0-l1": [
+          ["Instagram - nicho e posicionamento", "assets/aulas/modulo-01/aula-02/print-01-instagram.png"],
+          ["Canva - mapa visual do público", "assets/aulas/modulo-01/aula-02/print-02-canva.png"],
+          ["CapCut - vídeo de posicionamento", "assets/aulas/modulo-01/aula-02/print-03-capcut.png"],
+          ["IA - prompt de nicho e público", "assets/aulas/modulo-01/aula-02/print-04-ia.png"]
+        ],
+        "m0-l0": [
+          ["Instagram - diagnóstico do perfil", "assets/aulas/modulo-01/aula-01/print-01-instagram.png"],
+          ["Canva - identidade visual", "assets/aulas/modulo-01/aula-01/print-02-canva.png"],
+          ["CapCut - análise de vídeo", "assets/aulas/modulo-01/aula-01/print-03-capcut.png"],
+          ["IA - prompt de diagnóstico", "assets/aulas/modulo-01/aula-01/print-04-ia.png"]
+        ]
+      };
+
+      return customPrints[key(moduleIndex, lessonIndex)] || prints;
+    }
+
+
+    const params = new URLSearchParams(window.location.search);
+    const moduleIndex = Number(params.get("m") || 0);
+    const lessonIndex = Number(params.get("l") || 0);
+
+    function key(m,l){ return `m${m}-l${l}`; }
+
+    function getCompleted(){
+      try { return JSON.parse(localStorage.getItem("ia_completed_lessons") || "[]"); }
+      catch(e){ return []; }
+    }
+
+    function saveCompleted(arr){
+      localStorage.setItem("ia_completed_lessons", JSON.stringify(arr));
+    }
+
+    function linearIndex(m,l){
+      return m * 4 + l;
+    }
+
+    function isUnlocked(m,l){
+      if(m === 0 && l === 0) return true;
+      const previous = linearIndex(m,l) - 1;
+      const pm = Math.floor(previous / 4);
+      const pl = previous % 4;
+      return getCompleted().includes(key(pm,pl));
+    }
+
+    function getProgress(){
+      const completed = getCompleted().filter(item => {
+        const match = item.match(/^m(\d+)-l(\d+)$/);
+        if(!match) return false;
+        return Number(match[1]) < 4 && Number(match[2]) < 4;
+      }).length;
+
+      return Math.round((completed / 16) * 100);
+    }
+
+    function nextLessonUrl(){
+      let nextM = moduleIndex;
+      let nextL = lessonIndex + 1;
+
+      if(nextL >= 4){
+        nextM++;
+        nextL = 0;
+      }
+
+      if(nextM >= modules.length){
+        return "area.html#modules";
+      }
+
+      return `aula.html?m=${nextM}&l=${nextL}`;
+    }
+
+    function completeLesson(){
+      const completed = getCompleted();
+      const current = key(moduleIndex, lessonIndex);
+
+      if(!completed.includes(current)){
+        completed.push(current);
+        saveCompleted(completed);
+      }
+
+      renderPage(true);
+    }
+
+    function openImage(src){
+      document.getElementById("modalImg").src = src;
+      document.getElementById("imageModal").classList.add("show");
+    }
+
+    document.getElementById("closeModal").addEventListener("click",()=>{
+      document.getElementById("imageModal").classList.remove("show");
+    });
+
+    document.getElementById("imageModal").addEventListener("click",(e)=>{
+      if(e.target.id === "imageModal"){
+        e.currentTarget.classList.remove("show");
+      }
+    });
+
+    function buildTeachingContent(module, lesson){
+      return `
+        <h2>Objetivo da aula</h2>
+        <p>
+          Nesta aula, você vai entender como aplicar <strong>${lesson.toLowerCase()}</strong> dentro da sua construção como criadora de conteúdo.
+          A proposta é transformar o aprendizado em uma ação simples, visual e prática no seu perfil.
+        </p>
+
+        <div class="teaching-card">
+          <strong>Ideia central:</strong>
+          crescer como influenciadora não depende apenas de postar mais. Depende de clareza, repetição, estética, mensagem e leitura do que o público responde melhor.
+        </div>
+
+        <h3>1. O que observar antes de aplicar</h3>
+        <p>
+          Antes de executar, olhe para seu perfil como se fosse uma nova pessoa chegando ali pela primeira vez.
+          A mensagem está clara? O visual está coerente? O conteúdo tem intenção? Essa análise simples evita que você poste no automático.
+        </p>
+
+        <h3>2. Aplicação prática</h3>
+        <ol>
+          <li>Revise a etapa atual do seu perfil ou conteúdo.</li>
+          <li>Escolha uma melhoria pequena para aplicar hoje.</li>
+          <li>Use Instagram, Canva, CapCut ou IA como ferramenta de apoio.</li>
+          <li>Publique, ajuste ou organize algo real.</li>
+          <li>Depois, observe se houve mais clareza, interação ou resposta do público.</li>
+        </ol>
+
+        <h3>3. Erros comuns</h3>
+        <ul>
+          <li>Querer fazer tudo de uma vez e não concluir nada.</li>
+          <li>Copiar outras criadoras sem adaptar para sua identidade.</li>
+          <li>Focar só na estética e esquecer a mensagem.</li>
+          <li>Não acompanhar métricas depois de publicar.</li>
+          <li>Usar IA sem revisar e humanizar o resultado.</li>
+        </ul>
+
+        <div class="task-box">
+          <h3>Tarefa de casa</h3>
+          <p>
+            Aplique uma ação real desta aula hoje. Pode ser ajustar a bio, criar um roteiro, gravar um vídeo curto,
+            editar no CapCut, montar uma arte no Canva ou pedir ideias para a IA.
+          </p>
+          <p>
+            Depois, marque a aula como concluída para registrar sua evolução.
+          </p>
+        </div>
+      `;
+    }
+
+    function renderBlocked(){
+      document.getElementById("app").innerHTML = `
+        <div class="blocked">
+          <span class="eyebrow">Aula bloqueada</span>
+          <h1>Continue pela sequência da trilha.</h1>
+          <p style="color:#8a7166;line-height:1.7;font-size:18px;max-width:680px;margin:18px auto">
+            A trilha foi organizada em uma ordem simples para facilitar sua evolução.
+          </p>
+          <a class="btn primary" href="area.html#modules">Voltar para os módulos</a>
+        </div>
+      `;
+    }
+
+    function renderPage(justCompleted = false){
+      const module = modules[moduleIndex];
+      const lesson = module.lessons[lessonIndex];
+      const done = getCompleted().includes(key(moduleIndex, lessonIndex));
+      const progress = getProgress();
+
+      document.getElementById("app").innerHTML = `
+        <header class="topbar">
+          <div class="brand">
+            <div class="logo">IA</div>
+            <div>
+              <strong>Influencer Academy</strong>
+              <span>Módulo ${moduleIndex + 1} · Aula ${lessonIndex + 1} de 4</span>
+            </div>
+          </div>
+
+          <div class="top-actions">
+            <a class="btn light" href="area.html#modules">← Voltar aos módulos</a>
+            ${done ? `<a class="btn primary" href="${nextLessonUrl()}">Próxima aula →</a>` : ""}
+          </div>
+        </header>
+
+        <section class="hero">
+          <span class="eyebrow">${module.title}</span>
+          <h1>${lesson}</h1>
+          <p>${module.desc}</p>
+
+          <div class="progress-box">
+            <div class="progress-head">
+              <span>Progresso geral da trilha</span>
+              <span>${progress}%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width:${progress}%"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="grid">
+          <article class="panel">
+            ${justCompleted ? `
+              <div class="teaching-card" style="background:#eefaf1;border-color:#bce8cb;color:#2e8b4d">
+                <strong>Parabéns!</strong> Aula marcada como concluída. Seu progresso foi atualizado.
+              </div>
+            ` : ""}
+
+            ${buildTeachingContent(module, lesson)}
+
+            <h2>Prints explicativos desta aula</h2>
+            <p>Use estes 4 prints para estudar a aula com exemplos visuais: Instagram, Canva, CapCut e IA.</p>
+
+            <div class="prints-grid">
+              ${getLessonPrints().map(p => `
+                <div class="print-card" onclick="openImage('${p[1]}')">
+                  <img src="${p[1]}" alt="${p[0]}">
+                  <span>${p[0]}</span>
+                </div>
+              `).join("")}
+            </div>
+
+            <div class="task-box">
+              <h3>Finalizar aula</h3>
+              <p>Marque como concluída depois de estudar o conteúdo e fazer sua tarefa de casa.</p>
+
+              <button class="btn primary" onclick="completeLesson()">
+                ${done ? "Aula concluída ✓" : "Marcar aula como concluída"}
+              </button>
+
+              ${done ? `<a class="btn light" style="margin-left:8px" href="${nextLessonUrl()}">Ir para próxima aula</a>` : ""}
+            </div>
+          </article>
+
+          <aside class="side">
+            <div class="side-card">
+              <h3>Resumo</h3>
+              <p><strong>Módulo:</strong> ${module.title}</p>
+              <p><strong>Aula:</strong> ${lesson}</p>
+              <p><strong>Status:</strong> ${done ? "Concluída" : "Em andamento"}</p>
+            </div>
+
+            <div class="side-card">
+              <h3>Como estudar</h3>
+              <p>Leia a aula, veja os prints, aplique uma tarefa simples e marque como concluída.</p>
+            </div>
+
+            <div class="side-card">
+              <h3>Foco</h3>
+              <p>Uma melhoria pequena por aula já deixa seu perfil mais estratégico.</p>
+            </div>
+          </aside>
+        </section>
+      `;
+    }
+
+    if(!modules[moduleIndex] || !modules[moduleIndex].lessons[lessonIndex]){
+      window.location.href = "area.html#modules";
+    } else if(!isUnlocked(moduleIndex, lessonIndex)){
+      renderBlocked();
+    } else {
+      renderPage();
+    }
+  </script>
+  <script src="assets/study-lightbox/study-lightbox.js"></script>
+    <script src="assets/course-finish/course-finish.js"></script>
+<script src="assets/lesson-locks/lesson-locks.js"></script>
+  <script src="assets/course-polish/course-polish.js"></script>
+<script id="iaFinalAulaFixJs">
+(function () {
+  const MODULE4_UNLOCK_DATE = new Date("2026-07-10T00:00:00-03:00");
+
+  function norm(text) {
+    return String(text || "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/\s+/g, " ")
+      .trim()
+      .toLowerCase();
+  }
+
+  function module4Locked() {
+    return new Date() < MODULE4_UNLOCK_DATE;
+  }
+
+  function blockModule4DirectAccess() {
+    if (!module4Locked()) return;
+
+    const params = new URLSearchParams(location.search);
+    const m = Number(params.get("m"));
+
+    if (m === 3) {
+      alert("O Módulo 4 será liberado automaticamente em 10/07/2026.");
+      location.href = "area.html#classes";
+    }
+  }
+
+  function hideFloatingCompleteCard() {
+    document.querySelectorAll("div, section, article").forEach(function (el) {
+      const txt = norm(el.innerText || el.textContent);
+
+      const isCard =
+        txt.includes("aula ja concluida") ||
+        txt.includes("aula já concluída") ||
+        txt.includes("esta etapa ja esta salva") ||
+        txt.includes("esta etapa já está salva");
+
+      if (!isCard) return;
+
+      const style = getComputedStyle(el);
+      const r = el.getBoundingClientRect();
+
+      const looksFloating =
+        style.position === "fixed" ||
+        r.right > window.innerWidth - 420 ||
+        r.bottom > window.innerHeight - 260;
+
+      if (looksFloating) {
+        el.classList.add("ia-floating-complete-card");
+      }
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    blockModule4DirectAccess();
+    hideFloatingCompleteCard();
+
+    setTimeout(hideFloatingCompleteCard, 500);
+    setTimeout(hideFloatingCompleteCard, 1200);
+  });
+
+  if (document.readyState !== "loading") {
+    blockModule4DirectAccess();
+    hideFloatingCompleteCard();
+  }
+})();
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

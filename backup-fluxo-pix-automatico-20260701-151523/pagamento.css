@@ -1,0 +1,365 @@
+﻿* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #432d27;
+  background:
+    radial-gradient(circle at top left, rgba(216, 135, 118, .18), transparent 34%),
+    radial-gradient(circle at bottom right, rgba(67, 45, 39, .10), transparent 30%),
+    #fbf5f1;
+}
+
+.pay-page {
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 38px 0 70px;
+}
+
+.pay-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 470px;
+  gap: 28px;
+  align-items: stretch;
+}
+
+.pay-hero,
+.pay-card,
+.benefits {
+  border: 1px solid #ead2c8;
+  background: rgba(255, 253, 251, .92);
+  border-radius: 34px;
+  box-shadow: 0 24px 80px rgba(68, 45, 39, .12);
+}
+
+.pay-hero {
+  padding: 46px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 610px;
+  background:
+    radial-gradient(circle at top right, rgba(216,135,118,.22), transparent 34%),
+    linear-gradient(135deg, #fffdfb, #fff1eb);
+}
+
+.pay-badge,
+.recommended {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 9px 14px;
+  background: #f7d9d1;
+  color: #c96f60;
+  font-weight: 950;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: .08em;
+}
+
+.pay-hero h1 {
+  margin: 24px 0 18px;
+  font-size: clamp(42px, 5vw, 72px);
+  line-height: .94;
+  letter-spacing: -.065em;
+}
+
+.pay-hero p {
+  margin: 0;
+  color: #8d6f65;
+  font-size: 18px;
+  line-height: 1.6;
+  max-width: 680px;
+}
+
+.price-card {
+  margin-top: 42px;
+  padding: 28px;
+  border-radius: 28px;
+  background: #432d27;
+  color: white;
+  box-shadow: 0 24px 60px rgba(67,45,39,.25);
+}
+
+.price-card span {
+  display: inline-flex;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.12);
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: .08em;
+}
+
+.old-price {
+  margin-top: 22px;
+  color: rgba(255,255,255,.58);
+  text-decoration: line-through;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.new-price {
+  margin-top: 4px;
+  font-size: clamp(46px, 5vw, 72px);
+  line-height: .95;
+  font-weight: 950;
+  color: #fff;
+}
+
+.price-card small {
+  display: block;
+  margin-top: 14px;
+  color: rgba(255,255,255,.72);
+}
+
+.pay-card {
+  padding: 30px;
+  min-height: 610px;
+}
+
+.pay-card-header h2 {
+  margin: 16px 0 10px;
+  font-size: 34px;
+  line-height: 1.05;
+}
+
+.pay-card-header p {
+  margin: 0 0 24px;
+  color: #8d6f65;
+  line-height: 1.55;
+}
+
+.main-btn,
+.secondary-btn {
+  width: 100%;
+  height: 58px;
+  border: 0;
+  border-radius: 18px;
+  font-size: 16px;
+  font-weight: 950;
+  cursor: pointer;
+  transition: transform .18s ease, box-shadow .18s ease, opacity .18s ease;
+}
+
+.main-btn {
+  background: linear-gradient(135deg, #d88776, #bd6658);
+  color: white;
+  box-shadow: 0 18px 40px rgba(216,135,118,.28);
+}
+
+.main-btn.soft {
+  margin-top: 12px;
+  background: #432d27;
+}
+
+.secondary-btn {
+  margin-top: 10px;
+  background: #fff;
+  color: #432d27;
+  border: 1px solid #ead2c8;
+}
+
+.main-btn:hover,
+.secondary-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 22px 50px rgba(68,45,39,.14);
+}
+
+.main-btn:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.status-box {
+  margin-top: 18px;
+  padding: 16px;
+  border-radius: 18px;
+  background: #fff4ef;
+  border: 1px solid #ead2c8;
+  color: #7d5e55;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.status-box.error {
+  background: #fff0f0;
+  color: #a33d3d;
+  border-color: #f0b9b9;
+}
+
+.status-box.success {
+  background: #effff3;
+  color: #367a4e;
+  border-color: #bde8c9;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.pix-result {
+  margin-top: 22px;
+  display: grid;
+  gap: 18px;
+}
+
+.qr-frame {
+  padding: 20px;
+  border-radius: 28px;
+  background:
+    linear-gradient(135deg, #fff, #fff4ef);
+  border: 1px solid #ead2c8;
+  display: grid;
+  place-items: center;
+}
+
+.qr-frame img {
+  width: min(280px, 100%);
+  border-radius: 18px;
+  background: white;
+  padding: 10px;
+  box-shadow: 0 16px 36px rgba(68,45,39,.10);
+}
+
+.pix-copy-area h3 {
+  margin: 0 0 10px;
+  font-size: 22px;
+}
+
+textarea {
+  width: 100%;
+  height: 98px;
+  resize: none;
+  border: 1px solid #ead2c8;
+  border-radius: 18px;
+  padding: 14px;
+  color: #432d27;
+  background: #fffdfb;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.secure-note {
+  margin-top: 22px;
+  border-radius: 22px;
+  background: #fff8f5;
+  border: 1px solid #ead2c8;
+  padding: 18px;
+  display: grid;
+  gap: 8px;
+  color: #8d6f65;
+}
+
+.secure-note strong {
+  color: #432d27;
+}
+
+.benefits {
+  margin-top: 28px;
+  padding: 34px;
+}
+
+.benefits h2 {
+  margin: 0 0 22px;
+  font-size: clamp(30px, 4vw, 48px);
+  line-height: 1.02;
+  letter-spacing: -.05em;
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.benefits-grid div {
+  border: 1px solid #ead2c8;
+  border-radius: 20px;
+  background: #fffdfb;
+  padding: 18px;
+  font-weight: 900;
+  color: #5d4038;
+  line-height: 1.4;
+}
+
+@media (max-width: 980px) {
+  .pay-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .pay-hero {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 680px) {
+  .pay-page {
+    width: min(100% - 20px, 1180px);
+    padding-top: 16px;
+  }
+
+  .pay-hero,
+  .pay-card,
+  .benefits {
+    border-radius: 26px;
+    padding: 24px;
+  }
+
+  .benefits-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .new-price {
+    font-size: 46px;
+  }
+}
+
+.pix-buyer-box {
+  margin: 18px 0;
+  padding: 18px;
+  border-radius: 22px;
+  background: #fff8f5;
+  border: 1px solid #ead2c8;
+}
+
+.pix-buyer-box label {
+  display: block;
+  margin-bottom: 9px;
+  color: #432d27;
+  font-size: 13px;
+  font-weight: 950;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+}
+
+.pix-buyer-box input {
+  width: 100%;
+  height: 54px;
+  border: 1px solid #ead2c8;
+  border-radius: 16px;
+  background: #fffdfb;
+  padding: 0 16px;
+  color: #432d27;
+  font-size: 15px;
+  outline: none;
+}
+
+.pix-buyer-box input:focus {
+  border-color: #d88776;
+  box-shadow: 0 0 0 4px rgba(216,135,118,.12);
+}
+
+.pix-buyer-box small {
+  display: block;
+  margin-top: 8px;
+  color: #8d6f65;
+  font-size: 12px;
+  line-height: 1.4;
+}

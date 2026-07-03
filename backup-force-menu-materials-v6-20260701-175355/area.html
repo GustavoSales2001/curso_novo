@@ -687,8 +687,112 @@
   </style>
   <link rel="stylesheet" href="assets/lesson-locks/lesson-locks.css">
   <link rel="stylesheet" href="assets/course-polish/course-polish.css">
-  <link rel="stylesheet" href="assets/reparo-final-area/reparo-final-area.css">
-  <link rel="stylesheet" href="assets/materials-web-fixed/materials-web-fixed.css">
+<style id="iaHardRouteFixCss">
+html {
+  scroll-behavior: smooth;
+}
+
+[href="#tools"],
+[href*="#tools"],
+.ia-hide-prints-hard,
+#tools,
+section#tools,
+[data-section="tools"] {
+  display: none !important;
+}
+
+.ia-section-force-hidden {
+  display: none !important;
+}
+
+.ia-section-force-active {
+  display: block !important;
+}
+
+.ia-material-card-hard {
+  cursor: pointer !important;
+  position: relative !important;
+  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease !important;
+}
+
+.ia-material-card-hard:hover {
+  transform: translateY(-5px) !important;
+  border-color: rgba(216,135,118,.85) !important;
+  box-shadow: 0 24px 64px rgba(68,45,39,.15) !important;
+}
+
+.ia-material-card-hard::after {
+  content: "Abrir PDF →";
+  position: absolute;
+  left: 22px;
+  bottom: 18px;
+  z-index: 20;
+  min-height: 38px;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: #d88776;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 950;
+  box-shadow: 0 14px 28px rgba(216,135,118,.24);
+}
+
+.ia-material-card-hard {
+  padding-bottom: 78px !important;
+}
+
+.ia-module4-locked-hard {
+  opacity: .52 !important;
+  cursor: not-allowed !important;
+  position: relative !important;
+  filter: grayscale(.12) !important;
+}
+
+.ia-module4-locked-hard::after {
+  content: "🔒 Libera em 10/07/2026";
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 30;
+  padding: 9px 13px;
+  border-radius: 999px;
+  background: #432d27;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 950;
+  box-shadow: 0 14px 34px rgba(67,45,39,.18);
+}
+
+.ia-toast-hard {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 999999999;
+  width: min(390px, calc(100vw - 42px));
+  padding: 18px;
+  border-radius: 22px;
+  background: #fffdfb;
+  border: 1px solid #ead2c8;
+  box-shadow: 0 24px 70px rgba(68,45,39,.18);
+  color: #432d27;
+}
+
+.ia-toast-hard strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 17px;
+}
+
+.ia-toast-hard p {
+  margin: 0;
+  color: #8d6f65;
+  line-height: 1.45;
+  font-size: 14px;
+}
+</style>
 </head>
 
 <body>
@@ -927,7 +1031,7 @@
           "Métricas e insights",
           "Rotina de postagem",
           "IA para ideias e roteiros",
-          "Parcerias, mídia kit e monetização"
+          "Parcerias, media kit e monetização"
         ]
       }
     ];
@@ -945,7 +1049,7 @@
       ["Roteiro de Reels","Modelo com gancho, desenvolvimento, CTA e estrutura de retenção."],
       ["Guia Canva + CapCut","Apoio rápido para design, edição, legenda e exportação."],
       ["Prompts de IA","Comandos para ideias, roteiros, legendas e planejamento."],
-      ["Mini mídia kit","Estrutura inicial para apresentar seu perfil para marcas."]
+      ["Mini media kit","Estrutura inicial para apresentar seu perfil para marcas."]
     ];
 
     let selectedModule = 0;
@@ -1178,245 +1282,363 @@
   </script>
   <script src="assets/lesson-locks/lesson-locks.js"></script>
   <script src="assets/course-polish/course-polish.js"></script>
-  <script src="assets/reparo-final-area/reparo-final-area.js"></script>
-  <script src="assets/materials-web-fixed/materials-web-fixed.js"></script>
+<script id="iaHardRouteFixJs">
+(function () {
+  const MODULE4_UNLOCK_DATE = new Date("2026-07-10T00:00:00-03:00");
 
-<section id="materials">
+  const sections = ["home", "modules", "classes", "materials", "profile"];
 
-<h2>Materiais</h2>
+  const routeMap = [
+    { labels: ["inicio", "início", "home"], hash: "#home" },
+    { labels: ["modulos", "módulos", "modules"], hash: "#modules" },
+    { labels: ["aulas", "classes"], hash: "#classes" },
+    { labels: ["materiais", "materials"], hash: "#materials" },
+    { labels: ["perfil", "profile"], hash: "#profile" }
+  ];
 
-<div class="materials-grid">
+  const materials = [
+    {
+      keys: ["material 1", "checklist", "perfil estrategico", "perfil estratégico"],
+      file: "assets/materiais/01_checklist_perfil_estrategico.pdf"
+    },
+    {
+      keys: ["material 2", "planner", "conteudo", "conteúdo", "30 dias"],
+      file: "assets/materiais/02_planner_conteudo_30_dias.pdf"
+    },
+    {
+      keys: ["material 3", "roteiro", "reels", "gancho"],
+      file: "assets/materiais/03_roteiro_reels_com_gancho.pdf"
+    },
+    {
+      keys: ["material 4", "canva", "capcut", "guia"],
+      file: "assets/materiais/04_guia_canva_capcut.pdf"
+    },
+    {
+      keys: ["material 5", "prompts", "prompt", "ia"],
+      file: "assets/materiais/05_prompts_ia_para_criadoras.pdf"
+    },
+    {
+      keys: ["material 6", "media kit", "midia kit", "parcerias"],
+      file: "assets/materiais/06_mini_midia_kit_parcerias.pdf"
+    }
+  ];
 
+  function norm(text) {
+    return String(text || "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/\s+/g, " ")
+      .trim()
+      .toLowerCase();
+  }
 
-<a class="material-card" href="./checklist_curriculo_cvia.pdf" target="_blank">
-    <div class="material-icon">📄</div>
-    <h3>checklist curriculo cvia</h3>
-    <p>Clique para abrir este material.</p>
-</a>
+  function toast(title, message) {
+    document.querySelectorAll(".ia-toast-hard").forEach(el => el.remove());
 
-<a class="material-card" href="./guia_rapido_curriculo_cvia.pdf" target="_blank">
-    <div class="material-icon">📄</div>
-    <h3>guia rapido curriculo cvia</h3>
-    <p>Clique para abrir este material.</p>
-</a>
+    const box = document.createElement("div");
+    box.className = "ia-toast-hard";
+    box.innerHTML = `<strong>${title}</strong><p>${message}</p>`;
+    document.body.appendChild(box);
 
-<a class="material-card" href="./modelo_base_curriculo_cvia.pdf" target="_blank">
-    <div class="material-icon">📄</div>
-    <h3>modelo base curriculo cvia</h3>
-    <p>Clique para abrir este material.</p>
-</a>
+    setTimeout(() => box.remove(), 3500);
+  }
 
-<a class="material-card" href="./modulo_1_como_a_ia_le_curriculo.pdf" target="_blank">
-    <div class="material-icon">📄</div>
-    <h3>modulo 1 como a ia le curriculo</h3>
-    <p>Clique para abrir este material.</p>
-</a>
+  function module4Locked() {
+    return new Date() < MODULE4_UNLOCK_DATE;
+  }
 
-<a class="material-card" href="./modulo_2_estrutura_que_chama_atencao.pdf" target="_blank">
-    <div class="material-icon">📄</div>
-    <h3>modulo 2 estrutura que chama atencao</h3>
-    <p>Clique para abrir este material.</p>
-</a>
+  function getSection(id) {
+    return document.getElementById(id) || document.querySelector(`[data-section="${id}"]`);
+  }
 
-<a class="material-card" href="./modulo_3_palavras_chave_certas.pdf" target="_blank">
-    <div class="material-icon">📄</div>
-    <h3>modulo 3 palavras chave certas</h3>
-    <p>Clique para abrir este material.</p>
-</a>
+  function forceShow(hash) {
+    const cleanHash = hash && hash.startsWith("#") ? hash : "#home";
+    const id = cleanHash.replace("#", "");
 
-<a class="material-card" href="./modulo_4_curriculo_final_estrategico.pdf" target="_blank">
-    <div class="material-icon">📄</div>
-    <h3>modulo 4 curriculo final estrategico</h3>
-    <p>Clique para abrir este material.</p>
-</a>
+    sections.forEach(sectionId => {
+      const el = getSection(sectionId);
+      if (!el) return;
 
-<a class="material-card" href="./assets/materiais/01_checklist_perfil_estrategico.pdf" target="_blank">
-    <div class="material-icon">📄</div>
-    <h3>01 checklist perfil estrategico</h3>
-    <p>Clique para abrir este material.</p>
-</a>
+      if (sectionId === id) {
+        el.classList.remove("ia-section-force-hidden");
+        el.classList.add("ia-section-force-active");
+        el.hidden = false;
+        el.style.display = "";
+      } else {
+        el.classList.remove("ia-section-force-active");
+        el.classList.add("ia-section-force-hidden");
+        el.hidden = true;
+        el.style.display = "none";
+      }
+    });
 
-<a class="material-card" href="./assets/materiais/02_planner_conteudo_30_dias.pdf" target="_blank">
-    <div class="material-icon">📄</div>
-    <h3>02 planner conteudo 30 dias</h3>
-    <p>Clique para abrir este material.</p>
-</a>
+    const active = getSection(id);
 
-<a class="material-card" href="./assets/materiais/03_roteiro_reels_com_gancho.pdf" target="_blank">
-    <div class="material-icon">📄</div>
-    <h3>03 roteiro reels com gancho</h3>
-    <p>Clique para abrir este material.</p>
-</a>
+    if (active) {
+      setTimeout(() => {
+        active.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      }, 40);
+    }
 
-<a class="material-card" href="./assets/materiais/04_guia_canva_capcut.pdf" target="_blank">
-    <div class="material-icon">📄</div>
-    <h3>04 guia canva capcut</h3>
-    <p>Clique para abrir este material.</p>
-</a>
+    bindMaterials();
+    lockModule4OnlyInLessons();
+    hidePrints();
+  }
 
-<a class="material-card" href="./assets/materiais/05_prompts_ia_para_criadoras.pdf" target="_blank">
-    <div class="material-icon">📄</div>
-    <h3>05 prompts ia para criadoras</h3>
-    <p>Clique para abrir este material.</p>
-</a>
+  function go(hash) {
+    const targetHash = hash || "#home";
 
-<a class="material-card" href="./assets/materiais/06_mini_midia_kit_parcerias.pdf" target="_blank">
-    <div class="material-icon">📄</div>
-    <h3>06 mini midia kit parcerias</h3>
-    <p>Clique para abrir este material.</p>
-</a>
+    if (location.hash !== targetHash) {
+      history.pushState(null, "", targetHash);
+    }
 
-<a class="material-card" href="./assets/materials/01_checklist_perfil_estrategico.pdf" target="_blank">
-    <div class="material-icon">📄</div>
-    <h3>01 checklist perfil estrategico</h3>
-    <p>Clique para abrir este material.</p>
-</a>
+    forceShow(targetHash);
 
-<a class="material-card" href="./assets/materials/02_planner_conteudo_30_dias.pdf" target="_blank">
-    <div class="material-icon">📄</div>
-    <h3>02 planner conteudo 30 dias</h3>
-    <p>Clique para abrir este material.</p>
-</a>
+    setTimeout(() => forceShow(targetHash), 80);
+    setTimeout(() => forceShow(targetHash), 300);
+  }
 
-<a class="material-card" href="./assets/materials/03_roteiro_reels_com_gancho.pdf" target="_blank">
-    <div class="material-icon">📄</div>
-    <h3>03 roteiro reels com gancho</h3>
-    <p>Clique para abrir este material.</p>
-</a>
+  function routeFromText(text) {
+    const t = norm(text);
 
-<a class="material-card" href="./assets/materials/04_guia_canva_capcut.pdf" target="_blank">
-    <div class="material-icon">📄</div>
-    <h3>04 guia canva capcut</h3>
-    <p>Clique para abrir este material.</p>
-</a>
+    return routeMap.find(route => {
+      return route.labels.some(label => {
+        const l = norm(label);
+        return t === l || t.includes(l);
+      });
+    });
+  }
 
-<a class="material-card" href="./assets/materials/05_prompts_ia_para_criadoras.pdf" target="_blank">
-    <div class="material-icon">📄</div>
-    <h3>05 prompts ia para criadoras</h3>
-    <p>Clique para abrir este material.</p>
-</a>
+  function isMenuArea(el) {
+    let node = el;
 
-<a class="material-card" href="./assets/materials/06_mini_midia_kit_parcerias.pdf" target="_blank">
-    <div class="material-icon">📄</div>
-    <h3>06 mini midia kit parcerias</h3>
-    <p>Clique para abrir este material.</p>
-</a>
+    for (let i = 0; i < 8 && node; i++) {
+      const tag = String(node.tagName || "").toLowerCase();
+      const cls = String(node.className || "").toLowerCase();
+      const r = node.getBoundingClientRect && node.getBoundingClientRect();
 
-<a class="material-card" href="./backup-materiais-college-premium-20260701-131437/materiais-antigos/01_checklist_perfil_estrategico.pdf" target="_blank">
-    <div class="material-icon">📄</div>
-    <h3>01 checklist perfil estrategico</h3>
-    <p>Clique para abrir este material.</p>
-</a>
+      if (tag === "aside" || tag === "nav") return true;
+      if (cls.includes("sidebar") || cls.includes("side") || cls.includes("menu")) return true;
+      if (r && r.left < 430 && r.width < 480) return true;
 
-<a class="material-card" href="./backup-materiais-college-premium-20260701-131437/materiais-antigos/02_planner_conteudo_30_dias.pdf" target="_blank">
-    <div class="material-icon">📄</div>
-    <h3>02 planner conteudo 30 dias</h3>
-    <p>Clique para abrir este material.</p>
-</a>
+      node = node.parentElement;
+    }
 
-<a class="material-card" href="./backup-materiais-college-premium-20260701-131437/materiais-antigos/03_roteiro_reels_com_gancho.pdf" target="_blank">
-    <div class="material-icon">📄</div>
-    <h3>03 roteiro reels com gancho</h3>
-    <p>Clique para abrir este material.</p>
-</a>
+    return false;
+  }
 
-<a class="material-card" href="./backup-materiais-college-premium-20260701-131437/materiais-antigos/04_guia_canva_capcut.pdf" target="_blank">
-    <div class="material-icon">📄</div>
-    <h3>04 guia canva capcut</h3>
-    <p>Clique para abrir este material.</p>
-</a>
+  function findMenuRoute(target) {
+    let node = target;
 
-<a class="material-card" href="./backup-materiais-college-premium-20260701-131437/materiais-antigos/05_prompts_ia_para_criadoras.pdf" target="_blank">
-    <div class="material-icon">📄</div>
-    <h3>05 prompts ia para criadoras</h3>
-    <p>Clique para abrir este material.</p>
-</a>
+    for (let i = 0; i < 9 && node; i++) {
+      const href = node.getAttribute && node.getAttribute("href");
+      if (href && href.startsWith("#")) {
+        const allowed = routeMap.find(r => r.hash === href);
+        if (allowed) return allowed;
+      }
 
-<a class="material-card" href="./backup-materiais-college-premium-20260701-131437/materiais-antigos/06_mini_midia_kit_parcerias.pdf" target="_blank">
-    <div class="material-icon">📄</div>
-    <h3>06 mini midia kit parcerias</h3>
-    <p>Clique para abrir este material.</p>
-</a>
+      const text = node.innerText || node.textContent || "";
+      const route = routeFromText(text);
 
-<a class="material-card" href="./backup-materiais-menu-modulo4-20260701-163305/materiais-antigos/01_checklist_perfil_estrategico.pdf" target="_blank">
-    <div class="material-icon">📄</div>
-    <h3>01 checklist perfil estrategico</h3>
-    <p>Clique para abrir este material.</p>
-</a>
+      if (route && isMenuArea(node)) return route;
 
-<a class="material-card" href="./backup-materiais-menu-modulo4-20260701-163305/materiais-antigos/02_planner_conteudo_30_dias.pdf" target="_blank">
-    <div class="material-icon">📄</div>
-    <h3>02 planner conteudo 30 dias</h3>
-    <p>Clique para abrir este material.</p>
-</a>
+      node = node.parentElement;
+    }
 
-<a class="material-card" href="./backup-materiais-menu-modulo4-20260701-163305/materiais-antigos/03_roteiro_reels_com_gancho.pdf" target="_blank">
-    <div class="material-icon">📄</div>
-    <h3>03 roteiro reels com gancho</h3>
-    <p>Clique para abrir este material.</p>
-</a>
+    return null;
+  }
 
-<a class="material-card" href="./backup-materiais-menu-modulo4-20260701-163305/materiais-antigos/04_guia_canva_capcut.pdf" target="_blank">
-    <div class="material-icon">📄</div>
-    <h3>04 guia canva capcut</h3>
-    <p>Clique para abrir este material.</p>
-</a>
+  function bindMenuOnce() {
+    if (window.__iaHardMenuBound) return;
+    window.__iaHardMenuBound = true;
 
-<a class="material-card" href="./backup-materiais-menu-modulo4-20260701-163305/materiais-antigos/05_prompts_ia_para_criadoras.pdf" target="_blank">
-    <div class="material-icon">📄</div>
-    <h3>05 prompts ia para criadoras</h3>
-    <p>Clique para abrir este material.</p>
-</a>
+    document.addEventListener("click", function (event) {
+      const route = findMenuRoute(event.target);
 
-<a class="material-card" href="./backup-materiais-menu-modulo4-20260701-163305/materiais-antigos/06_mini_midia_kit_parcerias.pdf" target="_blank">
-    <div class="material-icon">📄</div>
-    <h3>06 mini midia kit parcerias</h3>
-    <p>Clique para abrir este material.</p>
-</a>
+      if (!route) return;
 
-<a class="material-card" href="./backup-materiais-premium-v2-20260701-121350/materials-antigos/01_checklist_perfil_estrategico.pdf" target="_blank">
-    <div class="material-icon">📄</div>
-    <h3>01 checklist perfil estrategico</h3>
-    <p>Clique para abrir este material.</p>
-</a>
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
 
-<a class="material-card" href="./backup-materiais-premium-v2-20260701-121350/materials-antigos/02_planner_conteudo_30_dias.pdf" target="_blank">
-    <div class="material-icon">📄</div>
-    <h3>02 planner conteudo 30 dias</h3>
-    <p>Clique para abrir este material.</p>
-</a>
+      go(route.hash);
+    }, true);
 
-<a class="material-card" href="./backup-materiais-premium-v2-20260701-121350/materials-antigos/03_roteiro_reels_com_gancho.pdf" target="_blank">
-    <div class="material-icon">📄</div>
-    <h3>03 roteiro reels com gancho</h3>
-    <p>Clique para abrir este material.</p>
-</a>
+    window.addEventListener("popstate", function () {
+      forceShow(location.hash || "#home");
+    });
 
-<a class="material-card" href="./backup-materiais-premium-v2-20260701-121350/materials-antigos/04_guia_canva_capcut.pdf" target="_blank">
-    <div class="material-icon">📄</div>
-    <h3>04 guia canva capcut</h3>
-    <p>Clique para abrir este material.</p>
-</a>
+    window.addEventListener("hashchange", function () {
+      forceShow(location.hash || "#home");
+    });
+  }
 
-<a class="material-card" href="./backup-materiais-premium-v2-20260701-121350/materials-antigos/05_prompts_ia_para_criadoras.pdf" target="_blank">
-    <div class="material-icon">📄</div>
-    <h3>05 prompts ia para criadoras</h3>
-    <p>Clique para abrir este material.</p>
-</a>
+  function hidePrints() {
+    document.querySelectorAll("a, button, div, span, li").forEach(function (el) {
+      const text = norm(el.innerText || el.textContent);
+      const href = el.getAttribute ? String(el.getAttribute("href") || "") : "";
 
-<a class="material-card" href="./backup-materiais-premium-v2-20260701-121350/materials-antigos/06_mini_midia_kit_parcerias.pdf" target="_blank">
-    <div class="material-icon">📄</div>
-    <h3>06 mini midia kit parcerias</h3>
-    <p>Clique para abrir este material.</p>
-</a>
+      if (text !== "prints" && text !== "capturas" && !href.includes("#tools")) return;
 
+      let target = el.closest("a, button, li") || el;
 
-</div>
+      for (let i = 0; i < 4; i++) {
+        const parent = target.parentElement;
+        if (!parent) break;
 
-</section>
+        const r = parent.getBoundingClientRect();
 
+        if (r.left < 430 && r.width >= 80 && r.width <= 460 && r.height >= 35 && r.height <= 170) {
+          target = parent;
+        }
+      }
+
+      target.classList.add("ia-hide-prints-hard");
+      target.style.display = "none";
+    });
+
+    const tools = document.querySelector("#tools, section#tools, [data-section='tools']");
+    if (tools) tools.style.display = "none";
+  }
+
+  function materialByText(text) {
+    const t = norm(text);
+
+    return materials.find(item => {
+      return item.keys.some(key => t.includes(norm(key)));
+    });
+  }
+
+  function bindMaterials() {
+    const section = getSection("materials");
+    if (!section) return;
+
+    section.querySelectorAll("article, section, div, a, button").forEach(card => {
+      const text = card.innerText || card.textContent || "";
+      const material = materialByText(text);
+      if (!material) return;
+
+      const r = card.getBoundingClientRect();
+      if (r.width < 140 || r.height < 60 || r.width > 620 || r.height > 460) return;
+
+      const textAll = norm(text);
+      const matches = materials.filter(m => m.keys.some(k => textAll.includes(norm(k))));
+
+      if (matches.length !== 1) return;
+
+      card.classList.add("ia-material-card-hard");
+      card.dataset.materialFile = material.file;
+
+      if (card.dataset.iaMaterialHardBound === "1") return;
+      card.dataset.iaMaterialHardBound = "1";
+
+      card.addEventListener("click", function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+
+        window.open(material.file, "_blank");
+      }, true);
+    });
+  }
+
+  function getLessonNumber(text) {
+    const match = String(text || "").match(/aula\s*0?(\d{1,2})/i);
+    if (!match) return null;
+
+    const n = Number(match[1]);
+    return Number.isFinite(n) ? n : null;
+  }
+
+  function lockModule4OnlyInLessons() {
+    if (!module4Locked()) return;
+
+    const lessonAreas = [
+      getSection("classes"),
+      getSection("modules")
+    ].filter(Boolean);
+
+    lessonAreas.forEach(area => {
+      area.querySelectorAll("article, section, div, a, button").forEach(card => {
+        const raw = card.innerText || card.textContent || "";
+        const text = norm(raw);
+
+        const r = card.getBoundingClientRect();
+        if (r.width < 140 || r.height < 60 || r.width > 820 || r.height > 450) return;
+
+        const n = getLessonNumber(raw);
+
+        const isModule4 =
+          text.includes("modulo 4") ||
+          text.includes("módulo 4") ||
+          text.includes("crescimento e profissionalizacao") ||
+          text.includes("crescimento e profissionalização") ||
+          (n && n >= 13);
+
+        if (!isModule4) return;
+
+        card.classList.add("ia-module4-locked-hard");
+
+        if (card.dataset.iaModule4HardBound === "1") return;
+        card.dataset.iaModule4HardBound = "1";
+
+        card.addEventListener("click", function (event) {
+          if (!module4Locked()) return;
+
+          event.preventDefault();
+          event.stopPropagation();
+          event.stopImmediatePropagation();
+
+          toast("Módulo 4 bloqueado", "Essa etapa será liberada automaticamente em 10/07/2026.");
+        }, true);
+      });
+    });
+
+    const materialsSection = getSection("materials");
+
+    if (materialsSection) {
+      materialsSection.querySelectorAll(".ia-module4-locked-hard").forEach(el => {
+        el.classList.remove("ia-module4-locked-hard");
+      });
+    }
+  }
+
+  function boot() {
+    bindMenuOnce();
+    hidePrints();
+
+    const current = location.hash || "#home";
+    forceShow(current);
+
+    setTimeout(() => forceShow(location.hash || "#home"), 150);
+    setTimeout(() => forceShow(location.hash || "#home"), 600);
+    setTimeout(() => forceShow(location.hash || "#home"), 1200);
+  }
+
+  document.addEventListener("DOMContentLoaded", boot);
+
+  if (document.readyState !== "loading") {
+    boot();
+  }
+
+  const observer = new MutationObserver(function () {
+    hidePrints();
+    bindMaterials();
+    lockModule4OnlyInLessons();
+  });
+
+  observer.observe(document.documentElement, {
+    childList: true,
+    subtree: true
+  });
+})();
+</script>
 </body>
 </html>
+
 
 
 

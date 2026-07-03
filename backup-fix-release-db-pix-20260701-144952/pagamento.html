@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pagamento - Influencer Academy</title>
+  <link rel="stylesheet" href="pagamento.css">
+</head>
+<body>
+  <main class="pay-page">
+    <section class="pay-shell">
+      <div class="pay-hero">
+        <div class="pay-badge">Acesso premium</div>
+
+        <h1>Finalize seu acesso à Influencer Academy.</h1>
+
+        <p>
+          Gere seu QR Code PIX, pague pelo app do seu banco e acompanhe a liberação do curso em poucos instantes.
+        </p>
+
+        <div class="price-card">
+          <span>Oferta especial</span>
+          <div class="old-price">De R$ 69,99</div>
+          <div class="new-price">Por R$ 39,99</div>
+          <small>Pagamento único · acesso ao conteúdo do curso</small>
+        </div>
+      </div>
+
+      <div class="pay-card">
+        <div class="pay-card-header">
+          <div>
+            <span class="recommended">Recomendado</span>
+            <h2>Pagamento via PIX</h2>
+            <p>O QR Code aparece aqui na página. Não precisa enviar comprovante por e-mail.</p>
+          </div>
+        </div>
+
+        <button id="generatePixBtn" class="main-btn" type="button">
+          Gerar QR Code PIX
+        </button>
+
+        <div id="statusBox" class="status-box hidden"></div>
+
+        <section id="pixResult" class="pix-result hidden">
+          <div class="qr-frame">
+            <img id="qrCodeImage" alt="QR Code PIX">
+          </div>
+
+          <div class="pix-copy-area">
+            <h3>PIX copia e cola</h3>
+            <textarea id="pixCode" readonly></textarea>
+
+            <button id="copyPixBtn" class="secondary-btn" type="button">
+              Copiar código PIX
+            </button>
+
+            <button id="checkPaymentBtn" class="main-btn soft" type="button">
+              Já paguei, verificar acesso
+            </button>
+          </div>
+        </section>
+
+        <div class="secure-note">
+          <strong>Como funciona:</strong>
+          <span>1. Gere o QR Code</span>
+          <span>2. Pague no app do banco</span>
+          <span>3. Clique em verificar acesso</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="benefits">
+      <h2>O que você libera com esse acesso</h2>
+
+      <div class="benefits-grid">
+        <div>✓ Trilha para sair do zero e organizar sua presença digital</div>
+        <div>✓ Aulas sobre Instagram, Reels, Canva, CapCut e IA</div>
+        <div>✓ Materiais premium em PDF para estudar e aplicar</div>
+        <div>✓ Área do aluno com progresso e aulas em sequência</div>
+      </div>
+    </section>
+  </main>
+
+  <script src="pagamento.js"></script>
+</body>
+</html>
+
