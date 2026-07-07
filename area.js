@@ -1,5 +1,5 @@
 ﻿document.addEventListener("DOMContentLoaded", async () => {
-  const API_BASE_UR$ 39,99L = "https://cursonovo-production.up.railway.app/api";
+const API_BASE_URL = "https://cursonovo-production.up.railway.app/api";
 
   const tabButtons = document.querySelectorAll(".tab-btn");
   const tabContents = document.querySelectorAll(".tab-content");
@@ -53,12 +53,12 @@
     return;
   }
 
-  try {
-      `${API_BASE_UR$ 39,99L}/users/access/${encodeURIComponent(usuario.email)}`
+ try {
+    const response = await fetch(
+        `${API_BASE_URL}/users/access/${encodeURIComponent(usuario.email)}`
     );
 
     const data = await response.json();
-
     if (!response.ok || !data.user) {
       notify.error("Usuário não encontrado. Faça login novamente.");
       localStorage.removeItem("usuario");
@@ -91,7 +91,7 @@
 
     const welcomeText = document.getElementById("welcomeText");
     if (welcomeText) {
-      welcomeText.textContent = `Olá, ${usuarioAtualizado.nome || "aluno(a)"}. Bom te ver por aqui.`;
+     welcomeText.textContent = `Olá, ${usuarioAtualizado.nome || "aluno(a)"}! Bom te ver por aqui.`;
     }
 
     notify.success("Bem-vindo(a)! Seus dados foram carregados com sucesso.", 3000);
@@ -270,7 +270,7 @@
             <p>Use fonte simples, texto alinhado, sem colunas complexas e sem gráficos desnecessários.</p>
             <p>Evite designs muito elaborados, excesso de cores e elementos decorativos que atrapalham a leitura.</p>
             <div class="lesson-highlight">
-              <strong>R$ 39,99egra prática:</strong>
+              <strong>Resultado:</strong>
               <p>Se o visual chama mais atenção do que o conteúdo, o perfil perdeu o foco.</p>
             </div>
           `
@@ -317,7 +317,7 @@
             <p>Adaptar não é mentir. É reorganizar e priorizar o que você já fez para mostrar mais aderência à vaga.</p>
             <ul>
               <li>Inclua palavras-chave relevantes</li>
-              <li>R$ 39,99eorganize experiências</li>
+              <li>Reorganize experiências</li>
               <li>Destaque o que é mais importante para aquela oportunidade</li>
             </ul>
           `
@@ -348,11 +348,11 @@
           title: "Tarefa vs resultado",
           shortText: "Aprenda a mostrar impacto, não só obrigação.",
           content: `
-            <p>Tarefa descreve o que você fazia. R$ 39,99esultado mostra o efeito do seu trabalho.</p>
+            <p>Tarefa descreve o que você fazia. Resultado mostra o efeito do seu trabalho.</p>
             <div class="lesson-highlight">
               <strong>Tarefa:</strong>
               <p>“Atendimento ao cliente”</p>
-              <strong>R$ 39,99esultado:</strong>
+              <strong>ResultadO:</strong>
               <p>“Atendimento ao cliente com foco em resolução de demandas e fidelização.”</p>
             </div>
           `
@@ -560,7 +560,7 @@
         1: [
           "Entender o que é algoritmo e por que ele impacta diretamente sua candidatura.",
           "Aprender como o sistema lê texto, identifica cargos e interpreta habilidades.",
-          "R$ 39,99econhecer os erros que eliminam bons perfis antes da leitura humana.",
+          "Reconhecer os erros que eliminam bons perfis antes da leitura humana.",
           "Construir uma base estratégica para os próximos módulos."
         ]
       };

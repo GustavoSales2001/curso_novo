@@ -651,7 +651,7 @@
       .cards-4,.prints-grid,.lesson-grid{grid-template-columns:1fr}
       .section-head,.progress-card{grid-template-columns:1fr;align-items:flex-start}
     }
-  /* MODULE SCROLL PATCH START */
+  
     .module-card {
       scroll-margin-top: 24px;
     }
@@ -669,27 +669,43 @@
       text-transform: uppercase;
       letter-spacing: .04em;
     }
+          /* ===== Hover dos cards de materiais ===== */
 
-    .module-detail {
-      scroll-margin-top: 24px;
-      transition: .25s ease;
-    }
+      .material-card{
+          cursor: pointer;
+          transition: .25s ease;
+      }
 
-    .module-detail.module-focus {
-      border-color: var(--rose);
-      box-shadow: 0 0 0 5px rgba(217,143,130,.16), var(--shadow);
-    }
+      .material-card:hover{
+          transform: translateY(-4px);
+          border-color:#e4afa3;
+          background:linear-gradient(135deg,#fff,#fff4ef);
+          box-shadow:0 18px 40px rgba(83,54,42,.08);
+      }
 
-    .lesson-card {
-      scroll-margin-top: 24px;
-    }
-/* MODULE SCROLL PATCH END */
+      /* Cursor de mão */
+      .material-card:hover{
+          cursor:pointer;
+      }
+            /* Cards das aulas */
+
+      .class-card{
+          cursor:pointer;
+          transition:.2s ease;
+      }
+
+      .class-card:hover{
+          transform:translateY(-2px);
+          border-color:#e4afa3;
+          background:linear-gradient(135deg,#fff,#fff4ef);
+          box-shadow:0 14px 34px rgba(83,54,42,.08);
+      }
+
   </style>
   <link rel="stylesheet" href="assets/lesson-locks/lesson-locks.css">
   <link rel="stylesheet" href="assets/course-polish/course-polish.css">
   <link rel="stylesheet" href="assets/ia-force-v7/ia-area-v7.css?v=20260701-182248">
-  <link rel="stylesheet" href="assets/materials-click-final/materials-click-final.css?v=20260701-184738">
-  <link rel="stylesheet" href="assets/materials-force-final/materials-force-final.css?v=20260701-192041">
+ 
 </head>
 
 <body>
@@ -712,7 +728,6 @@
       <nav class="nav">
         <button class="nav-btn active" data-view="home"><span class="nav-icon">🏠</span><span data-i18n="home">Início</span></button>
         <button class="nav-btn" data-view="modules"><span class="nav-icon">📚</span><span data-i18n="modules">Módulos</span></button>
-        <button class="nav-btn" data-view="tools"><span class="nav-icon">🖼️</span><span data-i18n="tools">Prints</span></button>
         <button class="nav-btn" data-view="classes"><span class="nav-icon">🎬</span><span data-i18n="classes">Aulas</span></button>
         <button class="nav-btn" data-view="materials"><span class="nav-icon">🧾</span><span data-i18n="materials">Materiais</span></button>
         <button class="nav-btn" data-view="profile"><span class="nav-icon">👩</span><span data-i18n="profile">Perfil</span></button>
@@ -778,18 +793,6 @@
 
           <div class="module-grid" id="moduleGrid"></div>
           <div class="module-detail" id="moduleDetail"></div>
-        </div>
-      </section>
-
-      <section class="view" id="view-tools">
-        <div class="hero">
-          <span class="eyebrow">Visual Support</span>
-          <h2 data-i18n="printsTitle">4 prints principais para apoiar toda a trilha.</h2>
-          <p data-i18n="printsText">As imagens foram reduzidas para deixar o curso mais leve, bonito e organizado.</p>
-        </div>
-
-        <div class="panel">
-          <div class="prints-grid" id="printsGrid"></div>
         </div>
       </section>
 
@@ -931,14 +934,7 @@
           "Parcerias, media kit e monetização"
         ]
       }
-    ];
-
-    const prints = [
-      ["Instagram","assets/curso/print-instagram.png"],
-      ["Canva","assets/curso/print-canva.png"],
-      ["CapCut","assets/curso/print-capcut.png"],
-      ["IA","assets/curso/print-ia.png"]
-    ];
+      ];
 
     const materials = [
       ["Checklist de perfil estratégico","Bio, nome, foto, destaques, promessa e primeira impressão."],
@@ -1070,15 +1066,6 @@
       `;
     }
 
-    function renderPrints(){
-      document.getElementById("printsGrid").innerHTML = prints.map(p => `
-        <div class="print-card" onclick="openImage('${p[1]}')">
-          <img src="${p[1]}" alt="${p[0]}">
-          <span>${p[0]}</span>
-        </div>
-      `).join("");
-    }
-
     function renderClasses(){
       const all = [];
       modules.forEach((m,mi)=>{
@@ -1096,15 +1083,31 @@
       `).join("");
     }
 
-    function renderMaterials(){
-      document.getElementById("materialsGrid").innerHTML = materials.map((m,i)=>`
-        <div class="simple-card">
-          <span class="tag">Material ${i + 1}</span>
-          <h4>${m[0]}</h4>
-          <p>${m[1]}</p>
+    function renderMaterials() {
+    document.getElementById("materialsGrid").innerHTML = materials.map((m, i) => `
+        <div class="simple-card material-card"
+             onclick="abrirMaterial(${i})">
+            <span class="tag">Material ${i + 1}</span>
+            <h4>${m[0]}</h4>
+            <p>${m[1]}</p>
         </div>
-      `).join("");
+    `).join("");
     }
+
+   function abrirMaterial(index){
+
+    const arquivos = [
+    "assets/materiais/01_checklist_perfil_estrategico.pdf",
+    "assets/materiais/02_planner_conteudo_30_dias.pdf",
+    "assets/materiais/03_roteiro_reels_com_gancho.pdf",
+    "assets/materiais/04_guia_canva_capcut.pdf",
+    "assets/materiais/05_prompts_ia_para_criadoras.pdf",
+    "assets/materiais/06_mini_midia_kit_parcerias.pdf"
+];
+
+    window.open(arquivos[index], "_blank");
+
+}
 
     function openImage(src){
       document.getElementById("modalImg").src = src;
@@ -1168,7 +1171,6 @@
     });
 
     renderModules();
-    renderPrints();
     renderClasses();
     renderMaterials();
     updateProgress();
@@ -1179,9 +1181,8 @@
   </script>
   <script src="assets/lesson-locks/lesson-locks.js"></script>
   <script src="assets/course-polish/course-polish.js"></script>
-  <script src="assets/ia-force-v7/ia-area-v7.js?v=20260701-182248"></script>
-  <script src="assets/materials-click-final/materials-click-final.js?v=20260701-184738"></script>
-  <script src="assets/materials-force-final/materials-force-final.js?v=20260701-192041"></script>
+  
+
 </body>
 </html>
 
