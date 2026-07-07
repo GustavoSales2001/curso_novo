@@ -699,7 +699,8 @@
           border-color:#e4afa3;
           background:linear-gradient(135deg,#fff,#fff4ef);
           box-shadow:0 14px 34px rgba(83,54,42,.08);
-      }
+      } 
+      
 
   </style>
   <link rel="stylesheet" href="assets/lesson-locks/lesson-locks.css">
@@ -985,13 +986,33 @@
       document.getElementById("progressNumber").textContent = percent + "%";
     }
 
-    function setView(view){
-      document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
-      document.getElementById("view-" + view).classList.add("active");
-      document.querySelectorAll(".nav-btn").forEach(b => b.classList.toggle("active", b.dataset.view === view));
-      location.hash = view;
-      window.scrollTo({top:0,behavior:"smooth"});
-    }
+  function setView(view) {
+  document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+
+  const targetView = document.getElementById("view-" + view);
+  targetView.classList.add("active");
+
+  document.querySelectorAll(".nav-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.view === view);
+  });
+
+  location.hash = view;
+
+  // Em telas pequenas, rola até o conteúdo
+  if (window.innerWidth <= 1180) {
+    setTimeout(() => {
+      targetView.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }, 50);
+  } else {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }
+}
 
     function renderModules(){
       const grid = document.getElementById("moduleGrid");
