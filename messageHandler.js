@@ -728,46 +728,56 @@ Você quer ajuda com perfil, conteúdo, pagamento ou acesso?`
 function detectIntent(msg, memory) {
   if (!msg) return "greeting";
 
+  // Menu numérico
   if (msg === "1") return "course";
   if (msg === "2") return "growth";
   if (msg === "3") return "content";
   if (msg === "4") return "payment";
   if (msg === "5") return "support";
 
+  // Se o cliente diz "sim", "quero", continua na mesma trilha
   if (isContinue(msg) && memory.currentPath && paths[memory.currentPath]) {
     return memory.currentPath;
   }
 
+  // Saudações
   if (hasAny(msg, ["oi", "ola", "olá", "opa", "bom dia", "boa tarde", "boa noite", "menu", "inicio", "início"])) {
     return "greeting";
   }
 
+  // Objeção de dinheiro
   if (hasAny(msg, ["sem dinheiro", "sem grana", "sem condições", "sem condicoes", "caro", "não tenho dinheiro", "nao tenho dinheiro", "sem pix", "não consigo pagar", "nao consigo pagar"])) {
     return "money";
   }
 
-  if (hasAny(msg, ["valor", "preço", "preco", "quanto custa", "pagamento", "pix", "cartão", "cartao", "boleto", "parcelamento"])) {
+  // Pagamento / Valor
+  if (hasAny(msg, ["valor", "preço", "preco", "quanto custa", "pagamento", "pix", "cartão", "cartao", "boleto", "parcelamento", "comprar", "link", "quero comprar"])) {
     return "payment";
   }
 
-  if (hasAny(msg, ["reels", "stories", "story", "canva", "capcut", "ia", "conteúdo", "conteudo", "gravar", "vídeo", "video", "editar", "legenda", "roteiro"])) {
+  // Conteúdo / Criação
+  if (hasAny(msg, ["reels", "stories", "story", "canva", "capcut", "ia", "conteúdo", "conteudo", "gravar", "vídeo", "video", "editar", "legenda", "roteiro", "melhorar meus conteudos"])) {
     return "content";
   }
 
-  if (hasAny(msg, ["crescer", "seguidores", "instagram", "engajamento", "alcance", "views", "viralizar", "do zero", "zero"])) {
+  // Crescimento no Instagram (AQUI ESTÁ A CORREÇÃO PRINCIPAL)
+  if (hasAny(msg, ["crescer", "crescimento", "seguidores", "instagram", "engajamento", "alcance", "views", "viralizar", "do zero", "zero", "crescer no instagram"])) {
     return "growth";
   }
 
-  if (hasAny(msg, ["curso", "como funciona", "explica", "saber mais", "influencer academy", "serve pra mim", "serve para mim", "módulos", "modulos", "aulas", "incluso"])) {
+  // Sobre o Curso
+  if (hasAny(msg, ["curso", "como funciona", "explica", "saber mais", "influencer academy", "serve pra mim", "serve para mim", "módulos", "modulos", "aulas", "incluso", "entender o curso"])) {
     return "course";
   }
 
+  // Suporte / Problemas
   if (hasAny(msg, ["login", "senha", "cadastro", "acesso", "paguei", "não liberou", "nao liberou", "erro", "bug", "travou", "suporte", "humano", "atendente"])) {
     return "support";
   }
 
-  if (isContinue(msg) && memory.currentPath) {
-    return memory.currentPath;
+  // Se o cliente disser "não" para alguma pergunta do robô, ele volta pro menu principal de forma mais amigável
+  if (hasAny(msg, ["nao", "não", "agora nao", "depois", "ainda nao"])) {
+     return "fallback";
   }
 
   return "fallback";
