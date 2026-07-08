@@ -700,7 +700,21 @@
           background:linear-gradient(135deg,#fff,#fff4ef);
           box-shadow:0 14px 34px rgba(83,54,42,.08);
       } 
-      
+
+      .class-card{
+          text-decoration:none;
+          color:inherit;
+          cursor:pointer;
+          transition:.25s ease;
+      }
+
+      .class-card:hover{
+          transform:translateY(-4px);
+          border-color:#e4afa3;
+          background:linear-gradient(135deg,#fff,#fff6f1);
+          box-shadow:0 18px 40px rgba(83,54,42,.08);
+      }
+            
 
   </style>
   <link rel="stylesheet" href="assets/lesson-locks/lesson-locks.css">
@@ -1087,22 +1101,29 @@
       `;
     }
 
-    function renderClasses(){
-      const all = [];
-      modules.forEach((m,mi)=>{
-        m.lessons.forEach((lesson,li)=>{
-          all.push([`Módulo ${mi + 1}`, lesson, m.title]);
-        });
-      });
+    function renderClasses() {
+  const all = [];
 
-      document.getElementById("classesGrid").innerHTML = all.map((c,i)=>`
-        <div class="simple-card">
-          <span class="tag">Aula ${i + 1}</span>
-          <h4>${c[1]}</h4>
-          <p><strong>${c[0]}:</strong> ${c[2]}</p>
-        </div>
-      `).join("");
-    }
+  modules.forEach((m, mi) => {
+    m.lessons.forEach((lesson, li) => {
+      all.push({
+        modulo: mi,
+        aula: li,
+        titulo: lesson,
+        moduloNome: m.title
+      });
+    });
+  });
+
+  document.getElementById("classesGrid").innerHTML = all.map((item, i) => `
+    <a class="simple-card class-card"
+       href="aula.html?m=${item.modulo}&l=${item.aula}">
+      <span class="tag">Aula ${i + 1}</span>
+      <h4>${item.titulo}</h4>
+      <p><strong>Módulo ${item.modulo + 1}:</strong> ${item.moduloNome}</p>
+    </a>
+  `).join("");
+}
 
     function renderMaterials() {
     document.getElementById("materialsGrid").innerHTML = materials.map((m, i) => `
