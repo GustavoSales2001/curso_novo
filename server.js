@@ -3429,6 +3429,9 @@ app.post("/api/webhooks/whatsapp", async (req, res) => {
 
     console.log("Webhook WhatsApp payload recebido.");
 
+    // Ferramenta de tempo para o efeito "digitando"
+    const delay = ms => new Promise(res => setTimeout(res, ms));
+
     const message = value?.messages?.[0];
 
     if (!message) {
@@ -3436,6 +3439,15 @@ app.post("/api/webhooks/whatsapp", async (req, res) => {
     }
 
     const from = normalizePhoneBR(message.from || "");
+    const type = message.type; // NOVO: Checa se é texto, áudio, etc.
+
+    // NOVO: Regra de bloqueio de áudio
+    if (type === "audio" || type === "voice") {
+      const audioReply = "Menina, estou num lugar que não consigo ouvir áudio agora 🙈 Consegue me escrever rapidinho qual é a sua dúvida?";
+      await sendWhatsAppText(from, audioReply);
+      return res.sendStatus(200);
+    }
+
     const text = message?.text?.body || "";
 
     const user = await getUserByPhone(from);
@@ -3450,19 +3462,18 @@ app.post("/api/webhooks/whatsapp", async (req, res) => {
     });
 
     if (user?.bot_paused) {
-  if (user?.id) {
-    await pool.query(`
-      UPDATE users
-      SET last_whatsapp_message_at = NOW(),
-          last_customer_message_at = NOW(),
-          updated_at = CURRENT_TIMESTAMP
-      WHERE id = ?
-    `, [user.id]);
-  }
-
-  console.log(`⏸️ Bot pausado para user ${user?.id}`);
-  return res.sendStatus(200);
-}
+      if (user?.id) {
+        await pool.query(`
+          UPDATE users
+          SET last_whatsapp_message_at = NOW(),
+              last_customer_message_at = NOW(),
+              updated_at = CURRENT_TIMESTAMP
+          WHERE id = ?
+        `, [user.id]);
+      }
+      console.log(`⏸️ Bot pausado para user ${user?.id}`);
+      return res.sendStatus(200);
+    }
 
     if (user?.id) {
       await pool.query(
@@ -3481,20 +3492,38 @@ app.post("/api/webhooks/whatsapp", async (req, res) => {
     const { intent, reply } = handleIncomingMessage(text, user);
 
     let finalReply = reply;
-    if (intent === "FALLBACK") {
+    // Mantém a sua lógica do Claude intacta (checando maiúsculo ou minúsculo)
+    if (intent === "FALLBACK" || intent === "fallback") {
       const claudeReply = await maybeGetClaudeReply(text, user);
       finalReply = claudeReply || reply || "Posso te ajudar com pagamento, acesso ou dúvidas do curso 😊";
     }
 
-    const sendResponse = await sendWhatsAppText(from, finalReply);
+    // --- NOVO: Efeito de digitação (quebrando a mensagem) ---
+    // Corta a mensagem toda vez que tiver um "Enter duplo" (\n\n) no texto
+    const replyParts = finalReply.split('\n\n').filter(part => part.trim() !== "");
 
+    let lastSendResponse = null;
+
+    for (let i = 0; i < replyParts.length; i++) {
+      const part = replyParts[i];
+      
+      // Envia o parágrafo
+      lastSendResponse = await sendWhatsAppText(from, part.trim());
+
+      // Se não for o último parágrafo, dá uma pausa de 2.5 segundos para parecer que está digitando o resto
+      if (i < replyParts.length - 1) {
+        await delay(2500); 
+      }
+    }
+
+    // Salva a mensagem enviada no banco de dados
     await saveWhatsappMessage({
       userId: user?.id || null,
       celular: from,
       direction: "out",
-      messageText: reply,
-      waMessageId: sendResponse?.messages?.[0]?.id || null,
-      rawPayload: sendResponse
+      messageText: finalReply,
+      waMessageId: lastSendResponse?.messages?.[0]?.id || null,
+      rawPayload: lastSendResponse
     });
 
     return res.sendStatus(200);

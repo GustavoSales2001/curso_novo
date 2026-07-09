@@ -32,8 +32,18 @@ function getUserKey(user = {}) {
   ).toLowerCase();
 }
 
+// NOVO: Agora a função tem espaços para não ler pedaços de palavras ("ta" dentro de "gostaria")
 function hasAny(msg, words) {
-  return words.some(word => msg.includes(normalizeText(word)));
+  const text = " " + normalizeText(msg) + " ";
+  return words.some(word => {
+    const w = " " + normalizeText(word) + " ";
+    return text.includes(w);
+  });
+}
+
+// Função auxiliar para sortear respostas (deixa o bot menos repetitivo)
+function getRandomReply(repliesArray) {
+  return repliesArray[Math.floor(Math.random() * repliesArray.length)];
 }
 
 function getMemory(user = {}) {
@@ -45,6 +55,7 @@ function getMemory(user = {}) {
       lastIntent: "",
       lastReply: "",
       lastUserText: "",
+      fallbackCount: 0, // NOVO: Contador de falhas (gatilho de frustração)
       pathIndex: {
         course: 0,
         growth: 0,
@@ -638,43 +649,29 @@ Quer que eu te mande o caminho mais indicado para começar?`
   ]
 };
 
+// NOVO: Sortear Saudações (parecer humano)
 function greeting(memory) {
   memory.currentPath = "inicio";
+  
+  const greetings = [
+    `${prefix(memory)}oii! 💕 Seja bem-vinda à Influencer Academy.\n\nMe conta o que você quer entender primeiro:\n\n1. Quero entender o curso\n2. Quero crescer no Instagram\n3. Quero melhorar meus conteúdos\n4. Quero saber o valor\n\nPode responder só com o número ou escrever sua dúvida do seu jeito.`,
+    `${prefix(memory)}que bom ter você por aqui! ✨ Chegou no lugar certo.\n\nComo posso te ajudar hoje?\n\n1. Como funciona a Academy?\n2. Dicas de crescimento\n3. Melhorar meus vídeos e conteúdo\n4. Ver valores e pacotes`,
+    `Oii ${memory.known.name ? memory.known.name : "maravilhosa"}! 💕 É um prazer te receber aqui na Influencer Academy.\n\nPra eu te guiar certinho, me diz o que você busca:\n\n1. Entender os módulos do curso\n2. Atrair mais seguidores reais\n3. Melhorar edição e estética\n4. Ver o preço promocional`
+  ];
 
-  return `${prefix(memory)}oii! 💕 Seja bem-vinda à Influencer Academy.
-
-Me conta o que você quer entender primeiro:
-
-1. Quero entender o curso
-2. Quero crescer no Instagram
-3. Quero melhorar meus conteúdos
-4. Quero saber o valor
-
-Pode responder só com o número ou escrever sua dúvida do seu jeito.`;
+  return getRandomReply(greetings);
 }
 
+// NOVO: Usar nome no meio da frase na objeção de dinheiro
 function moneyObjection(memory) {
+  const nomeDaPessoa = memory.known.name ? ` ${memory.known.name}` : "";
+  
   const replies = [
-    `Eu te entendo de verdade 💕 Não se aperta por causa disso.
+    `Eu te entendo de verdade${nomeDaPessoa}. 💕 Não se aperta por causa disso.\n\nSe agora não é o momento, começa por uma ação gratuita: ajuste sua bio para deixar claro quem você ajuda e por que alguém deveria te seguir.\n\nQuando fizer sentido, o curso está por ${COURSE_PRICE}:\n${COURSE_LINK}`,
 
-Se agora não é o momento, começa por uma ação gratuita: ajuste sua bio para deixar claro quem você ajuda e por que alguém deveria te seguir.
+    `Super entendo. Às vezes a vontade existe, mas o financeiro aperta.\n\nNão vou te pressionar. O melhor agora é começar pelo básico: organizar perfil, escolher 3 temas e postar com mais intenção.\n\nQuer que eu te ajude com uma ideia de conteúdo gratuita para hoje?`,
 
-Quando fizer sentido, o curso está por ${COURSE_PRICE}:
-${COURSE_LINK}`,
-
-    `Super entendo. Às vezes a vontade existe, mas o financeiro aperta.
-
-Não vou te pressionar. O melhor agora é começar pelo básico: organizar perfil, escolher 3 temas e postar com mais intenção.
-
-Quer que eu te ajude com uma ideia de conteúdo gratuita para hoje?`,
-
-    `Obrigada por falar isso com sinceridade 💕
-
-Mesmo sem comprar agora, você pode começar. O primeiro passo é parar de postar aleatório e escolher uma direção.
-
-Quando puder investir, a trilha te ajuda a acelerar.
-
-Quer que eu te passe um primeiro passo simples?`
+    `Obrigada por falar isso com sinceridade${nomeDaPessoa}. 💕\n\nMesmo sem comprar agora, você pode começar. O primeiro passo é parar de postar aleatório e escolher uma direção.\n\nQuando puder investir, a trilha te ajuda a acelerar.\n\nQuer que eu te passe um primeiro passo simples?`
   ];
 
   return nextFromPath(memory, "money", replies);
@@ -682,102 +679,83 @@ Quer que eu te passe um primeiro passo simples?`
 
 function supportPath(memory) {
   const replies = [
-    `Vamos resolver.
+    `Vamos resolver.\n\nMe diz onde está o problema:\n1. cadastro\n2. login\n3. pagamento\n4. área da aluna\n5. aula bloqueada\n\nSe puder, envie print para:\nhttps://wa.me/${SUPPORT_WHATSAPP}`,
 
-Me diz onde está o problema:
-1. cadastro
-2. login
-3. pagamento
-4. área da aluna
-5. aula bloqueada
-
-Se puder, envie print para:
-https://wa.me/${SUPPORT_WHATSAPP}`,
-
-    `Entendi. Para suporte, preciso saber o ponto exato.
-
-É problema no cadastro, login, pagamento ou liberação de aula?
-
-Se for urgente, chama aqui com print:
-https://wa.me/${SUPPORT_WHATSAPP}`
+    `Entendi. Para suporte, preciso saber o ponto exato.\n\nÉ problema no cadastro, login, pagamento ou liberação de aula?\n\nSe for urgente, chama aqui com print:\nhttps://wa.me/${SUPPORT_WHATSAPP}`
   ];
 
   return nextFromPath(memory, "support", replies);
 }
 
+// NOVO: Gatilho de Frustração e Variação de Fallback
 function fallback(memory) {
+  memory.fallbackCount += 1;
+
+  // Se o robô não entender 3x seguidas, ele passa para o humano
+  if (memory.fallbackCount >= 3) {
+      return `Vou ser super sincera com você, acho que me perdi um pouco na nossa conversa 😅 Como sou um assistente virtual, às vezes eu tropeço.\n\nVou deixar o WhatsApp do especialista aqui para você falar direto com ele e tirar todas as suas dúvidas:\n👉 https://wa.me/${SUPPORT_WHATSAPP}`;
+  }
+
   const replies = [
-    `Entendi 💕
-
-Para eu te responder melhor, me explica com um pouco mais de detalhe.
-
-Sua dúvida é sobre curso, crescimento, conteúdo, valor ou acesso?`,
-
-    `Boa pergunta. Quero te responder do jeito certo.
-
-Você está falando mais sobre como crescer, como funciona o curso ou sobre o valor?`,
-
-    `Certo, deixa eu entender melhor para não te mandar uma resposta genérica.
-
-Você quer ajuda com perfil, conteúdo, pagamento ou acesso?`
+    `Entendi 💕\n\nPara eu te responder melhor, me explica com um pouco mais de detalhe.\n\nSua dúvida é sobre curso, crescimento, conteúdo, valor ou acesso?`,
+    `Boa pergunta. Quero te responder do jeito certo.\n\nVocê está falando mais sobre como crescer, como funciona o curso ou sobre o valor?`,
+    `Certo, deixa eu entender melhor para não te mandar uma resposta genérica.\n\nVocê quer ajuda com perfil, conteúdo, pagamento ou acesso?`,
+    `Hum, me perdi um pouquinho aqui! 🙈\n\nVocê quer saber sobre o valor do curso ou dicas de como postar melhor?`
   ];
 
-  return nextFromPath(memory, "fallback", replies);
+  // Em vez de seguir ordem, ele pega uma resposta aleatória pra soar mais natural
+  return getRandomReply(replies);
 }
 
+// NOVO: Lista de reconhecimento com prioridade e erros de digitação (typos)
 function detectIntent(msg, memory) {
   if (!msg) return "greeting";
 
-  // Menu numérico
+  // 1. Menu numérico (Prioridade Máxima)
   if (msg === "1") return "course";
   if (msg === "2") return "growth";
   if (msg === "3") return "content";
   if (msg === "4") return "payment";
   if (msg === "5") return "support";
 
-  // Se o cliente diz "sim", "quero", continua na mesma trilha
-  if (isContinue(msg) && memory.currentPath && paths[memory.currentPath]) {
-    return memory.currentPath;
-  }
-
-  // Saudações
-  if (hasAny(msg, ["oi", "ola", "olá", "opa", "bom dia", "boa tarde", "boa noite", "menu", "inicio", "início"])) {
-    return "greeting";
-  }
-
-  // Objeção de dinheiro
+  // 2. Mudanças de Assunto e Erros de Digitação
   if (hasAny(msg, ["sem dinheiro", "sem grana", "sem condições", "sem condicoes", "caro", "não tenho dinheiro", "nao tenho dinheiro", "sem pix", "não consigo pagar", "nao consigo pagar"])) {
     return "money";
   }
 
-  // Pagamento / Valor
-  if (hasAny(msg, ["valor", "preço", "preco", "quanto custa", "pagamento", "pix", "cartão", "cartao", "boleto", "parcelamento", "comprar", "link", "quero comprar"])) {
+  if (hasAny(msg, ["valor", "preço", "preco", "quanto custa", "pagamento", "pgamento", "pix", "cartão", "cartao", "boleto", "parcelamento", "comprar", "compra", "comprra", "link", "quero comprar"])) {
     return "payment";
   }
 
-  // Conteúdo / Criação
-  if (hasAny(msg, ["reels", "stories", "story", "canva", "capcut", "ia", "conteúdo", "conteudo", "gravar", "vídeo", "video", "editar", "legenda", "roteiro", "melhorar meus conteudos"])) {
+  if (hasAny(msg, ["reels", "rels", "stories", "story", "stori", "canva", "capcut", "ia", "conteúdo", "conteudo", "gravar", "vídeo", "video", "editar", "legenda", "roteiro", "melhorar meus conteudos"])) {
     return "content";
   }
 
-  // Crescimento no Instagram (AQUI ESTÁ A CORREÇÃO PRINCIPAL)
-  if (hasAny(msg, ["crescer", "crescimento", "seguidores", "instagram", "engajamento", "alcance", "views", "viralizar", "do zero", "zero", "crescer no instagram"])) {
+  if (hasAny(msg, ["crescer", "crescimento", "creser", "seguidores", "seguidor", "instagram", "insta", "engajamento", "engajament", "alcance", "views", "viralizar", "do zero", "zero", "crescer no instagram"])) {
     return "growth";
   }
 
-  // Sobre o Curso
   if (hasAny(msg, ["curso", "como funciona", "explica", "saber mais", "influencer academy", "serve pra mim", "serve para mim", "módulos", "modulos", "aulas", "incluso", "entender o curso"])) {
     return "course";
   }
 
-  // Suporte / Problemas
-  if (hasAny(msg, ["login", "senha", "cadastro", "acesso", "paguei", "não liberou", "nao liberou", "erro", "bug", "travou", "suporte", "humano", "atendente"])) {
+  if (hasAny(msg, ["login", "senha", "cadastro", "acesso", "paguei", "não liberou", "nao liberou", "erro", "bug", "travou", "suporte", "humano", "atendente", "falar com pessoa"])) {
     return "support";
   }
 
-  // Se o cliente disser "não" para alguma pergunta do robô, ele volta pro menu principal de forma mais amigável
+  // 3. Saudações
+  if (hasAny(msg, ["oi", "ola", "olá", "opa", "bom dia", "boa tarde", "boa noite", "menu", "inicio", "início"])) {
+    return "greeting";
+  }
+
+  // 4. Se o cliente disser "não" (corta o papo atual)
   if (hasAny(msg, ["nao", "não", "agora nao", "depois", "ainda nao"])) {
      return "fallback";
+  }
+
+  // 5. Continuação do fluxo se NÃO perguntou nada novo
+  if (isContinue(msg) && memory.currentPath && paths[memory.currentPath]) {
+    return memory.currentPath;
   }
 
   return "fallback";
@@ -800,6 +778,12 @@ export function handleIncomingMessage(text = "", user = {}) {
   }
 
   const intent = detectIntent(msg, memory);
+  
+  // Reseta o contador de erros se o bot acertou o que o cliente quer
+  if (intent !== "fallback") {
+      memory.fallbackCount = 0;
+  }
+
   let reply;
 
   if (intent === "greeting") {
@@ -846,5 +830,3 @@ export function handleIncomingMessage(text = "", user = {}) {
 }
 
 export default handleIncomingMessage;
-
-
