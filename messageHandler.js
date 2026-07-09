@@ -687,6 +687,23 @@ function supportPath(memory) {
   return nextFromPath(memory, "support", replies);
 }
 
+// NOVO: Função de encerramento amigável quando a cliente diz "não precisa"
+function denyPath(memory) {
+  // Limpa a trilha atual para o robô não ficar preso no assunto
+  memory.currentPath = "";
+  // Reseta o contador de erros
+  memory.fallbackCount = 0; 
+
+  const replies = [
+    `Sem problemas! 🥰\n\nSe tiver mais alguma dúvida sobre a Academy, os valores ou sobre como melhorar seu perfil, é só me chamar aqui, tá?`,
+    `Entendido! 💕\n\nFez sentido pra você o que conversamos até agora?\n\nSe quiser falar com a nossa equipe depois ou tirar qualquer outra dúvida, eu continuo por aqui.`,
+    `Tudo bem! 😊\n\nVou deixar o link do nosso suporte aqui caso precise de algo mais específico ou queira falar direto com o especialista:\n👉 https://wa.me/${SUPPORT_WHATSAPP}\n\nTem mais alguma coisa que eu possa te ajudar hoje?`,
+    `Tranquilo! ✨\n\nMeu papel aqui é te deixar super confortável. Se mais tarde quiser voltar a falar sobre o curso ou pegar o link, é só mandar um "Oi".`
+  ];
+
+  return getRandomReply(replies);
+}
+
 // NOVO: Gatilho de Frustração e Variação de Fallback
 function fallback(memory) {
   memory.fallbackCount += 1;
@@ -748,9 +765,9 @@ function detectIntent(msg, memory) {
     return "greeting";
   }
 
-  // 4. Se o cliente disser "não" (corta o papo atual)
-  if (hasAny(msg, ["nao", "não", "agora nao", "depois", "ainda nao"])) {
-     return "fallback";
+  // 4. Se o cliente disser "não" ou "não precisa" (Encerramento amigável)
+  if (hasAny(msg, ["nao", "não", "agora nao", "depois", "ainda nao", "não precisa", "nao precisa", "deixa pra la", "deixa", "nada", "nenhuma", "não quero", "nao quero"])) {
+     return "deny";
   }
 
   // 5. Continuação do fluxo se NÃO perguntou nada novo
@@ -800,6 +817,8 @@ export function handleIncomingMessage(text = "", user = {}) {
     reply = moneyObjection(memory);
   } else if (intent === "support") {
     reply = supportPath(memory);
+  } else if (intent === "deny") { 
+    reply = denyPath(memory);     
   } else {
     reply = fallback(memory);
   }
