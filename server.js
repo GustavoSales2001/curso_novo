@@ -1640,6 +1640,7 @@ app.post("/api/inbox/bot-status", async (req, res) => {
 app.post("/api/inbox/send", async (req, res) => {
   try {
     const { userId, message } = req.body;
+    console.log("Recebendo mensagem manual para:", userId); 
 
     if (!userId || !message) {
       return res.status(400).json({ error: "userId e message são obrigatórios" });
