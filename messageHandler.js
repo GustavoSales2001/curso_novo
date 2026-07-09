@@ -552,7 +552,7 @@ Quer que eu te explique como montar um calendário semanal?`
 De ${OLD_PRICE}
 Por ${COURSE_PRICE}
 
-É pagamento único.
+Seria pagamento único.
 
 Link:
 ${COURSE_LINK}
@@ -569,7 +569,7 @@ Quer que eu te explique para quem o curso é indicado?`,
 
 A proposta é ser um valor acessível para quem está começando e quer crescer com mais direção.
 
-Não é mensalidade. É pagamento único.
+Não é mensalidade. Seria pagamento único.
 
 Quer que eu te explique como funciona depois do pagamento?`,
 
@@ -655,7 +655,7 @@ function greeting(memory) {
   
   const greetings = [
     `${prefix(memory)}oii! 💕 Seja bem-vinda à Influencer Academy.\n\nMe conta o que você quer entender primeiro:\n\n1. Quero entender o curso\n2. Quero crescer no Instagram\n3. Quero melhorar meus conteúdos\n4. Quero saber o valor\n\nPode responder só com o número ou escrever sua dúvida do seu jeito.`,
-    `${prefix(memory)}que bom ter você por aqui! ✨ Chegou no lugar certo.\n\nComo posso te ajudar hoje?\n\n1. Como funciona a Academy?\n2. Dicas de crescimento\n3. Melhorar meus vídeos e conteúdo\n4. Ver valores e pacotes`,
+    `Ooi ${prefix(memory)}que bom ter você por aqui! ✨ Chegou no lugar certo.\n\nComo posso te ajudar hoje?\n\n1. Como funciona a Academy?\n2. Dicas de crescimento\n3. Melhorar meus vídeos e conteúdo\n4. Ver valores e pacotes`,
     `Oii ${memory.known.name ? memory.known.name : "maravilhosa"}! 💕 É um prazer te receber aqui na Influencer Academy.\n\nPra eu te guiar certinho, me diz o que você busca:\n\n1. Entender os módulos do curso\n2. Atrair mais seguidores reais\n3. Melhorar edição e estética\n4. Ver o preço promocional`
   ];
 
@@ -792,6 +792,19 @@ export function handleIncomingMessage(text = "", user = {}) {
 
   if (memory.turns.length > 40) {
     memory.turns = memory.turns.slice(-40);
+  }
+
+  // =====================================================
+  // RESPOSTAS DIRETAS DO MENU DE SUPORTE (1 a 5)
+  // =====================================================
+  if (hasAny(msg, ["1", "2", "3", "4", "5", "cadastro", "login", "pagamento", "area da aluna", "área da aluna", "aula bloqueada"])) {
+    return {
+      intent: "support",
+      reply: `Entendi! Como essa parte envolve o seu acesso, vou pedir pra você falar direto com o suporte humano para resolvermos isso na hora.
+
+Por favor, clica neste link e manda um print da sua tela lá:
+👉 https://wa.me/5511922198936`
+    };
   }
 
   const intent = detectIntent(msg, memory);
