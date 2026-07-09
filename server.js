@@ -7,7 +7,7 @@ import { MercadoPagoConfig, Payment } from "mercadopago";
 import handleIncomingMessage from "./messageHandler.js";
 import siteChatRoutes from "./siteChatRoutes.js";
 
-const BOT_VERSION = "influencer-academy-whatsapp-v8-40responses";
+const BOT_VERSION = "influencer-academy-whatsapp-v9-grandao-limpo";
 const COURSE_NAME_SAFE = "Influencer Academy";
 const COURSE_URL_SAFE = "https://gustavosales2001.github.io/curso_novo/";
 const COURSE_PRICE_SAFE = "R$ 39,99";
@@ -89,9 +89,6 @@ const COURSE_FRONTEND_URL = "https://gustavosales2001.github.io/curso_novo/";
 
 let pool;
 let whatsappJobRunning = false;
-
-/* TESTE: envia apenas para um usuário específico */
-//const TEST_ONLY_USER_IDS = [7, 125];
 
 function getWhatsAppConfig() {
   const token = cleanEnv(process.env.WHATSAPP_TOKEN);
@@ -709,54 +706,24 @@ function buildCustomerReply(text = "", user = null) {
     return `https://wa.me/${whatsappGustavo}`;
   }
 
-  // Fluxo de respostas progressivas para cada tema
   function handleThemeProgression(theme, keywords) {
     if (!hasAny(msg, keywords)) return null;
 
     updateConversationStage(userId, theme, context.stage + 1);
 
     const responses = {
-      // Fluxo: Não recebe retorno
-      noRetorno: [
-        `${saudacao}Entendo. Isso é uma das situações mais comuns que vejo.
-
-Muitas pessoas têm experiência, mas o perfil não passa bem pelos algoritmo e métricas que as empresas usam.`,
-
-        `O problema geralmente não é a falta de qualificação. É que o perfil:
-- não tem as palavras-chave da vaga
-- está muito genérico
-- não destaca resultados
-- não é claro o suficiente para os sistemas lerem`,
-
-        `Você já tentou adaptar o perfil para cada vaga, ou manda a mesma versão para tudo?`,
-
-        `Porque quando você personaliza certos pontos, como objetivo, habilidades e palavras-chave, os sistemas conseguem entender melhor que você combina com aquela posição.
-
-O curso foi exatamente pensado para isso.`,
-
-        `Se você quiser entender melhor como funciona esse processo, posso te mostrar o caminho pelo link do curso. Lá você aprende a estruturar de forma estratégica.
-
-Quer acessar?`
-      ],
-
       // Fluxo: Sobre o curso
       sobreCurso: [
-        `${saudacao}O curso "Influencer Academy" foi pensado para pessoas que estão enviando perfil e não têm retorno, ou que querem uma abordagem mais estratégica.
-
-Muitas empresas usam algoritmo e métricas (IA, algoritmo, Instagram) que analisam perfils antes de um recrutador ver.`,
-
-        `O problema é que nem sempre ter experiência é suficiente. O perfil precisa estar organizado de um jeito que esses sistemas consigam ler bem.
-
-No curso você aprende exatamente isso.`,
+        `${saudacao}O curso "Influencer Academy" foi pensado para pessoas que querem dominar a criação de conteúdo e ter uma presença digital estratégica.`,
 
         `Você aprende:
-- como a IA analisa um perfil
-- como organizar suas informações
-- como usar palavras-chave da vaga
-- como evitar erros que eliminam seu perfil
-- como deixar tudo mais estratégico`,
+- criação de conteúdo
+- edição de vídeos e fotos
+- como engajar a sua audiência
+- roteiros e formatos que funcionam
+- como crescer nas redes sociais de forma estruturada`,
 
-        `Tudo isso de forma prática, não é teoria pura. Você aprende e já começa a aplicar no seu perfil.`,
+        `Tudo isso de forma prática, não é teoria pura. Você aprende e já começa a aplicar no seu Instagram e Reels.`,
 
         `Se quiser conhecer melhor, posso te mandar o link. Lá tem mais informações e você vê se faz sentido para o seu caso.
 
@@ -767,11 +734,11 @@ Quer?`
       duvida: [
         `${saudacao}Claro, faz a pergunta com calma.
 
-Se for sobre perfil, vaga, IA, Instagram, LinkedIn ou crescimento digital, posso tentar te orientar.`,
+Se for sobre conteúdo, Instagram, crescimento ou acesso ao curso, estou aqui para ajudar.`,
 
         `Me conta a sua dúvida específica que eu vejo melhor como posso ajudar.`,
 
-        null, // Aguarda resposta com a dúvida real
+        null, 
         null,
         null
       ],
@@ -780,53 +747,13 @@ Se for sobre perfil, vaga, IA, Instagram, LinkedIn ou crescimento digital, posso
       acessar: [
         `${saudacao}Antes de mandar o link, deixa eu entender melhor sua situação.
 
-Você quer acessar porque está buscando vaga agora, ou só quer explorar o curso?`,
+Você quer focar mais na parte de edição (Reels/Vídeos) ou no crescimento do perfil de forma geral?`,
 
-        `E qual é sua maior dúvida no momento? É sobre perfil mesmo, ou é sobre os algoritmo e métricas?`,
-
-        `Porque assim consigo te explicar melhor se o curso faz sentido para o seu caso neste momento.`,
+        `Porque assim consigo te explicar melhor se o curso atende ao que você precisa neste momento.`,
 
         `Depois disso, eu te passo o link com a melhor condição que temos disponível.`,
 
-        `Então, qual é a sua situação agora?`
-      ],
-
-      // Fluxo: Primeiro emprego / Sem experiência
-      primeiroEmprego: [
-        `${saudacao}Ótimo, dá sim para montar um perfil bem profissional mesmo sem experiência formal.
-
-O segredo é valorizar o que você já tem.`,
-
-        `Você pode destacar:
-- cursos
-- formação
-- projetos pessoais
-- habilidades
-- voluntariado
-- atividades informais`,
-
-        `O erro que muita gente comete é deixar o perfil muito vazio ou muito genérico, só porque acha que não tem experiência.
-
-Mas sim tem. Você só precisa apresentar melhor.`,
-
-        `É exatamente disso que o curso trata. Como organizar e destacar o que você tem de forma mais profissional.`,
-
-        `Se quiser conhecer, posso te mandar o acesso. O que acha?`
-      ],
-
-      // Fluxo: Mudança de área
-      mudancaArea: [
-        `${saudacao}Serve muito para transição de área.
-
-Nesse caso, o perfil precisa fazer uma ponte entre o que você já sabe e o que a nova área exige.`,
-
-        `O segredo é destacar as habilidades que transferem entre uma área e outra, além de cursos e projetos relevantes.`,
-
-        `Se o perfil ficar muito focado na área antiga, o recrutador pode não ver a sua mudança como natural.`,
-
-        `O curso te ensina exatamente como fazer essa transição parecer coerente e bem planejada.`,
-
-        `Você quer entender melhor como estruturar isso?`
+        `Então, qual é o seu foco agora?`
       ],
 
       // Fluxo: Problema técnico
@@ -835,7 +762,7 @@ Nesse caso, o perfil precisa fazer uma ponte entre o que você já sabe e o que 
 
 Deixa eu direcionar para a pessoa certa resolver isso mais rápido.`,
 
-        `O Gustavo é o desenvolvedor e consegue verificar erro de página, acesso, login, pagamento ou qualquer falha técnica.`,
+        `O Gustavo consegue verificar erro de página, acesso, login, pagamento ou qualquer falha técnica.`,
 
         `Se você conseguir enviar um print da tela onde está o problema, ele resolve muito mais rápido.`,
 
@@ -848,14 +775,6 @@ Deixa eu direcionar para a pessoa certa resolver isso mais rápido.`,
     return responses[theme]?.[context.stage - 1] || null;
   }
 
-  // =====================================================
-  // FLUXO PROGRESSIVO PRINCIPAL
-  // =====================================================
-  if (hasAny(msg, ["nao chamam", "não chamam", "nao tenho retorno", "não tenho retorno", "ninguem chama"])) {
-    const response = handleThemeProgression("noRetorno", ["nao chamam", "não chamam", "nao tenho retorno", "não tenho retorno"]);
-    if (response) return response;
-  }
-
   if (hasAny(msg, ["como funciona", "funciona", "sobre o curso", "curso"])) {
     const response = handleThemeProgression("sobreCurso", ["como funciona", "sobre o curso"]);
     if (response) return response;
@@ -863,16 +782,6 @@ Deixa eu direcionar para a pessoa certa resolver isso mais rápido.`,
 
   if (hasAny(msg, ["quero acessar", "onde acesso", "link", "acessar", "comprar", "pagina", "página"])) {
     const response = handleThemeProgression("acessar", ["quero acessar", "onde acesso", "link", "acessar"]);
-    if (response) return response;
-  }
-
-  if (hasAny(msg, ["primeiro emprego", "sem experiencia", "sem experiência", "nunca trabalhei"])) {
-    const response = handleThemeProgression("primeiroEmprego", ["primeiro emprego", "sem experiencia", "sem experiência"]);
-    if (response) return response;
-  }
-
-  if (hasAny(msg, ["mudar de area", "mudar de área", "transicao", "transição", "trocar de area"])) {
-    const response = handleThemeProgression("mudancaArea", ["mudar de area", "mudar de área"]);
     if (response) return response;
   }
 
@@ -887,7 +796,7 @@ Deixa eu direcionar para a pessoa certa resolver isso mais rápido.`,
   if (hasAny(msg, ["oi", "ola", "olá", "bom dia", "boa tarde", "boa noite", "eai", "e aí", "opa"])) {
     return `${saudacao}Oi! Tudo bem?
 
-Antes de falar sobre o curso, me conta: você está com dúvida sobre perfil, vaga ou acesso?`;
+Antes de falar sobre o curso, me conta: você está com dúvida sobre conteúdo, Instagram ou acesso?`;
   }
 
   // =====================================================
@@ -903,73 +812,46 @@ E você, como posso ajudar hoje?`;
   // 3. DÚVIDA GERAL
   // =====================================================
   if (hasAny(msg, ["tenho duvida", "tenho dúvida", "duvida", "dúvida", "nao entendi", "não entendi", "pode explicar", "explica melhor"])) {
-    return `${saudacao}Claro. Me conta sua dúvida específica sobre perfil, vaga ou crescimento digital e eu respondo direto.`;
+    return `${saudacao}Claro. Me conta sua dúvida específica sobre conteúdo, crescimento no Instagram ou curso e eu respondo direto.`;
   }
 
   // =====================================================
   // 4. SOBRE O CURSO / COMO FUNCIONA
   // =====================================================
   if (hasAny(msg, ["como funciona", "funciona", "me explica", "saber mais", "mais informacoes", "mais informações", "sobre o curso", "curso"])) {
-    return `O curso é voltado para quem precisa melhorar sua presença digital para passar melhor por algoritmo e métricas e chegar nas oportunidades.
+    return `O curso é voltado para quem precisa melhorar sua presença digital, produzir melhor conteúdo e crescer no Instagram.
 
-Antes de eu te mandar mais detalhes, me diz: qual parte você quer entender melhor? O conteúdo, o formato ou como aplicar no seu perfil?`;
-  }
-
-  // =====================================================
-  // 5. IA / algoritmo / GUPY / ROBÔ
-  // =====================================================
-  if (hasAny(msg, ["ia", "ats", "gupy", "robo", "robô", "filtro", "sistema automatico", "sistema automático", "triagem automatica", "triagem automática"])) {
-    return `Boa pergunta.
-
-Hoje muitas empresas usam sistemas automáticos para filtrar perfils antes do recrutador ver.
-
-Esses sistemas procuram principalmente:
-
-✔ palavras-chave parecidas com a vaga  
-✔ cargo e área de atuação  
-✔ experiências bem descritas  
-✔ formação e cursos  
-✔ organização clara  
-✔ informações fáceis de encontrar  
-
-O problema é que muita gente tem capacidade, mas o perfil está escrito de um jeito que o sistema não entende bem.
-
-O curso te ensina a ajustar isso de forma prática, sem inventar informação e sem deixar o perfil artificial.`;
+Antes de eu te mandar mais detalhes, me diz: qual parte você quer entender melhor? A edição, o formato ou como ter mais engajamento?`;
   }
 
   // =====================================================
   // 6. PREÇO / VALOR / CUSTO
   // =====================================================
   if (hasAny(msg, ["preco", "preço", "valor", "quanto custa", "custa", "custo", "investimento"])) {
-    return `Para falar de preço, primeiro me conta: qual o seu maior desafio hoje? É o perfil, a falta de retorno ou o entendimento de como as vagas filtram os candidatos?`;
+    return `O investimento é de R$ 39,99! Antes de passar o link, me conta: qual o seu maior desafio hoje? É gravar vídeos, ter ideias, ou entender o que dá engajamento?`;
   }
 
   // =====================================================
   // 7. LINK / ACESSAR / COMPRAR
   // =====================================================
   if (hasAny(msg, ["link", "acessar", "comprar", "quero comprar", "onde compro", "onde acesso", "pagina", "página"])) {
-    return `Entendi. Antes de enviar o link, me conta qual a sua maior dúvida: perfil, crescimento digital ou conteúdo do curso? Assim eu posso te responder melhor.`;
+    return `Entendi. Antes de enviar o link, me conta qual a sua maior dúvida: engajamento, edição de vídeo ou conteúdo do curso? Assim eu posso te responder melhor.`;
   }
 
   // =====================================================
   // 8. DESCONTO / PROMOÇÃO / CUPOM
   // =====================================================
   if (hasAny(msg, ["desconto", "promocao", "promoção", "cupom", "oferta", "condicao especial", "condição especial"])) {
-    return `Tem sim uma condição especial para quem está conversando por aqui.
+    return `O valor atual já está com uma condição super especial!
 
-Antes de te passar o link com desconto, me conta um pouco mais sobre sua situação:
-- você está sem retorno nas candidaturas?
-- acha seu perfil desorganizado?
-- tem dúvidas sobre como usar palavras-chave?
-
-Assim posso te orientar melhor e te mostrar o caminho certo para aproveitar o desconto.`;
+Me conta um pouco mais sobre o seu perfil hoje: você já posta com frequência ou está começando agora?`;
   }
 
   // =====================================================
   // 9. PAGAMENTO / PIX / CARTÃO / BOLETO
   // =====================================================
   if (hasAny(msg, ["pagamento", "pagar", "pix", "cartao", "cartão", "boleto", "mercado pago", "credito", "crédito", "debito", "débito"])) {
-    return `O pagamento é feito na página do curso. Se precisar, posso te orientar sobre como chegar lá ou indicar quem pode te ajudar se aparecer algum erro.`;
+    return `O pagamento é feito direto na página do curso e é 100% seguro. Se precisar, posso te orientar sobre como chegar lá ou indicar quem pode te ajudar se aparecer algum erro.`;
   }
 
   // =====================================================
@@ -995,928 +877,13 @@ Se der erro no login, acesso não liberar ou a página travar, posso te passar q
   // =====================================================
   if (hasAny(msg, ["modulo", "módulo", "modulos", "módulos", "aula", "aulas", "conteudo", "conteúdo", "material", "materiais", "pdf", "checklist"])) {
     return `O curso é direto e prático. Ele mostra como:
-- a IA e os sistemas algoritmo analisam perfils
-- você organiza suas informações
-- você escreve experiências de forma estratégica
-- você usa palavras-chave da vaga
-- você evita erros que eliminam o perfil
-
-O objetivo é não só deixar o perfil mais bonito, mas mais eficiente.`;
-  }
-
-  // =====================================================
-  // 13. PRIMEIRO EMPREGO / SEM EXPERIÊNCIA
-  // =====================================================
-  if (hasAny(msg, ["primeiro emprego", "sem experiencia", "sem experiência", "nunca trabalhei", "nao tenho experiencia", "não tenho experiência", "sem registro", "sem carteira assinada"])) {
-    return `Mesmo sem experiência formal, dá para montar um perfil com mais força.
-
-O importante é valorizar cursos, projetos, habilidades e tudo que mostra seu potencial.
-
-Se quiser, posso te dizer o que vale mais destaque no seu caso.`;
-  }
-
-  // =====================================================
-  // 14. ESTÁGIO / JOVEM APRENDIZ / FACULDADE
-  // =====================================================
-  if (hasAny(msg, ["estagio", "estágio", "jovem aprendiz", "aprendiz", "faculdade", "universidade", "estudante"])) {
-    return `Serve muito para estágio e jovem aprendiz.
-
-Nesses casos, o recrutador não espera uma experiência enorme. Ele procura potencial, organização, clareza e compatibilidade com a vaga.
-
-O perfil precisa mostrar bem:
-
-✔ sua formação  
-✔ cursos complementares  
-✔ habilidades  
-✔ projetos acadêmicos  
-✔ objetivo profissional  
-✔ disponibilidade  
-✔ vontade de aprender  
-
-O curso te ajuda a transformar isso em um perfil mais apresentável e mais alinhado com as vagas.`;
-  }
-
-  // =====================================================
-  // 15. JÁ TENHO CURRÍCULO PRONTO
-  // =====================================================
-  if (hasAny(msg, ["ja tenho perfil", "já tenho perfil", "perfil pronto", "perfil pronto", "meu perfil", "meu perfil", "ja fiz perfil", "já fiz perfil"])) {
-    return `Se já tem perfil, o próximo passo é revisar com cuidado.
-
-Posso te dizer quais pontos costumam atrapalhar mais: palavras-chave, descrição de experiências e clareza geral.`;
-  }
-
-  // =====================================================
-  // 16. NÃO RECEBE RETORNO / NÃO CHAMAM
-  // =====================================================
-  if (hasAny(msg, ["nao chamam", "não chamam", "nao tenho retorno", "não tenho retorno", "mando perfil", "mando perfil", "envio perfil", "envio perfil", "ninguem chama", "ninguém chama", "nunca me chamam"])) {
-    return `Isso é comum e não significa que você não tem valor.
-
-Muitas vezes o perfil não está claro para os algoritmo e métricas ou não fala a mesma linguagem da vaga.
-
-Me conta: como você tem enviado o perfil?`;
-  }
-
-  // =====================================================
-  // 17. MUDANÇA DE ÁREA / TRANSIÇÃO
-  // =====================================================
-  if (hasAny(msg, ["mudar de area", "mudar de área", "transicao", "transição", "trocar de area", "trocar de área", "nova area", "nova área", "migrar de area", "migrar de área"])) {
-    return `Serve muito para transição de área.
-
-Nesse caso, o perfil precisa fazer uma ponte entre o que você já sabe e o que a nova vaga exige.
-
-O segredo é valorizar:
-
-✔ habilidades transferíveis  
-✔ experiências que se conectam com a nova área  
-✔ cursos recentes  
-✔ projetos  
-✔ objetivo claro  
-✔ palavras-chave da nova função  
-
-Se o perfil ficar focado só na área antiga, o recrutador pode não entender sua mudança.`;
-  }
-
-  // =====================================================
-  // 18. TEMPO / DURAÇÃO
-  // =====================================================
-  if (hasAny(msg, ["quanto tempo", "duracao", "duração", "demora", "rapido", "rápido", "tempo de curso", "em quanto tempo"])) {
-    return `O curso foi pensado para ser direto, prático e aplicável.
-
-A ideia não é você passar semanas só vendo teoria. O foco é entender o que precisa mudar e aplicar no seu perfil.
-
-Você pode assistir no seu ritmo e já começar a melhorar seu perfil conforme avança nas aulas.`;
-  }
-
-  // =====================================================
-  // 19. CELULAR / COMPUTADOR
-  // =====================================================
-  if (hasAny(msg, ["celular", "computador", "notebook", "pc", "tablet", "assistir pelo celular", "da pra ver no celular", "dá pra ver no celular"])) {
-    return `Você pode acessar pelo celular ou computador.
-
-Para assistir às aulas, o celular já ajuda bastante.
-
-Mas para editar o perfil com mais conforto, geralmente computador ou notebook facilita, porque você consegue mexer melhor em arquivo, texto, PDF, Word ou Canva.`;
-  }
-
-  // =====================================================
-  // 20. CERTIFICADO
-  // =====================================================
-  if (hasAny(msg, ["certificado", "certificacao", "certificação", "tem certificado", "recebo certificado"])) {
-    return `A pergunta faz sentido.
-
-O foco principal do curso é ajudar a melhorar seu perfil na prática e aumentar suas chances nas triagens.
-
-Se quiser, posso te dizer como confirmar as informações sobre certificado com a especialista.`;
-  }
-
-  // =====================================================
-  // 21. CONFIANÇA / SEGURANÇA / GOLPE
-  // =====================================================
-  if (hasAny(msg, ["confiavel", "confiável", "golpe", "seguro", "seguranca", "segurança", "e seguro", "é seguro", "posso confiar"])) {
-    return `Entendo sua preocupação.
-
-É normal querer confirmar antes de acessar qualquer curso.
-
-Se quiser, posso te explicar como identificar a página oficial e o que conferir antes de fazer o cadastro.`;
-  }
-
-  // =====================================================
-  // 22. CARO / SEM DINHEIRO / OBJEÇÃO FINANCEIRA
-  // =====================================================
-  if (hasAny(msg, ["caro", "sem dinheiro", "nao tenho dinheiro", "não tenho dinheiro", "to sem", "tô sem", "depois eu pago", "agora nao posso", "agora não posso"])) {
-    return `Eu entendo de verdade.
-
-Ninguém gosta de gastar sem ter certeza se vai ajudar.
-
-Mas pensa por esse lado: se você está mandando perfil e não recebe retorno, pode estar perdendo oportunidades por causa de algo que dá para ajustar.
-
-Um perfil melhor não garante emprego, mas pode aumentar suas chances de ser visto, chamado e avançar no processo.
-
-Se quiser, eu posso te explicar melhor o que o curso entrega antes de você decidir.`;
-  }
-
-  // =====================================================
-  // 23. VOU PENSAR / DEPOIS
-  // =====================================================
-  if (hasAny(msg, ["vou pensar", "depois", "mais tarde", "outro dia", "ver depois", "qualquer coisa", "vou ver", "preciso pensar"])) {
-    return `Claro, sem problema 😊
-
-É bom analisar com calma mesmo.
-
-Só não deixa seu perfil parado por muito tempo se você já está buscando vaga, porque cada candidatura com um perfil mal ajustado pode ser uma oportunidade perdida.
-
-Se surgir qualquer dúvida, pode chamar por aqui.`;
-  }
-
-  // =====================================================
-  // 24. FUNCIONA MESMO / VALE A PENA
-  // =====================================================
-  if (hasAny(msg, ["funciona mesmo", "vale a pena", "da certo", "dá certo", "resultado", "garante emprego", "garantia de emprego", "vou conseguir emprego"])) {
-    return `É importante ser transparente 😊
-
-O curso não promete emprego garantido, porque isso depende de vaga, perfil, entrevista, mercado e outros fatores.
-
-Mas ele te ajuda em uma parte muito importante: melhorar como seu perfil é lido por sistemas e recrutadores.
-
-Se hoje você envia perfil e não recebe retorno, ajustar a estrutura, as palavras-chave e a forma de apresentar sua experiência pode fazer diferença.`;
-  }
-
-  // =====================================================
-  // 25. QUER QUE FAÇA O CURRÍCULO
-  // =====================================================
-  if (hasAny(msg, ["faz meu perfil", "faz meu perfil", "monta pra mim", "voce monta", "você monta", "fazer pra mim", "quero que faca", "quero que faça"])) {
-    return `Entendi 😊
-
-O curso foi pensado para te ensinar a montar e melhorar seu próprio perfil com estratégia.
-
-Isso é importante porque você não fica preso a uma única versão. Você aprende a adaptar o perfil para várias vagas.
-
-Mas se você quer uma orientação mais direta sobre o seu caso, a especialista Milene pode te orientar melhor sobre o caminho mais adequado.`;
-  }
-
-  // =====================================================
-  // 26. LINKEDIN
-  // =====================================================
-  if (hasAny(msg, ["linkedin", "perfil linkedin", "perfil no linkedin"])) {
-    return `O LinkedIn também é muito importante 😊
-
-Mas o perfil ainda é essencial, principalmente quando você se candidata por plataformas como Instagram, Kenoby, InfoJobs, LinkedIn Jobs e sites de empresas.
-
-O ideal é os dois estarem alinhados:
-
-✔ perfil bem estruturado  
-✔ LinkedIn com informações coerentes  
-✔ palavras-chave da área  
-✔ experiências bem explicadas  
-✔ objetivo profissional claro`;
-  }
-
-  // =====================================================
-  // 27. CANVA / WORD / PDF
-  // =====================================================
-  if (hasAny(msg, ["canva", "word", "pdf", "modelo", "template", "perfil bonito", "perfil bonito"])) {
-    return `Um perfil bonito ajuda, mas não é o mais importante.
-
-O que mais pesa é se ele está claro, bem estruturado e fácil de ser lido por sistemas e recrutadores.
-
-Às vezes um modelo muito visual no Canva pode até atrapalhar a leitura automática, dependendo de como foi feito.
-
-O curso te mostra como pensar na estrutura antes da aparência.`;
-  }
-
-  // =====================================================
-  // 28. CURRÍCULO EM PDF OU WORD
-  // =====================================================
-  if (hasAny(msg, ["pdf ou word", "word ou pdf", "formato", "qual formato", "enviar em pdf", "enviar em word"])) {
-    return `Na maioria dos casos, PDF é uma boa opção porque preserva o formato.
-
-Mas o mais importante é o perfil ser simples de ler, bem organizado e compatível com sistemas automáticos.
-
-Evite excesso de imagens, tabelas confusas, colunas muito complexas ou elementos que dificultem a leitura.`;
-  }
-
-  // =====================================================
-  // 29. PALAVRAS-CHAVE
-  // =====================================================
-  if (hasAny(msg, ["palavra chave", "palavras chave", "keywords", "termos da vaga"])) {
-    return `Palavras-chave são uma parte muito importante do perfil.
-
-Elas ajudam sistemas automáticos a entender se o seu perfil combina com a vaga.
-
-Por exemplo, se a vaga pede “atendimento ao cliente”, “Excel”, “vendas”, “controle de estoque” ou “gestão de equipe”, essas informações precisam aparecer de forma natural se você realmente tem essas competências.
-
-O curso ensina como usar palavras-chave sem parecer forçado e sem inventar experiência.`;
-  }
-
-  // =====================================================
-  // 30. OBJETIVO PROFISSIONAL
-  // =====================================================
-  if (hasAny(msg, ["objetivo profissional", "objetivo no perfil", "objetivo no perfil", "o que colocar no objetivo"])) {
-    return `O objetivo profissional precisa ser claro e alinhado com a vaga.
-
-Um erro comum é colocar frases muito genéricas, como “busco uma oportunidade para crescer”.
-
-O ideal é mostrar a área ou cargo desejado de forma objetiva, sem exagerar.
-
-Exemplo:  
-“Busco oportunidade na área administrativa, com foco em organização de documentos, atendimento e apoio operacional.”
-
-O curso ajuda a ajustar esse tipo de detalhe.`;
-  }
-
-  // =====================================================
-  // 31. EXPERIÊNCIAS
-  // =====================================================
-  if (hasAny(msg, ["experiencia profissional", "experiência profissional", "como colocar experiencia", "como colocar experiência", "minhas experiencias", "minhas experiências"])) {
-    return `A experiência precisa mostrar mais do que apenas o cargo.
-
-O ideal é explicar o que você fazia, quais responsabilidades tinha e, se possível, algum resultado.
-
-Exemplo simples:
-
-Em vez de só colocar:
-“Auxiliar administrativo”
-
-Você pode melhorar para:
-“Atendimento a clientes, organização de documentos, controle de planilhas e apoio às rotinas administrativas.”
-
-Isso ajuda o recrutador e os sistemas a entenderem melhor seu perfil.
-
-O curso aprofunda exatamente esse tipo de ajuste.`;
-  }
-
-  // =====================================================
-  // 32. HABILIDADES
-  // =====================================================
-  if (hasAny(msg, ["habilidades", "competencias", "competências", "soft skills", "hard skills", "o que colocar em habilidades"])) {
-    return `Na parte de habilidades, o ideal é colocar coisas que realmente tenham relação com a vaga.
-
-Exemplos:
-
-✔ Excel  
-✔ atendimento ao cliente  
-✔ organização  
-✔ comunicação  
-✔ vendas  
-✔ liderança  
-✔ controle de estoque  
-✔ pacote Office  
-✔ resolução de problemas  
-
-O erro é colocar habilidades muito genéricas sem conexão com a oportunidade.
-
-O curso te ajuda a escolher e posicionar melhor essas informações.`;
-  }
-
-  // =====================================================
-  // 33. RECOLOCAÇÃO PROFISSIONAL
-  // =====================================================
-  if (hasAny(msg, ["recolocacao", "recolocação", "desempregado", "desempregada", "procurando emprego", "buscando emprego"])) {
-    return `Entendo.
-
-Para recolocação, o perfil precisa ser objetivo e estratégico.
-
-O foco é mostrar rapidamente:
-
-✔ o que você sabe fazer  
-✔ onde já atuou  
-✔ quais habilidades tem  
-✔ que tipo de vaga busca  
-✔ por que seu perfil combina com aquela oportunidade  
-
-Se o perfil estiver muito genérico, pode acabar passando despercebido.`;
-  }
-
-  // =====================================================
-  // 34. MUITA EXPERIÊNCIA / CURRÍCULO LONGO
-  // =====================================================
-  if (hasAny(msg, ["muita experiencia", "muita experiência", "perfil longo", "perfil longo", "muitas empresas", "muitos empregos"])) {
-    return `Quando a pessoa tem muita experiência, o desafio é organizar sem deixar o perfil pesado.
-
-Nem tudo precisa entrar com o mesmo nível de detalhe.
-
-O ideal é destacar o que mais conversa com a vaga atual e resumir experiências menos relevantes.
-
-Um perfil muito longo pode cansar o recrutador e também dificultar a leitura.
-
-O curso te ajuda a escolher o que valorizar e o que simplificar.`;
-  }
-
-  // =====================================================
-  // 35. POUCA EXPERIÊNCIA
-  // =====================================================
-  if (hasAny(msg, ["pouca experiencia", "pouca experiência", "tenho pouca experiencia", "tenho pouca experiência"])) {
-    return `Com pouca experiência, o perfil precisa valorizar melhor o que você já tem.
-
-Você pode destacar:
-
-✔ cursos  
-✔ habilidades  
-✔ atividades acadêmicas  
-✔ projetos  
-✔ experiências informais  
-✔ atendimento, vendas, organização ou rotinas que já fez  
-✔ vontade de aprender e área de interesse  
-
-O segredo é não deixar o perfil vazio nem exagerar.`;
-  }
-
-  // =====================================================
-  // 36. CURRÍCULO PARA VAGA ESPECÍFICA
-  // =====================================================
-  if (hasAny(msg, ["vaga especifica", "vaga específica", "adaptar perfil", "adaptar perfil", "perfil para vaga", "perfil para vaga"])) {
-    return `Esse é um ponto muito importante.
-
-O ideal é adaptar o perfil para cada tipo de vaga.
-
-Não significa inventar informação. Significa destacar o que você já tem e que mais combina com aquela oportunidade.
-
-Você pode ajustar:
-
-✔ objetivo profissional  
-✔ palavras-chave  
-✔ ordem das experiências  
-✔ habilidades em destaque  
-✔ cursos mais relevantes  
-
-O curso ensina exatamente essa lógica.`;
-  }
-
-  // =====================================================
-  // 37. ÁREA ADMINISTRATIVA
-  // =====================================================
-  if (hasAny(msg, ["administrativo", "administrativa", "auxiliar administrativo", "assistente administrativo"])) {
-    return `Para área administrativa, o perfil precisa destacar organização, atenção a detalhes e domínio de rotinas.
-
-Pode valorizar:
-
-✔ atendimento  
-✔ planilhas  
-✔ controle de documentos  
-✔ emissão de relatórios  
-✔ organização de arquivos  
-✔ apoio a equipes  
-✔ pacote Office  
-✔ comunicação  
-
-O curso ajuda a transformar essas experiências em descrições mais fortes e claras.`;
-  }
-
-  // =====================================================
-  // 38. ÁREA DE VENDAS
-  // =====================================================
-  if (hasAny(msg, ["vendas", "vendedor", "vendedora", "comercial", "atendimento comercial"])) {
-    return `Para vendas, o perfil precisa mostrar comunicação, atendimento e resultado.
-
-Você pode destacar:
-
-✔ atendimento ao cliente  
-✔ negociação  
-✔ prospecção  
-✔ fechamento de vendas  
-✔ metas  
-✔ relacionamento com clientes  
-✔ pós-venda  
-✔ organização de carteira  
-
-Mesmo que você não tenha números exatos, dá para descrever melhor suas responsabilidades.
-
-O curso te ajuda a fazer isso com estratégia.`;
-  }
-
-  // =====================================================
-  // 39. ATENDIMENTO AO CLIENTE
-  // =====================================================
-  if (hasAny(msg, ["atendimento", "cliente", "sac", "call center", "recepcao", "recepção"])) {
-    return `Para atendimento ao cliente, é importante mostrar clareza, comunicação e resolução de problemas.
-
-O perfil pode destacar:
-
-✔ atendimento presencial ou online  
-✔ suporte ao cliente  
-✔ registro de solicitações  
-✔ organização de informações  
-✔ solução de dúvidas  
-✔ trabalho em equipe  
-✔ cordialidade e comunicação  
-
-Muita gente coloca só “atendimento”, mas dá para deixar isso muito mais profissional.`;
-  }
-
-  // =====================================================
-  // 40. TECNOLOGIA / TI
-  // =====================================================
-  if (hasAny(msg, ["ti", "tecnologia", "programacao", "programação", "desenvolvedor", "dev", "suporte tecnico", "suporte técnico"])) {
-    return `Para área de tecnologia, o perfil precisa ser bem direto e mostrar ferramentas, projetos e habilidades técnicas.
-
-É importante destacar:
-
-✔ linguagens  
-✔ ferramentas  
-✔ projetos  
-✔ GitHub ou portfólio, se tiver  
-✔ experiências práticas  
-✔ cursos  
-✔ tecnologias usadas  
-
-Também é importante adaptar o perfil para cada vaga, porque TI tem muitas áreas diferentes.`;
-  }
-
-  // =====================================================
-  // 41. CURRÍCULO INTERNACIONAL / INGLÊS
-  // =====================================================
-  if (hasAny(msg, ["ingles", "inglês", "perfil em ingles", "perfil em inglês", "vaga internacional", "exterior"])) {
-    return `Currículo em inglês ou para vaga internacional precisa de cuidado.
-
-Não é só traduzir palavra por palavra. É importante adaptar termos, formato e descrição das experiências.
-
-Também é bom deixar claro:
-
-✔ nível de inglês  
-✔ experiências relevantes  
-✔ ferramentas  
-✔ resultados  
-✔ formação  
-✔ tipo de vaga buscada`;
-  }
-
-  // =====================================================
-  // 42. IDADE / MAIS VELHO / RECOMEÇO
-  // =====================================================
-  if (hasAny(msg, ["tenho idade", "mais velho", "mais velha", "idade", "recomecar", "recomeçar", "voltar ao mercado"])) {
-    return `Dá para montar um perfil estratégico em qualquer fase.
-
-Quando a pessoa tem mais vivência, o segredo é destacar experiência, responsabilidade, maturidade e resultados, sem deixar o perfil pesado.
-
-Também é importante adaptar a linguagem para o tipo de vaga que você quer agora.`;
-  }
-
-  // =====================================================
-  // 43. PCD
-  // =====================================================
-  if (hasAny(msg, ["pcd", "deficiencia", "deficiência", "vaga pcd"])) {
-    return `Para vagas PCD, também é importante ter um perfil bem estruturado.
-
-O ideal é apresentar suas experiências, habilidades e formação com clareza, como em qualquer perfil, e mencionar informações relevantes apenas quando fizer sentido para a vaga ou processo.`;
-  }
-
-  // =====================================================
-  // 44. NÃO SEI POR ONDE COMEÇAR
-  // =====================================================
-  if (hasAny(msg, ["nao sei por onde comecar", "não sei por onde começar", "estou perdido", "estou perdida", "to perdido", "tô perdido", "nao sei fazer perfil", "não sei fazer perfil"])) {
-    return `Tudo bem, isso é mais comum do que parece 😊
-
-O primeiro passo é organizar as informações principais:
-
-✔ dados de contato  
-✔ objetivo profissional  
-✔ experiências  
-✔ formação  
-✔ cursos  
-✔ habilidades  
-✔ informações que combinam com a vaga  
-
-Depois disso, vem a parte estratégica: como escrever de um jeito que o recrutador e os sistemas entendam melhor.
-
-O curso te guia nesse processo.`;
-  }
-
-  // =====================================================
-  // 45. CURRÍCULO GENÉRICO
-  // =====================================================
-  if (hasAny(msg, ["perfil generico", "perfil genérico", "muito generico", "muito genérico", "igual para todas as vagas"])) {
-    return `Esse é um dos principais problemas.
-
-Quando o perfil é muito genérico, ele não conversa diretamente com a vaga.
-
-O ideal é adaptar algumas partes, como:
-
-✔ objetivo  
-✔ resumo profissional  
-✔ habilidades  
-✔ palavras-chave  
-✔ experiências mais relevantes  
-
-Assim o recrutador entende mais rápido por que você combina com aquela oportunidade.
-
-O curso ensina como fazer isso sem precisar criar um perfil totalmente novo toda vez.`;
-  }
-
-  // =====================================================
-  // 46. RESUMO PROFISSIONAL
-  // =====================================================
-  if (hasAny(msg, ["resumo profissional", "perfil profissional", "sobre mim no perfil", "sobre mim no perfil"])) {
-    return `O resumo profissional é uma das partes mais importantes do perfil.
-
-Ele precisa mostrar rapidamente quem você é profissionalmente.
-
-Um bom resumo pode trazer:
-
-✔ área de atuação  
-✔ tempo ou tipo de experiência  
-✔ principais habilidades  
-✔ foco profissional  
-✔ pontos fortes ligados à vaga  
-
-Evite frases muito vagas como “sou esforçado e comunicativo” sem contexto.
-
-O curso ajuda a montar um resumo mais estratégico.`;
-  }
-
-  // =====================================================
-  // 47. FOTO NO CURRÍCULO
-  // =====================================================
-  if (hasAny(msg, ["foto no perfil", "foto no perfil", "colocar foto", "precisa de foto"])) {
-    return `Na maioria dos casos, não precisa colocar foto no perfil, a menos que a vaga peça.
-
-O mais importante é o conteúdo estar claro, profissional e bem organizado.
-
-Foto pode ocupar espaço e nem sempre ajuda na análise.
-
-É melhor usar esse espaço para mostrar habilidades, experiências e informações relevantes para a vaga.`;
-  }
-
-  // =====================================================
-  // 48. ENDEREÇO / DADOS PESSOAIS
-  // =====================================================
-  if (hasAny(msg, ["endereco", "endereço", "dados pessoais", "cpf", "rg", "estado civil"])) {
-    return `Cuidado com excesso de dados pessoais no perfil.
-
-Geralmente não precisa colocar CPF, RG, nome dos pais ou informações muito pessoais.
-
-O básico costuma ser:
-
-✔ nome  
-✔ telefone  
-✔ e-mail  
-✔ cidade/estado  
-✔ LinkedIn, se tiver  
-
-O perfil precisa ser profissional e objetivo.`;
-  }
-
-  // =====================================================
-  // 49. CURSOS NO CURRÍCULO
-  // =====================================================
-  if (hasAny(msg, ["cursos no perfil", "cursos no perfil", "curso complementar", "cursos complementares", "onde colocar curso"])) {
-    return `Cursos podem fortalecer bastante o perfil, principalmente para quem tem pouca experiência ou está mudando de área.
-
-O ideal é colocar cursos que tenham relação com a vaga desejada.
-
-Exemplo:
-
-✔ Excel para área administrativa  
-✔ Atendimento ao cliente para comércio  
-✔ Programação para tecnologia  
-✔ Gestão de pessoas para liderança  
-
-O curso te ajuda a organizar isso sem deixar o perfil poluído.`;
-  }
-
-  // =====================================================
-  // 50. EMAIL PROFISSIONAL
-  // =====================================================
-  if (hasAny(msg, ["email", "e-mail", "email profissional", "e-mail profissional"])) {
-    return `Um detalhe simples, mas importante: use um e-mail profissional.
-
-Evite e-mails com apelidos, brincadeiras ou nomes muito informais.
-
-O ideal é algo com nome e sobrenome, por exemplo:
-
-nome.sobrenome@email.com
-
-Pequenos detalhes também passam profissionalismo.`;
-  }
-
-  // =====================================================
-  // 51. CURRÍCULO COM UMA PÁGINA
-  // =====================================================
-  if (hasAny(msg, ["uma pagina", "uma página", "duas paginas", "duas páginas", "quantas paginas", "quantas páginas"])) {
-    return `Depende da sua experiência.
-
-Para quem está começando, uma página geralmente é suficiente.
-
-Para quem tem mais experiência, pode ter duas páginas, desde que tudo ali seja relevante.
-
-O erro é colocar informação demais só para preencher espaço.
-
-O perfil precisa ser claro, objetivo e estratégico.`;
-  }
-
-  // =====================================================
-  // 52. ENTREVISTA
-  // =====================================================
-  if (hasAny(msg, ["entrevista", "chamado para entrevista", "chamada para entrevista", "me chamaram"])) {
-    return `Que bom 😊
-
-Se você foi chamado para entrevista, o perfil já cumpriu uma parte importante.
-
-Agora é essencial você saber explicar suas experiências com clareza.
-
-Revise:
-
-✔ o que colocou no perfil  
-✔ suas principais experiências  
-✔ resultados que já teve  
-✔ por que quer a vaga  
-✔ como suas habilidades combinam com a oportunidade  
-
-Um perfil bem feito também ajuda você a se preparar melhor para a entrevista.`;
-  }
-
-  // =====================================================
-  // 53. MEDO / INSEGURANÇA
-  // =====================================================
-  if (hasAny(msg, ["tenho medo", "inseguro", "insegura", "vergonha", "nao sei se consigo", "não sei se consigo"])) {
-    return `Eu entendo 😊
-
-Muita gente se sente insegura na hora de montar perfil ou se candidatar.
-
-Mas perfil não é sobre parecer perfeito. É sobre apresentar da melhor forma o que você já tem.
-
-Com estrutura certa, até experiências simples podem ficar mais profissionais.`;
-  }
-
-  // =====================================================
-  // 54. DESEMPENHO NO GUPY
-  // =====================================================
-  if (hasAny(msg, ["gupy nao chama", "gupy não chama", "gupy reprova", "gupy me reprova", "gupy nunca chama"])) {
-    return `A Instagram e outras plataformas usam critérios e filtros que podem dificultar quando o perfil não está bem alinhado.
-
-Alguns pontos que ajudam:
-
-✔ usar palavras-chave da vaga  
-✔ preencher o perfil com atenção  
-✔ adaptar o perfil  
-✔ evitar informações genéricas  
-✔ manter experiências claras  
-✔ revisar erros de português  
-
-O curso te ajuda a entender essa lógica para não depender só da sorte.`;
-  }
-
-  // =====================================================
-  // 55. ERROS DE PORTUGUÊS
-  // =====================================================
-  if (hasAny(msg, ["erro de portugues", "erro de português", "portugues", "português", "revisao", "revisão"])) {
-    return `Erros de português podem prejudicar bastante a primeira impressão.
-
-Antes de enviar, é bom revisar:
-
-✔ acentuação  
-✔ concordância  
-✔ datas  
-✔ nomes de cargos  
-✔ excesso de abreviações  
-✔ frases muito longas  
-
-Um perfil limpo e bem escrito passa mais profissionalismo.
-
-O curso também ajuda com organização e clareza na escrita.`;
-  }
-
-  // =====================================================
-  // 56. NÃO TENHO CURSO
-  // =====================================================
-  if (hasAny(msg, ["nao tenho curso", "não tenho curso", "sem curso", "nunca fiz curso"])) {
-    return `Mesmo sem muitos cursos, ainda dá para montar um perfil melhor.
-
-Você pode destacar experiência prática, habilidades, atividades informais, projetos e disponibilidade para aprender.
-
-Mas fazer cursos complementares pode ajudar bastante, principalmente se forem ligados à vaga desejada.
-
-O importante é não deixar o perfil vazio ou genérico.`;
-  }
-
-  // =====================================================
-  // 57. SÓ ENSINO MÉDIO
-  // =====================================================
-  if (hasAny(msg, ["ensino medio", "ensino médio", "só tenho ensino medio", "só tenho ensino médio", "terminei a escola"])) {
-    return `Ter ensino médio não impede você de montar um bom perfil.
-
-Você pode valorizar:
-
-✔ formação  
-✔ cursos livres  
-✔ habilidades  
-✔ experiências informais  
-✔ atendimento  
-✔ organização  
-✔ disponibilidade  
-✔ vontade de aprender  
-
-O perfil precisa mostrar seu potencial de forma clara.`;
-  }
-
-  // =====================================================
-  // 58. FACULDADE INCOMPLETA
-  // =====================================================
-  if (hasAny(msg, ["faculdade incompleta", "tranquei faculdade", "parei faculdade", "curso superior incompleto"])) {
-    return `Faculdade incompleta pode entrar no perfil dependendo do caso.
-
-Se tiver relação com a vaga ou mostrar uma formação relevante, pode ser útil mencionar.
-
-O importante é apresentar de forma honesta e organizada, sem parecer informação solta.`;
-  }
-
-  // =====================================================
-  // 59. MUITOS CURSOS
-  // =====================================================
-  if (hasAny(msg, ["muitos cursos", "tenho varios cursos", "tenho vários cursos", "qual curso colocar"])) {
-    return `Quando você tem muitos cursos, o ideal é selecionar os mais relevantes.
-
-Não precisa colocar tudo.
-
-Priorize os cursos que têm relação com:
-
-✔ a vaga desejada  
-✔ sua área atual  
-✔ sua transição de carreira  
-✔ habilidades pedidas na descrição da vaga  
-
-Currículo bom não é o que tem mais informação. É o que tem informação mais estratégica.`;
-  }
-
-  // =====================================================
-  // 60. TRABALHO INFORMAL
-  // =====================================================
-  if (hasAny(msg, ["trabalho informal", "bico", "freelancer", "freela", "sem registro", "trabalhei sem carteira"])) {
-    return `Experiência informal também pode ser valorizada, dependendo de como você apresenta.
-
-Você pode colocar atividades como:
-
-✔ atendimento  
-✔ vendas  
-✔ organização  
-✔ entregas  
-✔ cuidado com clientes  
-✔ controle de pagamentos  
-✔ produção de conteúdo  
-✔ serviços autônomos  
-
-O importante é escrever de forma profissional e verdadeira.
-
-O curso ajuda bastante nesse tipo de organização.`;
-  }
-
-  // =====================================================
-  // 61. DONA DE CASA / PAUSA NA CARREIRA
-  // =====================================================
-  if (hasAny(msg, ["dona de casa", "pausei carreira", "fiquei parada", "fiquei parado", "voltar a trabalhar", "voltar pro mercado"])) {
-    return `Dá para voltar ao mercado com um perfil bem organizado.
-
-Se houve uma pausa, o ideal é valorizar suas experiências anteriores, habilidades atuais, cursos e o tipo de vaga que você busca agora.
-
-Também dá para destacar competências como organização, responsabilidade, rotina, atendimento, gestão de tarefas e adaptação, quando fizer sentido.`;
-  }
-
-  // =====================================================
-  // 62. PORTFÓLIO
-  // =====================================================
-  if (hasAny(msg, ["portfolio", "portfólio", "github", "behance", "projetos"])) {
-    return `Portfólio pode fortalecer muito o perfil, principalmente em áreas como tecnologia, design, marketing, redação, social media e áreas criativas.
-
-Se você tem projetos, vale organizar e colocar um link profissional.
-
-Mas o perfil ainda precisa explicar bem:
-
-✔ o que você fez  
-✔ quais ferramentas usou  
-✔ qual foi seu papel  
-✔ quais resultados ou aprendizados teve  
-
-Currículo e portfólio precisam se complementar.`;
-  }
-
-  // =====================================================
-  // 63. REDES SOCIAIS
-  // =====================================================
-  if (hasAny(msg, ["instagram", "redes sociais", "colocar instagram", "colocar rede social"])) {
-    return `Só coloque redes sociais no perfil se elas forem profissionais ou relevantes para a vaga.
-
-Por exemplo:
-
-✔ LinkedIn  
-✔ portfólio  
-✔ GitHub  
-✔ Behance  
-✔ Instagram profissional, se for área criativa ou comercial  
-
-Evite colocar redes pessoais que não ajudam na sua imagem profissional.`;
-  }
-
-  // =====================================================
-  // 64. ÁREA DA SAÚDE
-  // =====================================================
-  if (hasAny(msg, ["saude", "saúde", "enfermagem", "cuidador", "cuidadora", "tecnico de enfermagem", "técnico de enfermagem"])) {
-    return `Para área da saúde, o perfil precisa transmitir responsabilidade, cuidado e preparo técnico.
-
-Pode destacar:
-
-✔ formação  
-✔ cursos obrigatórios  
-✔ experiência com pacientes  
-✔ atendimento humanizado  
-✔ rotinas clínicas  
-✔ organização  
-✔ plantões  
-✔ normas e procedimentos`;
-  }
-
-  // =====================================================
-  // 65. LOGÍSTICA / ESTOQUE
-  // =====================================================
-  if (hasAny(msg, ["logistica", "logística", "estoque", "almoxarifado", "expedicao", "expedição", "conferente"])) {
-    return `Para logística e estoque, o perfil pode destacar:
-
-✔ controle de estoque  
-✔ separação de pedidos  
-✔ conferência  
-✔ organização de mercadorias  
-✔ entrada e saída de produtos  
-✔ inventário  
-✔ sistemas usados  
-✔ agilidade e atenção a detalhes  
-
-O curso ajuda a transformar essas atividades em descrições mais profissionais.`;
-  }
-
-  // =====================================================
-  // 66. LIMPEZA / SERVIÇOS GERAIS
-  // =====================================================
-  if (hasAny(msg, ["limpeza", "servicos gerais", "serviços gerais", "auxiliar de limpeza", "diarista"])) {
-    return `Para limpeza e serviços gerais, também dá para montar um perfil profissional.
-
-Você pode destacar:
-
-✔ organização  
-✔ conservação de ambientes  
-✔ atenção a detalhes  
-✔ cumprimento de rotinas  
-✔ responsabilidade  
-✔ trabalho em equipe  
-✔ pontualidade  
-✔ experiência em empresas, casas, condomínios ou comércios  
-
-Toda experiência pode ser valorizada quando é bem escrita.`;
-  }
-
-  // =====================================================
-  // 67. PRODUÇÃO / INDÚSTRIA
-  // =====================================================
-  if (hasAny(msg, ["producao", "produção", "industria", "indústria", "operador de producao", "operador de produção", "fabrica", "fábrica"])) {
-    return `Para produção e indústria, o perfil precisa mostrar rotina, responsabilidade e conhecimento operacional.
-
-Pode destacar:
-
-✔ linha de produção  
-✔ operação de máquinas  
-✔ controle de qualidade  
-✔ embalagem  
-✔ separação  
-✔ organização  
-✔ metas de produção  
-✔ segurança no trabalho  
-
-Se você já atuou na área, dá para deixar essa experiência mais forte no perfil.`;
-  }
-
-  // =====================================================
-  // 68. MOTORISTA / ENTREGADOR
-  // =====================================================
-  if (hasAny(msg, ["motorista", "entregador", "entregas", "cnh", "habilitacao", "habilitação"])) {
-    return `Para motorista ou entregador, o perfil pode destacar:
-
-✔ categoria da CNH  
-✔ experiência com rotas  
-✔ entregas  
-✔ atendimento ao cliente  
-✔ pontualidade  
-✔ conservação do veículo  
-✔ conhecimento de regiões  
-✔ aplicativos ou sistemas usados  
-
-Essas informações ajudam o recrutador a entender melhor sua experiência.`;
+- criar e estruturar bons conteúdos
+- editar seus Reels para prender a atenção
+- engajar a sua audiência
+- usar parcerias para crescer
+- organizar seu calendário de postagens
+
+O objetivo é não só deixar o perfil bonito, mas fazer você crescer de verdade.`;
   }
 
   // =====================================================
@@ -1936,7 +903,7 @@ Você quer:`;
   if (hasAny(msg, ["sim", "quero", "tenho interesse", "pode mandar", "manda", "me envie", "envia", "quero sim"])) {
     return `Ótimo.
 
-Me conta qual é a sua maior dúvida: perfil, vaga ou crescimento digital?
+Me conta qual é a sua maior dúvida: conteúdo, crescimento ou acesso?
 
 Assim eu respondo de forma mais clara antes de falar de acesso.`;
   }
@@ -1947,7 +914,7 @@ Assim eu respondo de forma mais clara antes de falar de acesso.`;
   if (hasAny(msg, ["nao quero", "não quero", "nao tenho interesse", "não tenho interesse"])) {
     return `Tudo bem.
 
-Se sua dúvida for sobre perfil, vaga ou crescimento digital, posso tentar te orientar por aqui mesmo.`;
+Se sua dúvida for sobre conteúdo ou crescimento digital, posso tentar te orientar por aqui mesmo.`;
   }
 
   // =====================================================
@@ -1958,7 +925,7 @@ Se sua dúvida for sobre perfil, vaga ou crescimento digital, posso tentar te or
 
 Vou te direcionar certinho:
 
-👩‍💼 Para dúvidas sobre perfil, curso, vagas ou orientação:
+👩‍💼 Para dúvidas sobre conteúdo, curso, ou orientação:
 👉 Milene: ${linkMilene()}
 
 👨‍💻 Para erro, login, acesso, pagamento travado, página com problema ou bug:
@@ -1973,7 +940,7 @@ Assim você fala com a pessoa certa e resolve mais rápido.`;
   if (hasAny(msg, ["obrigado", "obrigada", "valeu", "vlw", "agradeco", "agradeço"])) {
     return `Por nada.
 
-Se tiver qualquer dúvida sobre perfil, vaga, curso ou acesso, pode chamar.`;
+Se tiver qualquer dúvida sobre Instagram, curso ou acesso, pode chamar.`;
   }
 
   // =====================================================
@@ -1982,7 +949,7 @@ Se tiver qualquer dúvida sobre perfil, vaga, curso ou acesso, pode chamar.`;
   if (rawMsg.trim().length <= 3) {
     return `${saudacao}me fala um pouco melhor o que você precisa.
 
-Você quer ajuda com perfil, acesso ao curso ou está com algum problema técnico?`;
+Você quer ajuda com conteúdo, acesso ao curso ou está com algum problema técnico?`;
   }
 
   // =====================================================
@@ -1992,10 +959,9 @@ Você quer ajuda com perfil, acesso ao curso ou está com algum problema técnic
 
 Para eu te ajudar melhor, me conta um pouco mais sobre sua dúvida.
 
-Se for sobre perfil, vaga, IA, Instagram, LinkedIn ou se o curso serve para o seu caso, posso te orientar por aqui.
+Se for sobre Instagram, Reels, engajamento ou se o curso serve para o seu caso, posso te orientar por aqui.
 
 Se for erro técnico, acesso, login, pagamento travado ou página com falha, me avisa que eu te direciono para o suporte certo.`;
-
 }
 
 async function getConversationHistory(userId, limit = 10) {
@@ -2023,7 +989,6 @@ async function getConversationHistory(userId, limit = 10) {
 function buildMessageHistory(conversationHistory, currentMessage) {
   const messages = [];
 
-  // Adicionar histórico da conversa
   for (const msg of conversationHistory) {
     messages.push({
       role: msg.direction === "in" ? "user" : "assistant",
@@ -2031,7 +996,6 @@ function buildMessageHistory(conversationHistory, currentMessage) {
     });
   }
 
-  // Adicionar mensagem atual
   messages.push({
     role: "user",
     content: currentMessage
@@ -2040,11 +1004,10 @@ function buildMessageHistory(conversationHistory, currentMessage) {
   return messages;
 }
 
-// Detectar o caminho da conversa baseado no histórico
 function detectConversationPath(history) {
   const allMessages = history.map(msg => msg.message_text?.toLowerCase() || "").join(" ");
   
-  const contentKeywords = ["conteúdo", "aula", "módulo", "aprendo", "ensina", "tópico", "tema", "perfil", "programa", "matéria", "material", "aprend"];
+  const contentKeywords = ["conteúdo", "aula", "módulo", "aprendo", "ensina", "tópico", "tema", "instagram", "reels", "engajamento", "seguidores", "aprend"];
   const paymentKeywords = ["pagar", "pagamento", "preço", "valor", "caro", "desconto", "promoção", "boleto", "cartão", "débito", "crédito", "investiment", "grana", "quanto"];
   const accessKeywords = ["acesso", "entrar", "login", "senha", "usuário", "plataforma", "problema", "não consigo", "travou", "conta", "cadastr"];
   const technicalKeywords = ["erro", "bug", "não funciona", "quebrou", "problema técnico", "falha", "travou", "tela branca", "não aparec"];
@@ -2086,18 +1049,17 @@ function findUnusedQuestion(questions, previousQuestions) {
   return questions[Math.floor(Math.random() * questions.length)];
 }
 
-// Pool de perguntas variadas por caminho
 function getFollowUpQuestion(path, history = []) {
   const paths = {
     content: [
-      "E qual é a sua principal necessidade: melhorar sua presença digital para passar em oportunidades, ou aplicar na prática?",
-      "Qual é a sua maior dificuldade no momento: saber o que incluir, estruturar as informações, ou adaptar para diferentes vagas?",
-      "Você quer focar em qual parte: fazer o conteúdo ficar mais atrativo aos recrutadores, ou entender a estrutura certa?",
-      "Qual é o seu maior desafio agora: saber o que incluir no perfil ou como apresentar de forma profissional?",
-      "O que te preocupa mais: deixar importantes informações de fora ou não saber como organizá-las visualmente?",
-      "Quer aprender a adaptar o perfil para diferentes posições? É isso que está faltando?",
-      "Se eu te mostrar como deixar seu perfil mais fácil de ler, você acha que vai ajudar em oportunidades?",
-      "Você quer melhorar o conteúdo do perfil ou toda a forma como ele é apresentado?"
+      "E qual é a sua principal necessidade: ter mais ideias de conteúdo ou entender como editar melhor?",
+      "Qual é a sua maior dificuldade no momento: gravar os vídeos ou fazer as pessoas interagirem?",
+      "Você quer focar em qual parte: produzir mais Reels ou fechar parcerias?",
+      "Qual é o seu maior desafio agora: entender o que dá engajamento ou criar um calendário de posts?",
+      "O que te preocupa mais: a qualidade dos seus vídeos ou o número de visualizações?",
+      "Quer aprender a prender a atenção das pessoas logo nos primeiros segundos? É isso que está faltando?",
+      "Se eu te mostrar como deixar seu perfil muito mais profissional, você acha que vai te ajudar?",
+      "Você quer melhorar os seus vídeos ou toda a identidade visual do seu Instagram?"
     ],
     payment: [
       "Qual é a sua maior preocupação: o valor total, as formas de pagamento, ou questões de segurança da transação?",
@@ -2106,7 +1068,7 @@ function getFollowUpQuestion(path, history = []) {
       "O que ajudaria mais nesse momento: saber exatamente o que você ganha com o acesso ou tirar dúvidas técnicas?",
       "Posso explicar melhor as formas de pagamento disponíveis ou você quer um desconto especial?",
       "Você quer parcelar ou prefere à vista? A gente pode encontrar uma forma que cabe no seu bolso.",
-      "Você quer que eu te explique o valor e também as vantagens que ele traz pra sua carreira?",
+      "Você quer que eu te explique o valor e também as vantagens que ele traz pro seu perfil?",
       "Prefere pagar agora e ter acesso imediato, ou quer saber todas as garantias antes de decidir?"
     ],
     access: [
@@ -2133,11 +1095,11 @@ function getFollowUpQuestion(path, history = []) {
       "O que você gostaria de saber primeiro: como funciona o curso, o que está incluso, ou como é o acesso?",
       "Qual é sua maior dúvida agora: sobre o conteúdo que você aprende, como pagamento funciona, ou acesso?",
       "Quer que eu explique tudo desde o começo ou você tem uma dúvida específica?",
-      "O que te traz por aqui? Você está buscando melhorar sua presença digital, conseguir mais oportunidades, ou os dois?",
+      "O que te traz por aqui? Você está buscando crescer no Instagram ou melhorar a qualidade dos vídeos?",
       "Como posso te ajudar melhor: mostrando o que você ganha com o curso ou respondendo dúvidas técnicas?",
       "Se eu resolvesse uma dúvida agora, qual seria a mais importante pra você?",
       "Você prefere que eu te explique o curso com exemplos reais ou com foco no seu caso?",
-      "Você quer saber primeiro sobre resultados ou sobre como o curso funciona?"
+      "Você quer saber primeiro sobre o conteúdo ou sobre como o curso funciona?"
     ]
   };
 
@@ -2146,19 +1108,16 @@ function getFollowUpQuestion(path, history = []) {
   return findUnusedQuestion(questions, previousQuestions);
 }
 
-// Contar turnos de conversa do cliente (quantas vezes ele mandou mensagem)
 function countConversationTurns(history) {
   return history.filter(msg => msg.direction === "in").length;
 }
 
-// Detectar confirmações e respostas simples
 function isConfirmation(messageText) {
   const text = messageText.toLowerCase().trim();
   const confirmations = ["sim", "s", "ok", "tudo bem", "tá bom", "blz", "valeu", "entendi", "certo", "perfeito", "ótimo", "legal", "show", "top", "massa", "👍", "✅"];
   return confirmations.some(c => text.includes(c) || text === c);
 }
 
-// Detectar quantas vezes falam sobre o mesmo tópico
 function countTopicMentions(history, topic) {
   const keywords = {
     content: ["conteúdo", "aula", "módulo", "aprendo", "ensina", "tópico"],
@@ -2182,15 +1141,8 @@ function countTopicMentions(history, topic) {
   return count;
 }
 
-// Detectar o estágio da conversa (para evoluir o funil)
 function detectConversationStage(history, conversationPath) {
   const userMessages = history.filter(msg => msg.direction === "in").length;
-  
-  // Estágios:
-  // 1. Awareness: Cliente está conhecendo (0-2 mensagens)
-  // 2. Interest: Cliente mostrou interesse (3-5 mensagens)
-  // 3. Decision: Cliente está pronto para decidir (6+ mensagens)
-  // 4. Objection: Cliente tem objeção (múltiplas perguntas sobre mesmo tema)
   
   if (userMessages <= 2) return "awareness";
   if (userMessages <= 5) return "interest";
@@ -2198,18 +1150,17 @@ function detectConversationStage(history, conversationPath) {
   return "objection";
 }
 
-// Respostas para mover para próximo estágio
 function getStageProgression(stage, conversationPath, mentionsCount) {
   const responses = {
     awareness: {
       content: [
-        "Já que você perguntou sobre conteúdo, vou ser bem direto: o curso não é só teoria. É prático mesmo. Você já tem um perfil pronto ou quer começar do zero?",
-        "Esse é o tipo de dúvida que a gente resolve rápido: o curso mostra o passo a passo para o perfil e como se preparar. Você quer começar pelo entendimento do conteúdo ou pela aplicação prática?",
-        "Ótimo ponto! O curso oferece aulas práticas e exercícios aplicáveis. Você prefere um caminho mais focado no perfil ou na aprovação em oportunidades?"
+        "Já que você perguntou sobre conteúdo, vou ser bem direto: o curso é muito focado na prática. Você já tem um Instagram ativo ou quer começar do zero?",
+        "Esse é o tipo de dúvida que a gente resolve rápido: o curso mostra o passo a passo da criação. Você quer focar mais em vídeo ou em postagens estáticas?",
+        "Ótimo ponto! O curso oferece aulas práticas de edição e engajamento. Você prefere um caminho mais focado em Reels ou em estratégias gerais?"
       ],
       payment: [
-        "Entendi sua preocupação. Deixa eu ser transparente: o investimento é pequeno comparado ao retorno. A maioria recupera em UMA entrevista a mais que consegue! Quer saber exatamente como?",
-        "O valor é planejado para ser acessível e com resultado rápido. Se quiser, te explico as formas de pagamento e qual oferece mais segurança para você.",
+        "Entendi sua preocupação. Deixa eu ser transparente: o investimento é pequeno comparado ao retorno. O valor compensa rápido! Quer saber exatamente como?",
+        "O valor é planejado para ser acessível e com resultado. Se quiser, te explico as formas de pagamento e qual oferece mais segurança para você.",
         "Se você quer pagar com segurança e ver mais valor, posso te mostrar as opções que ficam mais fáceis para sua rotina."
       ],
       access: [
@@ -2218,37 +1169,37 @@ function getStageProgression(stage, conversationPath, mentionsCount) {
         "Assim que fechar, você recebe o link e já entra no curso. Quer que eu prepare o passo a passo para você?"
       ],
       general: [
-        "Entendi sua dúvida. Deixa eu organizar melhor para você: o curso tem 3 pilares principais. Qual te interessa mais?",
+        "Entendi sua dúvida. Deixa eu organizar melhor para você: o curso tem pilares focados em crescimento e conteúdo. Qual te interessa mais?",
         "Vamos fazer o seguinte: te explico os pontos principais e você me diz o que mais te interessa. Pode ser?",
-        "Antes de falar de acesso, me conta: você quer entender o conteúdo, o valor ou o suporte do curso?"
+        "Antes de falar de acesso, me conta: você quer entender a parte de edição de vídeos ou de engajamento?"
       ]
     },
     interest: {
       content: [
-        "Perfeito! Então você quer isso mesmo. Muita gente não sabe, mas a maioria dos perfils que recebem não passam nem em filtro automático. Você quer aprender a fugir dessa?",
-        "Ótimo! Isso mostra que você já está no caminho certo. Você prefere melhorar sua presença digital para vagas específicas ou para o mercado em geral?",
-        "Esse é um ponto chave. Se te ajudar, posso mostrar como aplicar isso em um perfil que chama atenção desde o começo."
+        "Perfeito! Então você quer isso mesmo. Muita gente posta todo dia e não cresce porque erra no básico. Você quer aprender a fugir dessa?",
+        "Ótimo! Isso mostra que você já está no caminho certo. Você prefere melhorar o engajamento geral ou atrair seguidores novos?",
+        "Esse é um ponto chave. Se te ajudar, posso mostrar como aplicar isso na prática logo nas primeiras aulas."
       ],
       payment: [
         "Vejo que realmente quer investir. Que bom! Deixa eu te mostrar um último detalhe que faz toda diferença...",
-        "Isso mostra que você está interessado de verdade. Quer saber qual é a melhor forma de pagar para ter resultado rápido?",
-        "Excelente! Posso te explicar duas formas de pagamento que costumam facilitar bastante."
+        "Isso mostra que você está interessado de verdade. Quer saber qual é a melhor forma de pagar para liberar logo?",
+        "Excelente! Posso te explicar as formas de pagamento que costumam facilitar bastante."
       ],
       access: [
-        "Ótimo! Já que entendeu como funciona, quer começar agora mesmo? Tenho um cupom especial que expira em 24h.",
+        "Ótimo! Já que entendeu como funciona, quer começar agora mesmo? O sistema libera tudo na hora.",
         "Perfeito, você está quase lá. Quer que eu te envie a etapa exata pra acessar já?",
         "Isso é ótimo. Se quiser, te explico o passo a passo para acessar sem erro e já começar hoje."
       ],
       general: [
         "Ótimo! Vejo que você tá levando a sério. Vamos pro próximo passo?",
-        "Perfeito. Agora me conta: você quer que eu te ajude com o curso em si ou com a forma de usar ele no seu caso?",
-        "Excelente. Posso te explicar como cada parte do curso ajuda a melhorar seu perfil e suas chances."
+        "Perfeito. Agora me conta: você quer que eu te ajude com o curso em si ou com a forma de usar ele no seu Instagram?",
+        "Excelente. Posso te explicar como cada parte do curso ajuda a melhorar sua criação de conteúdo."
       ]
     },
     decision: {
       content: [
         "Você já tem tudo que precisa saber! Só falta você tomar a ação. Tá pronto para começar, ou tem aquele último detalhe que te falta?",
-        "Está quase! Agora falta só decidir qual caminho quer seguir primeiro: perfil ou oportunidades?",
+        "Está quase! Agora falta só decidir qual estratégia de conteúdo quer focar primeiro.",
         "Se quiser, posso te mostrar o próximo passo para você começar a aplicar tudo imediatamente."
       ],
       payment: [
@@ -2275,7 +1226,7 @@ function getStageProgression(stage, conversationPath, mentionsCount) {
       ],
       payment: [
         mentionsCount >= 3 ? "Entendo perfeitamente sua preocupação com investimento. Sabe o que? Vou te passar o contato do especialista. Ele consegue estruturar uma forma que caiba no seu bolso. Topa?" : "Ótima observação. Deixa eu detalhar melhor...",
-        "Se quiser, te explico o plano que cabe no seu bolso e ainda garante o resultado. Quer saber mais?",
+        "Se quiser, te explico o plano que cabe no seu bolso e ainda garante o acesso. Quer saber mais?",
         "Temos opções diferentes. Quer que eu te apresente a melhor para a sua situação?"
       ],
       access: [
@@ -2301,49 +1252,37 @@ function getStageProgression(stage, conversationPath, mentionsCount) {
   return choices[Math.floor(Math.random() * choices.length)];
 }
 
-// Função para ofercer o especialista
 function shouldOfferSpecialist(history, conversationPath) {
   const userMessages = history.filter(msg => msg.direction === "in").length;
   const topicMentions = countTopicMentions(history, conversationPath);
   const stage = detectConversationStage(history, conversationPath);
   
-  // Oferecer especialista se:
-  // 1. Cliente perguntou mais de 2 vezes sobre o mesmo tópico
-  // 2. Já teve mais de 6 turnos
-  // 3. Está na fase de objeção
-  
   return stage === "objection" && topicMentions >= 2;
 }
 
-// Detectar o tipo específico de pergunta
 function detectQuestionType(messageText) {
   const text = messageText.toLowerCase();
 
-  // PERGUNTAS SOBRE PREÇO
   const priceKeywords = ["preço", "valor", "quanto", "custa", "caro", "desconto", "promoção", "pagar", "pagamento", "investimento", "grana", "boleto", "cartão"];
   if (priceKeywords.some(kw => text.includes(kw))) {
     return "price";
   }
 
-  // PERGUNTAS SOBRE CONTEÚDO
-  const contentKeywords = ["o que aprend", "qual conteúdo", "qual aula", "qual módulo", "ensina", "tópico", "matéria", "programa", "perfil", "estrutura", "como funciona o curso"];
+  const contentKeywords = ["o que aprend", "qual conteúdo", "qual aula", "qual módulo", "ensina", "tópico", "matéria", "programa", "instagram", "conteudo", "como funciona o curso"];
   if (contentKeywords.some(kw => text.includes(kw))) {
     return "content";
   }
 
-  // PERGUNTAS SOBRE ACESSO/LOGIN
   const accessKeywords = ["como acessar", "como entrar", "login", "senha", "usuário", "cadastr", "plataforma", "entrar no site"];
   if (accessKeywords.some(kw => text.includes(kw))) {
     return "access";
   }
 
-  // PERGUNTAS TÉCNICAS
   const technicalKeywords = ["erro", "bug", "não funciona", "quebrou", "travou", "não consigo", "problema", "falha", "tela branca"];
   if (technicalKeywords.some(kw => text.includes(kw))) {
     return "technical";
   }
 
-  // PERGUNTAS SOBRE VIABILIDADE
   const viabilityKeywords = ["vale a pena", "serve pra", "funciona pra", "vai me ajud", "vai mudar", "resultado", "funciona mesmo", "é bom", "é legal"];
   if (viabilityKeywords.some(kw => text.includes(kw))) {
     return "viability";
@@ -2352,7 +1291,6 @@ function detectQuestionType(messageText) {
   return "general";
 }
 
-// Respostas direcionadas por tipo de pergunta
 function getDirectAnswer(questionType, user) {
   const linkCurso = COURSE_FRONTEND_URL;
   
@@ -2360,27 +1298,27 @@ function getDirectAnswer(questionType, user) {
     price: {
       response: `Ótimo, vou ser bem honesto com você! 💰
 
-O investimento está com condição especial agora. As formas de pagamento incluem cartão parcelado, PIX ou transferência. O valor vale o esforço porque a maior parte das pessoas recupera o investimento na primeira entrevista a mais que conquista.`,
+O investimento está com condição especial agora. As formas de pagamento incluem cartão parcelado ou PIX. O valor vale o esforço porque te ensina a profissionalizar seu conteúdo de verdade.`,
       followUps: [
-        "Qual forma de pagamento você prefere: à vista com desconto ou parcelado?",
+        "Qual forma de pagamento você prefere: PIX ou parcelado?",
         "Quer que eu te explique as opções de parcelamento disponíveis?",
-        "Você prefere garantir agora com desconto ou saber mais sobre o conteúdo antes?"
+        "Você prefere garantir agora ou saber mais sobre o conteúdo antes?"
       ]
     },
     content: {
       response: `Perfeito, deixa eu te contar! 📚
 
 O curso é dividido em módulos práticos:
-✅ Como montar um perfil que o recrutador entende na hora
-✅ Como passar por algoritmo e métricas (algoritmo)
-✅ Como valorizar suas experiências reais
+✅ Edição de Reels e vídeos que prendem a atenção
+✅ Como engajar a audiência no Instagram
+✅ Estruturas de conteúdo magnético
 ✅ Materiais e exemplos para aplicar direto no seu perfil
 
 Nada de teoria vazia — é resultado real.`,
       followUps: [
-        "Qual parte mais te interessa: estrutura do perfil, passar em algoritmo, ou mostrar seus diferenciais?",
-        "Você quer que eu te explique como deixar seu perfil atrativo já na primeira leitura?",
-        "Se eu te mostrar o caminho mais rápido para convencer o recrutador, você quer ver?"
+        "Qual parte mais te interessa: engajamento, edição de vídeo, ou crescimento de seguidores?",
+        "Você quer que eu te explique como criar vídeos que as pessoas não param de assistir?",
+        "Se eu te mostrar o caminho mais rápido para chamar atenção no Instagram, você quer ver?"
       ]
     },
     access: {
@@ -2414,19 +1352,19 @@ Me ajuda com essas informações:
       response: `Funciona demais! 🎯
 
 A maioria dos alunos que passa pelo curso:
-✅ Recebe mais convites para entrevista
-✅ Aprende a ser notado pelos recrutadores
-✅ Sabe mostrar as melhores experiências no perfil
+✅ Consegue mais alcance nas publicações
+✅ Aprende a editar de forma profissional
+✅ Transforma seguidores em uma comunidade engajada
 
-O curso entrega um método prático, então funciona para várias áreas.`,
+O curso entrega um método prático e direto ao ponto.`,
       followUps: [
-        "Você quer melhorar pra qual objetivo: conseguir mais oportunidades ou passar em crescimento digital?",
-        "Quer que eu te mostre como isso se aplica no seu caso específico?",
-        "Deseja que eu explique como isso ajuda a ser visto pelos sistemas automáticos?"
+        "Você quer melhorar pra qual objetivo: crescer sua marca pessoal ou divulgar serviços?",
+        "Quer que eu te mostre como isso se aplica no seu Instagram específico?",
+        "Deseja que eu explique como isso ajuda a prender a atenção do seu público?"
       ]
     },
     general: {
-      response: null, // Deixar Claude responder
+      response: null,
       followUps: []
     }
   };
@@ -2443,7 +1381,6 @@ O curso entrega um método prático, então funciona para várias áreas.`,
   };
 }
 
-// Contar turnos de conversa do cliente (quantas vezes ele mandou mensagem)
 async function maybeGetClaudeReply(messageText, user) {
   const claudeKey = cleanEnv(process.env.CLAUDE_API_KEY);
   const specialistPhone = "5511933128628";
@@ -2453,25 +1390,15 @@ async function maybeGetClaudeReply(messageText, user) {
   }
 
   try {
-    // Recuperar histórico da conversa
     const history = user?.id ? await getConversationHistory(user.id) : [];
-    
-    // PASSO 1: Detectar que tipo de pergunta o cliente fez
     const questionType = detectQuestionType(messageText);
-    
-    // PASSO 2: Detectar se é confirmação
     const isConfirmationMsg = isConfirmation(messageText);
-    
-    // PASSO 3: Detectar estágio da conversa
     const conversationPath = detectConversationPath(history);
     const stage = detectConversationStage(history, conversationPath);
     const topicMentions = countTopicMentions(history, conversationPath);
-    
-    // PASSO 4: Verificar se deve oferecer especialista
     const shouldOffer = shouldOfferSpecialist(history, conversationPath);
     
     if (shouldOffer) {
-      // Cliente perguntou demais sobre o mesmo tópico → oferecer especialista
       return `Vejo que você tem várias dúvidas sobre isso, e isso é ótimo! 🤓
 
 Melhor conversar direto com o especialista que pode responder TUDO com muito mais detalhe. Ele consegue estruturar a melhor forma pra você.
@@ -2481,35 +1408,23 @@ Quer que eu passe o WhatsApp dele? É: ${specialistPhone}
 Ele tá disponível pra conversar e tirar todas as suas dúvidas! 🚀`;
     }
     
-    // PASSO 5: Se for confirmação, evoluir a conversa
     if (isConfirmationMsg && history.length > 0) {
       const progressionResponse = getStageProgression(stage, conversationPath, topicMentions);
-      
       if (progressionResponse) {
         return progressionResponse;
       }
     }
     
-    // PASSO 6: Tentar responder diretamente
     const directAnswer = getDirectAnswer(questionType, user);
     if (directAnswer?.response) {
-      // Se temos uma resposta direta, usar ela + pergunta de continuação
-      return `${directAnswer.response}
-
-${directAnswer.followUp}`;
+      return `${directAnswer.response}\n\n${directAnswer.followUp}`;
     }
     
-    // PASSO 7: Se não temos resposta direta, usar Claude
-    const turnCount = countConversationTurns(history);
-    
-    // Construir array de mensagens com histórico
     const messages = buildMessageHistory(history, messageText);
-    
-    // Selecionar a pergunta seguinte baseada no caminho
     const followUpQuestion = getFollowUpQuestion(conversationPath, history);
 
     const pathDescriptions = {
-      content: "O cliente está interessado no CONTEÚDO do curso (o que aprende, estrutura, matéria).",
+      content: "O cliente está interessado no CONTEÚDO do curso (edição, Reels, Instagram, engajamento).",
       payment: "O cliente tem dúvidas sobre PAGAMENTO, preço, desconto ou formas de pagar.",
       access: "O cliente tem problemas de ACESSO à plataforma (login, conta, entrar no site).",
       technical: "O cliente enfrenta PROBLEMAS TÉCNICOS (erro, bug, não funciona, travou).",
@@ -2530,9 +1445,9 @@ ${directAnswer.followUp}`;
 O curso ensina criação de conteúdo, crescimento no Instagram, edição e parcerias. Valor: R$ 39,99.
 
 CONTEXTO ATUAL:
-${pathDescriptions[conversationPath]}
-Tipo de pergunta: ${questionType}
-Estágio da conversa: ${stage}
+${pathDescriptions[conversationPath] || ""}
+Tipo de pergunta: ${questionType || ""}
+Estágio da conversa: ${stage || ""}
 Total de mensagens nesta conversa: ${history.length}
 
 PERSONALIDADE:
@@ -2586,30 +1501,25 @@ async function processPendingWhatsappMessages() {
         const celularBanco = normalizePhoneBR(user.celular);
         const celular = getFinalTestPhone(user);
 
-        console.log(`user_id ${user.id} | numero vindo do banco: ${user.celular}`);
-        console.log(`user_id ${user.id} | numero normalizado do banco: ${celularBanco}`);
-        console.log(`user_id ${user.id} | numero final para envio: ${celular}`);
-        console.log(`user_id ${user.id} | phone_number_id usado: ${getWhatsAppConfig().phoneNumberId}`);
-
-                if (!celular) continue;
+        if (!celular) continue;
 
         const mensagensTeste = [
           `Oi, tudo bem? 😊
 
-Vi que você se interessou pelo curso… ficou alguma dúvida pra finalizar seu acesso?`,
+Vi que você se cadastrou no curso, mas o acesso ainda não foi liberado. Ficou alguma dúvida pra finalizar?`,
 
           `Fala! 👀
 
-Você chegou bem perto de garantir o acesso ao curso… quer que eu te ajude a finalizar?`,
+Você chegou bem perto de garantir o acesso ao curso… aconteceu alguma coisa na hora do pagamento?`,
 
-          `Oi! 😊
+          `Oii! 💕
 
 Vi seu interesse aqui no curso. Posso te ajudar a liberar o acesso rapidinho?`
         ];
 
         const mensagemInicial = mensagensTeste[Math.floor(Math.random() * mensagensTeste.length)];
 
-        const randomDelay = Math.floor(Math.random() * 2000) + 8000; // 8–10s
+        const randomDelay = Math.floor(Math.random() * 2000) + 8000;
 
         await delay(randomDelay);
 
@@ -2625,8 +1535,6 @@ Vi seu interesse aqui no curso. Posso te ajudar a liberar o acesso rapidinho?`
         });
 
         await markWhatsappSent(user.id);
-
-        console.log(`WhatsApp em texto enviado para user_id ${user.id} - ${celular}`);
       } catch (err) {
         console.error(`Erro ao enviar WhatsApp para user_id ${user.id}:`, err.message);
       }
@@ -3422,7 +2330,6 @@ app.post("/api/webhooks/whatsapp", async (req, res) => {
 
     console.log("Webhook WhatsApp payload recebido.");
 
-    // Ferramenta de tempo para o efeito "digitando"
     const delay = ms => new Promise(res => setTimeout(res, ms));
 
     const message = value?.messages?.[0];
@@ -3432,9 +2339,8 @@ app.post("/api/webhooks/whatsapp", async (req, res) => {
     }
 
     const from = normalizePhoneBR(message.from || "");
-    const type = message.type; // NOVO: Checa se é texto, áudio, etc.
+    const type = message.type;
 
-    // NOVO: Regra de bloqueio de áudio
     if (type === "audio" || type === "voice") {
       const audioReply = "Menina, estou num lugar que não consigo ouvir áudio agora 🙈 Consegue me escrever rapidinho qual é a sua dúvida?";
       await sendWhatsAppText(from, audioReply);
@@ -3485,14 +2391,12 @@ app.post("/api/webhooks/whatsapp", async (req, res) => {
     const { intent, reply } = handleIncomingMessage(text, user);
 
     let finalReply = reply;
-    // Mantém a sua lógica do Claude intacta (checando maiúsculo ou minúsculo)
+    
     if (intent === "FALLBACK" || intent === "fallback") {
       const claudeReply = await maybeGetClaudeReply(text, user);
       finalReply = claudeReply || reply || "Posso te ajudar com pagamento, acesso ou dúvidas do curso 😊";
     }
 
-    // --- NOVO: Efeito de digitação (quebrando a mensagem) ---
-    // Corta a mensagem toda vez que tiver um "Enter duplo" (\n\n) no texto
     const replyParts = finalReply.split('\n\n').filter(part => part.trim() !== "");
 
     let lastSendResponse = null;
@@ -3500,16 +2404,13 @@ app.post("/api/webhooks/whatsapp", async (req, res) => {
     for (let i = 0; i < replyParts.length; i++) {
       const part = replyParts[i];
       
-      // Envia o parágrafo
       lastSendResponse = await sendWhatsAppText(from, part.trim());
 
-      // Se não for o último parágrafo, dá uma pausa de 2.5 segundos para parecer que está digitando o resto
       if (i < replyParts.length - 1) {
         await delay(2500); 
       }
     }
 
-    // Salva a mensagem enviada no banco de dados
     await saveWhatsappMessage({
       userId: user?.id || null,
       celular: from,
@@ -3526,23 +2427,14 @@ app.post("/api/webhooks/whatsapp", async (req, res) => {
   }
 });
 
-const FOLLOWUP_INTERVALS = [30, 90, 180];
+const FOLLOWUP_INTERVALS = [30, 40];
 const MAX_FOLLOWUPS = FOLLOWUP_INTERVALS.length;
 
 function getFollowupMessage(followupCount) {
-  const linkCurso = COURSE_FRONTEND_URL;
-  const contatoHumano = "11933128628";
-
   const mensagens = [
-    `Olá, tudo bem? estou passando apenas pra saber se ficou alguma dúvida sobre o curso, se houve algum outro problema, pode me chamar por aqui!`,
-
-    `Quer que eu te explique rapidinho como funciona o cadastro e pagamento?`,
-
-    `Última mensagem por aqui...
-
-Se você ainda estiver com alguma dúvida, posso explicar como funciona o curso ou para onde ir no site.
-
-Se quiser, também posso conectar você com o especialista.` 
+    `Oii! Estou passando de novo só pra te lembrar que a condição especial da Influencer Academy ainda tá valendo! ✨\n\nQuer que eu te mande o link do Pix ou do cartão pra facilitar e a gente já liberar o seu acesso?`,
+    
+    `Última mensagem por aqui! 🙈\n\nSe você ainda estiver com alguma dúvida sobre o curso, o conteúdo ou o pagamento, vou deixar o contato do nosso especialista.\n\nPode chamar lá que a equipe te ajuda com tudo:\n👉 https://wa.me/5511933128628` 
   ];
 
   return mensagens[followupCount] || null;  
@@ -3565,7 +2457,6 @@ async function getUsersForWhatsappFollowUp() {
       AND (
         (whatsapp_followup_count = 0 AND last_bot_message_at <= NOW() - INTERVAL ? MINUTE)
         OR (whatsapp_followup_count = 1 AND last_bot_message_at <= NOW() - INTERVAL ? MINUTE)
-        OR (whatsapp_followup_count = 2 AND last_bot_message_at <= NOW() - INTERVAL ? MINUTE)
       )
       AND NOT EXISTS (
         SELECT 1
@@ -3575,7 +2466,7 @@ async function getUsersForWhatsappFollowUp() {
           AND wm.created_at >= users.whatsapp_sent_at
       )
     `,
-    [MAX_FOLLOWUPS, FOLLOWUP_INTERVALS[0], FOLLOWUP_INTERVALS[1], FOLLOWUP_INTERVALS[2]]
+    [MAX_FOLLOWUPS, FOLLOWUP_INTERVALS[0], FOLLOWUP_INTERVALS[1]]
   );
 
   return rows;
@@ -4464,18 +3355,3 @@ app.listen(port, () => {
 }
 
 start();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
