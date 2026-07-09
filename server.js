@@ -538,6 +538,12 @@ async function sendWhatsAppText(to, text) {
   const wa = getWhatsAppConfig();
   const url = getWhatsAppMessagesUrl();
 
+  console.log("===== WHATSAPP CONFIG =====");
+  console.log("API:", wa.apiVersion);
+  console.log("PHONE ID:", wa.phoneNumberId);
+  console.log("TOKEN:", wa.token ? wa.token.substring(0, 25) + "..." : "UNDEFINED");
+  console.log("URL:", url);
+
   const response = await fetch(url, {
     method: "POST",
     headers: {
