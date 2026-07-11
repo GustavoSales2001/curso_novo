@@ -9,7 +9,7 @@ import siteChatRoutes from "./siteChatRoutes.js";
 
 const BOT_VERSION = "influencer-academy-whatsapp-v9-grandao-limpo";
 const COURSE_NAME_SAFE = "Influencer Academy";
-const COURSE_URL_SAFE = "https://gustavosales2001.github.io/curso_novo/";
+const COURSE_URL_SAFE = "https://influenceracademy.site";
 const COURSE_PRICE_SAFE = "R$ 39,99";
 
 dotenv.config();
@@ -85,7 +85,7 @@ const paymentClient = new Payment(client);
 const COURSE_NAME = "Influencer Academy";
 const COURSE_DESCRIPTION = "Influencer Academy - Curso de crescimento, conteúdo e presença digital";
 const COURSE_PRICE = 39.99;
-const COURSE_FRONTEND_URL = "https://gustavosales2001.github.io/curso_novo/";
+const COURSE_FRONTEND_URL = "https://influenceracademy.site";
 
 let pool;
 let whatsappJobRunning = false;
