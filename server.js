@@ -56,7 +56,8 @@ if (!origin || origin === "null") return callback(null, true);
       const allowed = [
         "http://localhost:3000",
         "http://127.0.0.1:3000",
-        "https://gustavosales2001.github.io"
+        "https://gustavosales2001.github.io",
+        "https://influenceracademy.site" // ADICIONE ESTA LINHA
       ];
 
       if (allowed.includes(origin)) {
