@@ -1930,8 +1930,17 @@ app.get("/api/users/access/:email", async (req, res) => {
 
 app.post("/api/payments/pix", async (req, res) => {
   try {
-    const { payer } = req.body;
-    const amount = COURSE_PRICE;
+    // 1. Recebemos o cupom aqui
+    const { payer, coupon_applied } = req.body;
+    
+    // 2. Definimos o valor base
+    let amount = COURSE_PRICE; 
+    
+    // 3. Aplicamos o desconto se o cupom for verdadeiro
+    if (coupon_applied === true || coupon_applied === "true") {
+      amount = amount - 10;
+    }
+
     const description = COURSE_DESCRIPTION;
 
     if (!payer?.email) {
@@ -1953,6 +1962,7 @@ app.post("/api/payments/pix", async (req, res) => {
     const externalReference = `user_${user.id}`;
 
     const body = {
+      // 4. Usamos a variável 'amount' que já foi calculada com ou sem desconto
       transaction_amount: Number(amount),
       description,
       payment_method_id: "pix",
@@ -1970,7 +1980,7 @@ app.post("/api/payments/pix", async (req, res) => {
       },
       notification_url: notificationUrl
     };
-
+    
     const result = await paymentClient.create({ body });
     const tx = result?.point_of_interaction?.transaction_data || {};
 

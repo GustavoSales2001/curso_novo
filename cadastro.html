@@ -265,14 +265,12 @@
 
       const payload = {
         name: document.getElementById("nome").value.trim(),
-        nome: document.getElementById("nome").value.trim(),
         email: document.getElementById("email").value.trim().toLowerCase(),
         celular: document.getElementById("celular").value.trim(),
         nascimento: document.getElementById("nascimento").value,
-        birthDate: document.getElementById("nascimento").value,
         password: document.getElementById("senha").value.trim(),
-        senha: document.getElementById("senha").value.trim(),
-        area: "Influencer Academy"
+        area: "Influencer Academy",
+        coupon_applied: localStorage.getItem("influencerCouponApplied") === "true"
       };
 
       if (!payload.name || !payload.email || !payload.celular || !payload.password) {
@@ -309,7 +307,7 @@
 
         setTimeout(() => {
           window.location.href = "pagamento.html";
-        }, 900);
+      </span>}, 900);
       } catch (error) {
         showMessage(error.message || "Erro ao criar cadastro.", "error");
         submitBtn.disabled = false;
@@ -322,18 +320,3 @@
   <script src="assets/save-student-email/save-student-email.js"></script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
