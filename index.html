@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="pt-BR$ 39,99">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -563,6 +563,44 @@
       font-size:14px;
     }
 
+    /* Estilo do Cupom */
+    .coupon-section {
+      margin-bottom: 24px;
+      background: #fff;
+      padding: 16px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+    }
+    .coupon-flex {
+      display: flex;
+      gap: 10px;
+    }
+    .coupon-flex input {
+      flex: 1;
+      padding: 12px 16px;
+      border: 1px solid #efd8cf;
+      border-radius: 12px;
+      outline: none;
+      font-size: 14px;
+      font-family: inherit;
+    }
+    .coupon-flex input:focus {
+      border-color: var(--primary);
+    }
+    .coupon-flex button {
+      padding: 12px 20px;
+      border: none;
+      background: var(--text);
+      color: white;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+    .coupon-flex button:hover {
+      background: #2a201b;
+    }
+
     @media (max-width: 1100px){
       .hero-grid,
       .editorial,
@@ -702,7 +740,7 @@
 
   <section class="promo-countdown">
   <div class="promo-countdown__text">
-    <strong>Oferta especial de lançamento: de R$ 69,99 por R$ 39,99</strong>
+    <strong id="promo-bar-text">Oferta especial de lançamento: de R$ 69,99 por R$ 39,99</strong>
     <span>Essa condição fica disponível por tempo limitado para as primeiras alunas.</span>
   </div>
 
@@ -1000,8 +1038,8 @@
           <h3>Comece hoje a construir sua presença como criadora.</h3>
 
           <div class="price-offer">
-            <div class="old-price">De <span class="old-price">R$ 69,99</span></div>
-            <div class="new-price">Por R$ 39,99</div>
+            <div class="old-price" id="box-old-price">De <span>R$ 69,99</span></div>
+            <div class="new-price" id="box-new-price">Por R$ 39,99</div>
             <div class="price-subtitle">pagamento único</div>
           </div>
 
@@ -1035,6 +1073,16 @@
             Acesso ao curso, materiais de apoio e uma trilha prática para você aplicar no seu perfil sem complicar.
           </div>
 
+          <!-- NOVA ÁREA DE CUPOM AQUI -->
+          <div class="coupon-section">
+            <div class="coupon-flex">
+              <input type="text" id="couponInput" placeholder="Tem um cupom? Digite aqui" />
+              <button id="applyCouponBtn" onclick="applyCoupon()">Aplicar</button>
+            </div>
+            <div id="couponMessage" style="font-size: 13px; margin-top: 8px;"></div>
+          </div>
+          <!-- FIM DA ÁREA DE CUPOM -->
+
           <div style="display:flex; gap:14px; flex-wrap:wrap;">
             <a class="btn btn-primary" href="cadastro.html">Garantir minha vaga</a>
             <a class="btn btn-secondary" href="Chatbot.html">Tirar minhas dúvidas</a>
@@ -1053,6 +1101,7 @@
         </div>
       </div>
     </section>
+
 <section class="section" id="faq">
       <div class="container">
         <div class="heading">
@@ -1109,81 +1158,116 @@
     </div>
   </footer>
 
+<!-- LÓGICA INTELIGENTE DE PREÇO, TEMPO E CUPOM -->
 <script>
 (function(){
+  // Chaves para salvar no navegador
   const deadlineKey = "influencerCountdownDeadline";
-  let deadline = localStorage.getItem(deadlineKey);
+  const couponKey = "influencerCouponApplied";
 
+  // Verifica ou cria o tempo de limite (3 dias)
+  let deadline = localStorage.getItem(deadlineKey);
   if(!deadline){
     deadline = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString();
     localStorage.setItem(deadlineKey, deadline);
   }
 
-  function pad(value){
-    return String(value).padStart(2, "0");
+  let isExpired = false;
+  let hasCoupon = localStorage.getItem(couponKey) === "true";
+
+  function pad(value){ return String(value).padStart(2, "0"); }
+
+  function formatPrice(num) {
+    return "R$ " + num.toFixed(2).replace(".", ",");
   }
 
+  // Função para atualizar os valores na tela
+  function updateUI() {
+    let basePrice = isExpired ? 69.99 : 39.99;
+    let finalPrice = hasCoupon ? (basePrice - 10.00) : basePrice;
+
+    // Elementos da tela
+    const promoTextTop = document.getElementById('promo-bar-text');
+    const boxOldPrice = document.getElementById('box-old-price');
+    const boxNewPrice = document.getElementById('box-new-price');
+
+    // Regras visuais: Expirado ou no Prazo
+    if (isExpired) {
+      if (promoTextTop) promoTextTop.innerHTML = "O tempo da oferta encerrou, mas você ainda pode garantir sua vaga!";
+      if (boxOldPrice) boxOldPrice.style.display = "none";
+      if (boxNewPrice) boxNewPrice.innerHTML = "Por " + formatPrice(finalPrice);
+    } else {
+      if (promoTextTop) promoTextTop.innerHTML = "Oferta especial de lançamento: de R$ 69,99 por " + formatPrice(finalPrice);
+      if (boxOldPrice) boxOldPrice.style.display = "block";
+      if (boxNewPrice) boxNewPrice.innerHTML = "Por " + formatPrice(finalPrice);
+    }
+
+    // Regras visuais: Cupom
+    const couponInput = document.getElementById("couponInput");
+    const couponBtn = document.getElementById("applyCouponBtn");
+    const couponMsg = document.getElementById("couponMessage");
+
+    if (hasCoupon && couponInput && couponBtn && couponMsg) {
+      couponInput.style.display = "none";
+      couponBtn.style.display = "none";
+      couponMsg.innerHTML = "Cupom aplicado! Desconto extra de R$ 10,00 ativado na sua compra. 🎉";
+      couponMsg.style.color = "#00a884";
+      couponMsg.style.fontWeight = "bold";
+    }
+  }
+
+  // Lógica do cronômetro
   function updateCountdown(){
     const end = new Date(deadline).getTime();
     const now = Date.now();
-    const diff = Math.max(0, end - now);
+    const diff = end - now;
 
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((diff / (1000 * 60)) % 60);
-    const seconds = Math.floor((diff / 1000) % 60);
+    if (diff <= 0) {
+      isExpired = true;
+      document.querySelectorAll("#cd-days, #offer-days").forEach(el => el && (el.textContent = "00"));
+      document.querySelectorAll("#cd-hours, #offer-hours").forEach(el => el && (el.textContent = "00"));
+      document.querySelectorAll("#cd-minutes, #offer-minutes").forEach(el => el && (el.textContent = "00"));
+      document.querySelectorAll("#cd-seconds, #offer-seconds").forEach(el => el && (el.textContent = "00"));
+    } else {
+      isExpired = false;
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
 
-    document.getElementById("cd-days").textContent = pad(days);
-    document.getElementById("cd-hours").textContent = pad(hours);
-    document.getElementById("cd-minutes").textContent = pad(minutes);
-    document.getElementById("cd-seconds").textContent = pad(seconds);
+      document.querySelectorAll("#cd-days, #offer-days").forEach(el => el && (el.textContent = pad(days)));
+      document.querySelectorAll("#cd-hours, #offer-hours").forEach(el => el && (el.textContent = pad(hours)));
+      document.querySelectorAll("#cd-minutes, #offer-minutes").forEach(el => el && (el.textContent = pad(minutes)));
+      document.querySelectorAll("#cd-seconds, #offer-seconds").forEach(el => el && (el.textContent = pad(seconds)));
+    }
+    
+    // Atualiza a tela a cada segundo garantindo o preço certo
+    updateUI();
   }
 
   updateCountdown();
   setInterval(updateCountdown, 1000);
+
+  // Botão de aplicar o cupom
+  window.applyCoupon = function() {
+    const input = document.getElementById("couponInput");
+    const msg = document.getElementById("couponMessage");
+    const val = input.value.trim().toUpperCase();
+
+    if (val.startsWith("MILY")) {
+      localStorage.setItem(couponKey, "true");
+      hasCoupon = true;
+      updateUI();
+    } else {
+      msg.innerHTML = "Cupom inválido ou expirado.";
+      msg.style.color = "#ef4444";
+    }
+  };
+
 })();
 </script>
 
-<script>
-(function(){
-  const deadlineKey = "offerCountdownDeadline";
-  let deadline = localStorage.getItem(deadlineKey);
-
-  if(!deadline){
-    deadline = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString();
-    localStorage.setItem(deadlineKey, deadline);
-  }
-
-  function pad(value){
-    return String(value).padStart(2, "0");
-  }
-
-  function updateOfferCountdown(){
-    const end = new Date(deadline).getTime();
-    const now = Date.now();
-    const diff = Math.max(0, end - now);
-
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((diff / (1000 * 60)) % 60);
-    const seconds = Math.floor((diff / 1000) % 60);
-
-    const d = document.getElementById("offer-days");
-    const h = document.getElementById("offer-hours");
-    const m = document.getElementById("offer-minutes");
-    const s = document.getElementById("offer-seconds");
-
-    if(d) d.textContent = pad(days);
-    if(h) h.textContent = pad(hours);
-    if(m) m.textContent = pad(minutes);
-    if(s) s.textContent = pad(seconds);
-  }
-
-  updateOfferCountdown();
-  setInterval(updateOfferCountdown, 1000);
-})();
-</script>
-<!-- FLOATING-GALLER$ 39,99Y-LIGHTBOX STAR$ 39,99T -->
+<!-- FLOATING-GALLERY-LIGHTBOX START -->
 <script>
 (function () {
   if (document.getElementById("floatingGalleryLightbox")) return;
@@ -1278,47 +1362,7 @@
   });
 })();
 </script>
-<!-- FLOATING-GALLER$ 39,99Y-LIGHTBOX END -->
+<!-- FLOATING-GALLERY-LIGHTBOX END -->
   <script src="assets/course-polish/course-polish.js"></script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

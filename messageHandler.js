@@ -795,12 +795,12 @@ export function handleIncomingMessage(text = "", user = {}) {
   }
 
   // =====================================================
-  // RESPOSTAS DIRETAS DO MENU DE SUPORTE (1 a 5)
+  // RESPOSTAS DIRETAS DE SUPORTE TÉCNICO (APENAS PROBLEMAS)
   // =====================================================
-  if (hasAny(msg, ["1", "2", "3", "4", "5", "cadastro", "login", "pagamento", "area da aluna", "área da aluna", "aula bloqueada"])) {
+  if (hasAny(msg, ["nao consigo acessar", "não consigo acessar", "aula bloqueada", "login", "senha incorreta", "deu erro"])) {
     return {
       intent: "support",
-      reply: `Entendi! Como essa parte envolve o seu acesso, vou pedir pra você falar direto com o suporte humano para resolvermos isso na hora.
+      reply: `Entendi! Como essa parte envolve o seu acesso ou um problema técnico, vou pedir pra você falar direto com o suporte humano para resolvermos isso na hora.
 
 Por favor, clica neste link e manda um print da sua tela lá:
 👉 https://wa.me/5511922198936`
