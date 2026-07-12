@@ -1933,13 +1933,15 @@ app.post("/api/payments/pix", async (req, res) => {
     const { payer, coupon_applied, is_expired } = req.body;
     
     let amount = is_expired ? 69.99 : 39.99; // Base dinâmica
-
-    // Verifica se veio como booleano ou como texto
     if (coupon_applied === true || coupon_applied === "true") { 
       amount = amount - 10; 
     }
 
-    const description = COURSE_DESCRIPTION;
+    // 🔴 A MÁGICA DA CORREÇÃO AQUI: 
+    // Arredonda para 2 casas decimais e transforma de volta em Número
+    amount = Number(amount.toFixed(2));
+
+    const description = "Influencer Academy - Acesso Completo"; // Garantindo que tem descrição
 
     if (!payer?.email) {
       return res.status(400).json({
