@@ -20,9 +20,9 @@
         </p>
 
         <div class="price-card">
-          <span>Oferta especial</span>
-          <div class="old-price">De R$ 69,99</div>
-          <div class="new-price">Por R$ 39,99</div>
+          <span id="promo-label">Oferta especial</span>
+          <div class="old-price" id="old-price-display">De R$ 69,99</div>
+          <div class="new-price" id="new-price-display">Por R$ 39,99</div>
           <small>Pagamento único · acesso ao conteúdo do curso</small>
         </div>
       </div>
@@ -82,11 +82,60 @@
     </section>
   </main>
 
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // 1. Verifica Expiração
+      const deadlineKey = "influencerCountdownDeadline";
+      let deadline = localStorage.getItem(deadlineKey);
+      let isExpired = false;
+      
+      if (deadline) {
+        isExpired = Date.now() > new Date(deadline).getTime();
+      }
+
+      // 2. Verifica Cupom
+      const couponKey = "influencerCouponApplied";
+      const hasCoupon = localStorage.getItem(couponKey) === "true";
+
+      // 3. Define a Matemática Base
+      let basePrice = isExpired ? 69.99 : 39.99;
+      let finalPrice = hasCoupon ? (basePrice - 10.00) : basePrice;
+
+      // 4. Captura os elementos da tela
+      const promoLabel = document.getElementById("promo-label");
+      const oldPriceEl = document.getElementById("old-price-display");
+      const newPriceEl = document.getElementById("new-price-display");
+
+      // Formatador visual de moeda
+      const formatBRL = (val) => "R$ " + val.toFixed(2).replace(".", ",");
+
+      // 5. Aplica as 4 Regras Visuais
+      newPriceEl.textContent = "Por " + formatBRL(finalPrice);
+
+      if (isExpired && !hasCoupon) {
+        // Expirado (69,99)
+        promoLabel.textContent = "Acesso Padrão";
+        oldPriceEl.style.display = "none";
+      } else if (isExpired && hasCoupon) {
+        // Expirado + Cupom (59,99)
+        promoLabel.textContent = "Acesso Padrão (Cupom Aplicado)";
+        oldPriceEl.style.display = "block";
+        oldPriceEl.textContent = "De R$ 69,99";
+      } else if (!isExpired && hasCoupon) {
+        // No Prazo + Cupom (29,99)
+        promoLabel.textContent = "Oferta Especial + Cupom";
+        oldPriceEl.style.display = "block";
+        oldPriceEl.textContent = "De R$ 69,99";
+      } else {
+        // No Prazo Sem Cupom (39,99)
+        promoLabel.textContent = "Oferta Especial";
+        oldPriceEl.style.display = "block";
+        oldPriceEl.textContent = "De R$ 69,99";
+      }
+    });
+  </script>
+
   <script src="pagamento.js"></script>
   <script src="assets/payment-direct-flow/payment-direct-flow.js"></script>
 </body>
 </html>
-
-
-
-

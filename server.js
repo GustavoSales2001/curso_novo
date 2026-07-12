@@ -1930,15 +1930,13 @@ app.get("/api/users/access/:email", async (req, res) => {
 
 app.post("/api/payments/pix", async (req, res) => {
   try {
-    // 1. Recebemos o cupom aqui
-    const { payer, coupon_applied } = req.body;
+    const { payer, coupon_applied, is_expired } = req.body;
     
-    // 2. Definimos o valor base
-    let amount = COURSE_PRICE; 
-    
-    // 3. Aplicamos o desconto se o cupom for verdadeiro
-    if (coupon_applied === true || coupon_applied === "true") {
-      amount = amount - 10;
+    let amount = is_expired ? 69.99 : 39.99; // Base dinâmica
+
+    // Verifica se veio como booleano ou como texto
+    if (coupon_applied === true || coupon_applied === "true") { 
+      amount = amount - 10; 
     }
 
     const description = COURSE_DESCRIPTION;

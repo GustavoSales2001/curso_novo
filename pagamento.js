@@ -2,9 +2,12 @@
 function iaGetBuyerEmailForPix() {
   const input = document.getElementById("iaBuyerEmail");
   const fromInput = String(input?.value || "").trim().toLowerCase();
-  const stored = String(localStorage.getItem("influencer_academy_buyer_email") || "").trim().toLowerCase();
+  
+  // Tenta pegar o e-mail salvo da tela de cadastro
+  const storedCadastro = String(localStorage.getItem("ia_user_email") || "").trim().toLowerCase();
+  const storedPix = String(localStorage.getItem("influencer_academy_buyer_email") || "").trim().toLowerCase();
 
-  return fromInput || stored;
+  return fromInput || storedCadastro || storedPix;
 }
 
 function iaSaveBuyerEmailForPix() {
@@ -66,8 +69,9 @@ async function iaVerifyReleaseAndEnter(paymentId) {
 
   setStatus("Pagamento aprovado e acesso liberado. Entrando na área do aluno...", "success");
 
-  setTimeout(function () {
-    await iaVerifyReleaseAndEnter(currentPaymentId);
+  // Correção do erro de await dentro de função síncrona
+  setTimeout(async () => {
+    window.location.href = "area.html?paid=1#home";
   }, 900);
 
   return true;
@@ -75,7 +79,7 @@ async function iaVerifyReleaseAndEnter(paymentId) {
 
 document.addEventListener("DOMContentLoaded", function () {
   const input = document.getElementById("iaBuyerEmail");
-  const stored = localStorage.getItem("influencer_academy_buyer_email");
+  const stored = localStorage.getItem("influencer_academy_buyer_email") || localStorage.getItem("ia_user_email");
 
   if (input && stored && !input.value) {
     input.value = stored;
@@ -107,7 +111,7 @@ function iaLiberarAcessoEEntrarNaArea(paymentId) {
   if (!alunoAtual) {
     const aluno = {
       name: "Aluno(a)",
-      email: "",
+      email: iaGetBuyerEmailForPix() || "",
       access_released: true,
       payment_approved: true,
       payment_id: id,
@@ -126,21 +130,16 @@ function iaLiberarAcessoEEntrarNaArea(paymentId) {
   window.location.href = destino;
 }
 
-// AUTO_PAYMENT_REDIRECT_FIX_V1
-if (localStorage.getItem("influencer_academy_access_released") === "1") {
-  await iaVerifyReleaseAndEnter(currentPaymentId);
-}
 const RAILWAY_API = "https://cursonovo-production.up.railway.app";
-
-const API_BASE =
-  location.protocol === "file:" ||
-  location.hostname.includes("github.io")
-    ? RAILWAY_API
-    : "";
-
-const PRICE = 39.99;
+const API_BASE = RAILWAY_API; // Forçando a URL correta para evitar erros no GitHub Pages
 
 let currentPaymentId = null;
+
+// AUTO_PAYMENT_REDIRECT_FIX_V1 (Correção do erro do top-level await)
+if (localStorage.getItem("influencer_academy_access_released") === "1") {
+  // Redireciona direto se já tem acesso
+  window.location.href = "area.html?paid=1#home";
+}
 
 const generatePixBtn = document.getElementById("generatePixBtn");
 const statusBox = document.getElementById("statusBox");
@@ -151,6 +150,7 @@ const copyPixBtn = document.getElementById("copyPixBtn");
 const checkPaymentBtn = document.getElementById("checkPaymentBtn");
 
 function setStatus(message, type = "") {
+  if (!statusBox) return;
   statusBox.className = "status-box";
   if (type) statusBox.classList.add(type);
   statusBox.textContent = message;
@@ -158,6 +158,7 @@ function setStatus(message, type = "") {
 }
 
 function clearStatus() {
+  if (!statusBox) return;
   statusBox.classList.add("hidden");
   statusBox.textContent = "";
 }
@@ -165,36 +166,45 @@ function clearStatus() {
 async function generatePix() {
   const buyerEmailBeforePix = iaSaveBuyerEmailForPix();
   if (!buyerEmailBeforePix) {
-    setStatus("Digite o e-mail do aluno antes de gerar o PIX. Esse e-mail será usado para liberar o acesso.", "error");
+    setStatus("Erro: E-mail não encontrado. Volte para a página de cadastro.", "error");
     return;
   }
+  
   clearStatus();
   pixResult.classList.add("hidden");
 
   generatePixBtn.disabled = true;
   generatePixBtn.textContent = "Gerando QR Code...";
 
+  // 1. Pega informações de cupom e cronômetro do LocalStorage
+  const deadlineKey = "influencerCountdownDeadline";
+  const deadline = localStorage.getItem(deadlineKey);
+  const isExpired = deadline ? Date.now() > new Date(deadline).getTime() : false;
+  const isCouponActive = localStorage.getItem("influencerCouponApplied") === "true";
+
   try {
-    const response = await fetch(`${API_BASE}/payments/create-pix`, {
+    // Aponta para a rota correta do app.js (/api/payments/pix)
+    const response = await fetch(`${API_BASE}/api/payments/pix`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        amount: PRICE,
-        description: "Influencer Academy - acesso completo",
-        email: buyerEmailBeforePix
+        payer: { email: buyerEmailBeforePix }, // Envia o email no formato exigido pelo app.js
+        coupon_applied: isCouponActive,        // Envia o status do cupom
+        is_expired: isExpired                  // Envia se o prazo acabou
       })
     });
 
     const data = await response.json().catch(() => ({}));
 
-    if (!response.ok || !data.ok) {
+    if (!response.ok) {
       throw new Error(data.message || data.error || "Não consegui gerar o PIX agora.");
     }
 
-    currentPaymentId = data.payment_id;
+    currentPaymentId = data.id || data.payment_id;
 
+    // Adapta para o retorno do Mercado Pago / seu backend
     qrCodeImage.src = `data:image/png;base64,${data.qr_code_base64}`;
     pixCode.value = data.qr_code || "";
 
@@ -230,10 +240,11 @@ async function checkPayment() {
   checkPaymentBtn.textContent = "Verificando...";
 
   try {
-    const response = await fetch(`${API_BASE}/payments/status/${currentPaymentId}`);
+    // Rota de verificação de status (ajuste /api/ se necessário)
+    const response = await fetch(`${API_BASE}/api/payments/status/${currentPaymentId}`);
     const data = await response.json().catch(() => ({}));
 
-    if (!response.ok || !data.ok) {
+    if (!response.ok) {
       throw new Error(data.message || "Não consegui consultar o pagamento.");
     }
 
@@ -241,12 +252,13 @@ async function checkPayment() {
       localStorage.setItem("influencer_academy_payment_approved", "1");
       localStorage.setItem("influencer_academy_access_released", "1");
 
-      setStatus("Pagamento aprovado. Redirecionando para criar sua conta...", "success");
+      setStatus("Pagamento aprovado. Redirecionando para a área de membros...", "success");
 
-      setTimeout(() => {
+      // Correção do await dentro do setTimeout
+      setTimeout(async () => {
         localStorage.setItem("influencer_academy_payment_id", String(currentPaymentId || ""));
-      localStorage.setItem("influencer_academy_payment_approved", "1");
-      await iaVerifyReleaseAndEnter(currentPaymentId);
+        localStorage.setItem("influencer_academy_payment_approved", "1");
+        await iaVerifyReleaseAndEnter(currentPaymentId);
       }, 1200);
 
       return;
@@ -261,10 +273,6 @@ async function checkPayment() {
   }
 }
 
-generatePixBtn.addEventListener("click", generatePix);
-copyPixBtn.addEventListener("click", copyPix);
-checkPaymentBtn.addEventListener("click", checkPayment);
-
-
-
-
+if (generatePixBtn) generatePixBtn.addEventListener("click", generatePix);
+if (copyPixBtn) copyPixBtn.addEventListener("click", copyPix);
+if (checkPaymentBtn) checkPaymentBtn.addEventListener("click", checkPayment);
