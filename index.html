@@ -55,14 +55,13 @@
       text-transform:uppercase;
     }
 
-    .nav{
-      position:sticky;
-      top:0;
-      z-index:50;
-      background:rgba(250,245,240,.85);
-      backdrop-filter: blur(12px);
-      border-bottom:1px solid rgba(185,140,116,.12);
-    }
+    .nav {
+  position: relative; /* Mudamos de sticky para relative */
+  z-index: 50;
+  background: rgba(250,245,240,.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(185,140,116,.12);
+}
 
     .nav-wrap{
       min-height:80px;

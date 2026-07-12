@@ -714,6 +714,117 @@
           background:linear-gradient(135deg,#fff,#fff6f1);
           box-shadow:0 18px 40px rgba(83,54,42,.08);
       }
+
+      /* Container que fixa o card no canto inferior direito */
+      .floating-card-wrapper {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 999;
+        width: calc(100% - 48px); /* Para não encostar nas bordas no celular */
+        max-width: 340px;
+      }
+
+      /* O card em si */
+      .floating-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid #ead8cf;
+        border-radius: 24px;
+        box-shadow: 0 16px 40px rgba(98, 72, 59, 0.15);
+        overflow: hidden;
+        /* Esconde o corpo descendo o card, deixando apenas os 60px do topo visíveis */
+        transform: translateY(calc(100% - 60px)); 
+        transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+
+      /* Quando passa o mouse (PC) ou quando a classe .ativo é adicionada (Celular) */
+      .floating-card:hover,
+      .floating-card.ativo {
+        transform: translateY(0); /* Sobe o card inteiro */
+      }
+
+      /* Estilo do Topo */
+      .fc-header {
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+        font-weight: 800;
+        color: #c97969;
+        cursor: pointer;
+      }
+
+      .fc-icon {
+        font-size: 12px;
+        transition: transform 0.3s ease;
+      }
+
+      /* Vira a setinha para baixo quando o card abre */
+      .floating-card:hover .fc-icon,
+      .floating-card.ativo .fc-icon {
+        transform: rotate(180deg);
+      }
+
+      /* Estilo do Corpo */
+      .fc-body {
+        padding: 0 20px 24px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .floating-card:hover .fc-body,
+      .floating-card.ativo .fc-body {
+        opacity: 1;
+        transition-delay: 0.1s; /* Espera o card subir um pouquinho para mostrar o texto */
+      }
+
+      .fc-text {
+        font-size: 14px;
+        color: #8f786d;
+        line-height: 1.5;
+        margin-bottom: 16px;
+        text-align: center;
+      }
+
+      /* Estilo dos Botões */
+      .fc-btn {
+        width: 100%;
+        height: 48px;
+        border-radius: 14px;
+        font-size: 14px;
+        font-weight: 800;
+        cursor: pointer;
+        border: none;
+        transition: 0.2s ease;
+      }
+
+      .fc-btn.main {
+        background: linear-gradient(135deg, #d98c7d, #e6a196);
+        color: #fff;
+        margin-bottom: 10px;
+        box-shadow: 0 8px 20px rgba(217, 140, 125, 0.25);
+      }
+
+      .fc-btn.main:hover {
+        transform: translateY(-1px);
+      }
+
+      .fc-btn.soft {
+        background: #fff5ef;
+        color: #c97969;
+        border: 1px solid #ecd7cd;
+      }
+
+      /* Ajuste fino para telas muito pequenas */
+      @media(max-width: 600px) {
+        .floating-card-wrapper {
+          bottom: 16px;
+          right: 16px;
+          width: calc(100% - 32px);
+        }
+      }
             
 
   </style>
@@ -1224,6 +1335,43 @@
   <script src="assets/lesson-locks/lesson-locks.js"></script>
   <script src="assets/course-polish/course-polish.js"></script>
   
+  <div class="floating-card-wrapper">
+  <div class="floating-card" id="cardConclusao">
+    <div class="fc-header" onclick="toggleCard()">
+      <span class="fc-title">🎓 Finalizar aula</span>
+      <span class="fc-icon" id="fcIcon">▲</span>
+    </div>
+    
+    <div class="fc-body">
+      <p class="fc-text">
+        Quando terminar de assistir e estudar os prints, marque como concluída para liberar a próxima aula.
+      </p>
+      
+      <button class="fc-btn main" type="button">Concluir e liberar próxima</button>
+      <button class="fc-btn soft" type="button">Voltar para aulas</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function toggleCard() {
+    const card = document.getElementById("cardConclusao");
+    
+    // Adiciona ou remove a classe "ativo" toda vez que a pessoa clica no topo
+    card.classList.toggle("ativo");
+  }
+
+  // Opcional: Se a aluna clicar fora do card, ele fecha sozinho (ótimo para celular)
+  document.addEventListener("click", function(event) {
+    const card = document.getElementById("cardConclusao");
+    const wrapper = document.querySelector(".floating-card-wrapper");
+    
+    // Se o clique não foi dentro do card, remove a classe ativo
+    if (!wrapper.contains(event.target)) {
+      card.classList.remove("ativo");
+    }
+  });
+</script>
 
 </body>
 </html>
