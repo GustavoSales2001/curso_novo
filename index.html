@@ -600,6 +600,32 @@
       background: #2a201b;
     }
 
+    /* ========================================= */
+    /* CLASSES DE ANIMAÇÃO AO ROLAR A PÁGINA (SCROLL) */
+    /* ========================================= */
+    .scroll-anim {
+      opacity: 0;
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    /* Estado quando fica visível */
+    .scroll-anim.is-visible {
+      opacity: 1;
+      transform: translate(0) scale(1) rotate(0) !important;
+    }
+
+    /* Tipos Criativos de Animação */
+    .anim-fade-up { transform: translateY(50px); }
+    .anim-fade-left { transform: translateX(50px); } /* Vem da Direita */
+    .anim-fade-right { transform: translateX(-50px); } /* Vem da Esquerda */
+    .anim-zoom-in { transform: scale(0.85); }
+    .anim-flip-up { transform: perspective(800px) rotateX(25deg) translateY(30px); }
+
+    /* Atrasos (Delays) para efeito Cascata */
+    .delay-1 { transition-delay: 100ms; }
+    .delay-2 { transition-delay: 200ms; }
+    .delay-3 { transition-delay: 300ms; }
+    .delay-4 { transition-delay: 400ms; }
+
     @media (max-width: 1100px){
       .hero-grid,
       .editorial,
@@ -685,6 +711,9 @@
       .hero-main-card img{
         height:520px;
       }
+      
+      /* Reseta os atrasos no mobile para melhor experiência */
+      .scroll-anim { transition-delay: 0ms !important; }
     }
   </style>
   <link rel="stylesheet" href="assets/css/theme-premium.css" />
@@ -768,30 +797,30 @@
       <div class="container hero-grid">
         <div>
           
-          <h1>Aprenda a sair do <span>zero</span>, conquistar seus primeiros seguidores e construir uma presença digital forte e estratégica.</h1>
-          <p>
+          <h1 class="scroll-anim anim-fade-up">Aprenda a sair do <span>zero</span>, conquistar seus primeiros seguidores e construir uma presença digital forte e estratégica.</h1>
+          <p class="scroll-anim anim-fade-up delay-1">
             Um curso pensado para mulheres que querem crescer como criadoras de conteúdo e influenciadoras,
             com mais posicionamento, consistência, estética e clareza sobre o que postar em cada fase do crescimento.
           </p>
 
-          <div class="hero-actions">
+          <div class="hero-actions scroll-anim anim-fade-up delay-2">
             <a class="btn btn-primary" href="cadastro.html">Quero começar agora</a>
             <a class="btn btn-secondary" href="#trilha">Ver a trilha do curso</a>
           </div>
 
           <div class="hero-points">
-            <div class="mini-box">Saia do improviso e aprenda a criar conteúdo com mais intenção.</div>
-            <div class="mini-box">Entenda como crescer do 0 aos primeiros 5 mil seguidores com estratégia.</div>
-            <div class="mini-box">Crie uma marca pessoal que transmita mais valor e autoridade.</div>
+            <div class="mini-box scroll-anim anim-fade-right delay-1">Saia do improviso e aprenda a criar conteúdo com mais intenção.</div>
+            <div class="mini-box scroll-anim anim-fade-up delay-2">Entenda como crescer do 0 aos primeiros 5 mil seguidores com estratégia.</div>
+            <div class="mini-box scroll-anim anim-fade-left delay-3">Crie uma marca pessoal que transmita mais valor e autoridade.</div>
           </div>
         </div>
 
-        <div class="hero-visual">
+        <div class="hero-visual scroll-anim anim-zoom-in">
           <div class="hero-main-card">
             <img src="assets/img/hero-selfie.jpg" alt="Mulher influenciadora segurando celular e tirando selfie" />
           </div>
 
-          <div class="hero-floating">
+          <div class="hero-floating scroll-anim anim-fade-left delay-3">
             <h3>Do 0 ao posicionamento certo</h3>
             <p>
               Descubra como construir um perfil mais bonito, profissional e atrativo sem parecer genérico ou perdido.
@@ -801,19 +830,19 @@
       </div>
 
       <div class="container stats">
-        <div class="stat">
+        <div class="stat scroll-anim anim-zoom-in delay-1">
           <h3>0 → 1k</h3>
           <p>Construa base, identidade e presença digital.</p>
         </div>
-        <div class="stat">
+        <div class="stat scroll-anim anim-zoom-in delay-2">
           <h3>1k → 5k</h3>
           <p>Cresça com mais consistência e conexão com a audiência.</p>
         </div>
-        <div class="stat">
+        <div class="stat scroll-anim anim-zoom-in delay-3">
           <h3>+6</h3>
           <p>Módulos pensados para evolução real e estratégica.</p>
         </div>
-        <div class="stat">
+        <div class="stat scroll-anim anim-zoom-in delay-4">
           <h3>100%</h3>
           <p>Foco em branding, conteúdo, estética e crescimento.</p>
         </div>
@@ -823,7 +852,7 @@
     <section class="section sticker-zone" id="trilha">
       <img class="floating-sticker sticker-trilha-content" src="assets/img/sticker-conteudo.jpg" alt="Figurinha de conteúdo e curtidas" />
       <div class="container">
-        <div class="heading">
+        <div class="heading scroll-anim anim-fade-up">
           
           <h2>O que postar, como se posicionar e como crescer sem ficar perdida no processo.</h2>
           <p>
@@ -832,7 +861,7 @@
         </div>
 
         <div class="grid-3">
-          <div class="card">
+          <div class="card scroll-anim anim-fade-right delay-1">
             <h3>Fase 1 · 0 a 1.000</h3>
             <p>Primeiros passos para construir uma base sólida.</p>
             <ul class="list">
@@ -843,7 +872,7 @@
             </ul>
           </div>
 
-          <div class="card highlight">
+          <div class="card highlight scroll-anim anim-zoom-in delay-2">
             <h3>Fase 2 · 1.000 a 5.000</h3>
             <p>Entenda o que realmente ajuda a crescer e se destacar.</p>
             <ul class="list">
@@ -854,7 +883,7 @@
             </ul>
           </div>
 
-          <div class="card">
+          <div class="card scroll-anim anim-fade-left delay-3">
             <h3>Fase 3 · 5.000+</h3>
             <p>Chegue em um nível de presença mais forte e comercial.</p>
             <ul class="list">
@@ -870,7 +899,7 @@
 
     <section class="section">
       <div class="container editorial">
-        <div class="editorial-copy">
+        <div class="editorial-copy scroll-anim anim-fade-right">
           <span class="tag">ESTILO + POSICIONAMENTO</span>
           <h2>Mais do que seguidores: estrutura, conteúdo e presença para crescer de verdade.</h2>
           <p>
@@ -885,9 +914,9 @@
         </div>
 
         <div class="editorial-images">
-          <img src="assets/img/gallery-1.jpg" alt="Criadora de conteúdo feminina com celular" />
-          <img src="assets/img/gallery-2.jpg" alt="Mulher produzindo conteúdo para redes sociais" />
-          <img src="assets/img/gallery-3.jpg" alt="Influenciadora em pose para criação de conteúdo" />
+          <img src="assets/img/gallery-1.jpg" alt="Criadora de conteúdo feminina com celular" class="scroll-anim anim-fade-up delay-1" />
+          <img src="assets/img/gallery-2.jpg" alt="Mulher produzindo conteúdo para redes sociais" class="scroll-anim anim-fade-left delay-2" />
+          <img src="assets/img/gallery-3.jpg" alt="Influenciadora em pose para criação de conteúdo" class="scroll-anim anim-fade-left delay-3" />
         </div>
       </div>
     </section>
@@ -895,7 +924,7 @@
     <section class="section sticker-zone" id="modulos">
       <img class="floating-sticker sticker-modulos-megafone" src="assets/img/sticker-megafone.jpg" alt="Figurinha de megafone e divulgação" />
       <div class="container">
-        <div class="heading">
+        <div class="heading scroll-anim anim-fade-up">
           
           <h2>Um curso pensado para te levar da insegurança à clareza.</h2>
           <p>
@@ -904,7 +933,7 @@
         </div>
 
         <div class="modules">
-          <div class="module">
+          <div class="module scroll-anim anim-fade-right delay-1">
             <div class="module-top">
               <div class="module-number">01</div>
               <h3>Fundamentos da Influenciadora</h3>
@@ -917,7 +946,7 @@
             </ul>
           </div>
 
-          <div class="module">
+          <div class="module scroll-anim anim-fade-left delay-2">
             <div class="module-top">
               <div class="module-number">02</div>
               <h3>Nicho e Posicionamento</h3>
@@ -930,7 +959,7 @@
             </ul>
           </div>
 
-          <div class="module">
+          <div class="module scroll-anim anim-fade-right delay-1">
             <div class="module-top">
               <div class="module-number">03</div>
               <h3>Conteúdo que Cresce</h3>
@@ -943,7 +972,7 @@
             </ul>
           </div>
 
-          <div class="module">
+          <div class="module scroll-anim anim-fade-left delay-2">
             <div class="module-top">
               <div class="module-number">04</div>
               <h3>Engajamento e Comunidade</h3>
@@ -956,7 +985,7 @@
             </ul>
           </div>
 
-          <div class="module">
+          <div class="module scroll-anim anim-fade-right delay-1">
             <div class="module-top">
               <div class="module-number">05</div>
               <h3>Estética e Presença Digital</h3>
@@ -969,7 +998,7 @@
             </ul>
           </div>
 
-          <div class="module">
+          <div class="module scroll-anim anim-fade-left delay-2">
             <div class="module-top">
               <div class="module-number">06</div>
               <h3>Autoridade e Monetização</h3>
@@ -987,7 +1016,7 @@
 
     <section class="section" id="galeria">
       <div class="container">
-        <div class="heading">
+        <div class="heading scroll-anim anim-fade-up">
           
           <h2>Crescimento, gravação, métricas e produção com mais estratégia.</h2>
           <p>
@@ -996,7 +1025,7 @@
         </div>
 
         <div class="gallery">
-          <div class="gallery-card">
+          <div class="gallery-card scroll-anim anim-flip-up delay-1">
             <img src="assets/img/hero-selfie.jpg" alt="Mulher com celular em pose de selfie" />
             <div class="caption">
               <strong>Crescimento</strong>
@@ -1004,7 +1033,7 @@
             </div>
           </div>
 
-          <div class="gallery-card">
+          <div class="gallery-card scroll-anim anim-flip-up delay-2">
             <img src="assets/img/gallery-1.jpg" alt="Influenciadora feminina produzindo conteúdo" />
             <div class="caption">
               <strong>Produção</strong>
@@ -1012,7 +1041,7 @@
             </div>
           </div>
 
-          <div class="gallery-card">
+          <div class="gallery-card scroll-anim anim-flip-up delay-3">
             <img src="assets/img/gallery-2.jpg" alt="Criadora de conteúdo elegante" />
             <div class="caption">
               <strong>Setup</strong>
@@ -1020,7 +1049,7 @@
             </div>
           </div>
 
-          <div class="gallery-card">
+          <div class="gallery-card scroll-anim anim-flip-up delay-4">
             <img src="assets/img/gallery-3.jpg" alt="Mulher mostrando celular para criação de conteúdo" />
             <div class="caption">
               <strong>Equipamentos</strong>
@@ -1033,7 +1062,7 @@
 
     <section class="section">
       <div class="container pricing">
-        <div class="pricing-box">
+        <div class="pricing-box scroll-anim anim-zoom-in">
           <h3>Comece hoje a construir sua presença como criadora.</h3>
 
           <div class="price-offer">
@@ -1088,7 +1117,7 @@
           </div>
         </div>
 
-        <div class="card">
+        <div class="card scroll-anim anim-fade-left delay-2">
           <h3>Esse curso é para você que:</h3>
           <ul class="list">
             <li>Quer crescer do zero com mais estratégia</li>
@@ -1103,29 +1132,29 @@
 
 <section class="section" id="faq">
       <div class="container">
-        <div class="heading">
+        <div class="heading scroll-anim anim-fade-up">
           <span class="tag">FAQ</span>
           <h2>Dúvidas frequentes</h2>
           <p>Algumas respostas para te ajudar a entender melhor o curso.</p>
         </div>
 
         <div class="faq">
-          <details open>
+          <details open class="scroll-anim anim-fade-up delay-1">
             <summary>Esse curso é só para quem já tem seguidores?</summary>
             <p>Não. Ele foi pensado principalmente para quem está começando ou ainda sente que não conseguiu crescer com consistência.</p>
           </details>
 
-          <details>
+          <details class="scroll-anim anim-fade-up delay-2">
             <summary>O curso serve para quem quer melhorar a imagem do perfil?</summary>
             <p>Sim. Além de conteúdo e estratégia, ele também traz uma visão de posicionamento, presença e estética.</p>
           </details>
 
-          <details>
+          <details class="scroll-anim anim-fade-up delay-3">
             <summary>Eu preciso já saber criar conteúdo?</summary>
             <p>Não. O curso foi estruturado para ajudar desde quem ainda está travada até quem já começou, mas quer crescer melhor.</p>
           </details>
 
-          <details>
+          <details class="scroll-anim anim-fade-up delay-4">
             <summary>Depois do cadastro eu acesso como?</summary>
             <p>Depois do cadastro você segue para o restante do fluxo do projeto e recebe a orientação para continuar.</p>
           </details>
@@ -1135,7 +1164,7 @@
 
     <section class="section">
       <div class="container">
-        <div class="final-cta">
+        <div class="final-cta scroll-anim anim-zoom-in">
           <span class="tag">ÚLTIMA CHAMADA</span>
           <h2>O seu crescimento pode ser mais bonito, estratégico e intencional.</h2>
           <p>
@@ -1156,6 +1185,36 @@
       © 2026 Influencer Academy · Todos os direitos reservados.
     </div>
   </footer>
+
+<!-- LÓGICA DE INTERSECTION OBSERVER PARA AS ANIMAÇÕES DE SCROLL -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const scrollElements = document.querySelectorAll('.scroll-anim');
+
+  const elementInView = (el, dividend = 1) => {
+    const elementTop = el.getBoundingClientRect().top;
+    return (elementTop <= (window.innerHeight || document.documentElement.clientHeight) / dividend);
+  };
+
+  // Usando a nova Intersection Observer API (muito leve para performance)
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        // Descomente a linha abaixo se quiser que anime apenas 1 vez (não repita ao rolar pra cima)
+        // observer.unobserve(entry.target); 
+      }
+    })
+  }, {
+    threshold: 0.15, // Porcentagem que o card precisa aparecer na tela para disparar
+    rootMargin: "0px 0px -50px 0px" // Margem para disparar um pouco antes do bottom
+  });
+
+  scrollElements.forEach((el) => {
+    observer.observe(el);
+  });
+});
+</script>
 
 <!-- LÓGICA INTELIGENTE DE PREÇO, TEMPO E CUPOM -->
 <script>
