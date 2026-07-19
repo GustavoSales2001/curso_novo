@@ -704,6 +704,25 @@ function denyPath(memory) {
   return getRandomReply(replies);
 }
 
+// NOVO: Função para responder agradecimentos de forma fofa e reiniciar estado
+function thanksPath(memory) {
+  // Limpa a trilha atual para o robô não ficar preso no assunto anterior
+  memory.currentPath = "";
+  // Reseta o contador de erros
+  memory.fallbackCount = 0; 
+
+  const replies = [
+    `Imagina! 🥰 Se precisar de mais alguma coisa, é só me chamar.`,
+    `Por nada! ✨ Estou aqui pra isso. Se tiver mais alguma dúvida depois, pode mandar.`,
+    `Que isso, foi um prazer! 💕 Qualquer coisa, eu continuo por aqui.`,
+    `Eu que agradeço! 😊 Fico muito feliz em ajudar. Se precisar, é só dar um "Oi" de novo.`,
+    `Imagina, conta sempre comigo! 💕 Estou à disposição.`,
+    `De nada! 🥰 Precisando, já sabe onde me encontrar.`
+  ];
+
+  return getRandomReply(replies);
+}
+
 // NOVO: Gatilho de Frustração e Variação de Fallback
 function fallback(memory) {
   memory.fallbackCount += 1;
@@ -770,6 +789,11 @@ function detectIntent(msg, memory) {
      return "deny";
   }
 
+  // 4.5. Reconhecimento de Agradecimentos (Obrigado, Valeu, etc)
+  if (hasAny(msg, ["obrigado", "obrigada", "brigado", "brigada", "valeu", "agradeco", "agradeço", "muito obrigada", "muito obrigado", "obg", "vlw", "perfeito obrigado", "perfeito obrigada"])) {
+      return "thanks";
+  }
+
   // 5. Continuação do fluxo se NÃO perguntou nada novo
   if (isContinue(msg) && memory.currentPath && paths[memory.currentPath]) {
     return memory.currentPath;
@@ -832,6 +856,8 @@ Por favor, clica neste link e manda um print da sua tela lá:
     reply = supportPath(memory);
   } else if (intent === "deny") { 
     reply = denyPath(memory);     
+  } else if (intent === "thanks") { // <--- ROTEAMENTO DO AGRADECIMENTO AQUI
+    reply = thanksPath(memory);
   } else {
     reply = fallback(memory);
   }
